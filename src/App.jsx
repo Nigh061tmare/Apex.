@@ -742,11 +742,16 @@ export default function App() {
     setProgress({ percent: 15, step: 'Preparando siguiente acto / continuación RPG...' });
 
     try {
+      const effectiveCharA = charA || 'Contendiente A';
+      const effectiveCharB = (matchMode === 'raid' || matchMode === 'team') && teamB?.length > 0
+        ? `Escuadra Asaltante (${teamB.length}): ${teamB.map(m => m.name || m.id).join(', ')}`
+        : (charB || 'Contendiente B');
+
       const continuationPrompt = SimulationEngine.generateContinuationPrompt(
         baseOutput,
         userPromptNext,
-        charA || 'Contendiente A',
-        charB || 'Contendiente B',
+        effectiveCharA,
+        effectiveCharB,
         scenario || 'Arena de Combate',
         { ...modifiers, language: lang }
       );
@@ -1116,7 +1121,7 @@ export default function App() {
             {/* Banner de Merchandising / Figuras Oficiales de los Luchadores */}
             <MerchBanner
               charA={charA}
-              charB={charB}
+              charB={(matchMode === 'raid' || matchMode === 'team') && teamB?.length > 0 ? teamB[0] : charB}
               isVip={isVip}
               lang={lang}
             />

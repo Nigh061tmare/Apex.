@@ -24,7 +24,7 @@ import {
   healCharacterInjuries
 } from '../lib/chronicleContracts';
 import {
-  BookOpen, FolderArchive, Bookmark, Sparkles, Swords, Shield, Activity, Flame, RefreshCw,
+  BookOpen, Brain, FolderArchive, Bookmark, Sparkles, Swords, Shield, Activity, Flame, RefreshCw,
   Download, Plus, CheckCircle2, AlertTriangle, Users, Target,
   ChevronRight, Layers, Compass, Scroll, Award, HeartHandshake, Zap,
   X, History, FileText, Play, RotateCcw, Package, Search, Trash2,
@@ -34,6 +34,7 @@ import {
 import { SimulationEngine } from '../services/simulationEngine';
 import { SoundFX } from '../services/soundFx';
 import CampaignVaultModal from './CampaignVaultModal';
+import ChronicleNarrativeView from './ChronicleNarrativeView';
 
 const STORAGE_KEY = 'apex_chronicle_active_campaign_v1';
 const STORAGE_KEY_CAMPAIGNS_VAULT = 'apex_chronicles_vault_v1';
@@ -876,39 +877,69 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
     });
   };
 
-  // Normal SSJ dedicated training
-  const handleTrainNormalSSJ = (charId) => {
+  // Universal Dojo Training & Awakening Handler for ANY character in the active cast
+  const handleTrainCharacter = (charId, trainingType = 'ki_mastery') => {
     const stateCopy = JSON.parse(JSON.stringify(chronicle));
     if (!stateCopy.characterStates[charId]) {
       stateCopy.characterStates[charId] = {
         recordId: charId,
-        trainingProgress: createTrainingProgressState({ targetFormId: 'normal_super_saiyan' })
+        trainingProgress: createTrainingProgressState({ targetFormId: 'universal_mastery' })
       };
     }
-    const currentTraining = stateCopy.characterStates[charId].trainingProgress || createTrainingProgressState({ targetFormId: 'normal_super_saiyan' });
-    const newMastery = Math.min(100, (currentTraining.masteryPercentage || 0) + 20);
-    const newActivationTurns = Math.max(2, (currentTraining.activationTurnsRequired || 6) - 1);
-
-    stateCopy.characterStates[charId].trainingProgress = {
-      ...currentTraining,
-      masteryPercentage: newMastery,
-      activationTurnsRequired: newActivationTurns,
-      unlocked: newMastery >= 100,
-      trainingNotes: `Sesión hiperbólica completada. Dominio alcanzado: ${newMastery}%. Ventana de activación reducida a ${newActivationTurns} turnos.`
-    };
-
+    const cState = stateCopy.characterStates[charId];
+    const currentTraining = cState.trainingProgress || createTrainingProgressState({ targetFormId: 'universal_mastery' });
     const charName = charMap.get(charId)?.name || charId;
+
+    let note = '';
+    let actionTitle = '';
+    let consequences = [];
+
+    if (trainingType === 'ki_mastery') {
+      const newMastery = Math.min(100, (currentTraining.masteryPercentage || 25) + 20);
+      cState.trainingProgress = {
+        ...currentTraining,
+        masteryPercentage: newMastery,
+        unlocked: newMastery >= 100,
+        trainingNotes: `Control de flujo de Ki perfeccionado al ${newMastery}%.`
+      };
+      actionTitle = `Entrenamiento de Flujo de Ki — ${charName}`;
+      note = `${charName} dedica una sesión intensiva a perfeccionar el control del Ki en ${stateCopy.currentLocation}. Afina su circulación energética, mitigando el desgaste de stamina y alcanzando un ${newMastery}% de maestría en combate sostenido.`;
+      consequences = [`Maestría de Ki para ${charName} elevada a ${newMastery}%`, `Reducción de fatiga en próximos asaltos`];
+      SoundFX?.playPowerUp?.();
+    } else if (trainingType === 'battle_iq') {
+      cState.bonusBIQ = (cState.bonusBIQ || 0) + 2;
+      actionTitle = `Meditación Táctica & Análisis de Combate — ${charName}`;
+      note = `${charName} entra en un estado de concentración profunda, analizando patrones de ataque, lectura de ki y puntos ciegos. Su agudeza táctica se agudiza notablemente (+2 BIQ en tiradas de contingencia D20).`;
+      consequences = [`Battle IQ de ${charName} incrementado en +2 puntos permanentes`, `Mayor probabilidad de éxito en maniobras tácticas`];
+      SoundFX?.playDiceRoll?.();
+    } else if (trainingType === 'awakening') {
+      const newMastery = Math.min(100, (currentTraining.masteryPercentage || 30) + 35);
+      cState.trainingProgress = {
+        ...currentTraining,
+        masteryPercentage: newMastery,
+        unlocked: true,
+        trainingNotes: `Resonancia de Potencial Latente desatada al ${newMastery}%.`
+      };
+      actionTitle = `Despertar de Potencial Oculto — ${charName}`;
+      note = `En un instante de máxima tensión emocional y concentración mística, ${charName} rompe las compuertas de su energía interna en ${stateCopy.currentLocation}. Su aura estalla con destellos incandescentes, liberando una fracción de su potencial dormido.`;
+      consequences = [`Potencial Latente de ${charName} sincronizado al ${newMastery}%`, `Aura amplificada para los próximos capítulos`];
+      SoundFX?.playAuraBurst?.();
+    }
+
     advanceChronicleScene(stateCopy, {
-      title: `Entrenamiento Intensivo de Normal Super Saiyan — ${charName}`,
+      title: actionTitle,
       sceneType: 'training',
-      location: 'Cámara del Tiempo Hiperdimensional Avanzada',
-      narrativeText: `${charName} aísla su cuerpo y mente en la Cámara Hiperbólica. Pulveriza la barrera de calentamiento del Normal Super Saiyan, reduciendo su ventana de preparación a ${newActivationTurns} turnos y alcanzando un ${newMastery}% de maestría absoluta sin depender de furia descontrolada.`,
-      consequences: [`Dominio de Normal SSJ para ${charName} elevado a ${newMastery}%`, `Ventana de activación reducida a ${newActivationTurns} turnos`],
+      location: stateCopy.currentLocation || 'Dojo de Campaña',
+      narrativeText: note,
+      consequences,
       advanceChapter: true
     });
 
     setChronicle(stateCopy);
   };
+
+  // Normal SSJ backward-compatible alias
+  const handleTrainNormalSSJ = (charId) => handleTrainCharacter(charId, 'ki_mastery');
 
   // Brief Combat resolution
   const handleQuickCombat = () => {
@@ -1222,7 +1253,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
           }`}
         >
           <Zap className="w-3.5 h-3.5 text-yellow-400" />
-          <span>Dominio Normal Super Saiyan</span>
+          <span>Dojo & Despertar ({(chronicle.activeCast || []).length})</span>
         </button>
       </div>
 
@@ -1303,9 +1334,11 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
                       {ch.title}
                     </h3>
 
-                    <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-sans">
-                      {ch.narrativeText}
-                    </p>
+                    <ChronicleNarrativeView
+                      text={ch.narrativeText}
+                      title={ch.title}
+                      isFirstChapter={idx === 0}
+                    />
 
                     {ch.consequences && ch.consequences.length > 0 && (
                       <div className="pt-2 border-t border-slate-800/80 space-y-1">
@@ -1938,90 +1971,219 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
         </div>
       )}
 
-      {/* TAB 5: DOMINIO NORMAL SUPER SAIYAN */}
+      {/* TAB 5: DOJO UNIVERSAL & EVOLUCIÓN DEL ELENCO */}
       {activeTab === 'training' && (
-        <div className="space-y-6">
-          <div className="bg-slate-900/90 border border-amber-500/40 rounded-xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center gap-2">
-              <Zap className="w-6 h-6 text-amber-400" />
-              <div>
-                <h2 className="text-lg font-bold text-white">
-                  Protocolo de Dominio: Normal Super Saiyan
-                </h2>
-                <p className="text-xs text-slate-400 font-mono">
-                  Gobernanza de entrenamiento en campaña sin alterar la inmutabilidad de los registros canónicos V25.
-                </p>
+        <div className="space-y-6 animate-fadeIn">
+          {/* Header Banner del Dojo */}
+          <div className="bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border border-amber-500/40 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+              <div className="flex items-start gap-3">
+                <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 shadow-inner">
+                  <Flame className="w-7 h-7 animate-pulse" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-black text-white tracking-wide uppercase font-serif">
+                      Dojo de Campaña & Evolución del Elenco
+                    </h2>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
+                      Campamento Táctico
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300 mt-1 max-w-2xl font-mono leading-relaxed">
+                    Evolución individual para los combatientes activos de la campaña. Afina el flujo de Ki, entrena la agudeza táctica con bonificaciones permanentes al <strong>D20 de Contingencia</strong>, despierta potenciales latentes y regenera traumatismos biomecánicos.
+                  </p>
+                </div>
+              </div>
+
+              {/* Métricas del Campamento */}
+              <div className="flex items-center gap-3 bg-slate-950/80 border border-slate-800/80 rounded-xl p-3 font-mono text-xs">
+                <div className="text-center px-2">
+                  <div className="text-[10px] text-slate-400 uppercase">Luchadores</div>
+                  <div className="text-amber-400 font-bold text-base">{(chronicle.activeCast || []).length}</div>
+                </div>
+                <div className="w-[1px] h-7 bg-slate-800" />
+                <div className="text-center px-2">
+                  <div className="text-[10px] text-slate-400 uppercase">Ubicación Actual</div>
+                  <div className="text-emerald-400 font-bold text-xs truncate max-w-[130px]" title={chronicle.currentLocation}>
+                    {chronicle.currentLocation || 'Desconocida'}
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              {['son-goku-u18-dbm', 'vegeta-u18-dbm'].map(charId => {
-                const char = charMap.get(charId) || { name: charId };
-                const training = chronicle.characterStates?.[charId]?.trainingProgress || createTrainingProgressState({
-                  targetFormId: 'normal_super_saiyan',
-                  masteryPercentage: 40,
-                  activationTurnsRequired: 6
+          {/* Listado de Combatientes del Elenco Activo */}
+          {(chronicle.activeCast || []).length === 0 ? (
+            <div className="bg-slate-900/60 border border-dashed border-slate-700/80 rounded-2xl p-12 text-center space-y-4">
+              <Users className="w-12 h-12 text-slate-600 mx-auto" />
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-slate-300">No hay combatientes en el elenco activo</h3>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  Añade personajes a la campaña desde la pestaña "Elenco & Facciones" o forja una nueva campaña para desbloquear las sesiones de entrenamiento.
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveTab('cast')}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-lg transition inline-flex items-center gap-2 cursor-pointer"
+              >
+                <Users className="w-4 h-4" />
+                <span>Ir al Elenco de la Campaña</span>
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {(chronicle.activeCast || []).map(charId => {
+                const char = charMap.get(charId) || { name: charId, universe: 'Multiverso' };
+                const cState = chronicle.characterStates?.[charId] || {};
+                const training = cState.trainingProgress || createTrainingProgressState({
+                  targetFormId: 'universal_mastery',
+                  masteryPercentage: 25,
+                  activationTurnsRequired: 4
                 });
+                const hasInjuries = (cState.injuries || []).length > 0;
+                const bonusBIQ = cState.bonusBIQ || 0;
 
                 return (
                   <div
                     key={charId}
-                    className="bg-slate-950/80 border border-slate-800 rounded-xl p-5 space-y-4 font-mono shadow-lg"
+                    className={`bg-slate-900/90 rounded-2xl p-5 border transition-all duration-300 shadow-xl space-y-4 flex flex-col justify-between ${
+                      hasInjuries
+                        ? 'border-red-500/50 hover:border-red-400/80 shadow-red-950/20'
+                        : 'border-slate-800 hover:border-amber-500/40'
+                    }`}
                   >
-                    <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                      <span className="font-bold text-white text-sm">{char.name}</span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
-                        training.unlocked ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'
-                      }`}>
-                        {training.unlocked ? 'DOMINIO COMPLETO' : 'EN ENTRENAMIENTO'}
-                      </span>
-                    </div>
-
+                    {/* Header Combatiente */}
                     <div className="space-y-2">
-                      <div className="flex justify-between text-xs text-slate-400">
-                        <span>Progreso de Maestría:</span>
-                        <span className="font-bold text-amber-400">{training.masteryPercentage}%</span>
+                      <div className="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-black text-white text-base tracking-wide">{char.name}</span>
+                            {bonusBIQ > 0 && (
+                              <span className="px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-700/60 font-mono text-[10px] font-bold" title="Bonificador permanente para tiradas D20 tácticas">
+                                +{bonusBIQ} BIQ D20
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 mt-1 text-[11px] font-mono text-slate-400">
+                            <span className="text-amber-400 font-bold">{char.universe || 'Multiverso'}</span>
+                            <span>•</span>
+                            <span className="px-1.5 py-0.2 bg-slate-800 text-slate-300 rounded font-bold">Tier {char.tier || '4-B'}</span>
+                            {char.baseKi && (
+                              <>
+                                <span>•</span>
+                                <span className="text-emerald-400">Ki: {typeof char.baseKi === 'number' ? (char.baseKi >= 1e9 ? `${(char.baseKi/1e9).toFixed(2)}B` : `${(char.baseKi/1e6).toFixed(2)}M`) : char.baseKi}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Estado Biomecánico Badge */}
+                        <div className="text-right flex flex-col items-end gap-1">
+                          {hasInjuries ? (
+                            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md font-bold bg-red-950 text-red-300 border border-red-800 animate-pulse">
+                              <AlertTriangle className="w-3 h-3 text-red-400" />
+                              <span>{cState.injuries.length} Lesión(es)</span>
+                            </span>
+                          ) : (
+                            <span className="text-[10px] px-2 py-0.5 rounded-md font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-800/80 font-mono">
+                              {cState.shortTermCondition || 'ÓPTIMO'}
+                            </span>
+                          )}
+                          <span className={`text-[9.5px] font-mono font-bold ${training.unlocked ? 'text-amber-300' : 'text-slate-500'}`}>
+                            {training.unlocked ? '⚡ DESPERTADO' : 'EN DESARROLLO'}
+                          </span>
+                        </div>
                       </div>
-                      <div className="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800">
-                        <div
-                          className="bg-gradient-to-r from-amber-500 to-yellow-400 h-full transition-all duration-500"
-                          style={{ width: `${training.masteryPercentage}%` }}
-                        />
+
+                      {/* Lesiones Biomecánicas Activas */}
+                      {hasInjuries && (
+                        <div className="bg-red-950/40 border border-red-500/40 rounded-xl p-2.5 space-y-2 font-mono text-xs">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] text-red-300 uppercase font-bold flex items-center gap-1">
+                              <AlertTriangle className="w-3 h-3 text-red-400" />
+                              <span>Heridas de Campaña Persistentes:</span>
+                            </span>
+                            <button
+                              onClick={() => handleHealCharacter(charId)}
+                              className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition text-[10px] flex items-center gap-1 cursor-pointer shadow"
+                              title="Curar inmediatamente con Semilla Senzu / Tanque Médico"
+                            >
+                              <HeartPulse className="w-3 h-3" />
+                              <span>Senzu / Tanque Médico</span>
+                            </button>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {cState.injuries.map(inj => (
+                              <span key={inj.id} className="text-[9.5px] px-2 py-0.5 rounded bg-red-900/60 border border-red-700/60 text-red-200">
+                                <strong>{inj.name}</strong> ({inj.chaptersRemaining} caps) [{inj.statPenalty}]
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Barra de Progreso de Maestría */}
+                      <div className="space-y-1.5 font-mono pt-1">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-slate-400 flex items-center gap-1">
+                            <Zap className="w-3.5 h-3.5 text-amber-400" />
+                            <span>Maestría de Combate & Ki:</span>
+                          </span>
+                          <span className="font-bold text-amber-400">{training.masteryPercentage || 25}%</span>
+                        </div>
+                        <div className="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                          <div
+                            className="bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-400 h-full transition-all duration-500 rounded-full"
+                            style={{ width: `${training.masteryPercentage || 25}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Notas de Entrenamiento */}
+                      <div className="text-[11px] text-slate-400 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800/80 font-mono">
+                        {training.trainingNotes || 'El guerrero equilibra su respiración y refina sus técnicas características para el próximo arco narrativo.'}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
-                        <div className="text-slate-500 text-[10px] uppercase">Ventana de Activación</div>
-                        <div className="text-white font-bold mt-0.5">{training.activationTurnsRequired} Turnos</div>
-                      </div>
-                      <div className="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
-                        <div className="text-slate-500 text-[10px] uppercase">Multiplicador</div>
-                        <div className="text-white font-bold mt-0.5">400x (Paridad SSJ3)</div>
-                      </div>
-                    </div>
+                    {/* Acciones de Entrenamiento del Dojo */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-800/80">
+                      <button
+                        onClick={() => handleTrainCharacter(charId, 'ki_mastery')}
+                        className="p-2 rounded-xl bg-slate-800 hover:bg-amber-600/90 text-slate-200 hover:text-white transition font-mono text-[11px] flex flex-col items-center justify-center gap-1 border border-slate-700/80 hover:border-amber-400 cursor-pointer text-center group"
+                        title="Perfecciona el flujo y la resistencia de energía (+20% maestría)"
+                      >
+                        <Zap className="w-3.5 h-3.5 text-amber-400 group-hover:text-white" />
+                        <span className="font-bold">Flujo de Ki</span>
+                        <span className="text-[9px] text-slate-400 group-hover:text-amber-200">+20% Maestría</span>
+                      </button>
 
-                    <div className="text-[11px] text-slate-400 bg-slate-900/50 p-2.5 rounded border border-slate-800/80">
-                      {training.trainingNotes || 'Concentración de energía pura sin desgaste de ki ni deformación muscular.'}
-                    </div>
+                      <button
+                        onClick={() => handleTrainCharacter(charId, 'battle_iq')}
+                        className="p-2 rounded-xl bg-slate-800 hover:bg-purple-600/90 text-slate-200 hover:text-white transition font-mono text-[11px] flex flex-col items-center justify-center gap-1 border border-slate-700/80 hover:border-purple-400 cursor-pointer text-center group"
+                        title="Meditación táctica que concede +2 permanente a las tiradas D20 en contingencias"
+                      >
+                        <Brain className="w-3.5 h-3.5 text-purple-400 group-hover:text-white" />
+                        <span className="font-bold">Meditación BIQ</span>
+                        <span className="text-[9px] text-slate-400 group-hover:text-purple-200">+2 Tiradas D20</span>
+                      </button>
 
-                    <button
-                      onClick={() => handleTrainNormalSSJ(charId)}
-                      disabled={training.masteryPercentage >= 100}
-                      className={`w-full py-2 px-4 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer ${
-                        training.masteryPercentage >= 100
-                          ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                          : 'bg-amber-600 hover:bg-amber-500 text-white shadow-md shadow-amber-950/50'
-                      }`}
-                    >
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>{training.masteryPercentage >= 100 ? 'Maestría Total Alcanzada' : 'Sesión de Entrenamiento Hiperbólico (+20%)'}</span>
-                    </button>
+                      <button
+                        onClick={() => handleTrainCharacter(charId, 'awakening')}
+                        className="p-2 rounded-xl bg-slate-800 hover:bg-emerald-600/90 text-slate-200 hover:text-white transition font-mono text-[11px] flex flex-col items-center justify-center gap-1 border border-slate-700/80 hover:border-emerald-400 cursor-pointer text-center group"
+                        title="Despierta el potencial latente aumentando masivamente la maestría y desbloqueando auras"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-400 group-hover:text-white" />
+                        <span className="font-bold">Despertar</span>
+                        <span className="text-[9px] text-slate-400 group-hover:text-emerald-200">+35% Potencial</span>
+                      </button>
+                    </div>
                   </div>
                 );
               })}
             </div>
-          </div>
+          )}
         </div>
       )}
 

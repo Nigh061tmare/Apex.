@@ -260,22 +260,30 @@ function RichCombatText({ content, isStreamingLast }) {
           );
         }
 
-        // Sonidos de impacto masivo (KRRRAAAACCCCKKKK, BOOM, CLAP)
-        if (trimmed.match(/^(BOOM|KRR+A+C+K+|CL+A+P|BZZ+|THD+U+|KABOO+M)/i)) {
+        // Sonidos de impacto biomecánico o cinético (CRACK, TONK, CRUNCH, CHAK, BOOM, etc.)
+        const soundImpactMatch = trimmed.match(/^[\*\s]*(CRACK|CRUNCH|TONK|CHAK|SNAP|SMASH|SHHK|THUMP|BOOM|CLAP|BZZ+|THD+U+|KABOO+M|KRR+A+C+K+)[\.\!\*\s]*$/i);
+        if (soundImpactMatch) {
+          const soundText = soundImpactMatch[1].toUpperCase();
           return (
-            <div key={lIdx} className="my-6 text-center">
-              <span className="inline-block px-4 py-2 bg-gradient-to-br from-amber-600 to-red-700 rounded-full font-mono font-black text-white tracking-[0.3em] text-lg drop-shadow-[0_0_25px_rgba(245,158,11,1)] skew-x-[-10deg] animate-[bounce_1s_infinite]">
-                💥 {trimmed} 💥
+            <div key={lIdx} className="my-3 text-center">
+              <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-red-950/80 via-red-900/60 to-black rounded-lg border border-red-500/50 font-mono font-black text-red-300 tracking-[0.25em] text-xs drop-shadow-[0_0_15px_rgba(239,68,68,0.5)] skew-x-[-6deg]">
+                ⚡ {soundText} ⚡
               </span>
             </div>
           );
         }
 
-        // Pensamientos internos entre asteriscos sencillos *pensamiento* o - *pensamiento*
-        if (trimmed.startsWith('*') && trimmed.endsWith('*') && !trimmed.startsWith('**') && trimmed.length > 5) {
+        // Monólogos o pensamientos internos genuinos entre asteriscos (*pensamiento*)
+        const isStructuralNote = trimmed.startsWith('* ') || 
+          trimmed.includes('Línea Alfa') || trimmed.includes('Línea Beta') || trimmed.includes('Línea Omega') ||
+          trimmed.includes('Bando A') || trimmed.includes('Bando B') || trimmed.includes('Deseo:') || 
+          trimmed.includes('HP Efectivo') || trimmed.includes('Daño Estético') || trimmed.includes('Nota:') ||
+          trimmed.startsWith('* =') || trimmed.startsWith('* = ') || trimmed.startsWith('*=');
+
+        if (!isStructuralNote && trimmed.startsWith('*') && trimmed.endsWith('*') && !trimmed.startsWith('**') && trimmed.length > 5) {
           return (
             <div key={lIdx} className="my-3 p-3 px-4 rounded-xl bg-purple-950/30 border-l-4 border-purple-400 text-purple-200 font-mono italic text-xs shadow-md">
-              <span className="text-purple-400 font-bold not-italic mr-2">🧠 Pensamiento Interno:</span>
+              <span className="text-purple-400 font-bold not-italic mr-2">🧠 Monólogo Interno:</span>
               <span>{trimmed.slice(1, -1)}</span>
             </div>
           );
@@ -2358,7 +2366,7 @@ export default function SimulationViewer({
           {/* Merchandising & Official Figures Card */}
           <MerchBanner 
             charA={simulationData?.charA} 
-            charB={simulationData?.charB} 
+            charB={(simulationData?.matchMode === 'raid' || simulationData?.matchMode === 'team') && simulationData?.teamB?.length > 0 ? simulationData.teamB[0] : simulationData?.charB} 
             isVip={isVip} 
             lang={lang} 
           />

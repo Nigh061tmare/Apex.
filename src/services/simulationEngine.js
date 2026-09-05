@@ -350,6 +350,10 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 - **APLICA TAMBIÉN A:** Cell absorbiendo a Androides 17/18 (los Androides desaparecen como actores independientes).
 - ✅ Liberación: cuando Goku/Vegeta extraen a los absorbidos, estos reaparecen con su estado físico propio.
 
+### 🎭 REGLA DE ORO 17: PROHIBICIÓN DE META-COMENTARIOS, DUDAS Y RETRACTACIONES EN LA PROSA
+- **PROHIBIDO TERMINANTEMENTE** que el narrador o los personajes incluyan correcciones en caliente, dudas, titubeos o meta-referencias a las reglas en el texto literario (por ejemplo: JAMÁS escribas "—esperad, están fusionados en Gogeta según la Regla 15...", ni "—no, Piccolo no tiene Shunkan Idō...", ni "recordemos que la regla prohíbe...").
+- **Ejecución Silenciosa y Canónica:** Las restricciones canónicas y las reglas de oro deben aplicarse de forma 100% LIMPIA, natural y directa desde la primera palabra de cada escena. Si un personaje no tiene una técnica, jamás se menciona que intentó usarla; si hay una fusión, solo se narra a la fusión sin vacilar.
+
 `;
 
     const formatSpeed = (spd) => {
@@ -1055,7 +1059,8 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
      * DEBES SELECCIONAR OBLIGATORIAMENTE a uno (o dos en caso de emboscada o dúo sorpresa) personajes CANÓNICOS REALES Y RECONOCIBLES del universo de ${nameA} o de ${nameB} (ej: si Dragon Ball: Metal Cooler, Broly, Cell Max, Bills, Hit, Freezer, Jiren, Goku Black, Androides 17 y 18; si Marvel: Thanos, Galactus, Sentry, Thor; si DC: Doomsday, Darkseid, Superman Prime; si Jujutsu Kaisen: Sukuna, Gojo, Toji; si Baki: Yujiro Hanma, Pickle; etc.) o contendientes icónicos del Roster APEX que encajen por escala de poder, arquetipo y mitología.
      * NÓMBRALO(S) EXPLÍCITAMENTE en su primera frase con su nombre oficial completo, forma activa, motivo dramático por el que irrumpen y su choque de energías en la escala de poder.
 8. **FÍSICA SENSORIAL Y DIÁLOGOS:** Utiliza guion largo (—) para los diálogos y cursivas para los monólogos internos. Sé visceral: describe olores (ozono, plasma, sangre), presiones auditivas y efectos termodinámicos (roca vitrificada).
-9. **ESTRUCTURA DE RESPUESTA OBLIGATORIA:**
+9. **PROHIBICIÓN DE META-COMENTARIOS Y RETRACTACIONES EN LA PROSA:** Prohibido incluir correcciones en caliente o citas a los artículos de reglas en la narrativa (ej: JAMÁS escribir "—espera, no tiene esa técnica..." ni "según la regla de fusión no pueden..."). Aplica las reglas canónicas de forma limpia, silenciosa y directa en la acción desde la primera palabra.
+10. **ESTRUCTURA DE RESPUESTA OBLIGATORIA:**
    Debes entregar tu crónica inmersiva (mínimo 3-4 párrafos densos) y finalizar OBLIGATORIAMENTE con el siguiente bloque biométrico:
    ||BIOMETRICS|HP_A:<XX>|STM_A:<XX>|HP_B:<XX>|STM_B:<XX>||
    (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño del texto que acabas de narrar. Ej: HP_A: 42).
