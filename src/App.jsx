@@ -10,6 +10,7 @@ import MerchBanner from './components/MerchBanner';
 import AdBanner from './components/AdBanner';
 
 // Modales secundarios cargados perezosamente (Code Splitting)
+const ChronicleViewer = lazy(() => import('./components/ChronicleViewer'));
 const WhatIfTree = lazy(() => import('./components/WhatIfTree'));
 const VaultBrowserModal = lazy(() => import('./components/VaultBrowserModal'));
 const AiConfigModal = lazy(() => import('./components/AiConfigModal'));
@@ -27,6 +28,7 @@ const PowerscalingGuideModal = lazy(() => import('./components/PowerscalingGuide
 const AiSmartMatchmakerModal = lazy(() => import('./components/AiSmartMatchmakerModal'));
 const AuthModal = lazy(() => import('./components/AuthModal'));
 const BeamStruggleModal = lazy(() => import('./components/BeamStruggleModal'));
+const FusionModal = lazy(() => import('./components/FusionModal'));
 import { CloudSync } from './services/cloudSyncService';
 import { INITIAL_CHARACTERS } from './data/characters';
 import { SCENARIOS } from './data/scenarios';
@@ -53,73 +55,55 @@ const DEFAULT_AI_CONFIG = {
   }
 };
 
-const ROSTER_VERSION = 'v9.2_SYNC_SLOTS_AND_PURGE_CACHE_1788366100000';
+const ROSTER_VERSION = 'v25.0_CANONICAL_756_ACTIVE';
 
 export default function App() {
-  // Load characters from localStorage with automatic version-based cache migration
+  // Load characters from memory and custom additions from localStorage without exceeding quota
   const [characters, setCharacters] = useState(() => {
     try {
-      const currentVersion = localStorage.getItem('apex_roster_version');
+      localStorage.setItem('apex_roster_version', ROSTER_VERSION);
       const saved = localStorage.getItem(STORAGE_KEY_CHARACTERS);
-      
-      // If version changed, always ensure all 819 initial characters are present and clear stale character caches
-      if (currentVersion !== ROSTER_VERSION || !saved) {
-        localStorage.setItem('apex_roster_version', ROSTER_VERSION);
-        localStorage.removeItem('apex_selected_charA');
-        localStorage.removeItem('apex_selected_charB');
-        localStorage.removeItem('apex_selected_teamA');
-        localStorage.removeItem('apex_selected_teamB');
-        localStorage.removeItem('apex_selected_battleRoyale');
-        localStorage.removeItem('apex_selected_multiTeams');
-        let customOnly = [];
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            if (Array.isArray(parsed)) {
-              const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
-              customOnly = parsed.filter(c => !builtinIds.has(c.id) && c.id?.startsWith('custom-'));
-            }
-          } catch (e) {}
-        }
-        const fresh = [...INITIAL_CHARACTERS, ...customOnly];
-        localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(fresh));
-        return fresh;
-      }
-
+      const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
+      let customOnly = [];
       if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length >= INITIAL_CHARACTERS.length) {
-          return parsed;
-        }
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            // Keep strictly custom fighters to preserve 5MB quota
+            customOnly = parsed.filter(c => !builtinIds.has(c.id) && (c.id?.startsWith('custom-') || c.isCustom));
+            // Sanitize storage to free up ~4.8MB immediately
+            localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(customOnly));
+          }
+        } catch (e) {}
       }
+      return [...INITIAL_CHARACTERS, ...customOnly];
     } catch (e) {
       console.error('Error cargando personajes:', e);
+      return INITIAL_CHARACTERS;
     }
-    return INITIAL_CHARACTERS;
   });
 
-  // Auto-upgrade if INITIAL_CHARACTERS has been expanded (e.g. from 462 to 819)
+  // Auto-upgrade if INITIAL_CHARACTERS has been expanded
   useEffect(() => {
     if (characters.length < INITIAL_CHARACTERS.length) {
       console.log(`[Roster Auto-Upgrade] Actualizando roster en memoria de ${characters.length} a ${INITIAL_CHARACTERS.length} personajes...`);
       const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
-      const customOnly = characters.filter(c => !builtinIds.has(c.id) && c.id?.startsWith('custom-'));
+      const customOnly = characters.filter(c => !builtinIds.has(c.id) && (c.id?.startsWith('custom-') || c.isCustom));
       const merged = [...INITIAL_CHARACTERS, ...customOnly];
       setCharacters(merged);
       try {
-        localStorage.setItem('apex_roster_version', ROSTER_VERSION);
-        localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(merged));
+        localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(customOnly));
       } catch (e) {}
     }
   }, [characters.length]);
 
   const handleResetMasterRoster = () => {
     const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
-    const customOnly = characters.filter(c => !builtinIds.has(c.id) && c.id?.startsWith('custom-'));
+    const customOnly = characters.filter(c => !builtinIds.has(c.id) && (c.id?.startsWith('custom-') || c.isCustom));
     const merged = [...INITIAL_CHARACTERS, ...customOnly];
     setCharacters(merged);
     try {
-      localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(merged));
+      localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(customOnly));
       localStorage.removeItem('apex_selected_charA');
       localStorage.removeItem('apex_selected_charB');
     } catch (e) {}
@@ -400,6 +384,7 @@ export default function App() {
   const [isTournamentOpen, setIsTournamentOpen] = useState(false);
   const [tierListOpen, setTierListOpen] = useState(false);
   const [isAiMatchmakerOpen, setIsAiMatchmakerOpen] = useState(false);
+  const [isFusionOpen, setIsFusionOpen] = useState(false);
   const [vaultStatus, setVaultStatus] = useState({ connected: false });
 
   const [lang, setLang] = useState(() => {
@@ -491,10 +476,12 @@ export default function App() {
   const [isSimulating, setIsSimulating] = useState(false);
   const [progress, setProgress] = useState({ percent: 0, step: '' });
   
-  // Persist characters on change
+  // Persist only custom characters on change to protect 5MB quota
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(characters));
+      const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
+      const customOnly = characters.filter(c => !builtinIds.has(c.id) && (c.id?.startsWith('custom-') || c.isCustom));
+      localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(customOnly));
     } catch (e) {
       console.error('Error guardando personajes en localStorage:', e);
     }
@@ -1003,6 +990,18 @@ export default function App() {
             </button>
 
             <button
+              onClick={() => setActiveTab('chronicles')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
+                activeTab === 'chronicles'
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-950/50'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+              <span>APEX Crónicas</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('all')}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
                 activeTab === 'all'
@@ -1022,6 +1021,14 @@ export default function App() {
             >
               <Wand2 className="w-3.5 h-3.5 text-pink-400 animate-pulse" />
               <span>🪄 Match por Prompt IA</span>
+            </button>
+            <button
+              onClick={() => setIsFusionOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-600/30 via-yellow-600/30 to-amber-600/30 hover:from-amber-600/50 hover:to-yellow-600/50 text-amber-300 border border-amber-500/50 font-bold transition cursor-pointer shadow-md shadow-amber-950/40"
+              title="Laboratorio de Fusiones Multiversales (Metamoran, Potara, Convergencia Cuántica)"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-pulse" />
+              <span>⚗️ Fusiones</span>
             </button>
             <button
               onClick={() => setRandomizerOpen(true)}
@@ -1179,8 +1186,28 @@ export default function App() {
           </div>
         )}
 
+        {/* Tab 4: APEX Crónicas (Continuidad Narrativa) */}
+        {(activeTab === 'chronicles' || activeTab === 'all') && (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            <Suspense fallback={<div className="text-center py-12 text-slate-500 font-mono">Cargando APEX Crónicas...</div>}>
+              <ChronicleViewer
+                characters={characters}
+                lang={lang}
+                aiConfig={simEngine}
+              />
+            </Suspense>
+          </div>
+        )}
+
+
+
         {/* Non-intrusive Ad Banner (Suppressed for VIPs) */}
         <AdBanner isVip={isVip} slot="footer" onOpenVip={() => setVipModalOpen(true)} />
+
+        {/* Engine Baseline Status Indicator */}
+        <footer className="pt-6 pb-2 text-center text-xs text-slate-500 font-mono tracking-wide select-none">
+          <span>APEX Engine V25 · 756 activos · 13 archivados</span>
+        </footer>
 
       </main>
 
@@ -1366,6 +1393,18 @@ export default function App() {
           } catch (e) {}
         }}
         aiConfig={charEngine}
+      />
+
+      {/* Multiverse Fusion Forge Modal */}
+      <FusionModal
+        isOpen={isFusionOpen}
+        onClose={() => setIsFusionOpen(false)}
+        allCharacters={characters}
+        onSaveFusion={(newFused) => handleSaveCustomCharacter(newFused)}
+        onDeployToFighter1={(newFused) => {
+          setCharA(newFused);
+          setActiveTab('arena');
+        }}
       />
       </Suspense>
       {rewardToast && (

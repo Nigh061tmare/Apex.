@@ -66,13 +66,42 @@ async function bootstrap() {
     console.log(`ℹ️  Puerto 4096 reservado por socket previo de Windows. Usando puerto libre: ${opencodePort}`);
   }
 
+  const MODEL_MAX_TOKENS = {
+    'nvidia/nemotron-3-ultra-550b-a55b:free': 65536,
+    'nvidia/nemotron-3.5-lightning:free': 65536,
+    'nvidia/nemotron-3-super-120b-a12b:free': 235929,
+    'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free': 65536,
+    'minimax/minimax-m3:free': 262144,
+    'minimax/minimax-m2.7:free': 176947,
+    'meta/muse-spark-1.3-contributor:free': 262144,
+    'z-ai/glm-5.2:free': 230400,
+    'thinkingmachines/inkling:free': 262144,
+    'thinkingmachines/inkling-small:free': 262144,
+    'inclusionai/ling-3.0-flash-fin:free': 32768,
+    'poolside/laguna-s-2.1:free': 32768
+  };
+
   // ── PROXY INTELIGENTE CON CONMUTACIÓN AUTOMÁTICA DE CLAVES ──
   const proxyServer = http.createServer((clientReq, clientRes) => {
     const requestBodyChunks = [];
     clientReq.on('data', chunk => requestBodyChunks.push(chunk));
 
     clientReq.on('end', () => {
-      const requestBody = Buffer.concat(requestBodyChunks);
+      let requestBody = Buffer.concat(requestBodyChunks);
+
+      if (clientReq.method === 'POST' && requestBody.length > 0) {
+        try {
+          const bodyObj = JSON.parse(requestBody.toString('utf8'));
+          if (bodyObj.model) {
+            const cleanModel = bodyObj.model.replace(/^openrouter\//, '');
+            const targetMax = MODEL_MAX_TOKENS[cleanModel];
+            if (targetMax && (!bodyObj.max_tokens || bodyObj.max_tokens < targetMax)) {
+              bodyObj.max_tokens = targetMax;
+              requestBody = Buffer.from(JSON.stringify(bodyObj), 'utf8');
+            }
+          }
+        } catch (err) {}
+      }
 
       function attemptRequest(keyIndex) {
         if (keyIndex >= KEYS.length) {
@@ -134,6 +163,7 @@ async function bootstrap() {
         if (requestBody.length > 0) {
           proxyReq.write(requestBody);
         }
+        proxyReq.setTimeout(600000);
         proxyReq.end();
       }
 

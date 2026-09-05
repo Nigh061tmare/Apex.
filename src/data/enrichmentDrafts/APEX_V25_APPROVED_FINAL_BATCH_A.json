@@ -1,0 +1,649 @@
+{
+  "meta": {
+    "title": "APEX V25 — Approved Final Batch A: Safe Reference Sanitation & Raichi Tactical Enrichment",
+    "status": "APPROVED_FOR_FUTURE_APPLICATION_NOT_APPLIED",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V25.json",
+    "sourceRosterVersion": "V25",
+    "generatedAt": "2026-09-04T13:35:00.000Z",
+    "requiresUserFinalApprovalBeforeApply": true,
+    "allowedScope": "Safe tactical-reference sanitation plus Raichi enrichment only. No power-scaling, identity, forms, Ki, tier, multiplier, canonStatus, saga, universe or changeLog mutation.",
+    "totalPatchEntries": 4,
+    "batchesIncluded": [
+      "BATCH-A1",
+      "BATCH-A2"
+    ]
+  },
+  "patchEntries": [
+    {
+      "patchId": "A1-PATCH-0001",
+      "batch": "BATCH-A1",
+      "action": "remove_deprecated_reference",
+      "targetRecordId": "dr-raichi-dbm-u3",
+      "targetRecordName": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+      "targetPath": "teamCombos[1].partners",
+      "removeReferenceId": "rey-vegeta-dbm-u13",
+      "replacement": null,
+      "reason": "El partner apunta a un registro archivado e inválido. No existe un reemplazo de identidad confirmado. Se conserva el texto y la función narrativa del combo, pero se elimina únicamente el enlace a un ID archivado.",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "comboName": "Juicio del Rencor Galáctico",
+        "partners": [
+          "dr-raichi-dbm-u3",
+          "rey-vegeta-dbm-u13"
+        ],
+        "sequence": [
+          "Dr. Raichi inmoviliza al rival mediante una red de energía espectral.",
+          "Rey Vegeta canaliza el Cañón Ejecutor sobre el objetivo atrapado.",
+          "Dr. Raichi desata el Revenge Cannon conjunto con el remate real."
+        ],
+        "staminaCostPerParticipant": [
+          30,
+          35
+        ],
+        "effect": "Inflige daño masivo de tipo energético y desestabiliza las defensas del enemigo.",
+        "partialFailureResult": "Si el paso intermedio es esquivado, el ataque se disipa y los usuarios quedan expuestos por sobrecarga de Ki.",
+        "canonStatus": "apex_custom"
+      },
+      "proposedValueSnapshot": {
+        "comboName": "Juicio del Rencor Galáctico",
+        "partners": [
+          "dr-raichi-dbm-u3"
+        ],
+        "sequence": [
+          "Dr. Raichi inmoviliza al rival mediante una red de energía espectral.",
+          "Rey Vegeta canaliza el Cañón Ejecutor sobre el objetivo atrapado.",
+          "Dr. Raichi desata el Revenge Cannon conjunto con el remate real."
+        ],
+        "staminaCostPerParticipant": [
+          30,
+          35
+        ],
+        "effect": "Inflige daño masivo de tipo energético y desestabiliza las defensas del enemigo.",
+        "partialFailureResult": "Si el paso intermedio es esquivado, el ataque se disipa y los usuarios quedan expuestos por sobrecarga de Ki.",
+        "canonStatus": "apex_custom",
+        "notes": "Referencia a compañero rey-vegeta-dbm-u13 desvinculada por archivo de registro; ejecución conservada como maniobra táctica individual/asistida."
+      }
+    },
+    {
+      "patchId": "A1-PATCH-0002",
+      "batch": "BATCH-A1",
+      "action": "remove_deprecated_reference",
+      "targetRecordId": "kat-u6-individual",
+      "targetRecordName": "Kat (Universo 6 — DBM)",
+      "targetPath": "parent_team_profile",
+      "removeReferenceId": "kat-syd-u6-dbm",
+      "replacement": null,
+      "reason": "Metadato legacy hacia ficha grupal archivada. No reemplazar por Syd individual. Conservar team_affiliation como texto descriptivo.",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "parent_team_profile": "kat-syd-u6-dbm",
+        "team_affiliation": "Clan de Bojack (Universo 6)"
+      },
+      "proposedValueSnapshot": {
+        "parent_team_profile": null,
+        "team_affiliation": "Clan de Bojack (Universo 6)"
+      }
+    },
+    {
+      "patchId": "A1-PATCH-0003",
+      "batch": "BATCH-A1",
+      "action": "remove_deprecated_reference",
+      "targetRecordId": "syd-u6-individual",
+      "targetRecordName": "Syd (Universo 6 — DBM)",
+      "targetPath": "parent_team_profile",
+      "removeReferenceId": "kat-syd-u6-dbm",
+      "replacement": null,
+      "reason": "Metadato legacy hacia ficha grupal archivada. No reemplazar por Kat individual. Conservar team_affiliation como texto descriptivo.",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "parent_team_profile": "kat-syd-u6-dbm",
+        "team_affiliation": "Clan de Bojack (Universo 6)"
+      },
+      "proposedValueSnapshot": {
+        "parent_team_profile": null,
+        "team_affiliation": "Clan de Bojack (Universo 6)"
+      }
+    },
+    {
+      "patchId": "A2-PATCH-0001",
+      "batch": "BATCH-A2",
+      "action": "apply_enrichment_only",
+      "targetRecordId": "dr-raichi-dbm-u3",
+      "targetRecordName": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+      "allowedFieldsOnly": [
+        "arsenal",
+        "passives",
+        "haxTags",
+        "weaknesses",
+        "artifacts",
+        "synergies",
+        "teamCombos",
+        "combatStatuses",
+        "arenaAffinities",
+        "narrativeCombatProfile"
+      ],
+      "prohibitedFields": [
+        "id",
+        "name",
+        "franchise",
+        "universe",
+        "saga",
+        "baseTier",
+        "tier",
+        "baseKiNumeric",
+        "baseKiFormatted",
+        "powerSchema",
+        "forms",
+        "Ki de forms",
+        "tiers de forms",
+        "multiplier",
+        "canonStatus",
+        "changeLog"
+      ],
+      "mandatoryModelRules": [
+        "1. Raichi no absorbe Ki, tier ni poder físico de ningún fantasma.",
+        "2. Ningún fantasma modifica baseKiNumeric, tier o forms de Raichi.",
+        "3. Hatchiyack no es forma, multiplicador ni buff de Ki.",
+        "4. Hatchiyack es núcleo, recurso de invocación, objetivo táctico y posible evento de manifestación final.",
+        "5. Las invocaciones no son formas de Raichi ni combatientes independientes agregados al roster principal.",
+        "6. La forma ghost-broly-unleashed se preserva intacta por compatibilidad de schema en forms[1] (legacy inmutable V25); no se toca en este patch.",
+        "7. Todo enriquecimiento debe residir obligatoriamente en los diez campos permitidos de la lista blanca.",
+        "8. No usar multiplicadores fijos de odio, porcentajes numéricos ni umbrales rígidos de Ki.",
+        "9. Las entidades externas a DBM son exclusivamente de simulación contextual (simulation_design_only: true, not_summonable_by_default: true)."
+      ],
+      "approvedEnrichmentData": {
+        "artifacts": [
+          {
+            "name": "Hatchiyack Creation Orb & Throne Device",
+            "type": "core_amplifier_and_spawner",
+            "description": "Orbe tecnológico/místico tsufur montado en la cápsula-trono de levitación. Actúa como unidad de almacenamiento de odio, procesador psiónico y catalizador para materializar Guerreros Fantasma.",
+            "effects": [
+              "Canaliza y procesa el rencor psíquico de seres exterminados para manifestar proyecciones ectoplásmicas en combate.",
+              "Proyecta una barrera defensiva continua que aísla a Raichi del daño directo mientras el orbe permanezca operativo.",
+              "Vulnerable a ataques directos concentrados si la barrera se ve comprometida por saturación o impacto destructivo."
+            ],
+            "canonStatus": "dbm_canonical"
+          }
+        ],
+        "passives": [
+          {
+            "name": "Nexo de Invocación de Guerreros Fantasma",
+            "desc": "Raichi actúa como comandante que combate mediante entidades invocadas. No ataca físicamente ni entabla combate cuerpo a cuerpo por sí mismo; toda proyección ofensiva y de desgaste se realiza a través de su archivo de fantasmas.",
+            "canonStatus": "dbm_canonical"
+          },
+          {
+            "name": "hate_charge_conversion_engine",
+            "desc": "Hatchiyack procesa rencor y bajas como recurso táctico cualitativo para mantener invocaciones, coordinar oleadas y evaluar contingencias. No multiplica Ki, tier, durabilidad ni daño físico de Raichi.",
+            "canonStatus": "dbm_canonical"
+          },
+          {
+            "name": "Aura de Mando Colectivo",
+            "desc": "Permite coordinar múltiples fantasmas simultáneamente para ejecutar maniobras de cerco, asalto simultáneo o sacrificios de intercepción.",
+            "canonStatus": "dbm_canonical"
+          },
+          {
+            "name": "hatchiyack_orb_barrier_system",
+            "desc": "Barrera eficaz frente a amenazas comparables a SSJ2, pero vulnerable a presión coordinada, hax, desgaste prolongado o fuerza sostenida equivalente a SSJ3+.",
+            "canonStatus": "dbm_canonical"
+          },
+          {
+            "name": "Ciclo de Rematerialización Espectral",
+            "desc": "Los Guerreros Fantasma destruidos en combate son desmaterializados en ectoplasma; mientras el orbe posea rencor suficiente, pueden ser convocados de nuevo tras un intervalo táctico de enfriamiento.",
+            "canonStatus": "dbm_canonical"
+          },
+          {
+            "name": "Intercepción de Sacrificio",
+            "desc": "Raichi puede forzar a cualquier fantasma activo a interponerse ante un ataque letal dirigido hacia su trono o barrera, consumiendo a la invocación para preservar el núcleo.",
+            "canonStatus": "dbm_canonical"
+          },
+          {
+            "name": "adaptive_summon_selection",
+            "desc": "Raichi cambia composición de escuadra según el rival, resonancia y situación de campo; no altera sus estadísticas.",
+            "canonStatus": "dbm_conceptual"
+          }
+        ],
+        "arsenal": [
+          {
+            "name": "Despliegue del Archivo Fantasma",
+            "type": "summoning_action",
+            "cost": "Gasto táctico de odio acumulado",
+            "desc": "Materializa una o más entidades del archivo según el estado de invocación activo (scouting, raid, overrun, elite_pincer o emergency)."
+          },
+          {
+            "name": "Sobrecarga de Barrera de Odio",
+            "type": "defensive_action",
+            "cost": "Consumo de reserva de odio",
+            "desc": "Fortalece temporalmente la integridad del escudo frente a ráfagas concentradas."
+          },
+          {
+            "name": "Bombardeo Espectral Coordinado",
+            "type": "team_assault",
+            "cost": "Coordinación de unidades activas",
+            "desc": "Ordena a todos los fantasmas en el campo descargar simultáneamente sus técnicas especiales sobre un único objetivo."
+          },
+          {
+            "name": "Pulso de Resonancia de Rencor",
+            "type": "psychological_wave",
+            "cost": "Pulso psiónico del orbe",
+            "desc": "Onda de energía negativa que desestabiliza a oponentes con trauma histórico, rencor previo o vulnerabilidad psicológica ante las entidades proyectadas."
+          }
+        ],
+        "combatStatuses": [
+          {
+            "name": "Hate Charge: Scouting",
+            "state": "scouting",
+            "hateResonance": "low",
+            "desc": "Nivel inicial de rencor acumulado. Permite despliegues rápidos de unidades menores para reconocimiento y desgaste inicial."
+          },
+          {
+            "name": "Hate Charge: Raid",
+            "state": "raid",
+            "hateResonance": "medium",
+            "desc": "Rencor en crecimiento. Habilita despliegues de múltiples guerreros o unidades de asalto medio."
+          },
+          {
+            "name": "Hate Charge: Overrun",
+            "state": "overrun",
+            "hateResonance": "high",
+            "desc": "Alta saturación de rencor. Permite enjambres coordinados y presión asfixiante continua sobre el oponente."
+          },
+          {
+            "name": "Hate Charge: Elite Pincer",
+            "state": "elite_pincer",
+            "hateResonance": "high",
+            "desc": "Nivel elevado de rencor. Acceso a proyecciones de mayor calibre técnico y maniobras en pinza."
+          },
+          {
+            "name": "Hate Charge: Emergency / Critical",
+            "state": "emergency",
+            "hateResonance": "critical",
+            "desc": "Máxima acumulación de rencor provocada por daño extremo, pérdida masiva de fantasmas o amenaza letal inminente."
+          },
+          {
+            "name": "Barrera de Odio Intacta",
+            "desc": "Escudo operativo protegiendo a Raichi y al orbe."
+          },
+          {
+            "name": "Orbe de Odio Comprometido",
+            "desc": "Barrera destruida o sobrecargada. El núcleo de Hatchiyack y Raichi quedan directamente expuestos a ataques enemigos."
+          }
+        ],
+        "haxTags": [
+          "summoning",
+          "soul_manipulation",
+          "barrier_creation",
+          "adaptive_summon_selection",
+          "psionic_control",
+          "mind_control_resistance",
+          "forcefield",
+          "hatred_empowerment"
+        ],
+        "weaknesses": [
+          "Dependencia total del orbe/trono tecnológico de Hatchiyack; si es sellado, destruido o neutralizado, Raichi pierde la capacidad de convocar y sostener fantasmas.",
+          "Inmovilidad y fragilidad física de Raichi fuera de su barrera; carece de velocidad de combate cuerpo a cuerpo y capacidad de evasión ágil.",
+          "Fijación obsesiva y odio ciego hacia los Saiyajins, lo que reduce su flexibilidad táctica frente a combatientes de esa raza.",
+          "Vulnerabilidad ante técnicas de sellado de almas, purificación de energía negativa o colapso psíquico del rencor."
+        ],
+        "synergies": [
+          {
+            "partnerGroup": "Guerreros Fantasma de DBM",
+            "benefit": "Coordinación psiónica sin retraso comunicativo; las unidades ejecutan órdenes al unísono."
+          },
+          {
+            "partnerGroup": "Entidades Psiónicas y Tecnológicas Tsufur",
+            "benefit": "Alineación en objetivos de venganza y compatibilidad con maquinaria de rencor."
+          }
+        ],
+        "teamCombos": [
+          {
+            "comboName": "Asedio Espectral Tsufur",
+            "partners": [
+              "dr-raichi-dbm-u3"
+            ],
+            "sequence": [
+              "Raichi levanta la barrera defensiva mientras el orbe convoca a los fantasmas de vanguardia.",
+              "Las unidades de asalto cercan al oponente forzándolo a una posición defensiva desfavorable.",
+              "El orbe descarga un pulso concentrado de rencor mientras los fantasmas rematan con sus técnicas características."
+            ],
+            "effect": "Ataque coordinado de alta presión táctica y desgaste.",
+            "canonStatus": "dbm_conceptual"
+          }
+        ],
+        "arenaAffinities": [
+          {
+            "arena": "Estadio del Torneo Multiverso (DBM)",
+            "affinity": "favorable",
+            "effect": "La presencia de gradas masivas y combatientes caídos en el torneo nutre cualitativamente el odio ambiental procesado por el orbe."
+          },
+          {
+            "arena": "Planeta Plant / Ruinas de Tsufur",
+            "affinity": "favorable",
+            "effect": "Acelera cualitativamente la acumulación de rencor mediante resonancia ambiental histórica con el genocidio Tsufur."
+          }
+        ],
+        "narrativeCombatProfile": {
+          "commanderRole": {
+            "isPhysicalFighter": false,
+            "isSummonerCommander": true,
+            "hateResonancePolicy": "simulation-managed, no Ki multiplier",
+            "coreDescription": "Dr. Raichi combate exclusivamente como comandante psiónico a través de su archivo espectral. El Hatchiyack Creation Orb canaliza el rencor y materializa proyecciones ectoplásmicas con las capacidades exactas de su forma de origen en V25, sin alterar el baseKiNumeric ni el tier de Raichi."
+          },
+          "canonicalGhostArchive": [
+            {
+              "recordId": "tidar-u19-individual",
+              "recordName": "Tidar (Universo 19 — DBM)",
+              "formId": "base",
+              "formIndex": 0,
+              "evidenceLevel": "confirmed_dbm_onscreen",
+              "evidenceNote": "Invocado explícitamente en DBM (Capítulo 17) contra Gast Carcolh tras morir vs Uub U18.",
+              "availability": "usable_now",
+              "summonClass": "minor",
+              "combatRole": "vanguard_tank",
+              "cooldownClass": "low",
+              "enemyResonanceTags": [
+                "anti_speed",
+                "cutting_blade",
+                "energy_shield"
+              ]
+            },
+            {
+              "recordId": "cell-jr-u17-dbm",
+              "recordName": "Cell Jr. (Universo 17 — DBM)",
+              "formId": "base",
+              "formIndex": 0,
+              "evidenceLevel": "confirmed_dbm_onscreen",
+              "evidenceNote": "Invocado en enjambre múltiple en DBM; genera presión rápida y hostigamiento.",
+              "availability": "usable_now",
+              "summonClass": "minor",
+              "combatRole": "swarm_harasser",
+              "cooldownClass": "low",
+              "enemyResonanceTags": [
+                "swarm",
+                "high_speed",
+                "cloning"
+              ]
+            },
+            {
+              "recordId": "bojack-dbm",
+              "recordName": "Bojack (Multiverse — U6)",
+              "formId": "base",
+              "formIndex": 0,
+              "evidenceLevel": "confirmed_dbm_onscreen",
+              "evidenceNote": "Invocado como fantasma de asalto pesado en DBM; combate de choque frontal.",
+              "availability": "usable_now",
+              "summonClass": "major",
+              "combatRole": "heavy_frontliner",
+              "cooldownClass": "medium",
+              "enemyResonanceTags": [
+                "brute_force",
+                "line_breaker",
+                "tank"
+              ]
+            },
+            {
+              "recordId": "pan-ssj-dbm-u16",
+              "recordName": "Pan Super Saiyan (Multiverse — U16)",
+              "formId": "base",
+              "formIndex": 0,
+              "evidenceLevel": "confirmed_dbm_onscreen",
+              "evidenceNote": "Invocada por Raichi como arma psicológica traumática contra el Universo 16 (Vegetto / Son Bra).",
+              "availability": "usable_now",
+              "summonClass": "psychological_specialist",
+              "combatRole": "psychological_warfare",
+              "cooldownClass": "situational",
+              "restrictions": "Eficacia dependiente de la relación psicológica con el oponente.",
+              "enemyResonanceTags": [
+                "psychological_trauma",
+                "family_bond",
+                "moral_inhibition"
+              ]
+            },
+            {
+              "recordId": "vegeta-u13-dbm",
+              "recordName": "Vegeta (Multiverse — U13, Príncipe Saiyajin Superviviente)",
+              "formId": "base",
+              "formIndex": 0,
+              "evidenceLevel": "confirmed_dbm_onscreen",
+              "evidenceNote": "Invocado por Raichi en su combate contra Gast Carcolh. Forma base exacta de V25; no asumir transformaciones no canónicas.",
+              "availability": "usable_now",
+              "summonClass": "major",
+              "combatRole": "tactical_blaster",
+              "cooldownClass": "high",
+              "enemyResonanceTags": [
+                "pride_clash",
+                "saiyan_hatred",
+                "concentrated_energy"
+              ]
+            }
+          ],
+          "resonanceProjectionLibrary": [
+            {
+              "recordId": "freezer-dbs-top",
+              "recordName": "Freezer (Dragon Ball Super — Torneo del Poder)",
+              "franchise": "Dragon Ball",
+              "universe": "Dragon Ball Super (Canon Oficial)",
+              "formId": "base",
+              "formIndex": 0,
+              "simulation_design_only": true,
+              "defaultAvailability": "not_summonable_by_default",
+              "not_summonable_by_default": true,
+              "requiresResonanceCondition": true,
+              "notCanonicalDBMGhost": true,
+              "selectionReason": "confirmed_historical_enemy",
+              "relationshipStatus": "HISTORICAL_DYNASTIC_TYRANT",
+              "tacticalRole": "long_range_precision_blaster",
+              "designNotes": "Proyección contextual para escenarios de confrontación donde intervenga la dinastía de tiranos galácticos."
+            },
+            {
+              "recordId": "cooler-u8-dbm",
+              "recordName": "Cooler (Continuidad Universo 8, Imperio Intacto)",
+              "franchise": "Dragon Ball",
+              "universe": "Dragon Ball Multiverse (Fan-Manga)",
+              "formId": "base",
+              "formIndex": 0,
+              "simulation_design_only": true,
+              "defaultAvailability": "not_summonable_by_default",
+              "not_summonable_by_default": true,
+              "requiresResonanceCondition": true,
+              "notCanonicalDBMGhost": true,
+              "selectionReason": "confirmed_historical_enemy",
+              "relationshipStatus": "HISTORICAL_COLD_DYNASTY",
+              "tacticalRole": "armored_striker",
+              "designNotes": "Proyección de simulación basada en el rencor histórico contra la familia de Cold."
+            },
+            {
+              "recordId": "cell-u17-dbm",
+              "recordName": "Cell (Multiverse — U17)",
+              "franchise": "Dragon Ball",
+              "universe": "Dragon Ball Multiverse (Fan-Manga)",
+              "formId": "base",
+              "formIndex": 0,
+              "simulation_design_only": true,
+              "defaultAvailability": "not_summonable_by_default",
+              "not_summonable_by_default": true,
+              "requiresResonanceCondition": true,
+              "notCanonicalDBMGhost": true,
+              "selectionReason": "confirmed_factional_conflict",
+              "relationshipStatus": "BIO_ANDROID_GENETIC_RESONANCE",
+              "tacticalRole": "adaptive_regenerator",
+              "designNotes": "Proyección de simulación táctica ante conflictos con bio-androides o entidades regenerativas."
+            },
+            {
+              "recordId": "baby-god-brokoly",
+              "recordName": "Super Baby Vegeta (Baby God)",
+              "franchise": "Dragon Ball",
+              "universe": "Brokoly What-If",
+              "formId": "base",
+              "formIndex": 0,
+              "simulation_design_only": true,
+              "defaultAvailability": "not_summonable_by_default",
+              "not_summonable_by_default": true,
+              "requiresResonanceCondition": true,
+              "notCanonicalDBMGhost": true,
+              "selectionReason": "historical_tuffle_saiyan_resonance",
+              "relationshipStatus": "SHARED_TUFFLE_PARASITE_RESONANCE",
+              "tacticalRole": "tsufur_parasitic_subversion",
+              "designNotes": "Resonancia conceptual de la venganza Tsufur canalizada contra huéspedes Saiyajin; diseño de simulación sin valor canónico en DBM."
+            },
+            {
+              "recordId": "youpi-hxh-ca",
+              "recordName": "Menthuthuyoupi (Youpi)",
+              "franchise": "Hunter x Hunter",
+              "universe": "Hunter x Hunter (Canon)",
+              "formId": "base",
+              "formIndex": 0,
+              "simulation_design_only": true,
+              "defaultAvailability": "not_summonable_by_default",
+              "not_summonable_by_default": true,
+              "requiresResonanceCondition": true,
+              "notCanonicalDBMGhost": true,
+              "selectionReason": "tactical_role_only",
+              "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+              "tacticalRole": "grotesque_morphology_tank",
+              "designNotes": "Proyección cruzada puramente funcional para cobertura de impacto físico masivo cuando no existe afinidad de rencor previa."
+            },
+            {
+              "recordId": "kenjaku-jjk",
+              "recordName": "Kenjaku",
+              "franchise": "Jujutsu Kaisen",
+              "universe": "Jujutsu Kaisen (Canon)",
+              "formId": "base",
+              "formIndex": 0,
+              "simulation_design_only": true,
+              "defaultAvailability": "not_summonable_by_default",
+              "not_summonable_by_default": true,
+              "requiresResonanceCondition": true,
+              "notCanonicalDBMGhost": true,
+              "selectionReason": "tactical_role_only",
+              "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+              "tacticalRole": "curse_manipulator_strategist",
+              "designNotes": "Proyección cruzada seleccionada por afinidad de rol táctico en control de maldiciones/espíritus, sin vínculo relacional verificable."
+            }
+          ],
+          "opponentEchoSelection": {
+            "description": "Criterios del motor de simulación para seleccionar ecos de rencor y proyecciones contextuales según las características del oponente.",
+            "allowedSelectionReasons": [
+              "historical_tuffle_saiyan_resonance",
+              "confirmed_historical_enemy",
+              "confirmed_victim_link",
+              "confirmed_factional_conflict",
+              "battlefield_casualty",
+              "tactical_role_only"
+            ],
+            "unverifiedFallback": {
+              "selectionReason": "tactical_role_only",
+              "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+              "rule": "Si el oponente no posee vínculo histórico o relacional verificado en el lore local, la selección opera exclusivamente por rol táctico defensivo/ofensivo sin asumir afinidades ficticias."
+            },
+            "behaviorPolicies": {
+              "CaseA_SaiyanOpponent": {
+                "trigger": "Oponente de raza o herencia Saiyajin",
+                "hateResonance": "critical",
+                "selectionReason": "historical_tuffle_saiyan_resonance",
+                "tacticalBehavior": "Odio exacerbado. Máxima prioridad en desplegar ecos de rencor anti-Saiyajin o invocar fantasmas de su propia especie para provocar trauma y humillación psicológica.",
+                "recommendedSummonState": "raid | overrun"
+              },
+              "CaseB_RelatedRival": {
+                "trigger": "Oponente con vínculo de tiranía histórica, opresión o linaje de Cold",
+                "hateResonance": "high",
+                "selectionReason": "confirmed_historical_enemy",
+                "tacticalBehavior": "Despliegue de proyecciones ligadas a las víctimas de su dinastía o contra-ataque con tiranos derrotados.",
+                "recommendedSummonState": "raid | elite_pincer"
+              },
+              "CaseC_CrossFranchiseUnrelated": {
+                "trigger": "Oponente de universo externo sin relación histórica",
+                "hateResonance": "low",
+                "selectionReason": "tactical_role_only",
+                "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+                "tacticalBehavior": "Selección puramente utilitaria basada en complementariedad de roles (tanques de interrupción, hostigadores rápidos) sin presumir rencor personal.",
+                "recommendedSummonState": "scouting | emergency"
+              },
+              "CaseD_TeamBattleAndCasualties": {
+                "trigger": "Combate multitudinario o caída de aliados/enemigos en la contienda",
+                "hateResonance": "medium | high",
+                "selectionReason": "battlefield_casualty",
+                "tacticalBehavior": "El orbe absorbe cualitativamente el rencor liberado por las bajas del combate en curso, acelerando la disponibilidad de nuevos despliegues.",
+                "recommendedSummonState": "overrun | emergency"
+              },
+              "CaseE_ColossalPressure": {
+                "trigger": "Presión sostenida de escala destructiva masiva",
+                "hateResonance": "critical",
+                "selectionReason": "tactical_role_only",
+                "barrierPolicy": "DESIGN_ASSUMPTION_SIMULATION_ONLY: La barrera psiónica no es indestructible frente a bombardeos continuos de escala masiva. Ante una ruptura del escudo, el orbe queda expuesto y Raichi entra en vulnerabilidad crítica.",
+                "recommendedSummonState": "emergency"
+              }
+            }
+          },
+          "hateChargeRules": {
+            "description": "Mecánica cualitativa de simulación para la acumulación y consumo de rencor en combate.",
+            "chargePolicy": "simulation-managed, no Ki multiplier",
+            "qualitativeStates": [
+              {
+                "state": "scouting",
+                "hateResonance": "low",
+                "summary": "Fase de apertura. Permite sondeo con unidades menores y sostenimiento básico de barrera."
+              },
+              {
+                "state": "raid",
+                "hateResonance": "medium",
+                "summary": "Fase intermedia. Despliegue de unidades medias o múltiples combatientes coordinados."
+              },
+              {
+                "state": "overrun",
+                "hateResonance": "high",
+                "summary": "Saturación ofensiva. Despliegue simultáneo de enjambres y unidades mayores."
+              },
+              {
+                "state": "elite_pincer",
+                "hateResonance": "high",
+                "summary": "Asalto de alta gama técnica con proyecciones especializadas."
+              },
+              {
+                "state": "emergency",
+                "hateResonance": "critical",
+                "summary": "Respuesta de contingencia límite ante daño extremo o colapso inminente."
+              }
+            ],
+            "environmentalCatalysts": [
+              "Presencia hostil de combatientes Saiyajin en el campo de batalla.",
+              "Disipación o destrucción de guerreros fantasma en combate (genera rencor cualitativo contra el agresor).",
+              "Presencia de gradas, espectadores hostiles o campos de batalla cargados de historia de guerra."
+            ]
+          },
+          "hatchiyackManifestEventProposal": {
+            "status": "PROPOSAL_ONLY_NOT_ACTIVE",
+            "activationRequirements": [
+              "Raichi derrotado/incapacitado o vínculo colapsado;",
+              "orbe todavía funcional;",
+              "acumulación narrativa suficiente;",
+              "sin sellado o interrupción."
+            ],
+            "nature": "autonomous_supercomputer_event",
+            "designRules": [
+              "Hatchiyack no es una forma de Dr. Raichi.",
+              "Hatchiyack no añade multiplicadores ni buffs numéricos de Ki a la ficha de Raichi.",
+              "Hatchiyack no crea una nueva entidad activa en V25 en este patch.",
+              "La manifestación queda exclusivamente como propuesta de diseño para futuros eventos del motor de combate.",
+              "No autoactivar bajo ninguna circunstancia sin autorización explícita del usuario."
+            ]
+          },
+          "legacyMigrationPlan": {
+            "formsCompatibility": "La forma forms[1] (ghost-broly-unleashed) se mantiene intacta en V25 por inmutabilidad de schema legacy. No se toca ni se altera en este patch.",
+            "targetArchitecture": "En futuras revisiones de arquitectura, las formas espectrales serán desvinculadas de la ficha personal de Raichi y gestionadas enteramente por el motor de simulación."
+          },
+          "evidenceAndUncertainty": {
+            "onscreenConfirmedGhosts": [
+              "tidar-u19-individual",
+              "cell-jr-u17-dbm",
+              "bojack-dbm",
+              "pan-ssj-dbm-u16",
+              "vegeta-u13-dbm"
+            ],
+            "simulationOnlyNotice": "Toda entidad fuera del canonicalGhostArchive pertenece estrictamente a la biblioteca de proyección contextual para simulación (simulation_design_only: true) y requiere validación de resonancia previa.",
+            "governanceCompliance": "Completamente alineado con la lista blanca de enriquecimiento APEX."
+          }
+        }
+      }
+    }
+  ]
+}

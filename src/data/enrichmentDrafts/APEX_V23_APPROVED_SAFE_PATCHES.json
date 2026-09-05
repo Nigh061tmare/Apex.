@@ -1,0 +1,543 @@
+{
+  "meta": {
+    "title": "APEX Power Scaling — Aprobación Parcial de Decisiones Seguras para V23",
+    "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V22.json",
+    "targetResolutionVersion": "V23 (Editorial Draft / Pending Approval)",
+    "generatedAt": "2026-09-04T09:26:34.223Z",
+    "requiresUserFinalApprovalBeforeApply": true,
+    "constitutionalRules": [
+      "V22 permanece 100% inalterado y congelado.",
+      "Ningún cambio se aplica in-place en characters.js ni en el roster activo.",
+      "No se deprecan, fusionan ni eliminan registros en tiempo de ejecución hasta la aprobación humana final de V23.",
+      "Los parches aquí registrados son propuestas formales aprobadas para la futura versión V23."
+    ]
+  },
+  "summary": {
+    "totalPatchEntries": 13,
+    "deprecate_record_candidate": 6,
+    "deprecate_record_candidate_pending_final_review": 1,
+    "deprecate_form_candidate": 1,
+    "retain_separate_record": 2,
+    "retain_canonical_candidate": 1,
+    "split_to_what_if_record_pending_final_review": 2,
+    "proposedWhatIfEntitiesCount": 1,
+    "requiresManualApprovalAll": true
+  },
+  "patchEntries": [
+    {
+      "patchId": "V23-PATCH-0001",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "rey-vegeta-dbm-u13",
+      "targetFormIndex": null,
+      "canonicalRecordId": "vegeta-u13-dbm",
+      "reason": "Registro inválido; no es una entidad independiente válida de DBM. No migrar ni conservar sus formas SSJ, SSJ Real, APEX o similares.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "rey-vegeta-dbm-u13",
+        "name": "Rey Vegeta (Multiverse — U13)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "saga": "Torneo del Multiverso / Universo 13",
+        "baseTier": "5-B",
+        "baseKiNumeric": 160000,
+        "formsCount": 2,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Rey Vegeta (Estado Base)",
+            "tier": "5-B",
+            "kiNumeric": 160000,
+            "multiplier": 1
+          },
+          {
+            "index": 1,
+            "name": "Super Saiyan Real (Rey Vegeta SSJ)",
+            "tier": "5-A",
+            "kiNumeric": 8000000,
+            "multiplier": 50
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar el registro completo en la futura V23. No migrar ni conservar sus formas en vegeta-u13-dbm.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0002",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "panzy-dragon-ball-daima-138",
+      "targetFormIndex": null,
+      "canonicalRecordId": "princesa-panzy-daima",
+      "reason": "Contaminación de plantilla y Ki incoherente de 289.800.000.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "panzy-dragon-ball-daima-138",
+        "name": "Panzy",
+        "universe": "Dragon Ball Daima",
+        "saga": "Reino de los Demonios",
+        "baseTier": "8-A",
+        "baseKiNumeric": 289800000,
+        "formsCount": 1,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Panzy (Estado Base)",
+            "tier": "4-B",
+            "kiNumeric": 289800000,
+            "multiplier": 1
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar el registro contaminado en V23. Conservar princesa-panzy-daima (7.739 Ki / Tier 7-B) como la única ficha canónica.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0003",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "poseidon-ror-r3",
+      "targetFormIndex": null,
+      "canonicalRecordId": "poseidon-shuumatsu",
+      "reason": "Stub redundante; poseidon-shuumatsu es la ficha canónica candidata.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "poseidon-ror-r3",
+        "name": "Poseidón",
+        "universe": "Shuumatsu no Valkyrie (Record of Ragnarok)",
+        "saga": "Ronda 3",
+        "baseTier": "4-B",
+        "baseKiNumeric": 1155000000,
+        "formsCount": 1,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Poseidón (Estado Base)",
+            "tier": "4-B",
+            "kiNumeric": 1155000000,
+            "multiplier": 1
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar el stub mono-forma en V23. Conservar poseidon-shuumatsu (con forma Diluvio de los 40 Días) como ficha canónica.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0004",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "broly-legendario-dbm",
+      "targetFormIndex": null,
+      "canonicalRecordId": "broly-u20-dbm-congelado",
+      "reason": "Stub redundante; broly-u20-dbm-congelado contiene la progresión DBM completa.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "broly-legendario-dbm",
+        "name": "Broly (Super Saiyan Legendario, Aparición DBM)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "saga": "Torneo Interuniversal DBM",
+        "baseTier": "3-B",
+        "baseKiNumeric": 18900000000,
+        "formsCount": 1,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Forma Base / Estado Inicial",
+            "tier": "3-B",
+            "kiNumeric": 18900000000,
+            "multiplier": 1
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar el stub mono-forma estático en V23. Conservar broly-u20-dbm-congelado con su progresión canónica multiforme de DBM.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0005",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "atom-eve-invincible",
+      "targetFormIndex": null,
+      "canonicalRecordId": "atom-eve",
+      "reason": "inherited_template_contamination de Mark Grayson. La ficha atom-eve se conserva separada e intacta.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "atom-eve-invincible",
+        "name": "Atom Eve",
+        "universe": "Invincible",
+        "saga": "Guerra Viltrumita / Fin del Cómic",
+        "baseTier": "7-B",
+        "baseKiNumeric": 600000,
+        "formsCount": 1,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Invincible (Mark Grayson)",
+            "tier": "5-B",
+            "kiNumeric": 600000,
+            "multiplier": 1
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar la ficha contaminada por plantilla de Mark Grayson en V23. Preservar intacta la ficha oficial atom-eve (Samantha Eve Wilkins).",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0006",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "battle-beast-invincible",
+      "targetFormIndex": null,
+      "canonicalRecordId": "battle-beast",
+      "reason": "inherited_template_contamination de Mark Grayson. La ficha battle-beast se conserva separada e intacta.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "battle-beast-invincible",
+        "name": "Battle Beast",
+        "universe": "Invincible",
+        "saga": "Invasión de Máquinas / Guerra Viltrumita",
+        "baseTier": "5-A",
+        "baseKiNumeric": 600000,
+        "formsCount": 1,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Invincible (Mark Grayson)",
+            "tier": "5-B",
+            "kiNumeric": 600000,
+            "multiplier": 1
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar la ficha contaminada por plantilla de Mark Grayson en V23. Preservar intacta la ficha oficial battle-beast (Thokk).",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0007",
+      "action": "deprecate_form_candidate",
+      "targetRecordId": "gohan-u16-dbm-espectador",
+      "targetFormIndex": 3,
+      "canonicalFormIndex": 2,
+      "reason": "duplicado exacto de Estado Místico/Ultimate: mismo Ki, tier y multiplicador. No alterar formIndex 2 ni sus valores.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "gohan-u16-dbm-espectador",
+        "formIndex2": {
+          "index": 2,
+          "id": "gohan-u16-mystic",
+          "name": "Son Gohan (Universo 16 - Estado Místico)",
+          "tier": "4-A",
+          "kiNumeric": 11903200,
+          "multiplier": 800
+        },
+        "formIndex3": {
+          "index": 3,
+          "id": "mystic",
+          "name": "Estado Místico / Ultimate Gohan",
+          "tier": "4-A",
+          "kiNumeric": 11903200,
+          "multiplier": 800
+        }
+      },
+      "proposedEffect": "Eliminar únicamente la forma 3 redundante en V23. Mantener la forma 2 intacta sin alterar ningún valor de Ki ni tier.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0008",
+      "action": "retain_separate_record",
+      "targetRecordId": "androides-17-18-u14-dbm, saiyans-namekianos-u10-grupo",
+      "targetFormIndex": null,
+      "canonicalRecordId": "androides-17-18-u14-dbm, saiyans-namekianos-u10-grupo",
+      "reason": "perfiles grupales válidos; no fusionar con miembros individuales.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "groupRecords": [
+          {
+            "id": "androides-17-18-u14-dbm",
+            "name": "Androides #17 y #18 (Continuidad Universo 14, Sin Oposición)",
+            "universe": "Dragon Ball Multiverse (Fan-Manga)",
+            "baseTier": "4-B",
+            "baseKiNumeric": 973350000
+          },
+          {
+            "id": "saiyans-namekianos-u10-grupo",
+            "name": "Mahissu, Romanesco, Cargot, Caracoru y Lumaca (Guerreros del Universo 10)",
+            "universe": "Dragon Ball Multiverse (Fan-Manga)",
+            "baseTier": "5-A",
+            "baseKiNumeric": 5166000
+          }
+        ]
+      },
+      "proposedEffect": "Retener ambos perfiles grupales como entidades de sinergia de equipo separadas en V23 junto a sus combatientes individuales.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0009",
+      "action": "retain_canonical_candidate",
+      "targetRecordId": "son-goku-mini-daima-full",
+      "targetFormIndex": null,
+      "canonicalRecordId": "son-goku-mini-daima-full",
+      "retainForms": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "reason": "forms 0–3 forman el set canónico limpio de Goku Mini Daima.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "son-goku-mini-daima-full",
+        "name": "Son Goku (Daima — Mini)",
+        "universe": "Dragon Ball Daima",
+        "baseTier": "4-B",
+        "baseKiNumeric": 1050000,
+        "retainedForms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Goku Mini Estado Base (Con Báculo Sagrado)",
+            "tier": "4-B",
+            "kiNumeric": 1050000,
+            "multiplier": 1
+          },
+          {
+            "index": 1,
+            "id": "ssj1-daima",
+            "name": "Super Saiyan 1 (Mini)",
+            "tier": "4-B",
+            "kiNumeric": 52500000,
+            "multiplier": 50
+          },
+          {
+            "index": 2,
+            "id": "ssj2-daima",
+            "name": "Super Saiyan 2 (Mini)",
+            "tier": "4-A",
+            "kiNumeric": 105000000,
+            "multiplier": 100
+          },
+          {
+            "index": 3,
+            "id": "ssj3-daima",
+            "name": "Super Saiyan 3 (Mini)",
+            "tier": "3-C",
+            "kiNumeric": 420000000,
+            "multiplier": 400
+          }
+        ]
+      },
+      "proposedEffect": "Designar son-goku-mini-daima-full como la ficha canónica oficial de Goku Mini Daima para V23 con sus formas canónicas 0, 1, 2 y 3.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0010",
+      "action": "deprecate_record_candidate_pending_final_review",
+      "targetRecordId": "son-goku-mini-dragon-ball-daima-751",
+      "targetFormIndex": null,
+      "canonicalRecordId": "son-goku-mini-daima-full",
+      "reason": "ficha duplicada con formas SSJ repetidas y labels APEX/custom. No migrar sus formas a la ficha full.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "son-goku-mini-dragon-ball-daima-751",
+        "name": "Son Goku (Mini)",
+        "universe": "Dragon Ball Daima",
+        "baseTier": "4-B",
+        "baseKiNumeric": 1050000,
+        "formsCount": 7,
+        "forms": [
+          {
+            "index": 0,
+            "name": "Goku Mini (Estado Base Daima)",
+            "tier": "4-B",
+            "kiNumeric": 1050000,
+            "multiplier": 1
+          },
+          {
+            "index": 1,
+            "name": "Goku Mini (Super Saiyan)",
+            "tier": "5-A+",
+            "kiNumeric": 52500000,
+            "multiplier": 50
+          },
+          {
+            "index": 2,
+            "name": "Super Saiyan (Daima)",
+            "tier": "4-A",
+            "kiNumeric": 52500000,
+            "multiplier": 50
+          },
+          {
+            "index": 3,
+            "name": "Super Saiyan 2 (Daima)",
+            "tier": "3-C",
+            "kiNumeric": 105000000,
+            "multiplier": 100
+          },
+          {
+            "index": 4,
+            "name": "Goku Mini (Super Saiyan 2) [Apex Daima]",
+            "tier": "5-A+",
+            "kiNumeric": 105000000,
+            "multiplier": 100
+          },
+          {
+            "index": 5,
+            "name": "Super Saiyan 3 (Daima)",
+            "tier": "3-C",
+            "kiNumeric": 420000000,
+            "multiplier": 400
+          },
+          {
+            "index": 6,
+            "name": "Goku Mini (Super Saiyan 3) [Apex Daima]",
+            "tier": "5-A",
+            "kiNumeric": 420000000,
+            "multiplier": 400
+          }
+        ]
+      },
+      "proposedEffect": "Deprecar el registro 751 en V23 sin importar ninguna de sus formas redundantes ni sus sub-tiers no estándar (5-A+).",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0011",
+      "action": "split_to_what_if_record_pending_final_review",
+      "targetRecordId": "son-goku-mini-daima-full",
+      "targetFormIndex": 4,
+      "targetFormId": "ssj4-daima-mini",
+      "canonicalRecordId": "son-goku-mini-daima-full",
+      "proposedTargetUniverse": "Dragon Ball (Fan-Mangas & What-If)",
+      "reason": "forma apex_custom / What-If; no pertenece al roster canónico Daima.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "son-goku-mini-daima-full",
+        "formIndex4": {
+          "index": 4,
+          "id": "ssj4-daima-mini",
+          "name": "Super Saiyan 4 (Primal Daima) [What-If]",
+          "tier": "3-B",
+          "kiNumeric": 4200000000,
+          "multiplier": 4000
+        }
+      },
+      "proposedEffect": "extraer de la futura ficha canónica Daima sin borrar la evidencia de V22.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED",
+      "migrationGate": "No migrar ni crear una ficha destino automáticamente. La forma se excluye de la futura ficha canónica Daima únicamente cuando exista aprobación manual explícita para crear son-goku-ssj4-primal-daima-what-if.",
+      "archivalPolicy": "Hasta entonces, preservar los datos originales solo como sourceFormReference dentro del patch y la auditoría; no conservar la forma dentro de los perfiles canónicos V23."
+    },
+    {
+      "patchId": "V23-PATCH-0012",
+      "action": "retain_separate_record",
+      "targetRecordId": "son-goku-adulto-daima",
+      "targetFormIndex": null,
+      "canonicalRecordId": "son-goku-adulto-daima",
+      "reason": "variante corporal canónica válida; no es duplicado de Goku Mini.",
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "son-goku-adulto-daima",
+        "name": "Son Goku (Daima — Adulto)",
+        "universe": "Dragon Ball Daima",
+        "saga": "Prólogo y Clímax del Reino Demoníaco (Daima)",
+        "baseTier": "4-B",
+        "baseKiNumeric": 138600000,
+        "formsCount": 5
+      },
+      "proposedEffect": "Retener son-goku-adulto-daima como ficha independiente oficial en V23 para representar la etapa corporal adulta canónica de Daima.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED"
+    },
+    {
+      "patchId": "V23-PATCH-0013",
+      "action": "split_to_what_if_record_pending_final_review",
+      "targetRecordId": "son-goku-adulto-daima",
+      "targetFormIndex": 4,
+      "targetFormId": "ssj4-adulto-daima",
+      "canonicalRecordId": "son-goku-adulto-daima",
+      "proposedTargetUniverse": "Dragon Ball (Fan-Mangas & What-If)",
+      "reason": "forma What-If / apex_custom; no pertenece a la ficha canónica adulta de Daima.",
+      "auditFlags": [
+        "noncanonical_or_unverified",
+        "conflicting_scale_data",
+        "tier_description_mismatch"
+      ],
+      "sourceAuditPhase": "FASE 2: AUDITORÍA DE FORMAS, IDENTIDAD Y CONTAMINACIÓN DE PLANTILLAS",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "recordId": "son-goku-adulto-daima",
+        "formIndex4": {
+          "index": 4,
+          "id": "ssj4-adulto-daima",
+          "name": "Super Saiyan 4 (Primal Daima) [What-If]",
+          "tier": "4-A",
+          "kiNumeric": 554400000000,
+          "multiplier": 4000
+        }
+      },
+      "proposedEffect": "extraer de la futura ficha canónica Adulto Daima sin recalcular Ki, tier o multiplier.",
+      "status": "APPROVED_FOR_FUTURE_V23_NOT_APPLIED",
+      "migrationGate": "No migrar ni crear una ficha destino automáticamente. La forma se excluye de la futura ficha canónica Daima únicamente cuando exista aprobación manual explícita para crear son-goku-ssj4-primal-daima-what-if.",
+      "archivalPolicy": "Hasta entonces, preservar los datos originales solo como sourceFormReference dentro del patch y la auditoría; no conservar la forma dentro de los perfiles canónicos V23."
+    }
+  ],
+  "proposedWhatIfEntities": [
+    {
+      "proposedRecordId": "son-goku-ssj4-primal-daima-what-if",
+      "proposedName": "Son Goku SSJ4 (Primal Daima) [What-If]",
+      "suggestedUniverse": "Dragon Ball (Fan-Mangas & What-If)",
+      "suggestedSaga": "Ruta What-If: Despertar Primigenio en el Reino Demoníaco",
+      "sourceRecordIds": [
+        "son-goku-mini-daima-full",
+        "son-goku-adulto-daima"
+      ],
+      "sourceFormReferences": [
+        {
+          "recordId": "son-goku-mini-daima-full",
+          "formIndex": 4,
+          "formId": "ssj4-daima-mini",
+          "kiNumeric": 4200000000,
+          "multiplier": 4000
+        },
+        {
+          "recordId": "son-goku-adulto-daima",
+          "formIndex": 4,
+          "formId": "ssj4-adulto-daima",
+          "kiNumeric": 554400000000,
+          "multiplier": 4000
+        }
+      ],
+      "interpretation": "Dos expresiones paralelas del mismo concepto What-If, una desde Goku Mini y otra desde Goku Adulto. No modelarlas como formas secuenciales ni asumir que una transforma directamente en la otra.",
+      "resolutionStatus": "MANUAL_DESIGN_DECISION_REQUIRED",
+      "status": "PROPOSAL_ONLY_NOT_CREATED",
+      "creationGate": "REQUIRES_SEPARATE_EXPLICIT_USER_APPROVAL",
+      "applyBehaviorBeforeCreationApproval": "No create target record. No automatic migration. Keep V22 unchanged. Treat both source forms as excluded_from_canonical_daima_pending_approval."
+    }
+  ],
+  "changeLogDraft": [
+    {
+      "version": "V23-DRAFT",
+      "appliedAt": null,
+      "approvalStatus": "PENDING_HUMAN_CONFIRMATION",
+      "scope": "Resolución editorial de duplicados críticos, contaminación de plantillas y saneamiento de formas Daima",
+      "entries": [
+        "V23-PATCH-0001: Deprecación de rey-vegeta-dbm-u13 como registro inválido de DBM.",
+        "V23-PATCH-0002: Deprecación de panzy-dragon-ball-daima-138 por Ki corrupto heredado (289.8M Ki).",
+        "V23-PATCH-0003: Deprecación del stub poseidon-ror-r3 en favor de poseidon-shuumatsu.",
+        "V23-PATCH-0004: Deprecación del stub broly-legendario-dbm en favor de broly-u20-dbm-congelado.",
+        "V23-PATCH-0005: Deprecación de atom-eve-invincible por contaminación de plantilla Mark Grayson.",
+        "V23-PATCH-0006: Deprecación de battle-beast-invincible por contaminación de plantilla Mark Grayson.",
+        "V23-PATCH-0007: Eliminación de la forma interna duplicada forms[3] en gohan-u16-dbm-espectador.",
+        "V23-PATCH-0008: Retención formal de perfiles grupales androides-17-18-u14-dbm y saiyans-namekianos-u10-grupo.",
+        "V23-PATCH-0009: Designación de son-goku-mini-daima-full (formas 0-3) como set canónico de Goku Mini Daima.",
+        "V23-PATCH-0010: Deprecación pendiente de la ficha redundante son-goku-mini-dragon-ball-daima-751.",
+        "V23-PATCH-0011: Escisión pendiente de la forma 4 (SSJ4 Primal Daima) de son-goku-mini-daima-full a Fan-Mangas & What-If.",
+        "V23-PATCH-0012: Retención de son-goku-adulto-daima como variante corporal canónica independiente.",
+        "V23-PATCH-0013: Escisión pendiente de la forma 4 (SSJ4 Primal Daima) de son-goku-adulto-daima a Fan-Mangas & What-If."
+      ]
+    }
+  ]
+}

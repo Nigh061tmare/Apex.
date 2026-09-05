@@ -1,0 +1,1274 @@
+{
+  "meta": {
+    "title": "APEX V25 — Plan de Cierre Definitivo de Baseline por Lotes Grandes",
+    "status": "PROPOSAL_ONLY_NOT_APPLIED",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V25.json",
+    "sourceCharactersJs": "src/data/characters.js",
+    "generatedAt": "2026-09-04T13:20:00.000Z",
+    "isReadOnlyAudit": true,
+    "author": "Antigravity Engineering Team",
+    "baselineVersion": "V25",
+    "totalActiveCharacters": 756,
+    "totalDeprecatedRecords": 13,
+    "historicalTotal": 769
+  },
+  "executiveSummary": {
+    "overview": "Plan de consolidación final estructurado en cinco lotes estratégicos para cerrar la gobernanza de APEX V25 sin alterar el power scaling numérico, sin mutar el roster activo y sin desplegar código no auditado.",
+    "whatCanBeAppliedWithoutTouchingPowerScaling": [
+      "Saneamiento de referencias cruzadas tácticas hacia IDs deprecados en kat-u6-individual, syd-u6-individual y dr-raichi-dbm-u3.",
+      "Enriquecimiento seguro de passives, weaknesses, synergies y teamCombos en el primer lote de 40 fichas prioritarias (BATCH-A).",
+      "Actualización de la suite de auditoría nocturna y validadores (BATCH-C) para fijar V25 como baseline único e impedir auto-fixes destructivos."
+    ],
+    "whatRequiresManualDecision": [
+      "Adopción formal del modelo desacoplado de Stand/Hax Causal para Giorno Giovanna (GER) y Funny Valentine (Love Train) (BATCH-B).",
+      "Aprobación del modelo Dr. Raichi Invocador Tsufuru y desactivación futura de forms[1] ghost-broly-unleashed (BATCH-B).",
+      "Elección de la alternativa para SSJ4 Primal Daima (Mini y Adulto) entre retención in-situ, escisión What-If o archivado (BATCH-D)."
+    ],
+    "whatRemainsBlockedBySource": [
+      "V25-PENDING-TAMAGAMI-SOURCE: Bloqueado a la espera de databooks o guías oficiales de Dragon Ball Daima para dirimir la escala de 634.2M vs 1.11B."
+    ]
+  },
+  "lote1_raichi_ghost_commander_model": {
+    "title": "LOTE 1 — Dr. Raichi: Comandante de Guerreros Fantasma (Ghost Tuffle Commander)",
+    "targetRecordId": "dr-raichi-dbm-u3",
+    "targetRecordName": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+    "corePrinciples": [
+      "A. Dr. Raichi es un ghost_tuffle_commander: entidad espectral confinada en su cápsula esférica de levitación y amplificación.",
+      "B. Hatchiyack es el motor/núcleo computacional de condensación de odio y despliegue espectral.",
+      "C. Los Guerreros Fantasma son unidades autónomas temporales, nunca transformaciones biológicas ni estados de Raichi.",
+      "D. Los fantasmas no transfieren, multiplican ni suman su Ki al cuerpo o núcleo de Raichi.",
+      "E. El roster activo de V25 actúa exclusivamente como biblioteca de lectura de referencias (recordId + formId/formIndex).",
+      "F. No se crean fichas activas nuevas de guerreros fantasma en el roster.",
+      "G. No se inventan IDs, Ki, tiers ni multiplicadores."
+    ],
+    "ghostArchive": [
+      {
+        "sourceRecordId": "tidar-u19-individual",
+        "recordName": "Tidar (Universo 19 — DBM)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 3927000,
+        "referenceTier": "5-A",
+        "evidenceLevel": "confirmed_dbm_onscreen",
+        "evidenceNote": "Invocado explícitamente en combate oficial de DBM contra Gast Carcolh (Capítulo 17). Tidar fue ejecutado previamente por Uub U18 y su odio asimilado por la máquina de Raichi.",
+        "summonEligibility": "usable_now",
+        "summonClass": "minor",
+        "combatRole": "vanguard_tank"
+      },
+      {
+        "sourceRecordId": "cell-jr-u17-dbm",
+        "recordName": "Cell Jr. (Compañero de Torneo, Universo 17)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 10258500000,
+        "referenceTier": "3-C",
+        "evidenceLevel": "confirmed_dbm_onscreen",
+        "evidenceNote": "Invocado explícitamente en el combate contra Gast Carcolh en DBM (Capítulo 17). Procede de la muerte de Cell Jr. en la primera ronda del torneo.",
+        "summonEligibility": "usable_now",
+        "summonClass": "minor",
+        "combatRole": "squad_pressure"
+      },
+      {
+        "sourceRecordId": "bojack-dbm",
+        "recordName": "Bojack (Continuidad Universo 6)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 849450000,
+        "referenceTier": "4-B",
+        "evidenceLevel": "confirmed_dbm_onscreen",
+        "evidenceNote": "Invocado explícitamente en DBM (Capítulo 17) contra Gast Carcolh, tras haber sido ejecutado Bojack en el torneo por Gast.",
+        "summonEligibility": "usable_now",
+        "summonClass": "elite",
+        "combatRole": "vanguard_tank"
+      },
+      {
+        "sourceRecordId": "pan-ssj-dbm-u16",
+        "recordName": "Pan (Multiverse — U16)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 20297,
+        "referenceTier": "4-C",
+        "evidenceLevel": "confirmed_dbm_onscreen",
+        "evidenceNote": "Invocada explícitamente en DBM (Capítulo 26) contra Vegeta U18 como tortura psicológica tras su muerte frente a Bojack en Ronda 1.",
+        "summonEligibility": "usable_now",
+        "summonClass": "minor",
+        "combatRole": "support_disruption"
+      },
+      {
+        "sourceRecordId": "vegeta-u13-dbm",
+        "recordName": "Vegeta (Universo 13)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 65000000,
+        "referenceTier": "4-C",
+        "evidenceLevel": "confirmed_dbm_onscreen",
+        "evidenceNote": "Raichi invoca al Guerrero Fantasma del Vegeta del Universo 13 durante el combate contra Gast Carcolh. La invocación debe usar solo la forma exacta disponible en V25 para vegeta-u13-dbm; no asumir transformaciones, Ki, forms ni variantes no presentes en el registro V25.",
+        "summonEligibility": "usable_now",
+        "summonClass": "elite",
+        "combatRole": "elite_striker"
+      },
+      {
+        "sourceRecordId": "broly-u20-dbm-congelado",
+        "recordName": "Broly (Universo 20 — DBM, Superviviente Congelado)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 18900000000,
+        "referenceTier": "3-B",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Raichi invocó al Fantasma de Broly LSSJ (U3) en DBM contra Gast Carcolh, pero broly-u20-dbm-congelado pertenece a la línea congelada del Universo 20. Se clasifica estrictamente como referencia técnica de Ki; no es la misma entidad.",
+        "summonEligibility": "conditional",
+        "summonClass": "apex",
+        "combatRole": "emergency_manifest"
+      },
+      {
+        "sourceRecordId": "cooler-u8-dbm",
+        "recordName": "Cooler (Continuidad Universo 8, Imperio Intacto)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 1042650000,
+        "referenceTier": "4-B",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Cooler U8 es un participante vivo del torneo. En DBM Raichi eliminó a los demonios del frío de U3, no a los de U8. Se retiene exclusivamente como referencia técnica de stats.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "elite",
+        "combatRole": "elite_striker"
+      },
+      {
+        "sourceRecordId": "freezer-envejecido-u8-dbm",
+        "recordName": "Freezer (Continuidad Universo 8, Forma Final Envejecida)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 134400000,
+        "referenceTier": "4-B",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Freezer U8 es un combatiente vivo de DBM. Ficha de referencia técnica para ráfagas de energía y telequinesis.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "ranged_pressure"
+      },
+      {
+        "sourceRecordId": "cell-dbm-u17",
+        "recordName": "Cell (Multiverse — U17)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 28245,
+        "referenceTier": "3-C",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Cell U17 permanecía con vida en el torneo durante la participación de Raichi; Raichi solo invocó a un Cell Jr. Ficha de referencia técnica.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "elite",
+        "combatRole": "elite_striker"
+      },
+      {
+        "sourceRecordId": "kakarotto-dbm-u13",
+        "recordName": "Kakarotto (Universo 13)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 50000000,
+        "referenceTier": "4-C",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Kakarotto U13 es un saiyajin vivo en el torneo DBM. Raichi exterminó a los saiyajins de U3 en su pasado, no a Kakarotto U13.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "pursuit_controller"
+      },
+      {
+        "sourceRecordId": "nappa-u13-dbm",
+        "recordName": "Nappa (Universo 13)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 1850000,
+        "referenceTier": "5-A",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Nappa de U13 es un participante vivo en DBM. Referencia de roster para técnicas saiyajin pesadas.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "vanguard_tank"
+      },
+      {
+        "sourceRecordId": "bardock-vidente-dbm-u3",
+        "recordName": "Bardock (Multiverse — U3)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 19866,
+        "referenceTier": "4-B",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Bardock U3 es un combatiente vivo e independiente en el torneo de DBM; no es un fantasma de Raichi. Referencia de roster para precognición.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "support_disruption"
+      },
+      {
+        "sourceRecordId": "king-vegeta-u10-dbm",
+        "recordName": "Rey Vegeta (Continuidad Universo 10)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 212100000,
+        "referenceTier": "4-C",
+        "evidenceLevel": "roster_reference_only",
+        "evidenceNote": "Rey Vegeta de U10 es un saiyajin primitivo sin armadura del Universo 10; carece de relación con el Rey Vegeta de U3 que Raichi eliminó. Solo referencia de anatomía saiyajin.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "vanguard_tank"
+      },
+      {
+        "sourceRecordId": "rey-vegeta-clasico",
+        "recordName": "Rey Vegeta (Padre de Vegeta)",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 44237,
+        "referenceTier": "5-C",
+        "evidenceLevel": "unavailable_or_needs_source",
+        "evidenceNote": "Ficha de DBZ Toei / Flashback clásico. No pertenece a la continuidad de DBM. Faltan fuentes para ligarlo como invocación de Raichi en DBM.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "ranged_pressure"
+      },
+      {
+        "sourceRecordId": "lord-slug-pel-culas-dbz-toei-952",
+        "recordName": "Lord Slug",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 183750000,
+        "referenceTier": "4-C",
+        "evidenceLevel": "unavailable_or_needs_source",
+        "evidenceNote": "Villano de películas Toei / OVA Plan para Erradicar original. No confirmado como Guerrero Fantasma en la continuidad de DBM.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "vanguard_tank"
+      },
+      {
+        "sourceRecordId": "turles-dbz-toei",
+        "recordName": "Turles",
+        "sourceFormId": "base",
+        "sourceFormIndex": 0,
+        "referenceKiNumeric": 60480000000000,
+        "referenceTier": "4-C",
+        "evidenceLevel": "unavailable_or_needs_source",
+        "evidenceNote": "Villano de películas Toei / OVA Plan para Erradicar original. No confirmado como Guerrero Fantasma en DBM.",
+        "summonEligibility": "not_usable_until_verified",
+        "summonClass": "squad",
+        "combatRole": "pursuit_controller"
+      }
+    ],
+    "enemyResonance": {
+      "historical_tuffle_saiyan_resonance": {
+        "triggerCondition": "Oponente posee tags raciales o culturales 'saiyan', 'saiyajin', 'ozaru', 'ssj', 'cola_saiyajin'.",
+        "tacticalEffects": [
+          "Aceleración de recarga de odio (+25% acumulación de hateCharge por turno).",
+          "Desbloqueo prioritario de la vanguardia anti-saiyajin (Rey Vegeta, Nappa, Kakarotto U13).",
+          "Coordinación de ataque focalizada en puntos ciegos y debilidades saiyajin (cola, arrogancia, sobreconfianza)."
+        ],
+        "prohibitionRule": "Bajo ninguna circunstancia esta resonancia altera o incrementa el Ki numérico ni el tier de Raichi."
+      },
+      "relational_enemy_resonance": {
+        "triggerCondition": "Oponente tiene vínculos históricos directos con guerreros del Ghost Archive (ej. Gast Carcolh vs Piccolo/Cold; Goku vs Cell/Freezer; Vegeta vs saiyajins).",
+        "tacticalEffects": [
+          "Director de Invocaciones prioriza convocar al enemigo exacto que genera mayor conflicto psicológico en el adversario.",
+          "Efecto de desestabilización narrativa / distracción que reduce el battleIQ efectivo del oponente en un 15% durante los primeros 2 turnos."
+        ],
+        "prohibitionRule": "No altera multiplicadores de daño numérico ni estadísticas base."
+      },
+      "live_battle_hate_resonance": {
+        "triggerCondition": "Impactos recibidos contra la barrera de Raichi o destrucción de guerreros fantasma durante el combate activo.",
+        "tacticalEffects": [
+          "Cada fantasma eliminado disuelve su odio en el núcleo Hatchiyack, aumentando el hateCharge en +15%.",
+          "Impactos bloqueados por la barrera convierten la energía cinética del oponente en carga de invocación de nivel superior."
+        ],
+        "prohibitionRule": "La energía acumulada se traduce en acceso a mejores unidades del archivo, jamás en aumento de Ki personal."
+      }
+    },
+    "hateChargeSystem": {
+      "mechanic": "Medidor táctico de combate de 0 a 100 puntos gestionado por el núcleo Hatchiyack.",
+      "states": {
+        "scouting": {
+          "range": "0 - 24 puntos",
+          "behavior": "Despliegue de 1 unidad minor (Tidar o Cell Jr.). Mantenimiento del escudo esférico al 100% de potencia. Raichi analiza patrones y técnicas enemigas."
+        },
+        "raid": {
+          "range": "25 - 49 puntos",
+          "behavior": "Despliegue de 2 a 3 unidades squad (Rey Vegeta, Nappa, Kakarotto). Formación de asalto en abanico. Hostigamiento a distancia y fijación de posición."
+        },
+        "overrun": {
+          "range": "50 - 74 puntos",
+          "behavior": "Despliegue continuo con 1 unidad élite (Cooler o Bojack) secundada por 2 squad. Presión física ininterrumpida que busca el agotamiento de stamina del oponente."
+        },
+        "elite_pincer": {
+          "range": "75 - 99 puntos",
+          "behavior": "Despliegue de pinza con 2 élites simultáneas (Cell DBM + Vegeta U13). Raichi canaliza el escudo en modo reactivo reforzado."
+        },
+        "emergency_manifest": {
+          "range": "100 puntos (o escudo < 20% de integridad)",
+          "behavior": "Invocación del Fantasma Apex (Broly LSSJ U20) o activación del protocolo de detonación de Odio Hatchiyack. Máxima hostilidad."
+        }
+      },
+      "forbiddenMapping": "Estos 5 estados jamás deben ser modelados como formas secuenciales de Raichi ni alterar su baseTier 4-B o su baseKiNumeric 24518."
+    },
+    "summonDirector": {
+      "selectionLogic": [
+        "Si el oponente es de alta velocidad / esquiva: convocar unidades con técnicas de fijación o parálisis.",
+        "Si el oponente es un equipo múltiple: convocar unidades AoE o de enjambre.",
+        "Si el oponente ejerce presión comparable a SSJ2: la barrera es eficaz; el director despliega 2 squad o 1 élite para contragolpear.",
+        "Si el oponente ejerce presión sostenida equivalente a SSJ3+ o ataques de hax avanzado: la barrera corre riesgo de fractura; el director activa elite_pincer y prepara emergency_manifest.",
+        "Cooldown de regeneración: todo fantasma destruido entra en reformationCooldown antes de poder volver a manifestarse."
+      ]
+    },
+    "counterplayRules": [
+      "1. Umbral de la Barrera: Barrera eficaz frente a amenazas aproximadamente comparables a SSJ2, pero vulnerable a presión coordinada, ataques de hax, desgaste prolongado o fuerza sostenida equivalente a SSJ3+.",
+      "2. Rango de Resistencia: Los umbrales de resistencia de la barrera se definen por rangos de tier relativos (Tier 4-B / presión SSJ2 vs Tier 3-C / SSJ3+), marcados como DESIGN_ASSUMPTION del motor y no como hechos canónicos inmutables.",
+      "3. Destrucción del Orbe / Máquina: Destruir la esfera o cortar la conexión con el núcleo Hatchiyack disipa instantáneamente a todos los fantasmas convocados.",
+      "4. Tiempo de Reforma: Los fantasmas eliminados no reviven al instante; requieren tiempo (reformationCooldown) para re-condensar su matriz de odio.",
+      "5. Sin Spam de Élites: Las unidades élite consumen hateCharge significativo y no pueden convocarse más de 2 simultáneamente.",
+      "6. Vulnerabilidad Física Extrema: Si el escudo cae, el cuerpo del Dr. Raichi posee únicamente 24.518 Ki (Tier 7-A anciano) y es vulnerable ante cualquier combatiente físico medio."
+    ],
+    "hatchiyackManifestEvent": {
+      "proposalStatus": "FUTURE_EVENT_MODEL_NOT_ACTIVE",
+      "description": "Mecanismo propuesto para la emergencia de Hatchiyack como entidad de venganza final si el Dr. Raichi es eliminado.",
+      "activationConditions": [
+        "Destrucción física del Dr. Raichi tras caída de su barrera.",
+        "hateCharge acumulado en 100 puntos al momento de la muerte.",
+        "El núcleo Hatchiyack permanece intacto en el escenario."
+      ],
+      "blockedConditions": [
+        "Si Raichi es sellado mediante Mafuba u otra técnica de confinamiento.",
+        "Si el núcleo Hatchiyack es destruido simultáneamente con un blast de aniquilación molecular.",
+        "Si el combate se resuelve por abandono, ring-out o sumisión no letal."
+      ],
+      "counterplay": "Atacar el núcleo durante los 5 segundos de condensación antes de que la armadura de Hatchiyack se solidifique completamente.",
+      "chargeThreshold": 100,
+      "consequences": "Raichi desaparece del combate y se instancia Hatchiyack como un Raid Boss independiente con Ki masivo y perfil propio.",
+      "levels": {
+        "minimalista": "Narrativa pura en el prompt de combate del simulationEngine: Hatchiyack se menciona como la última ráfaga de odio que estalla si Raichi cae.",
+        "intermedio_recomendado": "combatStatus 'hatchiyack_revenge_protocol' en la ficha de Raichi que dispara una segunda fase de simulación si se cumplen las condiciones de muerte con 100% de odio.",
+        "completo": "Ficha independiente de Hatchiyack instanciada dinámicamente en el motor como combate de dos fases tipo Raid Boss RPG."
+      }
+    },
+    "legacyMigration": {
+      "currentStatusInV25": "forms[1] 'ghost-broly-unleashed' con multiplicador x2000 (49.036.000 Ki) se mantiene inalterada en V25 para garantizar inmutabilidad.",
+      "futureMigrationTarget": "En una versión mayor futura (V26 o posterior con aprobación de schema), forms[1] se retirará de las transformaciones biológicas y su referencia se transferirá íntegramente al ghostArchive (slot apex: broly-u20-dbm-congelado), convirtiendo a Raichi en un perfil mono-forma purificado."
+    }
+  },
+  "lote2_hax_complex_without_ki_pollution": {
+    "title": "LOTE 2 — Modelos de Hax Complejos sin Contaminar Ki (JoJo & DBM)",
+    "giorno": {
+      "recordsInvolved": [
+        "giorno-giovanna-ger-jojo-gg001",
+        "giorno-giovanna-jojo-va"
+      ],
+      "canonicalRecordProposed": "giorno-giovanna-jojo-va",
+      "deprecatedCandidateFuture": "giorno-giovanna-ger-jojo-gg001",
+      "currentAction": "PROPOSAL_ONLY_NO_DEPRECATION_APPLIED",
+      "problemStatement": "En V25, GER figura en gg001 como una transformación con multiplicador x1.35 (3.558,6 Ki), lo que en un motor numérico implica que un personaje de 5.000 Ki supera a Return to Zero por simple diferencia de fuerza bruta, desnaturalizando la causalidad absoluta del Stand.",
+      "unifiedModelProposal": {
+        "characterIdentity": {
+          "id": "giorno-giovanna-jojo-va",
+          "name": "Giorno Giovanna",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Vento Aureo",
+          "baseTier": "8-C",
+          "baseKiNumeric": 1365
+        },
+        "formsStructureProposed": [
+          {
+            "id": "base",
+            "name": "Giorno Giovanna (Gold Experience)",
+            "tier": "8-C",
+            "multiplier": 1,
+            "kiNumeric": 1365,
+            "stats": "Portador de Stand humano estándar. Manipulación de fuerza vital mediante Gold Experience."
+          }
+        ],
+        "haxProfileProposed": {
+          "standName": "Gold Experience / Gold Experience Requiem",
+          "standType": "Causal Reality Warping / Stand Evolutivo",
+          "tierHax": "Tier 1-A Causal (Defensivo)",
+          "returnToZero": {
+            "classification": "Absolute Causality Reset (Passive / Autonomous)",
+            "trigger": "Cualquier acción, ataque, intención hostil o alteración temporal/espacial dirigida contra Giorno.",
+            "effect": "Revierte la causa y el efecto a su estado original ('Cero'). Anula borrado de tiempo de King Crimson, distorsiones espaciales y ataques físicos de cualquier magnitud destructiva.",
+            "kiDecouplingRule": "Return to Zero NO depende del Ki. Puede anular un ataque de Tier 2-C o Tier 1 con la misma eficacia que un golpe Tier 8-C."
+          },
+          "infiniteDeathLoop": {
+            "classification": "Infinite Causal Mortality Trap",
+            "trigger": "Conectar golpe de gracia letal con GER.",
+            "effect": "La víctima nunca alcanza la muerte real; su muerte se reinicia continuamente en infinitas realidades divergentes."
+          },
+          "simulationLimitationsAndCounterplay": [
+            "1. No otorga poder destructivo cósmico: La potencia ofensiva física de GER permanece en nivel edificio/sobrehumano (Tier 8-C); no destruye galaxias con sus puños.",
+            "2. Entidades Acasuales / Acausality Type 4 o 5: Seres que existen fuera del flujo causal o inmunes a manipulaciones de causa-efecto pueden eludir el reseteo.",
+            "3. Manipulación Conceptual Superior: Reality-warpers que reescriban la realidad a nivel ontológico superior (ej. The World Over Heaven, entidades omnipotentes) superan el Stand.",
+            "4. Incapacitación No Hostil: Efectos ambientales pasivos no dirigidos con intención hostil hacia Giorno requieren evaluación contextual."
+          ]
+        }
+      }
+    },
+    "funnyValentine": {
+      "canonicalRecord": "funny-valentine-jojo-sbr",
+      "currentAction": "PROPOSAL_ONLY_NO_MODIFICATIONS_APPLIED",
+      "problemStatement": "Love Train corre el riesgo de ser modelado como un boost numérico de Ki, cuando en realidad es una hendidura dimensional de redirección absoluta de infortunio.",
+      "unifiedModelProposal": {
+        "characterIdentity": {
+          "id": "funny-valentine-jojo-sbr",
+          "name": "Funny Valentine",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Steel Ball Run",
+          "baseTier": "8-C",
+          "baseKiNumeric": 1292
+        },
+        "formsStructureProposed": [
+          {
+            "id": "base",
+            "name": "Funny Valentine (D4C Base)",
+            "tier": "8-C",
+            "multiplier": 1,
+            "kiNumeric": 1292,
+            "stats": "23º Presidente de los Estados Unidos con Stand Dirty Deeds Done Dirt Cheap."
+          }
+        ],
+        "haxProfileProposed": {
+          "standName": "Dirty Deeds Done Dirt Cheap (D4C)",
+          "subAbility": "Love Train (La Brecha Dimensional del Cadáver Santo)",
+          "d4cDimensionHop": {
+            "condition": "Estar atrapado entre dos objetos o superficies (incluso agua y suelo, o bandera y pared).",
+            "effects": [
+              "Viaje instantáneo entre infinitas dimensiones paralelas.",
+              "Reemplazo de cuerpo: si Valentine es herido de muerte, transfiere D4C y su consciencia a un Valentine alternativo fresco con 100% de HP.",
+              "Paradoja de la Esponja de Menger: traer a un clon del oponente desde otra dimensión provoca que ambos se atraigan y colapsen en desintegración molecular si se tocan."
+            ]
+          },
+          "loveTrainMisfortuneRedirection": {
+            "condition": "Requiere la presencia de Lucy Steel convertida en conducto del Cadáver Santo.",
+            "effects": [
+              "Crea una barrera dimensional luminosa. Todo daño, infortunio, ataque físico, blast de energía o intención letal que cruce la brecha es desviado al 100% hacia otro punto de la Tierra como una calamidad natural o accidente fatal a otra persona.",
+              "Valentine puede atacar desde el interior de la brecha mientras permanece completamente inmune al daño convencional."
+            ],
+            "kiDecouplingRule": "La protección de Love Train no se mide en julios ni Ki; absorbe ataques de cualquier potencia destructiva mediante curvatura dimensional."
+          },
+          "simulationLimitationsAndCounterplay": [
+            "1. Gravedad Infinita / Rotación Áurea: Solo ataques imbuidos de gravedad dimensional que trasciendan el espacio-tiempo (ej. Tusk Act 4, Infinite Spin, Ball Breaker) pueden penetrar la brecha dimensional.",
+            "2. Destrucción de Superficies: Evitar que Valentine sea presionado entre dos objetos impide el salto dimensional de D4C.",
+            "3. Separación del Cadáver Santo: Neutralizar o desplazar a Lucy Steel desactiva Love Train inmediatamente.",
+            "4. Ataques Conceptuales No Físicos: Sellado existencial, borrado de alma o ataques que no dependan del infortunio espacial."
+          ]
+        }
+      }
+    },
+    "raichiHaxLink": {
+      "summary": "El Dr. Raichi enlaza directamente con el modelo de invocaciones del Lote 1. No utiliza transformaciones de Stand ni causalidad; opera como comandante tecnológico de matrices de odio Hatchiyack."
+    }
+  },
+  "lote3_ssj4_primal_daima_whatif": {
+    "title": "LOTE 3 — SSJ4 Primal Daima What-If: Alternativas de Consolidación Editorial",
+    "recordsInvolved": [
+      {
+        "recordId": "son-goku-mini-daima-full",
+        "targetFormId": "ssj4-daima-mini",
+        "formIndex": 4,
+        "tier": "3-B",
+        "multiplier": 4000,
+        "kiNumeric": 4200000000,
+        "currentStatus": "MIGRATION_GATE_ACTIVE"
+      },
+      {
+        "recordId": "son-goku-adulto-daima",
+        "targetFormId": "ssj4-adulto-daima",
+        "formIndex": 4,
+        "tier": "4-A",
+        "multiplier": 4000,
+        "kiNumeric": 4200000000,
+        "currentStatus": "MIGRATION_GATE_ACTIVE"
+      }
+    ],
+    "currentPolicyStatus": "NO_MODIFICAR_FORMS_NO_CREAR_FICHA_NUEVA",
+    "alternativesAnalysis": {
+      "alternativeA_in_situ_retention_with_gate": {
+        "name": "Alternativa A: Mantener Aislado In-Situ Bajo migrationGate",
+        "description": "Conservar ambas formas en el slot 4 de sus respectivas fichas oficiales de Daima, blindadas con flags de aislamiento táctico.",
+        "uiEffect": "La UI muestra 5 formas en el selector de transformaciones para Goku Mini y Goku Adulto, marcando la forma 4 con un badge visual '[What-If]'.",
+        "simulationEffect": "El simulationEngine permite seleccionar la forma solo si el usuario activa el toggle de simulaciones hipotéticas/What-If; en combates canónicos estándar, el selector la bloquea automáticamente.",
+        "rosterEffect": "Roster permanece exactamente en 756 personajes activos; cero cambios en la lista de fichas.",
+        "risk": "Bajo. Riesgo menor de confusión para usuarios que busquen fidelidad 100% canónica en el anime de Daima.",
+        "approvalRequirement": "REQUIRES_OPERATIONAL_GATE_CONFIRMATION"
+      },
+      "alternativeB_independent_whatif_card": {
+        "name": "Alternativa B: Escisión Futura hacia Ficha What-If Independiente",
+        "description": "Crear en una futura versión (ej. V26) la ficha 'son-goku-ssj4-primal-daima-what-if' en la franquicia Fan-Mangas & What-If, conteniendo Mini y Adulto como estados o expresiones paralelas, removiendo forms[4] de Daima.",
+        "uiEffect": "Goku Mini Daima y Goku Adulto Daima pasan a tener exactamente 4 formas canónicas (Base, SSJ1, SSJ2, SSJ3). Aparece una nueva ficha especializada en la categoría What-If.",
+        "simulationEffect": "Total pureza canónica en el universo Daima. Combates What-If de SSJ4 Primal se ejecutan desde su propia identidad.",
+        "rosterEffect": "Incrementa el total de personajes activos a 757 (o reemplaza un slot). Requiere migración formal de roster.",
+        "risk": "Medio. Requiere refactor de roster, actualización de índices y aprobación de schema.",
+        "approvalRequirement": "MANUAL_EXPLICIT_APPROVAL_REQUIRED"
+      },
+      "alternativeC_archive_both_forms": {
+        "name": "Alternativa C: Archivar Ambas Formas como Contenido Custom No Operativo",
+        "description": "Eliminar forms[4] de ambos registros de Daima sin crear ficha nueva, trasladando los datos a un registro histórico de formas deprecadas.",
+        "uiEffect": "Ambos Goku Daima quedan con 4 formas. La transformación SSJ4 Primal desaparece del simulador.",
+        "simulationEffect": "Pérdida de la opción de simular el concepto de Goku SSJ4 Primal Daima.",
+        "rosterEffect": "Roster se mantiene en 756 pero se pierden 2 formas custom populares.",
+        "risk": "Alto descontento de usuarios que disfrutan del contenido expandido / fan-manga.",
+        "approvalRequirement": "MANUAL_EXPLICIT_APPROVAL_REQUIRED"
+      }
+    },
+    "reasonedRecommendation": {
+      "recommendedAlternative": "Alternativa A en el corto plazo (V25 Baseline), con transición planificada hacia Alternativa B en V26 si se aprueba formalmente.",
+      "statusGate": "MANUAL_EXPLICIT_APPROVAL_REQUIRED",
+      "rationale": "La Alternativa A no requiere crear fichas nuevas, no viola la inmutabilidad de V25 y preserva el árbol de 5 formas verificado en el deploy de producción, mientras que la Alternativa B es la solución arquitectónica óptima a largo plazo."
+    }
+  },
+  "lote4_visible_card_audit": {
+    "title": "LOTE 4 — Auditoría Exhaustiva de Fichas Visibles (756 Combatientes Activos)",
+    "methodology": "Pase único exhaustivo sobre los 756 personajes de INITIAL_CHARACTERS cruzados con V25.characters y DEPRECATED_RECORD_IDS.",
+    "visibleCardAuditSummary": {
+      "totalAudited": 756,
+      "p0CriticalCount": 3,
+      "p1ModerateCount": 0,
+      "p2MinorNarrativeCount": 753,
+      "totalWithoutArsenal": 0,
+      "totalEmptyArsenal": 0,
+      "totalWithoutHaxTags": 0,
+      "totalWithoutPassives": 756,
+      "totalWithoutWeaknesses": 0,
+      "totalFormsWithoutTacticalStats": 0,
+      "inconsistenciesWithV25ProtectedFields": 0,
+      "deprecatedReferenceViolationsCount": 3
+    },
+    "p0RepairCandidates": [
+      {
+        "recordId": "dr-raichi-dbm-u3",
+        "name": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "severity": "P0_CRITICAL",
+        "issueType": "DEPRECATED_CROSS_REFERENCE",
+        "affectedField": "teamCombos ('Juicio del Rencor Galáctico', partners)",
+        "referencedDeprecatedId": "rey-vegeta-dbm-u13",
+        "resolutionType": "remove_deprecated_reference",
+        "blockedProposals": [
+          "PROHIBIDO: Reemplazar rey-vegeta-dbm-u13 por king-vegeta-u10-dbm (King Vegeta U10 es un saiyajin primitivo sin armadura de continuidad y tier incompatibles)."
+        ],
+        "justification": "No existe en V25 una ficha canónica activa confirmada de 'Rey Vegeta del Universo 3'. La referencia deprecated 'rey-vegeta-dbm-u13' debe eliminarse de partners en el teamCombo, conservando la descripción como nota táctica sin enlace a recordId.",
+        "actionPlan": "Remover 'rey-vegeta-dbm-u13' del array partners del combo 'Juicio del Rencor Galáctico' para que no apunte a ningún ID deprecado."
+      },
+      {
+        "recordId": "kat-u6-individual",
+        "name": "Kat (Universo 6 — DBM)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "severity": "P0_CRITICAL",
+        "issueType": "DEPRECATED_CROSS_REFERENCE",
+        "affectedField": "parent_team_profile ('kat-syd-u6-dbm')",
+        "referencedDeprecatedId": "kat-syd-u6-dbm",
+        "resolutionType": "remove_deprecated_reference",
+        "blockedProposals": [
+          "PROHIBIDO: Reemplazar parent_team_profile por syd-u6-individual (Syd es una combatiente individual hermana, no un perfil grupal ni equipo)."
+        ],
+        "justification": "El campo parent_team_profile apuntaba a la ficha grupal archivada kat-syd-u6-dbm. Dado que no existe una ficha de equipo activa para U6, el campo debe ser nulificado (null), conservando 'team_affiliation': 'Clan de Bojack (Universo 6)' como nota de equipo sin objetivo enlazable.",
+        "actionPlan": "Fijar parent_team_profile = null. Mantener team_affiliation descriptivo."
+      },
+      {
+        "recordId": "syd-u6-individual",
+        "name": "Syd (Universo 6 — DBM)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "severity": "P0_CRITICAL",
+        "issueType": "DEPRECATED_CROSS_REFERENCE",
+        "affectedField": "parent_team_profile ('kat-syd-u6-dbm')",
+        "referencedDeprecatedId": "kat-syd-u6-dbm",
+        "resolutionType": "remove_deprecated_reference",
+        "blockedProposals": [
+          "PROHIBIDO: Reemplazar parent_team_profile por kat-u6-individual (Kat es una combatiente individual hermana, no un perfil grupal ni equipo)."
+        ],
+        "justification": "El campo parent_team_profile apuntaba a la ficha grupal archivada kat-syd-u6-dbm. Debe nulificarse (null), preservando la afiliación textual sin enlaces inválidos.",
+        "actionPlan": "Fijar parent_team_profile = null. Mantener team_affiliation descriptivo."
+      }
+    ],
+    "p1EnrichmentQueue": [],
+    "p2NarrativeQueueSummary": {
+      "description": "Los 756 personajes activos cuentan con arsenal completo, velocidad, durabilidad, debilidades y haxTags; sin embargo, el campo 'passives' se encuentra vacío por defecto a nivel de datos crudos. Se clasifica como P2 (mejora narrativa y táctica incremental sin riesgo de rotura).",
+      "totalQueueCount": 753
+    },
+    "deprecatedReferenceViolations": [
+      {
+        "sourceCharacterId": "dr-raichi-dbm-u3",
+        "targetDeprecatedId": "rey-vegeta-dbm-u13",
+        "affectedField": "teamCombos[1].partners",
+        "resolution": "remove_deprecated_reference",
+        "blockedReplacement": "king-vegeta-u10-dbm",
+        "remediationAction": "Remover la referencia a 'rey-vegeta-dbm-u13' sin sustitución por King Vegeta U10. Mantener el combo como nota táctica o remover el partner deprecado."
+      },
+      {
+        "sourceCharacterId": "kat-u6-individual",
+        "targetDeprecatedId": "kat-syd-u6-dbm",
+        "affectedField": "parent_team_profile",
+        "resolution": "remove_deprecated_reference",
+        "blockedReplacement": "syd-u6-individual",
+        "remediationAction": "Establecer parent_team_profile en null. Preservar team_affiliation: 'Clan de Bojack (Universo 6)' como metadato textual."
+      },
+      {
+        "sourceCharacterId": "syd-u6-individual",
+        "targetDeprecatedId": "kat-syd-u6-dbm",
+        "affectedField": "parent_team_profile",
+        "resolution": "remove_deprecated_reference",
+        "blockedReplacement": "kat-u6-individual",
+        "remediationAction": "Establecer parent_team_profile en null. Preservar team_affiliation: 'Clan de Bojack (Universo 6)' como metadato textual."
+      }
+    ],
+    "firstEnrichmentBatchTop40": [
+      {
+        "priorityIndex": 1,
+        "recordId": "dr-raichi-dbm-u3",
+        "name": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "4-B",
+        "formsCount": 2,
+        "enrichmentFocus": "Modelo Comandante Fantasma + Ghost Archive + Saneamiento de Referencia Deprecada"
+      },
+      {
+        "priorityIndex": 2,
+        "recordId": "giorno-giovanna-ger-jojo-gg001",
+        "name": "Giorno Giovanna (GER)",
+        "universe": "JoJo's Bizarre Adventure",
+        "baseTier": "Tier 8-C Físico",
+        "formsCount": 2,
+        "enrichmentFocus": "Modelo GER / Return to Zero Desacoplado"
+      },
+      {
+        "priorityIndex": 3,
+        "recordId": "giorno-giovanna-jojo-va",
+        "name": "Giorno Giovanna",
+        "universe": "JoJo's Bizarre Adventure",
+        "baseTier": "8-C",
+        "formsCount": 1,
+        "enrichmentFocus": "Modelo Stand Base / Gold Experience"
+      },
+      {
+        "priorityIndex": 4,
+        "recordId": "funny-valentine-jojo-sbr",
+        "name": "Funny Valentine",
+        "universe": "JoJo's Bizarre Adventure",
+        "baseTier": "8-C",
+        "formsCount": 1,
+        "enrichmentFocus": "Modelo D4C / Love Train Causal"
+      },
+      {
+        "priorityIndex": 5,
+        "recordId": "son-goku-mini-daima-full",
+        "name": "Son Goku (Daima — Mini)",
+        "universe": "Dragon Ball Daima",
+        "baseTier": "4-B",
+        "formsCount": 5,
+        "enrichmentFocus": "Resolución SSJ4 Primal What-If / Flag de Aislamiento"
+      },
+      {
+        "priorityIndex": 6,
+        "recordId": "son-goku-adulto-daima",
+        "name": "Son Goku (Daima — Adulto)",
+        "universe": "Dragon Ball Daima",
+        "baseTier": "4-B",
+        "formsCount": 5,
+        "enrichmentFocus": "Resolución SSJ4 Primal What-If / Flag de Aislamiento"
+      },
+      {
+        "priorityIndex": 7,
+        "recordId": "tamagami-1-espada-daima",
+        "name": "Tamagami #1 (Espada)",
+        "universe": "Dragon Ball Daima",
+        "baseTier": "4-B",
+        "formsCount": 1,
+        "enrichmentFocus": "Enriquecimiento de Arsenal Demoníaco y Sincronización Daima"
+      },
+      {
+        "priorityIndex": 8,
+        "recordId": "tamagami-n-mero-1-dragon-ball-daima-763",
+        "name": "Tamagami Número 1",
+        "universe": "Dragon Ball Daima",
+        "baseTier": "4-B",
+        "formsCount": 2,
+        "enrichmentFocus": "Enriquecimiento Táctico / Congelamiento de Escala"
+      },
+      {
+        "priorityIndex": 9,
+        "recordId": "kat-u6-individual",
+        "name": "Kat (Universo 6 — DBM)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "5-B",
+        "formsCount": 1,
+        "enrichmentFocus": "Saneamiento de Referencia Deprecada + Sinergia U6"
+      },
+      {
+        "priorityIndex": 10,
+        "recordId": "syd-u6-individual",
+        "name": "Syd (Universo 6 — DBM)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "5-B",
+        "formsCount": 1,
+        "enrichmentFocus": "Saneamiento de Referencia Deprecada + Sinergia U6"
+      },
+      {
+        "priorityIndex": 11,
+        "recordId": "gohan-u16-dbm-espectador",
+        "name": "Gohan (Universo 16, Espectador Notable)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "4-B",
+        "formsCount": 3,
+        "enrichmentFocus": "Enriquecimiento de 3 Formas (Base, Furia Padre, Místico)"
+      },
+      {
+        "priorityIndex": 12,
+        "recordId": "vegetto-dbm-u16",
+        "name": "Vegetto (Multiverse — U16)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-A",
+        "formsCount": 4,
+        "enrichmentFocus": "Enriquecimiento de SSJ1, SSJ2 y SSJ3 DBM"
+      },
+      {
+        "priorityIndex": 13,
+        "recordId": "son-bra-dbm-u16",
+        "name": "Son Bra (Multiverse — U16)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-C",
+        "formsCount": 4,
+        "enrichmentFocus": "Mecánicas de Descontrol / Majin Bra / SSJ2"
+      },
+      {
+        "priorityIndex": 14,
+        "recordId": "zen-buu-dbm-u4",
+        "name": "Zen Buu (Multiverse — U4)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-A",
+        "formsCount": 2,
+        "enrichmentFocus": "Omnipresencia de Partes / Absorción Multiversal"
+      },
+      {
+        "priorityIndex": 15,
+        "recordId": "gast-carcolh-dbm-u7",
+        "name": "Gast Carcolh (Multiverse — U7)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-C",
+        "formsCount": 1,
+        "enrichmentFocus": "Magia Namekiana Ancestral / Anulación de Ki"
+      },
+      {
+        "priorityIndex": 16,
+        "recordId": "cell-dbm-u17",
+        "name": "Cell (Multiverse — U17)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-C",
+        "formsCount": 3,
+        "enrichmentFocus": "Zenkai Infinito / Regeneración Celular DBM"
+      },
+      {
+        "priorityIndex": 17,
+        "recordId": "kakarotto-dbm-u13",
+        "name": "Kakarotto (Universo 13)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "4-C",
+        "formsCount": 4,
+        "enrichmentFocus": "Inmortalidad Sayayin / Oozaru Dorado DBM"
+      },
+      {
+        "priorityIndex": 18,
+        "recordId": "vegeta-u13-dbm",
+        "name": "Vegeta (Universo 13)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "4-C",
+        "formsCount": 4,
+        "enrichmentFocus": "Saga Saiyajin U13 / SSJ3 Tirano"
+      },
+      {
+        "priorityIndex": 19,
+        "recordId": "raditz-mistico-dbm-u13",
+        "name": "Raditz (Universo 13)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "5-A",
+        "formsCount": 2,
+        "enrichmentFocus": "Estado Místico Desbloqueado por Rou Dai Kaioshin"
+      },
+      {
+        "priorityIndex": 20,
+        "recordId": "broly-u20-dbm-congelado",
+        "name": "Broly (Universo 20 — DBM, Superviviente Congelado)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-B",
+        "formsCount": 3,
+        "enrichmentFocus": "Ki Creciente Infinito / Bloque de Hielo Primordial"
+      },
+      {
+        "priorityIndex": 21,
+        "recordId": "son-goku-saga-cell-saga-androides-459",
+        "name": "Son Goku (Saga Cell)",
+        "universe": "Dragon Ball Z",
+        "baseTier": "4-B",
+        "formsCount": 3,
+        "enrichmentFocus": "SSJ Full Power / Shunkan Ido Kamehameha"
+      },
+      {
+        "priorityIndex": 22,
+        "recordId": "vegeta-majin-ssj2-895",
+        "name": "Majin Vegeta (Saga Buu)",
+        "universe": "Dragon Ball Z",
+        "baseTier": "3-A",
+        "formsCount": 4,
+        "enrichmentFocus": "Control Mental Babidi / Final Explosion"
+      },
+      {
+        "priorityIndex": 23,
+        "recordId": "cell-saga-androides-98",
+        "name": "Cell",
+        "universe": "Dragon Ball Z",
+        "baseTier": "4-B",
+        "formsCount": 5,
+        "enrichmentFocus": "Progresión de Absorción 17 y 18 a Perfecto"
+      },
+      {
+        "priorityIndex": 24,
+        "recordId": "freezer-torneo-del-poder-dbs",
+        "name": "Freezer (Dragon Ball Super — Torneo del Poder)",
+        "universe": "Dragon Ball Super",
+        "baseTier": "3-A",
+        "formsCount": 6,
+        "enrichmentFocus": "Golden Freezer Autocontrolado / Jaula de Energía"
+      },
+      {
+        "priorityIndex": 25,
+        "recordId": "broly-dbs-dragon-ball-super-172",
+        "name": "Broly (DBS)",
+        "universe": "Dragon Ball Super",
+        "baseTier": "3-A",
+        "formsCount": 4,
+        "enrichmentFocus": "Modo Ikari / Super Saiyan Full Power Canon"
+      },
+      {
+        "priorityIndex": 26,
+        "recordId": "black-freezer-manga-granolah",
+        "name": "Black Freezer (Manga de Dragon Ball Super — Saga de Granolah)",
+        "universe": "Dragon Ball Super",
+        "baseTier": "2-C",
+        "formsCount": 2,
+        "enrichmentFocus": "10 Años de Entrenamiento / One-Shot Hakaishin"
+      },
+      {
+        "priorityIndex": 27,
+        "recordId": "cell-max-dragon-ball-super-993",
+        "name": "Cell Max",
+        "universe": "Dragon Ball Super",
+        "baseTier": "2-C",
+        "formsCount": 2,
+        "enrichmentFocus": "Punto Débil Craneal / Destrucción Descontrolada"
+      },
+      {
+        "priorityIndex": 28,
+        "recordId": "baby-god-brokoly",
+        "name": "Super Baby Vegeta (Baby God)",
+        "universe": "Dragon Ball (Fan-Mangas & What-If)",
+        "baseTier": "3-A",
+        "formsCount": 3,
+        "enrichmentFocus": "Infección Divina Tsufuru / Bola de Rencor Divina"
+      },
+      {
+        "priorityIndex": 29,
+        "recordId": "youpi-hxh-ca",
+        "name": "Menthuthuyoupi (Youpi)",
+        "universe": "Hunter x Hunter",
+        "baseTier": "7-A",
+        "formsCount": 2,
+        "enrichmentFocus": "Metamorfosis Fisiológica / Rage Incarnate"
+      },
+      {
+        "priorityIndex": 30,
+        "recordId": "kenjaku-jjk",
+        "name": "Kenjaku",
+        "universe": "Jujutsu Kaisen",
+        "baseTier": "7-A",
+        "formsCount": 2,
+        "enrichmentFocus": "Dominio Womb Profusion / Gravedad Antigravitatoria"
+      },
+      {
+        "priorityIndex": 31,
+        "recordId": "son-gohan-joven-saga-androides-cell-945",
+        "name": "Son Gohan (Joven / Cell Games)",
+        "universe": "Dragon Ball Z",
+        "baseTier": "4-B",
+        "formsCount": 3,
+        "enrichmentFocus": "Despertar SSJ2 por Ira / Padre e Hijo Kamehameha"
+      },
+      {
+        "priorityIndex": 32,
+        "recordId": "trunks-futuro-v3-saga-buu-ssj2",
+        "name": "Trunks del Futuro (Continuidad Extendida Post-Cell — SSJ Perfeccionado y SSJ2)",
+        "universe": "Dragon Ball Z",
+        "baseTier": "4-B",
+        "formsCount": 4,
+        "enrichmentFocus": "Espada Z / Masenko Futuro / SSJ2"
+      },
+      {
+        "priorityIndex": 33,
+        "recordId": "mecha-freezer-saga-androides-514",
+        "name": "Mecha Freezer (Dragon Ball Z — Llegada de los Androides)",
+        "universe": "Dragon Ball Z",
+        "baseTier": "4-B",
+        "formsCount": 2,
+        "enrichmentFocus": "Partes Cibernéticas / Rayo Letal Mecánico"
+      },
+      {
+        "priorityIndex": 34,
+        "recordId": "cooler-u8-dbm",
+        "name": "Cooler (Continuidad Universo 8, Imperio Intacto)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "4-B",
+        "formsCount": 1,
+        "enrichmentFocus": "Superviviente Tirano / Quinta Forma Acórica"
+      },
+      {
+        "priorityIndex": 35,
+        "recordId": "lord-slug-pel-culas-dbz-toei-952",
+        "name": "Lord Slug",
+        "universe": "Dragon Ball Z — Películas y OVAs",
+        "baseTier": "4-C",
+        "formsCount": 2,
+        "enrichmentFocus": "Namekiano Mutante / Debilidad Sonora a Silbidos"
+      },
+      {
+        "priorityIndex": 36,
+        "recordId": "turles-dbz-toei",
+        "name": "Turles",
+        "universe": "Dragon Ball Z — Películas y OVAs",
+        "baseTier": "4-C",
+        "formsCount": 1,
+        "enrichmentFocus": "Kill Driver / Árbol Sagrado de la Vida"
+      },
+      {
+        "priorityIndex": 37,
+        "recordId": "bojack-dbm",
+        "name": "Bojack (Continuidad Universo 6)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "4-B",
+        "formsCount": 1,
+        "enrichmentFocus": "Sello de los Kaioshins / Gran Smash Hera"
+      },
+      {
+        "priorityIndex": 38,
+        "recordId": "rey-vegeta-clasico",
+        "name": "Rey Vegeta (Padre de Vegeta)",
+        "universe": "Dragon Ball Z",
+        "baseTier": "5-C",
+        "formsCount": 1,
+        "enrichmentFocus": "Orgullo de la Casta Real / Cañón Galick Real"
+      },
+      {
+        "priorityIndex": 39,
+        "recordId": "tidar-u19-individual",
+        "name": "Tidar (Universo 19 — DBM)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "5-A",
+        "formsCount": 1,
+        "enrichmentFocus": "Armadura Heloïte / Hoja de Dios de Un Solo Uso"
+      },
+      {
+        "priorityIndex": 40,
+        "recordId": "uub-dbm",
+        "name": "Uub (Versión DBM, Técnicas Fusionadas)",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "baseTier": "3-A",
+        "formsCount": 1,
+        "enrichmentFocus": "Kaio-ken Trascendente / Magia de Buu Integrada"
+      }
+    ]
+  },
+  "lote5_audit_infrastructure_and_patcher": {
+    "title": "LOTE 5 — Actualización de Infraestructura de Auditoría y Patcher V25",
+    "baselineRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V25.json",
+    "p0ImplementationItems": [
+      {
+        "id": "INFRA-P0-001",
+        "file": "src/scripts/runAutonomousAudit.js",
+        "exactChange": "Cambiar import y lectura por defecto de V22_FILE a V25_FILE ({ meta, characters, deprecatedRecords }). Eliminar toda referencia activa a V22 en el system prompt de la IA. Implementar detención bloqueante si V25 no existe o no tiene 756 activos y 13 archivados.",
+        "riskMitigated": "Evita que auditorías nocturnas generen reportes desfasados o clasifiquen como errores inconsistencias que ya fueron corregidas en V23, V24 y V25.",
+        "readOnlyTestRequired": "Ejecutar en seco runAutonomousAudit con mock de OpenRouter y verificar que carga 756 registros activos.",
+        "priority": "P0"
+      },
+      {
+        "id": "INFRA-P0-002",
+        "file": "src/scripts/rosterCanonicalValidator.js",
+        "exactChange": "Actualizar la función auditRoster() para que reciba y valide la estructura { meta, characters, deprecatedRecords }. Verificar la invariante 756 + 13 === 769. Desactivar el flag destructivo --fix en modo de escritura directa sobre characters.js.",
+        "riskMitigated": "Impide que validadores locales corrompan characters.js reintroduciendo personajes deprecados o recalculando Ki arbitrariamente.",
+        "readOnlyTestRequired": "Ejecutar node src/scripts/rosterCanonicalValidator.js en modo check y confirmar salida limpia sin mutación.",
+        "priority": "P0"
+      },
+      {
+        "id": "INFRA-P0-003",
+        "file": "src/scripts/applyEnrichmentPatches.js",
+        "exactChange": "Implementar interceptor estricto que rechace cualquier patch con campos protegidos (id, franchise, universe, saga, baseTier, baseKiNumeric, forms, tiers, multiplier, changeLog). Exigir validación previa de SHA-256 de V25.",
+        "riskMitigated": "Blindaje contra inyección accidental de cambios de tier, multiplicadores o eliminación de transformaciones en personajes consolidados.",
+        "readOnlyTestRequired": "Intentar aplicar un dummy patch que intente modificar baseTier y verificar que es rechazado con código 1.",
+        "priority": "P0"
+      },
+      {
+        "id": "INFRA-P0-004",
+        "file": "APLICAR_PARCHES_AL_ROSTER.bat",
+        "exactChange": "Eliminar cualquier comando automático de deploy a Vercel o git push tras aplicar parches. Limitar el script a validación local y generación de logs.",
+        "riskMitigated": "Previene despliegues no supervisados a producción durante pruebas de parcheo local.",
+        "readOnlyTestRequired": "Inspección estática de las líneas del archivo .bat para confirmar ausencia de 'vercel --prod' o 'git push'.",
+        "priority": "P0"
+      },
+      {
+        "id": "INFRA-P0-005",
+        "file": "src/scripts/runAutonomousTask.js",
+        "exactChange": "Agregar comprobación inicial bloqueante que verifique la presencia de src/data/ROSTER_NIVELES_PODER_CORREGIDO_V25.json. Si no existe, abortar inmediatamente sin fallback silencioso a V22 ni characters.js.",
+        "riskMitigated": "Elimina la degradación silenciosa a versiones antiguas obsoletas.",
+        "readOnlyTestRequired": "Simular ausencia de V25 en variable de entorno y verificar detención inmediata.",
+        "priority": "P0"
+      }
+    ],
+    "p1ImplementationItems": [
+      {
+        "id": "INFRA-P1-001",
+        "file": "src/scripts/interactiveEnricher.js y launchers asociados",
+        "exactChange": "Actualizar encabezados e interfaces interactivas para reportar explícitamente: 'Baseline Operativo: V25 (756 Activos · 13 Archivados)'.",
+        "riskMitigated": "Claridad operativa para el desarrollador durante sesiones de enriquecimiento manual.",
+        "readOnlyTestRequired": "Verificar renderizado del prompt de inicio interactivo.",
+        "priority": "P1"
+      },
+      {
+        "id": "INFRA-P1-002",
+        "file": "src/services/needsReviewService.js",
+        "exactChange": "Exportar el listado formal de los 6 pending gates para que la UI de desarrollo o el centro de control los visualice como bloqueos protegidos.",
+        "riskMitigated": "Evita que un revisor intente editar manualmente los casos protegidos de Tamagami, Giorno, Valentine, Raichi o SSJ4 Primal sin protocolo.",
+        "readOnlyTestRequired": "Importar needsReviewService y verificar que pendingGates coincide con el backlog oficial.",
+        "priority": "P1"
+      },
+      {
+        "id": "INFRA-P1-003",
+        "file": "Suite completa de scripts de auditoría nocturna",
+        "exactChange": "Configurar todo el subsistema para que cualquier output generado sea un archivo JSON dentro de src/data/enrichmentDrafts/ con status PROPOSAL_ONLY_NOT_APPLIED.",
+        "riskMitigated": "Garantiza que ninguna ejecución autónoma nocturna pueda mutar el roster activo.",
+        "readOnlyTestRequired": "Ejecutar ciclo de auditoría y comprobar que no se crean archivos fuera de enrichmentDrafts/.",
+        "priority": "P1"
+      }
+    ]
+  },
+  "recommendedImplementationBatches": [
+    {
+      "batchId": "BATCH-A1",
+      "title": "Saneamiento Seguro de Referencias Deprecadas (P0)",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "scopeDescription": "Resolución limpia y estricta de las 3 referencias residuales hacia IDs deprecados mediante remove_deprecated_reference (nulificación de parent_team_profile en kat-u6 y syd-u6, y remoción de rey-vegeta-dbm-u13 en dr-raichi-dbm-u3 sin reemplazos ilegítimos).",
+      "possibleFilesToModify": [
+        "src/data/characters.js"
+      ],
+      "allowedFields": [
+        "parent_team_profile",
+        "teamCombos"
+      ],
+      "blockedFields": [
+        "id",
+        "franchise",
+        "universe",
+        "saga",
+        "baseTier",
+        "baseKiNumeric",
+        "forms",
+        "tiers",
+        "multiplier",
+        "changeLog"
+      ],
+      "validations": [
+        "INITIAL_CHARACTERS.length === 756",
+        "DEPRECATED_RECORD_IDS.size === 13",
+        "Cero referencias a IDs deprecados en el JSON serializado de characters",
+        "kat-u6-individual.parent_team_profile === null",
+        "syd-u6-individual.parent_team_profile === null",
+        "npm run build exitoso"
+      ],
+      "blockingConditions": [
+        "Cualquier intento de sustitución arbitraria de IDs deprecados por otros personajes no equivalentes."
+      ],
+      "requiresDeployAfterApply": true
+    },
+    {
+      "batchId": "BATCH-A2",
+      "title": "Propuesta de Enriquecimiento Táctico de Dr. Raichi",
+      "status": "REQUIRES_GHOST_ARCHIVE_APPROVAL",
+      "scopeDescription": "Inyección controlada de campos tácticos del modelo Ghost Tuffle Commander en dr-raichi-dbm-u3, vinculando el ghostArchive auditado según niveles de evidencia (confirmed_dbm_onscreen, confirmed_dbm_lore, roster_reference_only).",
+      "possibleFilesToModify": [
+        "src/data/characters.js"
+      ],
+      "allowedFields": [
+        "arsenal",
+        "passives",
+        "haxTags",
+        "weaknesses",
+        "artifacts",
+        "synergies",
+        "teamCombos",
+        "combatStatuses",
+        "arenaAffinities",
+        "narrativeCombatProfile"
+      ],
+      "blockedFields": [
+        "id",
+        "franchise",
+        "universe",
+        "saga",
+        "baseTier",
+        "baseKiNumeric",
+        "forms",
+        "tiers",
+        "multiplier",
+        "changeLog"
+      ],
+      "validations": [
+        "dr-raichi-dbm-u3 mantiene baseKiNumeric 24518 y baseTier 4-B",
+        "forms[1] ghost-broly-unleashed permanece inalterada en V25",
+        "ghostArchive clasificado estrictamente por evidenceLevel",
+        "npm run build exitoso"
+      ],
+      "blockingConditions": [
+        "REQUIRES_GHOST_ARCHIVE_APPROVAL: Bloqueado hasta aprobación formal del Ghost Archive reclasificado.",
+        "Cualquier intento de mutar formas o Ki de Raichi."
+      ],
+      "requiresDeployAfterApply": true
+    },
+    {
+      "batchId": "BATCH-B",
+      "title": "Modelos HaxProfile Desacoplados (Giorno, Valentine y Raichi)",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "scopeDescription": "Incorporación del esquema formal haxProfile en las fichas de Giorno Giovanna (Return to Zero) y Funny Valentine (D4C Love Train), desvinculando conceptualmente su invulnerabilidad del Ki numérico sin alterar sus estadísticas físicas.",
+      "possibleFilesToModify": [
+        "src/data/characters.js",
+        "src/services/simulationEngine.js"
+      ],
+      "allowedFields": [
+        "haxProfile",
+        "haxTags",
+        "passives",
+        "weaknesses",
+        "narrativeCombatProfile"
+      ],
+      "blockedFields": [
+        "id",
+        "baseTier",
+        "baseKiNumeric",
+        "forms",
+        "multiplier",
+        "franchise",
+        "universe",
+        "saga"
+      ],
+      "validations": [
+        "Giorno mantiene baseKiNumeric 1365 y Tier 8-C",
+        "Valentine mantiene baseKiNumeric 1292 y Tier 8-C",
+        "simulationEngine resuelve Return to Zero y Love Train como reglas causales",
+        "npm run build exitoso"
+      ],
+      "blockingConditions": [
+        "Falta de aprobación explícita de usuario para la unificación de giorno-giovanna-ger-jojo-gg001 y giorno-giovanna-jojo-va.",
+        "Cualquier intento de crear formas multiplicativas para Love Train o GER."
+      ],
+      "requiresDeployAfterApply": true
+    },
+    {
+      "batchId": "BATCH-C",
+      "title": "Actualización de Infraestructura de Auditoría y Patcher Seguro",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "scopeDescription": "Implementación de los cambios P0 y P1 en los scripts de auditoría y parcheo para fijar V25 como baseline inmutable y eliminar el riesgo de auto-mutaciones o despliegues automáticos.",
+      "possibleFilesToModify": [
+        "src/scripts/runAutonomousAudit.js",
+        "src/scripts/rosterCanonicalValidator.js",
+        "src/scripts/applyEnrichmentPatches.js",
+        "src/scripts/runAutonomousTask.js",
+        "src/scripts/interactiveEnricher.js",
+        "src/services/needsReviewService.js",
+        "APLICAR_PARCHES_AL_ROSTER.bat"
+      ],
+      "allowedFields": [
+        "N/A (Archivos de scripts e infraestructura)"
+      ],
+      "blockedFields": [
+        "No modificar ningún archivo dentro de src/data/ROSTER_NIVELES_PODER_CORREGIDO_*.json"
+      ],
+      "validations": [
+        "runAutonomousAudit lee V25 y emite proposals en enrichmentDrafts/",
+        "rosterCanonicalValidator valida 756 + 13 === 769",
+        "applyEnrichmentPatches bloquea mutación de campos protegidos",
+        "APLICAR_PARCHES_AL_ROSTER.bat no contiene comandos de git push ni deploy"
+      ],
+      "blockingConditions": [
+        "Cualquier fallo en la validación read-only de V25."
+      ],
+      "requiresDeployAfterApply": false
+    },
+    {
+      "batchId": "BATCH-D",
+      "title": "Resolución Editorial de SSJ4 Primal Daima What-If",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "scopeDescription": "Implementación de la alternativa seleccionada por el usuario (A, B o C) para las formas SSJ4 Primal de Goku Mini y Goku Adulto Daima.",
+      "possibleFilesToModify": [
+        "src/data/characters.js",
+        "src/data/ROSTER_NIVELES_PODER_CORREGIDO_V26.json (solo si se aprueba Alternativa B en nueva versión)"
+      ],
+      "allowedFields": [
+        "forms (metadatos o flags de What-If)",
+        "isWhatIf",
+        "migrationGate"
+      ],
+      "blockedFields": [
+        "No modificar Ki numérico ni multiplicadores de las formas en Daima sin aprobación explícita."
+      ],
+      "validations": [
+        "Ambas formas conservan 4.200.000.000 Ki y multiplicador x4000",
+        "Si se mantiene Alternativa A: 5 formas intactas en UI con badge What-If",
+        "Si se aprueba Alternativa B: 4 formas canónicas en Daima + 1 ficha nueva en What-If"
+      ],
+      "blockingConditions": [
+        "Bloqueo estricto obligatorio: Este lote NO PUEDE EJECUTARSE sin la aprobación manual explícita del usuario para una de las tres alternativas."
+      ],
+      "requiresDeployAfterApply": true
+    }
+  ],
+  "pendingManualGates": [
+    {
+      "gateId": "GATE-001-TAMAGAMI-SOURCE",
+      "title": "Tamagami #1: Resolución de Discrepancia de Escala (634.2M vs 1.11B)",
+      "status": "BLOCKED_BY_SOURCE",
+      "reason": "Ausencia de databooks oficiales de Dragon Ball Daima para dirimir la potencia real del Guardián #1. Se retienen ambos registros sin cambios numéricos."
+    },
+    {
+      "gateId": "GATE-002-GIORNO-MODEL",
+      "title": "Giorno Giovanna: Aprobación de Ficha Unificada y Hax Causal Desacoplado",
+      "status": "PENDING_USER_APPROVAL",
+      "reason": "Requiere decisión del usuario para archivar el stub gg001 y gobernar GER exclusivamente mediante haxProfile en giorno-giovanna-jojo-va."
+    },
+    {
+      "gateId": "GATE-003-VALENTINE-MODEL",
+      "title": "Funny Valentine: Aprobación de Modelo D4C y Love Train Causal",
+      "status": "PENDING_USER_APPROVAL",
+      "reason": "Requiere decisión del usuario para estandarizar la invulnerabilidad de Love Train sin multiplicadores de Ki en funny-valentine-jojo-sbr."
+    },
+    {
+      "gateId": "GATE-004-RAICHI-MODEL",
+      "title": "Dr. Raichi: Aprobación del Modelo Invocador Tsufuru y Ghost Archive",
+      "status": "PENDING_USER_APPROVAL",
+      "reason": "Requiere confirmación del usuario sobre el desacoplamiento biológico de Broly Fantasma y adopción de la biblioteca de invocaciones del Lote 1."
+    },
+    {
+      "gateId": "GATE-005-SSJ4-MINI",
+      "title": "SSJ4 Primal Daima (Mini): Selección de Alternativa (A, B o C)",
+      "status": "PENDING_USER_APPROVAL",
+      "reason": "Requiere elección explícita entre retención in-situ con gate, escisión a ficha What-If independiente o archivado."
+    },
+    {
+      "gateId": "GATE-006-SSJ4-ADULTO",
+      "title": "SSJ4 Primal Daima (Adulto): Selección de Alternativa (A, B o C)",
+      "status": "PENDING_USER_APPROVAL",
+      "reason": "Requiere elección explícita entre retención in-situ con gate, escisión a ficha What-If independiente o archivado."
+    }
+  ],
+  "operationalConstraintsConfirmation": {
+    "absoluteReadOnlyMode": true,
+    "noGitAddCommitOrPush": true,
+    "noDeployToVercel": true,
+    "noFileMutationsOutsidePlan": true,
+    "v22V23V24V25Untouched": true,
+    "charactersJsUntouched": true,
+    "appJsxUntouched": true
+  }
+}

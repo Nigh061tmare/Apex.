@@ -18,7 +18,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../../');
 
 const CHARACTERS_FILE = path.join(projectRoot, 'src/data/characters.js');
-const OUTPUT_DIR = path.join(projectRoot, 'src/data');
+const OUTPUT_DIR = path.join(projectRoot, 'src/data/enrichmentDrafts');
 const PROXY_PORT = 4097;
 
 // CLI arguments
@@ -68,13 +68,18 @@ SYSTEM_PROMPT_MASTER += `\n\nTu misión es transformar cada personaje del lote e
    - PROHIBICIÓN ABSOLUTA DE FORMAS ESPURIAS Y MODOS INVENTADOS:
      * ESTRICTAMENTE PROHIBIDO crear formas artificiales llamadas "Estado Base (100% Máximo Poder)", "Estado Base (Poder Desatado / Sin Contención)" o similares en personajes que ya cuentan con transformaciones reales.
      * SOLO personajes cuya transformación canónica de autor sea explícitamente el 100% muscular (ej. Freezer Forma Final 100%, Maestro Roshi Máximo Poder, Toguro 100%) pueden llevar esa forma.
-   - PARA CADA FORMA DECLARAR:
-     * id, name canónico descriptivo y category ("transformation" | "state_amp" | "hax_mode" | "degradation_state").
-     * apexKiMultiplier (1.0 para base, factor correspondiente para superiores, <1.0 para debuffs).
-     * tier y tierExact escalado según el nuevo nivel de potencia.
-     * activationCondition, durationLimit, staminaDrain (gasto por turno) y drawbacks (fatiga, daño muscular, tiempo).
-     * combatModifiers: { initiative, hitChance, dodgeChance, defensePenetration }.
-     * canonStatus: "source_backed" para canónicas oficiales, "apex_custom" solo para What-Ifs.
+    - PARA CADA FORMA DECLARAR:
+      * id, name canónico descriptivo y category ("transformation" | "state_amp" | "hax_mode" | "degradation_state").
+      * apexKiMultiplier (1.0 para base, factor correspondiente para superiores, <1.0 para debuffs).
+      * tier y tierExact escalado según el nuevo nivel de potencia (FORMATO ESTRICTO OBLIGATORIO: ^(High |Low )?\\d{1,2}-[ABC]$ sin "+", sin sufijos ni paréntesis).
+      * activationCondition, durationLimit, staminaDrain (gasto por turno) y drawbacks (fatiga, daño muscular, tiempo).
+      * combatModifiers: { initiative, hitChance, dodgeChance, defensePenetration }.
+      * canonStatus: "source_backed" para canónicas oficiales, "apex_custom" solo para What-Ifs.
+    - REGLA DE ORO V25 — INVARIANTES CONSTITUCIONALES DEL ROSTER:
+      * Ki y Tier monótonos crecientes dentro del mismo powerTree.
+      * Prohibido modificar Ki o multiplicadores como atajo para arreglar un Tier; la corrección por defecto es ajustar el Tier.
+      * Aislamiento absoluto de entidades externas (bodyStatIsolation: true): las entidades invocadas NO alteran los stats corporales del propietario.
+      * Cero contaminación de plantillas: cada personaje debe tener estadísticas y nombres de formas propios y no clonados de Mark Grayson u otros.
 
 3. ARSENAL TÁCTICO CON FÍSICA DE STAMINA:
    - basicAttacks: Golpes marciales (coste 3-8 stamina, daño contundente/cortante).
@@ -210,26 +215,24 @@ SALIDA ESTRICTA: Devuelve EXCLUSIVAMENTE un objeto JSON válido con esquema:
 Sin markdown fuera del JSON, sin saludos, sin explicaciones.`;
 
 async function loadCharacters() {
-  // 1. Carga desde archivo JSON o JS externo si se especifica
-  if (TARGET_UNIVERSE && (TARGET_UNIVERSE.endsWith('.json') || TARGET_UNIVERSE.endsWith('.js'))) {
-    const targetPath = path.isAbsolute(TARGET_UNIVERSE) ? TARGET_UNIVERSE : path.resolve(projectRoot, TARGET_UNIVERSE);
-    if (fs.existsSync(targetPath)) {
-      console.log(`📂 Cargando lote de personajes desde archivo externo: ${targetPath}`);
-      if (targetPath.endsWith('.json')) {
-        const raw = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
-        return Array.isArray(raw) ? raw : (raw.characters || raw.records || [raw]);
-      } else {
-        const customMod = await import(pathToFileURL(targetPath).href);
-        return customMod.INITIAL_CHARACTERS || customMod.characters || [];
-      }
-    }
+  const V25_FILE = path.join(projectRoot, 'src/data/ROSTER_NIVELES_PODER_CORREGIDO_V25.json');
+  if (!fs.existsSync(V25_FILE)) {
+    throw new Error('Roster V25 no encontrado en ' + V25_FILE);
   }
 
-  // 2. Carga dinámica del Roster completo de APEX
-  const mod = await import(pathToFileURL(CHARACTERS_FILE).href);
-  let chars = mod.INITIAL_CHARACTERS || [];
+  const v25 = JSON.parse(fs.readFileSync(V25_FILE, 'utf8'));
+  const activeRecords = v25.characters || [];
+  const deprecatedRecords = v25.deprecatedRecords || [];
 
-  // 3. Filtrar por universo si no es 'all'
+  console.log('📌 V25 · 756 activos · 13 archivados');
+
+  if (activeRecords.length !== 756 || deprecatedRecords.length !== 13) {
+    throw new Error(`[ERROR BLOQUEANTE] Censo de V25 inválido: activos=${activeRecords.length}, deprecados=${deprecatedRecords.length}. Se esperan 756 activos y 13 archivados.`);
+  }
+
+  let chars = activeRecords;
+
+  // Filtrar por universo si no es 'all'
   if (TARGET_UNIVERSE && TARGET_UNIVERSE !== 'all') {
     chars = chars.filter(c => 
       (c.universe || '').toLowerCase().includes(TARGET_UNIVERSE.toLowerCase()) ||
@@ -456,6 +459,8 @@ async function main() {
               universe: TARGET_UNIVERSE,
               currentRound: currentRound,
               totalProcessed: end,
+              status: 'PROPOSAL_ONLY_NOT_APPLIED',
+              mode: 'DRAFT_PROPOSAL_ONLY',
               results: allResults,
               integrationPatch: allPatches
             }, null, 2), 'utf8');

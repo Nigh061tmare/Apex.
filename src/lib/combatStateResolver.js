@@ -174,6 +174,12 @@ export function resolveCombatState(character, activeStateId = 'base', scenario =
   if (validPositive(character.sourceKi)) {
     sourceKiBase   = character.sourceKi;
     sourceKiStatus = character.sourceKiStatus || 'verified';
+  } else if (validPositive(character.numericStats?.apexKi)) {
+    sourceKiBase   = character.numericStats.apexKi;
+    sourceKiStatus = 'character-stats';
+  } else if (validPositive(character.baseKiNumeric)) {
+    sourceKiBase   = character.baseKiNumeric;
+    sourceKiStatus = 'roster-base-ki';
   }
 
   // Para personajes DB sin sourceKi explícito, buscar en niveles canónicos conocidos
@@ -248,6 +254,10 @@ export function resolveCombatState(character, activeStateId = 'base', scenario =
       sourceKiCurrent = stateObj.explicitSourceKi;
     } else if (validPositive(stateObj.sourceKi)) {
       sourceKiCurrent = stateObj.sourceKi;
+    } else if (validPositive(stateObj.kiNumeric)) {
+      sourceKiCurrent = stateObj.kiNumeric;
+    } else if (validPositive(stateObj.apexKi)) {
+      sourceKiCurrent = stateObj.apexKi;
     } else if (sourceKiBase && validPositive(stateObj.sourceKiMultiplier)) {
       sourceKiCurrent = sourceKiBase * stateObj.sourceKiMultiplier;
     }
@@ -274,6 +284,12 @@ export function resolveCombatState(character, activeStateId = 'base', scenario =
         if (validPositive(character.numericStats?.apexKi)) {
           sourceKiBase = character.numericStats.apexKi;
           sourceKiCurrent = character.numericStats.apexKi;
+        } else if (validPositive(character.baseKiNumeric)) {
+          sourceKiBase = character.baseKiNumeric;
+          sourceKiCurrent = character.baseKiNumeric;
+        } else if (validPositive(stateObj?.kiNumeric)) {
+          sourceKiBase = stateObj.kiNumeric;
+          sourceKiCurrent = stateObj.kiNumeric;
         } else {
           const baseEnergyObj = getBaseEnergyFromTier(cleanActiveTier, character);
           if (validPositive(baseEnergyObj?.value)) {

@@ -7,6 +7,7 @@ import {
 import { SCENARIOS } from '../data/scenarios';
 import { SimulationEngine } from '../services/simulationEngine';
 import { getTranslation } from '../services/i18n';
+import { evaluateInterdimensionalModifiers, DEFAULT_BRIDGE_CONFIG } from '../lib/crossFranchiseBridge';
 
 const STORAGE_KEY_CUSTOM_SCENARIOS = 'apex_custom_scenarios';
 
@@ -30,6 +31,7 @@ export default function ScenarioPanel({
   const [isGeneratingArena, setIsGeneratingArena] = useState(false);
   const [arenaSearch, setArenaSearch] = useState('');
   const [universeFilter, setUniverseFilter] = useState('Todos');
+  const [showBridgePanel, setShowBridgePanel] = useState(false);
   const [customScenarios, setCustomScenarios] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_CUSTOM_SCENARIOS);
@@ -505,6 +507,112 @@ export default function ScenarioPanel({
         </div>
       </div>
 
+      {/* APEX Cross-Franchise Scaling Bridge (Protocolo de Choque Interdimensional) */}
+      <div className="p-3.5 rounded-xl bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border border-indigo-500/40 space-y-3 font-mono text-xs">
+        <div className="flex items-center justify-between cursor-pointer" onClick={() => setShowBridgePanel(!showBridgePanel)}>
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-lg bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+              <Sparkles className="w-4 h-4" />
+            </span>
+            <div>
+              <span className="text-xs font-bold text-indigo-300 block">
+                🌉 PROTOCOLO DE CHOQUE INTER-DIMENSIONAL (ARBITRAJE MULTIVERSAL)
+              </span>
+              <span className="text-[10px] text-slate-400">
+                Reglas canónicas de Ki vs Hax conceptual, interacción con Stands e intangibilidad
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="px-2 py-1 rounded bg-indigo-950 border border-indigo-500/40 text-indigo-300 text-[10px] font-bold"
+          >
+            {showBridgePanel ? 'Plegar Reglas ▲' : 'Configurar Arbitraje ▼'}
+          </button>
+        </div>
+
+        {showBridgePanel && (
+          <div className="pt-2 border-t border-indigo-950/60 space-y-3 animate-fade-in">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px]">
+              {/* Válvula de Ki vs Hax */}
+              <label className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 flex items-start gap-2 cursor-pointer hover:border-indigo-500/50">
+                <input
+                  type="checkbox"
+                  checked={modifiers.bridgeConfig?.kiSupremacyOverHax ?? true}
+                  onChange={(e) => setModifiers(prev => ({
+                    ...prev,
+                    bridgeConfig: { ...(prev.bridgeConfig || DEFAULT_BRIDGE_CONFIG), kiSupremacyOverHax: e.target.checked }
+                  }))}
+                  className="rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500 mt-0.5"
+                />
+                <div>
+                  <span className="font-bold text-indigo-300 block">Válvula Ki vs Hax</span>
+                  <span className="text-[10px] text-slate-400 leading-tight block">
+                    Una brecha de ≥2 Tiers o Ki colosal atenúa en un 85% parálisis y control mental.
+                  </span>
+                </div>
+              </label>
+
+              {/* Stands & Espíritus */}
+              <div className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1">
+                <span className="font-bold text-indigo-300 block text-[11px]">Interacción de Stands (JoJo)</span>
+                <select
+                  value={modifiers.bridgeConfig?.standInteraction || 'spiritual_equivalence'}
+                  onChange={(e) => setModifiers(prev => ({
+                    ...prev,
+                    bridgeConfig: { ...(prev.bridgeConfig || DEFAULT_BRIDGE_CONFIG), standInteraction: e.target.value }
+                  }))}
+                  className="w-full bg-slate-900 border border-slate-700 rounded p-1 text-slate-200 text-[10px] font-mono"
+                >
+                  <option value="spiritual_equivalence">Equivalencia Espiritual (Perceptibles por Ki/Reiatsu)</option>
+                  <option value="strict">Canon Estricto (Solo un Stand daña un Stand)</option>
+                  <option value="ap_bleed">Daño por Onda Colateral (AP Bleed)</option>
+                </select>
+              </div>
+
+              {/* Colapso de Intangibilidad */}
+              <label className="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 flex items-start gap-2 cursor-pointer hover:border-indigo-500/50">
+                <input
+                  type="checkbox"
+                  checked={modifiers.bridgeConfig?.dimensionalAoeVulnerability ?? true}
+                  onChange={(e) => setModifiers(prev => ({
+                    ...prev,
+                    bridgeConfig: { ...(prev.bridgeConfig || DEFAULT_BRIDGE_CONFIG), dimensionalAoeVulnerability: e.target.checked }
+                  }))}
+                  className="rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500 mt-0.5"
+                />
+                <div>
+                  <span className="font-bold text-indigo-300 block">Colapso Dimensional AOE</span>
+                  <span className="text-[10px] text-slate-400 leading-tight block">
+                    Ataques cósmicos a escala masiva resquebrajan la intangibilidad convencional.
+                  </span>
+                </div>
+              </label>
+            </div>
+
+            {/* Live Arbitrage Telemetry if charA and charB exist */}
+            {charA && charB && (() => {
+              const evalResult = evaluateInterdimensionalModifiers(charA, charB, modifiers.bridgeConfig || DEFAULT_BRIDGE_CONFIG);
+              return (
+                <div className="p-2.5 rounded-lg bg-indigo-950/30 border border-indigo-500/30 space-y-1.5 text-[10px]">
+                  <div className="flex items-center justify-between text-indigo-300 font-bold">
+                    <span>⚡ Arbitraje Táctico Activo:</span>
+                    <span className="text-slate-400">Diferencia de Tiers: {evalResult.tierGap > 0 ? `+${evalResult.tierGap} a favor de ${charA.name}` : evalResult.tierGap < 0 ? `+${Math.abs(evalResult.tierGap)} a favor de ${charB.name}` : 'Tiers Paritarios'}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 text-slate-300">
+                    {[...(evalResult.modifiersA.rulesApplied || []), ...(evalResult.modifiersB.rulesApplied || [])].map((rule, rIdx) => (
+                      <span key={rIdx} className="px-2 py-0.5 rounded bg-slate-900/90 border border-indigo-500/30 text-indigo-200">
+                        ✦ {rule}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        )}
+      </div>
+
       {/* Narrative Presets Selector & Oracle Destinies */}
       <div className="pt-3 border-t border-slate-800/80 space-y-3 font-mono">
         <div className="flex items-center justify-between">
@@ -721,60 +829,184 @@ export default function ScenarioPanel({
             </button>
           </div>
 
-          {/* Chips de Giros Multi-Seleccionables */}
-          <div className="flex items-center gap-1.5 flex-wrap">
+          {/* Presupuesto de Caos del Oráculo */}
+          <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-fuchsia-900/40 text-[10px] font-mono">
+            <span className="text-fuchsia-300 font-bold flex items-center gap-1.5">
+              <span>⚖️ Presupuesto de Caos:</span>
+            </span>
+            <div className="flex gap-1">
+              {[
+                { id: 'unlimited', label: 'Sin Límite', desc: 'Todos los giros se ejecutan libremente' },
+                { id: 'balanced', label: 'Equilibrado', desc: 'Prioriza coherencia narrativa y escala' },
+                { id: 'curated', label: 'Curado (Máx 3)', desc: 'Máx 1 evento de poder, 1 de entorno y 1 de intervención' }
+              ].map(b => {
+                const currentBudget = modifiers.chaosBudget || 'unlimited';
+                const isSelected = currentBudget === b.id;
+                return (
+                  <button
+                    key={b.id}
+                    type="button"
+                    onClick={() => setModifiers(prev => ({ ...prev, chaosBudget: b.id }))}
+                    title={b.desc}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition ${
+                      isSelected
+                        ? 'bg-fuchsia-600 text-white font-bold shadow'
+                        : 'bg-slate-900 text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    {b.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 4 Familias del Oráculo V2 */}
+          <div className="space-y-3">
             {[
-              { id: 'map_collapse', label: '🌑 Colapso de Arena & Gravedad Cero', desc: 'El mapa se destruye y luchan en caída libre' },
-              { id: 'same_verse_reinforcement', label: '⚔️ Invasor del Mismo Verso (Canon)', desc: 'Aparece un peleador de los mismos universos y decide bando o ataca a todos' },
-              { id: 'multiverse_random_fighter', label: '🌌 Guerrero Multiversal Sorpresa', desc: 'Irrumpe un peleador legendario aleatorio de cualquier otro verso' },
-              { id: 'fusion_protocol_canon', label: '👥 Fusión Canónica en Batalla (Metamoru / Potara)', desc: 'Si los combatientes conocen la danza o tienen pendientes Potara según su saga/era, se fusionan en combate (Gotenks, Gogeta, Vegetto)' },
-              { id: 'fusion_protocol_whatif', label: '🌌 Fusión What-If Híbrida (Gokuhan, Tiencha, etc.)', desc: 'Fusión hipotética entre aliados sumando estadísticas, arsenales y multiplicadores' },
-              { id: 'cell_bio_absorption', label: '🧬 Absorción Anatómica de Cell (Aguijón / Androides / Cell Max)', desc: 'Drenaje de Ki con cola o absorción de Androides para evolucionar a Forma Perfecta Consciente' },
-              { id: 'buu_viscous_absorption', label: '🍬 Absorción de Majin Buu (Depredadora / Permisiva)', desc: 'Absorción envolvente de rivales (Buutenks/Buuhan) o asimilación voluntaria como Mr. Buu' },
-              { id: 'baby_tsufur_parasitism', label: '🦠 Parasitación & Subditos Tsufur de Baby', desc: 'Infestación por heridas, puesta de huevos de control mental y salto de huésped' },
-              { id: 'miracle_form_canon', label: '✨ Despertar Canónico (+1 Forma Lógica de Saga)', desc: 'Asciende solo a la siguiente forma inmediata coherente con su era (ej. Goku Cell Games a SSJ2)' },
-              { id: 'miracle_form_transcendent', label: '🌌 Despertar Trascendente (Forma Máxima / What-If)', desc: 'Rompe barreras de era y salta a su forma más divina o suprema (ej. SSJ God/UI)' },
-              { id: 'miracle_technique_awakening', label: '⚡ Despertar de Super Técnica / Finisher Prohibido', desc: 'Desata un ataque definitivo supremo, juramento de sacrificio o técnica prohibida' },
-              { id: 'third_party', label: '👾 Invasor 3ra Facción / Titán Cósmico', desc: 'Irrumpe un monstruo dimensional o kaiju' },
-              { id: 'hax_failure', label: '🛡️ Anulación Catastrófica de Hax (30s)', desc: 'Se apagan poderes mágicos y dominios (puro físico)' },
-              { id: 'dimensional_shift', label: '🌪️ Falla Espacio-Temporal', desc: 'Salto a otra dimensión/época histórica' },
-              { id: 'miasma_corruption', label: '🩸 Miasma de Corrupción / Berserk', desc: 'Furia oscura con letalidad extrema' },
-              { id: 'divine_blessing', label: '🛡️ Bendición Divina (Escudo 1 Uso)', desc: 'Intervención de una entidad superior' },
-              { id: 'shadow_clone', label: '👁️ Paradoja del Espejo (Doppelgänger)', desc: 'Se manifiesta un clon oscuro' },
-              { id: 'time_dilation', label: '⏳ Dilatación Temporal Localizada', desc: 'Zona de tiempo acelerado/lento' },
-              { id: 'energy_supernova', label: '💥 Supernova de Ki Desbocado', desc: 'Detonación de energía masiva en el mapa' }
-            ].map(opt => {
+              {
+                familyId: 'environment',
+                title: 'A. Entorno y Física',
+                icon: '🌍',
+                color: 'from-blue-900/40 to-cyan-950/40 border-cyan-800/40',
+                events: [
+                  { id: 'map_collapse', label: 'Colapso de Arena & Gravedad Cero', risk: 'Medio', desc: 'El mapa se destruye por completo; combate en caída libre con gravedad 0G.' },
+                  { id: 'time_dilation', label: 'Dilatación Temporal Localizada', risk: 'Medio', desc: 'Zonas de tiempo alterado; desfase de iniciativa e intercambios desincronizados.' },
+                  { id: 'dimensional_shift', label: 'Falla Espacio-Temporal', risk: 'Alto', desc: 'Ruptura del tejido dimensional; teleportación súbita a plano hostil.' },
+                  { id: 'energy_supernova', label: 'Supernova de Ki Desbocado', risk: 'Catastrófico', desc: 'Detonación de energía cósmica ambiental que arrasa la geografía.' },
+                  { id: 'miasma_corruption', label: 'Miasma de Corrupción / Berserk', risk: 'Alto', desc: 'Bruma maldita que fuerza letalidad extrema (+30% AP) sacrificando guardia.' }
+                ]
+              },
+              {
+                familyId: 'intervention',
+                title: 'B. Intervención de Personajes',
+                icon: '👥',
+                color: 'from-amber-900/40 to-yellow-950/40 border-amber-800/40',
+                events: [
+                  { id: 'same_verse_reinforcement', label: 'Invasor del Mismo Verso (Canon)', risk: 'Medio', desc: 'Irrumpe un guerrero canónico compatible de la misma franquicia.' },
+                  { id: 'multiverse_random_fighter', label: 'Guerrero Multiversal Sorpresa', risk: 'Alto', desc: 'Incursión dimensional imprevista de un combatiente de otro verso.' },
+                  { id: 'third_party', label: 'Invasor de 3ra Facción / Titán Cósmico', risk: 'Catastrófico', desc: 'Kaiju o amenaza hostil a ambos bandos que impone un duelo a tres bandas.' },
+                  { id: 'shadow_clone', label: 'Paradoja del Espejo (Doppelgänger)', risk: 'Alto', desc: 'Se manifiesta un clon oscuro temporal con arsenal idéntico y 50% de HP.' }
+                ]
+              },
+              {
+                familyId: 'evolution',
+                title: 'C. Evolución y Poder',
+                icon: '⚡',
+                color: 'from-purple-900/40 to-fuchsia-950/40 border-fuchsia-800/40',
+                events: [
+                  { id: 'miracle_form_canon', label: 'Despertar Canónico (+1 Forma Lógica de Saga)', risk: 'Medio', desc: 'Ascenso temporal estricto a la forma inmediata posterior de su saga.' },
+                  { id: 'miracle_form_transcendent', label: 'Despertar Trascendente (Forma Máxima / What-If)', risk: 'Alto', desc: 'Ruptura de límites de era hacia forma divina o suprema hipotética.' },
+                  { id: 'miracle_technique_awakening', label: 'Despertar de Super Técnica / Finisher Prohibido', risk: 'Alto', desc: 'Liberación de técnica prohibida de Fase 3 con drenaje masivo de stamina.' },
+                  { id: 'divine_blessing', label: 'Bendición Divina (Escudo 1 Uso)', risk: 'Bajo', desc: 'Amparo de deidad superior que anula un impacto letal decisivo.' },
+                  { id: 'hax_failure', label: 'Anulación Catastrófica de Hax (30s)', risk: 'Alto', desc: 'Se apagan magias, dominios y hax conceptual; duelo puramente físico.' }
+                ]
+              },
+              {
+                familyId: 'fusion',
+                title: 'D. Fusión, Absorción y Alteración',
+                icon: '🧬',
+                color: 'from-rose-900/40 to-pink-950/40 border-rose-800/40',
+                events: [
+                  { id: 'fusion_protocol_canon', label: 'Fusión Canónica en Batalla (Potara / Metamoru)', risk: 'Medio', desc: 'Fusión oficial con fórmula determinista única y arsenal combinado.' },
+                  { id: 'fusion_protocol_whatif', label: 'Fusión What-If Híbrida', risk: 'Alto', desc: 'Unión hipotética inédita entre aliados con riesgo de inestabilidad.' },
+                  { id: 'cell_bio_absorption', label: 'Absorción Anatómica de Cell', risk: 'Alto', desc: 'Bio-aguijón depredador para drenar Ki o asimilar biomasa/androides.' },
+                  { id: 'buu_viscous_absorption', label: 'Absorción de Majin Buu', risk: 'Alto', desc: 'Envoltura de masa viscosa para asimilar técnicas y mente del rival.' },
+                  { id: 'baby_tsufur_parasitism', label: 'Parasitación & Súbditos Tsufur de Baby', risk: 'Alto', desc: 'Infección líquida por incisiones para imponer control motor condicional.' }
+                ]
+              }
+            ].map(fam => {
               const activeTwists = Array.isArray(modifiers.blackSwan) 
                 ? modifiers.blackSwan 
                 : (modifiers.blackSwan ? [modifiers.blackSwan === true ? 'map_collapse' : modifiers.blackSwan] : []);
-              const isActive = activeTwists.includes(opt.id) || (opt.id === 'miracle_form_canon' && (activeTwists.includes('miracle_awakening') || activeTwists.includes('miracle_form_awakening')));
 
               return (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => {
-                    let updated;
-                    if (isActive) {
-                      updated = activeTwists.filter(x => x !== opt.id);
-                    } else {
-                      updated = [...activeTwists, opt.id];
-                    }
-                    setModifiers(prev => ({ ...prev, blackSwan: updated }));
-                  }}
-                  title={opt.desc}
-                  className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                    isActive
-                      ? 'bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-fuchsia-950/60 scale-[1.02] border border-fuchsia-400'
-                      : 'bg-slate-950/80 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
-                  }`}
-                >
-                  <span>{opt.label}</span>
-                  {isActive && <span className="text-[10px] font-black text-fuchsia-200">✓</span>}
-                </button>
+                <div key={fam.familyId} className={`p-2.5 rounded-xl bg-gradient-to-r ${fam.color} border space-y-1.5`}>
+                  <div className="flex items-center justify-between text-[11px] font-bold text-white font-mono">
+                    <span className="flex items-center gap-1.5">
+                      <span>{fam.icon}</span>
+                      <span>{fam.title}</span>
+                    </span>
+                    <span className="text-[9px] text-slate-400 font-normal">Fase 3 · Solo esta simulación</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {fam.events.map(opt => {
+                      const isActive = activeTwists.includes(opt.id) || (opt.id === 'miracle_form_canon' && (activeTwists.includes('miracle_awakening') || activeTwists.includes('miracle_form_awakening')));
+                      const riskColor = opt.risk === 'Bajo' ? 'text-emerald-400' : opt.risk === 'Medio' ? 'text-amber-400' : opt.risk === 'Alto' ? 'text-orange-400' : 'text-red-400';
+
+                      return (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => {
+                            let updated;
+                            if (isActive) {
+                              updated = activeTwists.filter(x => x !== opt.id);
+                            } else {
+                              updated = [...activeTwists, opt.id];
+                            }
+                            setModifiers(prev => ({ ...prev, blackSwan: updated }));
+                          }}
+                          title={`${opt.desc}
+• Riesgo: ${opt.risk}
+• Persistencia: Solo esta simulación (Capa 2)
+• Origen: Oráculo`}
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                            isActive
+                              ? 'bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-fuchsia-950/60 scale-[1.02] border border-fuchsia-400'
+                              : 'bg-slate-950/80 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                          }`}
+                        >
+                          <span>{opt.label}</span>
+                          <span className={`text-[8px] font-mono px-1 py-0.2 rounded bg-black/40 ${riskColor}`}>
+                            {opt.risk}
+                          </span>
+                          {isActive && <span className="text-[10px] font-black text-fuchsia-200">✓</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>
+
+          {/* Panel de Interacciones Activas y Sinergias */}
+          {(() => {
+            const activeTwists = Array.isArray(modifiers.blackSwan) 
+              ? modifiers.blackSwan 
+              : (modifiers.blackSwan ? [modifiers.blackSwan === true ? 'map_collapse' : modifiers.blackSwan] : []);
+            
+            const synergies = [];
+            if (activeTwists.includes('miracle_form_canon') && (activeTwists.includes('fusion_protocol_canon') || activeTwists.includes('fusion_protocol_whatif'))) {
+              synergies.push('⚡ Despertar Canónico + Fusión: La fusión podrá desatar la evolución lógica posterior solo si ambos componentes son compatibles.');
+            }
+            if (activeTwists.includes('miracle_technique_awakening') && activeTwists.includes('fusion_protocol_whatif')) {
+              synergies.push('🔥 Finisher Prohibido + Fusión What-If: Se habilita técnica suprema híbrida temporal, con riesgo de inestabilidad y desfusión forzada.');
+            }
+            if (activeTwists.includes('hax_failure') && activeTwists.includes('miasma_corruption')) {
+              synergies.push('💀 Anulación de Hax + Miasma: Sin magia ni dominios, el combate se resolverá exclusivamente por impacto óseo y furia berserker.');
+            }
+            if (activeTwists.includes('multiverse_random_fighter') && activeTwists.includes('same_verse_reinforcement')) {
+              synergies.push('🌌 Invasor Multiversal + Refuerzo Canónico: Múltiples entidades externas convergen simultáneamente alterando la balanza de equipos.');
+            }
+
+            if (synergies.length === 0) return null;
+
+            return (
+              <div className="p-2.5 rounded-xl bg-purple-950/40 border border-purple-800/60 space-y-1 text-[10px] font-mono">
+                <span className="text-purple-300 font-bold block flex items-center gap-1.5">
+                  <span>✨ Interacciones Activas & Sinergias del Oráculo:</span>
+                </span>
+                {synergies.map((syn, sIdx) => (
+                  <p key={sIdx} className="text-purple-200/90 leading-tight">
+                    {syn}
+                  </p>
+                ))}
+              </div>
+            );
+          })()}
 
           {/* Input de Giro Personalizado del Usuario */}
           <div className="pt-2 border-t border-fuchsia-900/30 space-y-1">

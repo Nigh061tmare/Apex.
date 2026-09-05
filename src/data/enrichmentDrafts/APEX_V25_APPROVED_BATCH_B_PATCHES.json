@@ -1,0 +1,326 @@
+{
+  "meta": {
+    "title": "APEX V25 — Approved Batch B: Safe Canonical Consolidation",
+    "status": "APPROVED_FOR_FUTURE_V25_NOT_APPLIED",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V24.json",
+    "sourceAudit": "APEX_V24_CONSOLIDATION_DECISIONS.json",
+    "requiresUserFinalApprovalBeforeApply": true,
+    "allowedScope": "Only five safe duplicate/stub deprecations. No hax refactors, no form migration, no What-If creation, no tier recalculation, no multiplier recalculation, no source-policy changes and no schema changes.",
+    "generatedAt": "2026-09-04T10:01:42.972Z",
+    "totalPatches": 5
+  },
+  "patchEntries": [
+    {
+      "patchId": "V25-PATCH-0001",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "menthuthuyoupi-hxh-ca",
+      "canonicalRecordId": "youpi-hxh-ca",
+      "reason": "Duplicado semántico de Menthuthuyoupi. Se conserva youpi-hxh-ca como perfil candidato con clasificación Tier 7-A. No modificar su Ki, tier, forms, multiplicadores, tags o hax.",
+      "sourceAuditCase": 2,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 464,
+        "id": "menthuthuyoupi-hxh-ca",
+        "name": "Menthuthuyoupi",
+        "franchise": "Hunter x Hunter",
+        "universe": "Hunter x Hunter",
+        "saga": "Arco de las Hormigas Quimera",
+        "baseTier": "7-B",
+        "baseKiFormatted": "5.03 Mil",
+        "baseKiNumeric": 5030,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Menthuthuyoupi (Estado Base)",
+            "multiplier": 1,
+            "tier": "7-B",
+            "kiFormatted": "5.03 Mil",
+            "kiNumeric": 5030
+          },
+          {
+            "index": 1,
+            "id": "youpi-centaur",
+            "name": "Centauro Controlado",
+            "multiplier": 1.35,
+            "tier": "7-B",
+            "kiFormatted": "6.79 Mil",
+            "kiNumeric": 6790.5
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "7-B",
+          "baseFormTier": "7-B",
+          "tierStatus": "internally_aligned",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "v22Index": 469,
+        "v23Index": 466
+      },
+      "proposedEffect": "En la futura V25, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordId, sourcePatchId y timestamp. Conservar youpi-hxh-ca intacto.",
+      "status": "pending_final_application"
+    },
+    {
+      "patchId": "V25-PATCH-0002",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "kenjaku-pseudo-geto",
+      "canonicalRecordId": "kenjaku-jjk",
+      "reason": "Duplicado/stub de Kenjaku en el cuerpo de Geto. Se conserva kenjaku-jjk como ficha completa con Dominio. No modificar Ki, tiers, forms, multiplicadores, dominio, hax ni tags de la ficha canónica.",
+      "sourceAuditCase": 3,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 360,
+        "id": "kenjaku-pseudo-geto",
+        "name": "Kenjaku (Jujutsu Kaisen — Cuerpo de Geto / Pseudo-Geto)",
+        "franchise": "Jujutsu Kaisen",
+        "universe": "Jujutsu Kaisen",
+        "saga": "Incidente de Shibuya / Culling Game",
+        "baseTier": "7-A",
+        "baseKiFormatted": "7.20 Mil",
+        "baseKiNumeric": 7203,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Forma Base (Cuerpo de Geto)",
+            "multiplier": 1,
+            "tier": "7-A",
+            "kiFormatted": "7.20 Mil",
+            "kiNumeric": 7203
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "7-A",
+          "baseFormTier": "7-A",
+          "tierStatus": "internally_aligned",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "v22Index": 365,
+        "v23Index": 362
+      },
+      "proposedEffect": "En la futura V25, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordId, sourcePatchId y timestamp. Conservar kenjaku-jjk intacto.",
+      "status": "pending_final_application"
+    },
+    {
+      "patchId": "V25-PATCH-0003",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "funny-valentine-poder-completo",
+      "canonicalRecordId": "funny-valentine-jojo-sbr",
+      "reason": "Stub duplicado de Funny Valentine. Se conserva la ficha SBR con Ki físico de 1.292, sin modificar ni modelar todavía D4C, Love Train, hax dimensionales, forms, tags o multiplicadores.",
+      "sourceAuditCase": 4,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 489,
+        "id": "funny-valentine-poder-completo",
+        "name": "Funny Valentine (Poder Completo con D4C)",
+        "franchise": "JoJo's Bizarre Adventure",
+        "universe": "JoJo's Bizarre Adventure",
+        "saga": "Steel Ball Run — arco final",
+        "baseTier": "Tier 8-C Físico",
+        "baseKiFormatted": "547 Unidades",
+        "baseKiNumeric": 547,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Base",
+            "multiplier": 1,
+            "tier": "8-C",
+            "kiFormatted": "547 Unidades",
+            "kiNumeric": 547
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "Tier 8-C Físico",
+          "baseFormTier": "8-C Físico",
+          "tierStatus": "needs_feat_review",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "changeLog": [
+          {
+            "patchIds": [
+              "patch-0033_0044"
+            ],
+            "timestamp": "2026-09-04T00:35:26.236Z",
+            "rationale": "Normalización de códigos de tier estandarizados eliminando sufijo informal Físico."
+          }
+        ],
+        "v22Index": 494,
+        "v23Index": 491
+      },
+      "proposedEffect": "En la futura V25, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordId, sourcePatchId y timestamp. Conservar funny-valentine-jojo-sbr intacto.",
+      "status": "pending_final_application"
+    },
+    {
+      "patchId": "V25-PATCH-0004",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "dr-raichi-fantasmas-del-odio-u3-dbm",
+      "canonicalRecordId": "dr-raichi-dbm-u3",
+      "reason": "Ficha duplicada que atribuye el poder del enjambre/Fantasmas del Odio como Ki propio de Dr. Raichi. Se conserva dr-raichi-dbm-u3 sin modificar aún sus forms, invocaciones, Hatchiyack, multiplicadores, Ki, tiers ni modelo de fantasmas.",
+      "sourceAuditCase": 5,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 277,
+        "id": "dr-raichi-fantasmas-del-odio-u3-dbm",
+        "name": "Dr. Raichi (y los Fantasmas del Odio)",
+        "franchise": "Dragon Ball",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "saga": "Torneo Interuniversal DBM — Universo 3",
+        "baseTier": "4-B",
+        "baseKiFormatted": "845.25 Millones",
+        "baseKiNumeric": 845250000,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Base",
+            "multiplier": 1,
+            "tier": "4-B",
+            "kiFormatted": "845.25 Millones",
+            "kiNumeric": 845250000
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "4-B",
+          "baseFormTier": "4-B",
+          "tierStatus": "internally_aligned",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "v22Index": 280,
+        "v23Index": 278
+      },
+      "proposedEffect": "En la futura V25, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordId, sourcePatchId y timestamp. Conservar dr-raichi-dbm-u3 intacto.",
+      "status": "pending_final_application"
+    },
+    {
+      "patchId": "V25-PATCH-0005",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "baby-vegeta-god-brokoly",
+      "canonicalRecordId": "baby-god-brokoly",
+      "reason": "Duplicado del mismo What-If Super Baby God. Se conserva baby-god-brokoly con multiplicador x50. No recalcular valores, no modificar forms y no alterar la ficha canónica; solo archivar el registro alternativo con x6400 anómalo.",
+      "sourceAuditCase": 6,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 342,
+        "id": "baby-vegeta-god-brokoly",
+        "name": "Super Baby Vegeta (What-If Baby God)",
+        "franchise": "Dragon Ball",
+        "universe": "Dragon Ball (Fan-Mangas & What-If)",
+        "saga": "Ruta Alterna: Baby absorbe Ki Divino",
+        "baseTier": "3-A",
+        "baseKiFormatted": "44.31 Mil Millones",
+        "baseKiNumeric": 44310000000,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Super Baby Vegeta (Estado Base)",
+            "multiplier": 1,
+            "tier": "3-B",
+            "kiFormatted": "44.31 Mil Millones",
+            "kiNumeric": 44310000000
+          },
+          {
+            "index": 1,
+            "id": "baby-vegeta-god-base",
+            "name": "Modo Baby Vegeta Infectado",
+            "multiplier": 1.35,
+            "tier": "3-B",
+            "kiFormatted": "59.82 Mil Millones",
+            "kiNumeric": 59818500000.00001
+          },
+          {
+            "index": 2,
+            "id": "baby-vegeta-god",
+            "name": "Baby God (SSG Tsufuru)",
+            "multiplier": 6400,
+            "tier": "3-A",
+            "kiFormatted": "283.58 Billones",
+            "kiNumeric": 283584000000000
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "3-A",
+          "baseFormTier": "3-B",
+          "tierStatus": "needs_feat_review",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "changeLog": [
+          {
+            "patchId": "patch-0068",
+            "timestamp": "2026-09-04T00:59:49.439Z",
+            "field": "forms[1].tier",
+            "oldValue": "5-A",
+            "newValue": "3-B",
+            "rationale": "Corrección de inversión jerárquica severa: la forma base figura en Tier 3-B (44.31 Mil Millones de Ki), pero forms[1] (Modo Baby Vegeta Infectado) desciende abruptamente a Tier 5-A a pesar de tener mayor Ki numérico (59.82 Mil Millones). Se alinea como mínimo al Tier 3-B de su base."
+          }
+        ],
+        "v22Index": 347,
+        "v23Index": 344
+      },
+      "proposedEffect": "En la futura V25, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordId, sourcePatchId y timestamp. Conservar baby-god-brokoly intacto.",
+      "status": "pending_final_application"
+    }
+  ],
+  "excludedCases": [
+    "tamagami-1-espada-daima",
+    "tamagami-n-mero-1-dragon-ball-daima-763",
+    "giorno-giovanna-ger-jojo-gg001",
+    "giorno-giovanna-jojo-va",
+    "ssj4-daima-mini",
+    "ssj4-adulto-daima"
+  ],
+  "excludedReason": "Tamagami requires source resolution. Giorno/GER requires a separate data-model decision. SSJ4 Primal requires a separate, explicit What-If approval. None of these may be altered in V25.",
+  "changeLogDraft": [
+    {
+      "patchId": "V25-PATCH-0001",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "menthuthuyoupi-hxh-ca",
+      "canonicalRecordId": "youpi-hxh-ca",
+      "reason": "Duplicado semántico de Menthuthuyoupi. Se conserva youpi-hxh-ca como perfil candidato con clasificación Tier 7-A. No modificar su Ki, tier, forms, multiplicadores, tags o hax.",
+      "timestamp": "2026-09-04T10:01:42.972Z"
+    },
+    {
+      "patchId": "V25-PATCH-0002",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "kenjaku-pseudo-geto",
+      "canonicalRecordId": "kenjaku-jjk",
+      "reason": "Duplicado/stub de Kenjaku en el cuerpo de Geto. Se conserva kenjaku-jjk como ficha completa con Dominio. No modificar Ki, tiers, forms, multiplicadores, dominio, hax ni tags de la ficha canónica.",
+      "timestamp": "2026-09-04T10:01:42.972Z"
+    },
+    {
+      "patchId": "V25-PATCH-0003",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "funny-valentine-poder-completo",
+      "canonicalRecordId": "funny-valentine-jojo-sbr",
+      "reason": "Stub duplicado de Funny Valentine. Se conserva la ficha SBR con Ki físico de 1.292, sin modificar ni modelar todavía D4C, Love Train, hax dimensionales, forms, tags o multiplicadores.",
+      "timestamp": "2026-09-04T10:01:42.972Z"
+    },
+    {
+      "patchId": "V25-PATCH-0004",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "dr-raichi-fantasmas-del-odio-u3-dbm",
+      "canonicalRecordId": "dr-raichi-dbm-u3",
+      "reason": "Ficha duplicada que atribuye el poder del enjambre/Fantasmas del Odio como Ki propio de Dr. Raichi. Se conserva dr-raichi-dbm-u3 sin modificar aún sus forms, invocaciones, Hatchiyack, multiplicadores, Ki, tiers ni modelo de fantasmas.",
+      "timestamp": "2026-09-04T10:01:42.972Z"
+    },
+    {
+      "patchId": "V25-PATCH-0005",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "baby-vegeta-god-brokoly",
+      "canonicalRecordId": "baby-god-brokoly",
+      "reason": "Duplicado del mismo What-If Super Baby God. Se conserva baby-god-brokoly con multiplicador x50. No recalcular valores, no modificar forms y no alterar la ficha canónica; solo archivar el registro alternativo con x6400 anómalo.",
+      "timestamp": "2026-09-04T10:01:42.972Z"
+    }
+  ]
+}

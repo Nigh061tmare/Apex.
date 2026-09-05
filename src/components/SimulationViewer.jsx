@@ -372,10 +372,31 @@ function parseInlineMarkdown(text) {
   if (!text) return null;
 
   // Split by bold (**...**), italics (*...*), and timestamps (T+... or T-...)
-  const parts = text.split(/(\*\*.*?\*\*|\*[^*]+\*|T[+\-]\d+\.?\d*s?:?)/g);
+  const parts = text.split(/(\[(?:ROSTER V25|ORÁCULO — [^\]]+|SIMULACIÓN — [^\]]+|CAMPAÑA — [^\]]+)\]|\*\*.*?\*\*|\*[^*]+\*|T[+\-]\d+\.?\d*s?:?)/g);
 
   return parts.map((part, idx) => {
     if (!part) return null;
+
+    // APEX V2 Official Badges
+    if (part.startsWith('[') && part.endsWith(']')) {
+      const badgeText = part.slice(1, -1);
+      let badgeStyle = "bg-slate-800 text-slate-300 border-slate-700";
+      if (badgeText.includes('ROSTER V25')) badgeStyle = "bg-cyan-950/80 text-cyan-300 border-cyan-500/50 shadow-cyan-950/50";
+      else if (badgeText.includes('DESPERTAR CANÓNICO')) badgeStyle = "bg-amber-950/80 text-amber-300 border-amber-500/50 shadow-amber-950/50";
+      else if (badgeText.includes('DESPERTAR TRASCENDENTE')) badgeStyle = "bg-purple-950/80 text-purple-300 border-purple-500/50 shadow-purple-950/50";
+      else if (badgeText.includes('FUSIÓN CANÓNICA')) badgeStyle = "bg-emerald-950/80 text-emerald-300 border-emerald-500/50 shadow-emerald-950/50";
+      else if (badgeText.includes('FUSIÓN WHAT-IF')) badgeStyle = "bg-violet-950/80 text-violet-300 border-violet-500/50 shadow-violet-950/50";
+      else if (badgeText.includes('FINISHER LIBERADO')) badgeStyle = "bg-rose-950/80 text-rose-300 border-rose-500/50 shadow-rose-950/50";
+      else if (badgeText.includes('ENTIDAD TEMPORAL')) badgeStyle = "bg-blue-950/80 text-blue-300 border-blue-500/50 shadow-blue-950/50";
+      else if (badgeText.includes('CAMPAÑA')) badgeStyle = "bg-yellow-950/80 text-yellow-300 border-yellow-500/50 shadow-yellow-950/50";
+      else if (badgeText.includes('ORÁCULO')) badgeStyle = "bg-fuchsia-950/80 text-fuchsia-300 border-fuchsia-500/50 shadow-fuchsia-950/50";
+
+      return (
+        <span key={idx} className={`inline-flex items-center px-2 py-0.5 mx-1 rounded-full text-[10px] font-mono font-bold border shadow-sm ${badgeStyle}`}>
+          🏷️ {badgeText}
+        </span>
+      );
+    }
 
     // Bold text **...**
     if (part.startsWith('**') && part.endsWith('**')) {
@@ -1222,6 +1243,53 @@ export default function SimulationViewer({
     }
   }, [isSimulating, hasOutput, nameA, nameB]);
 
+    const [copiedSnapshot, setCopiedSnapshot] = useState(false);
+  const [savedCampaign, setSavedCampaign] = useState(false);
+
+  const handleCopySnapshot = () => {
+    const snapshotObj = {
+      simulationId: `sim-v2-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      engineVersion: "2.0.0",
+      rosterVersion: "V25",
+      randomSeed: simulationData?.seed || Math.floor(Math.random() * 1000000),
+      scenario: simulationData?.scenario || {},
+      matchMode: simulationData?.matchMode || "1v1",
+      participants: [
+        { name: nameA, tier: simulationData?.charA?.tier, form: simulationData?.charA?.selectedFormName || 'Base' },
+        { name: nameB, tier: simulationData?.charB?.tier, form: simulationData?.charB?.selectedFormName || 'Base' }
+      ],
+      oracleEvents: simulationData?.modifiers?.blackSwan || [],
+      outcomePersistence: "simulation_only"
+    };
+    navigator.clipboard.writeText(JSON.stringify(snapshotObj, null, 2));
+    setCopiedSnapshot(true);
+    setTimeout(() => setCopiedSnapshot(false), 2000);
+  };
+
+  const handleSaveCampaign = () => {
+    try {
+      const campaignObj = {
+        campaignId: `campaign-${Date.now()}`,
+        name: `Campaña: ${nameA} vs ${nameB}`,
+        baseRosterVersion: "V25",
+        selectedBranch: "alfa",
+        participants: [nameA, nameB],
+        verdict: verdictInfo?.winner || nameA,
+        savedAt: new Date().toISOString(),
+        outcomePersistence: "campaign_saved",
+        mutatesRoster: false
+      };
+      const existing = JSON.parse(localStorage.getItem('apex_campaigns') || '[]');
+      existing.unshift(campaignObj);
+      localStorage.setItem('apex_campaigns', JSON.stringify(existing.slice(0, 50)));
+      setSavedCampaign(true);
+      setTimeout(() => setSavedCampaign(false), 3000);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handleCopy = () => {
     if (!fullOutput) return;
     const cleanOutput = fullOutput.replace(/\|\|BIOMETRICS\|[^|]+\|\|/g, '');
@@ -1453,6 +1521,14 @@ export default function SimulationViewer({
               <button onClick={handleSaveObsidian} className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-bold shadow-lg shadow-purple-950/60 transition cursor-pointer flex-shrink-0">
                 {savedToVault ? <Check className="w-4 h-4 text-white" /> : <Download className="w-4 h-4" />}
                 <span>Guardar Obsidian</span>
+              </button>
+              <button onClick={handleCopySnapshot} title="Copiar snapshot de simulación reproducible (JSON)" className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-fuchsia-300 text-xs font-mono transition cursor-pointer border border-fuchsia-900/50 shadow flex-shrink-0">
+                {copiedSnapshot ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedSnapshot ? 'Copiado' : 'Snapshot V2'}</span>
+              </button>
+              <button onClick={handleSaveCampaign} title="Guardar Línea Alfa como campaña persistente (aislado del Roster V25)" className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 text-xs font-mono transition cursor-pointer border border-amber-700/50 shadow flex-shrink-0">
+                {savedCampaign ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <span>🏛️</span>}
+                <span>{savedCampaign ? 'Guardada' : 'Guardar Campaña'}</span>
               </button>
             </>
           )}

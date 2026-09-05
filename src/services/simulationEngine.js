@@ -5,7 +5,21 @@ import { RAID_BOSS_TIERS, calculateSquadSynergy } from './synergyEngine';
 import { detectNarrativeBossMechanics } from '../data/tagMechanicsSystem';
 import { INITIAL_CHARACTERS } from '../data/characters';
 import { resolveCombatState } from '../lib/combatStateResolver';
+import { selectContextualExternalEntity, getBodilyForms, getExternalEntities } from '../lib/externalEntityFramework';
 import { createCombatSnapshot, validateCombatSnapshot, executeCombatSimulation, synthesizeNarrativeFromValidatedLog, ORACLE_EVENT_CONFIG } from './combatSimulationCore';
+/**
+ * Resuelve dinámicamente el límite máximo de tokens de salida según el modelo activo.
+ * Desbloquea 65.536 tokens para Nemotron Ultra / Super y 131.072 tokens para MiniMax M3.
+ */
+export function resolveMaxOutputTokens(modelName = '') {
+  const m = (modelName || '').toLowerCase();
+  if (m.includes('minimax') || m.includes('mini-max')) return 131072;
+  if (m.includes('nemotron') && (m.includes('ultra') || m.includes('super') || m.includes('550b'))) return 65536;
+  if (m.includes('muse-spark')) return 131072;
+  if (m.includes('glm-5') || m.includes('glm-4')) return 65536;
+  if (m.includes('gemini-2.0') || m.includes('gemini-1.5')) return 32768;
+  return 16384;
+}
 
 export const SimulationEngine = {
   generateMasterPrompt(charA, charB, scenario, modifiers = {}, teamA = [], teamB = [], battleRoyale = [], multiTeams = [], bossMinions = []) {
@@ -15,14 +29,29 @@ export const SimulationEngine = {
     const energyRulesStr = modifiers.energyEqualized ? 'EQUALIZED ENERGY SEEDS' : 'ISOLATED ENERGY SYSTEMS';
 
     const simulationRules = `
-### ========================================
-### APEX ENGINE: ACTIVE SIMULATION RULES
-### ========================================
+### =========================================================================
+### APEX ETERNIDAD / ORÁCULO V2: GOBERNANZA DE TRES CAPAS INVIOLABLES
+### =========================================================================
+- CAPA 1 [ROSTER CANÓNICO V25]: Inmutable. Los datos de Ki, tiers, multiplicadores y fichas provienen exclusivamente del Roster V25 y permanecen congelados.
+- CAPA 2 [ESCENARIO Y ORÁCULO DE ETERNIDAD]: Reglas y giros de Fase 3 temporales (persistence: simulation_only). Toda forma o técnica generada lleva badge explícito.
+- CAPA 3 [RESULTADO DE SIMULACIÓN]: Desenlace, secuelas anatómicas y líneas Alfa/Beta/Omega aisladas (persistence: simulation_only). Prohibido mutar el Roster V25.
 - NARRATIVE MODE: ${preset}
 - COMBAT FORMAT: ${matchMode}
 - SCALING RULES: ${simRulesStr}
 - ENERGY MECHANICS: ${energyRulesStr}
-### ========================================
+
+### 🏷️ BADGES OFICIALES OBLIGATORIOS (USO EN RELATO Y TARJETAS):
+- [ROSTER V25] · Hecho permanente del roster canónico.
+- [ORÁCULO — EVENTO DE ESCENARIO] · Regla o giro de escenario en Fase 3.
+- [ORÁCULO — DESPERTAR CANÓNICO] · Forma lógica de saga temporal (+1 escala).
+- [ORÁCULO — DESPERTAR TRASCENDENTE] · Forma What-If máxima temporal.
+- [ORÁCULO — FUSIÓN CANÓNICA] · Fusión Potara/Metamoru con fórmula determinista única.
+- [ORÁCULO — FUSIÓN WHAT-IF HÍBRIDA] · Fusión hipotética temporal de aliados.
+- [ORÁCULO — FINISHER LIBERADO] · Súper técnica prohibida de Fase 3 con alto coste de stamina.
+- [ORÁCULO — ENTIDAD TEMPORAL] · Invocación o invasor temporal (bodyStatIsolation: true, no altera stats del owner).
+- [SIMULACIÓN — CONSECUENCIA NO PERSISTENTE] · Desenlace no persistente.
+- [CAMPAÑA — CONSECUENCIA GUARDADA] · Resultado promovido a crónica persistente separada.
+### =========================================================================
 `;
 
     // ─── TIER SCORING (tier-gap awareness) ────────────────────────────────
@@ -148,6 +177,20 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 - La IA DEBE escalar cronológica y lógicamente a través de las transformaciones oficiales y canónicas registradas en la ficha del personaje ('forms') (ejemplo: Base ➔ SSJ1 ➔ SSJ2 ➔ SSJ3, Forma 1 ➔ Forma Final ➔ 100%).
 - **PROHIBIDO TOTAL Y ABSOLUTAMENTE inventar multiplicadores no canónicos o suicidas como 'Kaiō-ken x10 sobre SSJ2 o SSJ3'**, INCLUSO SI SE ACTIVA UN CISNE NEGRO / BLACK SWAN / ORÁCULO. El Kaiō-ken solo se utiliza en sus estados canónicos permitidos (Base en DBZ, o SSB en DBS si la ficha lo contempla).
 
+#### 📊 TABLA DE INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (CONSTANTE BIOLÓGICA — NO ANULABLE POR ORÁCULO)
+| Era | Forma activa | Kaiō-ken permitido | Motivo |
+|---|---|---|---|
+| Dragon Ball Z | Base / Normal | ✅ SÍ (x2 a x20) | Forma canónica de uso |
+| Dragon Ball Z | SSJ1 | ❌ NO JAMÁS | Biológicamente incompatible — destruye el cuerpo Saiyan |
+| Dragon Ball Z | SSJ2 | ❌ NO JAMÁS | Incompatible — destruye al usuario |
+| Dragon Ball Z | SSJ3 | ❌ NO JAMÁS | Imposible fisiológicamente en era DBZ |
+| Dragon Ball Super | Base / Normal | ✅ SÍ | Igual que en Z |
+| Dragon Ball Super | SSGSS / SSB | ✅ SÍ (con control Ki) | Único caso excepcional canónico (Goku vs Hit, Torneo del Poder) |
+| Dragon Ball Super | SSJ1-3 | ❌ NO | No tiene sentido — usa SSB directamente |
+
+- **El Cisne Negro / Evento Oráculo NO puede saltarse esta tabla.** Es una constante biológica de los Saiyans, no una regla narrativa anulable.
+- Si el escenario pide Kaiō-ken sobre SSJ en era DBZ, la IA debe IGNORARLO, CORREGIRLO y notificarlo en el veredicto como error canónico.
+
 ### 🚫 REGLA DE ORO 3: AISLAMIENTO ABSOLUTO DE TELEMETRÍA RPG (PROSA PURA Y DRAMÁTICA)
 - **QUEDA TAXATIVAMENTE PROHIBIDO** incluir números o porcentajes de videojuego ('HP: +15%', 'Stamina: 20%', etc.) dentro de los diálogos, pensamientos internos ('🧠 Pensamiento Interno') o descripciones literarias en prosa de la novela.
 - Los pensamientos internos deben reflejar **sensaciones físicas, análisis táctico visceral y psicología marcial** (*ejemplo: "—Mi pulmón derecho está colapsando; no podré sostener este ritmo de respiración más de diez segundos"*), NUNCA variables numéricas o porcentajes de RPG.
@@ -167,6 +210,11 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
   * Cualquier combatiente de cualquier franquicia (Saiyans, Humanos, Viltrumitas, Kriptonianos, Espadachines, etc.) que **NO posea explícitamente el tag o biología de regeneración celular**, si sufre la fractura, aplastamiento o amputación de un miembro, **queda incapacitado y sufre la lesión durante todo el combate**.
   * ÚNICAMENTE combatientes con biología regenerativa canónica (Namekianos como Piccolo, Majins como Buu, Bio-Androides como Cell, Demonios de Kimetsu como Akaza/Muzan, Maldiciones como Sukuna/Mahito, Deadpool, Wolverine, Hulk, Doomsday) pueden regenerar tejidos o miembros perdidos en pleno asalto.
   * El **Zenkai Saiyan** es un incremento de poder tras sobrevivir y sanar, NUNCA una regeneración mágica instantánea que hace crecer brazos durante un asalto.
+- **CONTRIBUYENTES A LA GENKIDAMA (Regla de Lore Estricta):**
+  * Solo pueden contribuir energía a la Genkidama los **actores individuales libres, conscientes y NO fusionados** que estén presentes en el campo de batalla o en el planeta.
+  * **PROHIBIDO** que un combatiente fusionado (Gogeta, Vegetto, Gotenks) contribuya energía de forma separada de la entidad fusionada.
+  * **PROHIBIDO** que un absorbido (Piccolo-dentro-de-Buu, Androide-17-dentro-de-Cell) contribuya energía independiente.
+  * Los contribuyentes deben ser individuos operativos: no incapacitados, no muertos, no en otra dimensión.
 
 ### 📝 REGLA DE ORO 5: FORMATO LIMPIO DEL VEREDICTO Y ESTADO FINAL
 - La etiqueta '🧠 Pensamiento Interno:' se utiliza **únicamente para monólogos mentales breves de los personajes en mitad del combate**.
@@ -223,6 +271,30 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
     1. **Debe ser un personaje CANÓNICO REAL y oficial** del universo de los contendientes (o un combatiente oficial del Roster APEX que encaje temáticamente y por escala de poder).
     2. **Debe nombrarse explícitamente desde su primer milisegundo de aparición** con su nombre propio real y forma exacta (ej. *"Metal Cooler (Cuerpo de Metal Puro / Estrella Big Gete)"*, *"Broly (Super Saiyan Legendario)"*, *"Bills (Dios de la Destrucción)"*, *"Ryomen Sukuna (20 Dedos)"*, *"Thanos (Guantelete del Infinito)"*, *"Doomsday (Criptoniano)"*, *"Toji Fushiguro"*, *"Goku Black & Zamasu"*).
     3. **Respeto Absoluto a su Escala y Arsenal:** Sus técnicas, multiplicadores, pasivas, hax y nivel de Tier deben corresponder fielmente a su ficha canónica o perfil APEX.
+
+### 🔒 REGLA DE ORO 15: AISLAMIENTO ABSOLUTO DE COMBATIENTES FUSIONADOS
+**Una fusión ELIMINA a sus componentes del espacio de combate individual.**
+- En el momento en que **Goku y Vegeta** completan la Danza de la Fusión o se colocan los Pendientes Potara, **Goku y Vegeta DEJAN DE EXISTIR COMO ACTORES INDIVIDUALES** hasta la desfusión.
+- **PROHIBIDO TERMINANTEMENTE** que los componentes de una fusión:
+  1. Aparezcan en listas de acción como actores independientes.
+  2. Contribuyan energía por separado a la Genkidama simultáneamente a la entidad fusionada.
+  3. Aporten apoyo táctico como figuras separadas (ej.: "Goku apoya mientras Gogeta ataca" — ILEGAL).
+  4. Sean mencionados en biometría individual mientras la fusión está activa.
+- ✅ **Solo la entidad fusionada (Gogeta, Vegetto, Gotenks, Kefla)** actúa, tiene biometría y toma decisiones.
+- ✅ Tras la desfusión, los componentes reaparecen en el estado físico en que estaban al fusionarse (agotados, heridos, etc.).
+- **APLICA A:** Metamoru (30min), Potara (1h en DBZ; permanente para Kaio-Shin), fusiones What-If canónicas.
+
+### 🌑 REGLA DE ORO 16: ENTIDADES ABSORBIDAS (ABSORCIÓN BUU / BIO-ANDROIDE)
+**Un personaje absorbido por Majin Buu queda como conciencia atrapada, NO como actor.**
+- Cuando Majin Buu absorbe a Piccolo, Gotenks, Gohan o cualquier combatiente:
+  1. El absorbido **NO puede disparar técnicas propias** durante la absorción.
+  2. El absorbido **NO puede actuar físicamente** ni desplazarse de forma autónoma.
+  3. El absorbido **SOLO existe como voz interna / conciencia residual** dentro de Buu.
+  4. Majin Buu **hereda las habilidades del absorbido** (ejemplo: Buucolo tiene antenas y mayor inteligencia táctica; Buutenks tiene las esferas y los ataques de Gotenks).
+  5. El absorbido **NO tiene biometría individual** — sus estadísticas están fusionadas en las de Buu.
+- **APLICA TAMBIÉN A:** Cell absorbiendo a Androides 17/18 (los Androides desaparecen como actores independientes).
+- ✅ Liberación: cuando Goku/Vegeta extraen a los absorbidos, estos reaparecen con su estado físico propio.
+
 `;
 
     const formatSpeed = (spd) => {
@@ -310,7 +382,28 @@ ${activeFormLine}
 - HaxTags (Habilidades Especiales Conceptuales): ${(char.haxTags || []).join(' | ') || 'Ninguno registrado'}
 - Hazañas Canónicas Comprobadas (Feats): ${featsList}
 - Debilidades Explotables Conocidas: ${char.weaknesses || 'Sin debilidades conocidas.'}
-- Transformaciones Disponibles: ${formatForms(char.forms)}
+- Transformaciones Corporales Disponibles: ${formatForms(getBodilyForms(char))}${(() => {
+  if (char.id === 'dr-raichi-dbm-u3' || char.narrativeCombatProfile?.externalEntityController) {
+    const opp = label.includes('A') ? charB : charA;
+    const extContext = selectContextualExternalEntity(char, opp, {
+      battleMode: matchMode,
+      teamSize: (teamA?.length || 1) + (teamB?.length || 1),
+      orbStatus: modifiers.orbStatus || 'intact'
+    });
+    const canonical = char.narrativeCombatProfile?.canonicalGhostArchive || [];
+    const canonicalList = canonical.map(g => `${g.displayName} [${g.combatRole}]`).join(', ');
+    return `\n- 🛡️ ENTIDADES EXTERNAS & ARCHIVO FANTASMA (bodyStatIsolation: STRICT):
+  * Controlador: ${char.narrativeCombatProfile?.externalEntityController?.coreArtifact || 'Núcleo Psiónico'}
+  * Estado de Despliegue Contextual: **${extContext?.summonState || 'scouting'}** (Resonancia: **${extContext?.resonanceLevel || 'low'}** — ${extContext?.resonanceCategory || 'estándar'})
+  * Directiva Táctica: ${extContext?.recommendedAction || 'Despliegue estándar'}
+  * Candidatos Canónicos DBM: ${canonicalList || 'Ninguno'}
+  * Counterplay Visible: ${extContext?.counterplayVisible || 'Ataque al núcleo orbe'}
+  * LEY CONSTITUCIONAL: Las entidades externas NO multiplican ni alteran el Ki corporal (24,518), Tier (7-A) ni durabilidad física de Dr. Raichi.
+  * MODO NORMAL APEX: Broly LSSJ Fantasma es estrictamente legacy_reference_only y Hatchiyack permanece inactivo.
+  * MODO ORÁCULO (solo bajo giro de escenario explícito): Broly / Hatchiyack se manifiestan como [ORÁCULO — ENTIDAD TEMPORAL] con bodyStatIsolation: true, combate individual y sin sumar estadísticas al cuerpo de Raichi.`;
+  }
+  return '';
+})()}
 - Arsenal y Habilidades Completas:
 ${formatArsenal(char)}`;
     };
@@ -745,6 +838,27 @@ Al final del combate, en la sección "ESTADO DEL MAPA", DEBES incluir el siguien
 - **Tasa de Irradiación Residual:** [En megajulios/m² — zona donde el Ki residual persiste como radiación ambiental]
 - **Estimación de Bajas Civiles (si el escenario está habitado):** [Ninguna / Mínimas / Moderadas / Catastróficas]`;
 
+    // ── APEX CROSS-FRANCHISE BRIDGE DIRECTIVE ─────────────────────────────
+    let bridgeDirective = '';
+    if (modifiers.bridgeConfig) {
+      const bc = modifiers.bridgeConfig;
+      bridgeDirective = `\n\n🌉 DIRECTIVA DE ARBITRAJE INTER-DIMENSIONAL (CROSS-FRANCHISE BRIDGE):
+- **VÁLVULA KI VS HAX:** ${bc.kiSupremacyOverHax ? 'ACTIVADA: Una diferencia colosal de poder bruto / Ki (≥2 sub-tiers) permite a la densidad del aura disipar o mitigar severamente (85%) habilidades de control mental, parálisis o transmutación que no sean de grado cósmico/multiversal.' : 'DESACTIVADA: Todo hax opera con potencia nominal absoluta sin resistencia por aura de poder.'}
+- **INTERACCIÓN CON STANDS & ESPÍRITUS:** ${bc.standInteraction === 'spiritual_equivalence' ? 'ARMONIZACIÓN ESPIRITUAL: Los combatientes con percepción de Ki, Reiatsu o energía espiritual pueden ver, sentir y golpear entidades metafísicas y Stands con ataques cargados de energía.' : bc.standInteraction === 'strict' ? 'CANON ESTRICTO: Solo un Stand puede percibir y dañar directamente a otro Stand. Los rivales deben atacar directamente al cuerpo del usuario.' : 'AP BLEED: Las ondas expansivas masivas dañan el tejido espacial afectando al usuario y su avatar.'}
+- **COLAPSO DE INTANGIBILIDAD:** ${bc.dimensionalAoeVulnerability ? 'PERFORACIÓN MASIVA ACTIVADA: Si un ataque tiene escala cósmica o desintegra el espacio a nivel atómico, la intangibilidad convencional o plano de fase es vulnerada.' : 'INTANGIBILIDAD ABSOLUTA RESPETADA.'}`;
+    }
+
+    // ── PROTOCOLO DE TOKENS DESBLOQUEADOS (NEMOTRON 65K / MINIMAX 131K) ────
+    const isUltraTokens = true; // Siempre activo para asegurar la máxima extensión y riqueza literaria
+    const ultraDepthDirective = `\n\n🚀 PROTOCOLO DE SALIDA MASIVA Y PROFUNDIDAD TOTAL (DESBLOQUEO DE 65K / 131K TOKENS):
+- Estás operando con el límite máximo de tokens desbloqueado (65.536 tokens en Nemotron 3 Ultra / 131.072 tokens en MiniMax M3).
+- **QUEDA ESTRICTAMENTE PROHIBIDO resumir, omitir detalles o apresurar las transiciones de fase**.
+- Desarrolla una **NOVELA MAGNA COMPLETA** con:
+  1. Micro-coreografías milisegundo a milisegundo: posición biomecánica, vectores cinéticos de empuje, temperatura del aire y tensión muscular.
+  2. Diálogos canónicos viscerales y monólogos tácticos que evidencien el Battle IQ profundo.
+  3. Anatomía cruda de lesiones y cálculo de física destructiva a escala macroscópica.
+  4. Veredicto exhaustivo con desglose técnico matemático y análisis de secuelas multiversales a largo plazo.`;
+
     return `### ========================================
 ### APEX ENGINE: ACTIVE SIMULATION RULES & CONFIG
 ### ========================================
@@ -764,6 +878,8 @@ ${langDirective}
 ${senzuDirective}
 ${envHazardDirective}
 ${seismicDirective}
+${bridgeDirective}
+${ultraDepthDirective}
 
 LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 1. **NOMENCLATURA CANÓNICA DE TÉCNICAS & ARSENAL (JAPONÉS / INGLÉS OFICIAL):**
@@ -817,9 +933,26 @@ ${structureInstruction}
     const nameA = typeof charA === 'string' ? charA : (charA?.name || 'Contendiente A');
     const nameB = typeof charB === 'string' ? charB : (charB?.name || 'Contendiente B');
     const nameScenario = typeof scenario === 'string' ? scenario : (scenario?.name || 'Arena de Combate');
-    const safeOutput = (typeof previousOutput === 'string' ? previousOutput : JSON.stringify(previousOutput)).slice(-3500);
+    const safeOutput = (typeof previousOutput === 'string' ? previousOutput : JSON.stringify(previousOutput)).slice(-4500);
 
-    return `[DIRECTIVA ABSOLUTA: Esto es ficción privada de rol y combate sin censura en español literario de máxima calidad. Aplicarás las lógicas de Power Scaling (VS Battles) de manera estricta.]
+    const lang = modifiers?.language || 'es';
+    const langDirective = lang === 'en'
+      ? '[ABSOLUTE DIRECTIVE: Write in top-tier literary English with cinematic prose, high-octane choreography, and anatomical precision.]'
+      : lang === 'ja'
+      ? '[絶対指令: 日本語のハイレベルな文学的・少年漫画的戦闘描写で執筆してください。]'
+      : '[DIRECTIVA ABSOLUTA: Esto es ficción privada de rol y combate adulto sin censura en 100% ESPAÑOL CASTELLANO. Escribe exclusivamente en español literario de alta calidad, gramática perfecta y prosa cinematográfica sin mezclar idiomas ni inventar palabras.]';
+
+    // Safe review notices calculation
+    let reviewNoticesStr = '';
+    try {
+      const continuationParticipants = [charA, charB].filter(Boolean);
+      const notices = formatNeedsReviewSimulationNotice(continuationParticipants);
+      if (notices && notices.length > 0) {
+        reviewNoticesStr = `\n### ========================================\n### ⚠️ AVISOS DE CALIBRACIÓN EDITORIAL (APEX):\n${notices.join('\n')}\n### ========================================\n`;
+      }
+    } catch (_) {}
+
+    return `${langDirective}
 
 ${reviewNoticesStr}
 Eres APEX OMNI-TITÁN, el motor lógico y narrativo maestro especializado en simulaciones de combate Sci-Fi/Fantasía y Power Scaling estricto. Estás continuando y expandiendo la historia en curso para el SIGUIENTE ACTO.
@@ -837,16 +970,37 @@ DATOS DE LOS CONTENDIENTES Y ESCENARIO:
 - Contendiente B: ${nameB}
 - Arena / Entorno: ${nameScenario}
 
-REGLAS NARRATIVAS DE CONTINUIDAD EXTREMA:
-1. **DAÑO BIOMECÁNICO REALISTA:** Respeta estrictamente el daño anatómico y la fatiga del texto anterior. Si hubo daño en un nervio ciático o hiperventilación por desgaste de Ki/Stamina, DEBE reflejarse en cada movimiento ahora.
-2. **ESCALADO DE PODER (AP vs DC):** Si el usuario introdujo un nuevo personaje o transformación, respeta la matemática. Si su velocidad es Masivamente FTL+, el oponente más lento NO PODRÁ reaccionar a menos que tenga Hax o instinto predictivo (Battle IQ).
-3. **FÍSICA SENSORIAL Y DIÁLOGOS:** Utiliza guion largo (—) para los diálogos y cursivas para los monólogos internos. Sé visceral: describe olores (ozono, plasma, sangre), presiones auditivas y efectos termodinámicos (roca vitrificada).
-4. **INTERVENCIONES DE TERCEROS CONTENDIENTES Y EMBOSCADAS (LEY CANÓNICA OBLIGATORIA):**
+REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
+1. **DAÑO BIOMECÁNICO REALISTA:** Respeta estrictamente el daño anatómico y la fatiga del texto anterior. Si hubo daño en un nervio ciático, contusión severa o hiperventilación por desgaste de Ki/Stamina, DEBE reflejarse en cada movimiento ahora.
+2. **ESCALADO DE PODER (AP vs DC):** Si el usuario introdujo un nuevo personaje o transformación, respeta la matemática de VS Battles. Si su velocidad es Masivamente FTL+, el oponente más lento NO PODRÁ reaccionar a menos que tenga Hax o instinto predictivo (Battle IQ).
+3. **AISLAMIENTO ABSOLUTO DE COMBATIENTES FUSIONADOS (REGLA CONSTITUCIONAL 15):**
+   - Si en el historial previo o en la instrucción del usuario existe una FUSIÓN ACTIVA (ej: Gogeta, Vegetto, Gotenks, Kefla, etc.):
+     * Los guerreros que integran la fusión (ej: Goku y Vegeta) DEJAN DE EXISTIR como combatientes individuales en la arena.
+     * PROHIBIDO terminantemente que Goku o Vegeta hablen por separado como luchadores libres, ataquen de forma individual, reciban daño por separado o interfieran en la batalla mientras la fusión esté activa.
+     * La entidad fusionada es UN ÚNICO SER consciente y biomecánico. Todo impacto lo recibe la fusión. No hay dos personas en el ring; hay una.
+     * Solo si ocurre una DEFUSIÓN EXPLÍCITA debidamente justificada (por límite de tiempo de 30 minutos en Metamoru, agotamiento masivo de Ki en Potara con no-supremos o corte dimensional), Goku y Vegeta se desacoplan y reaparecen heridos/agotados.
+4. **AISLAMIENTO ABSOLUTO DE ENTIDADES ABSORBIDAS (REGLA CONSTITUCIONAL 16):**
+   - Si un contendiente fue absorbido (ej: Piccolo, Gohan o Gotenks por Majin Buu; o Androides 17 y 18 por Cell):
+     * El combatiente absorbido NO PARTICIPA físicamente en el combate. NO tiene cuerpo independiente en la arena.
+     * El absorbido existe ÚNICAMENTE como una "voz interior", eco táctico o resonancia residual en la mente del asimilador.
+     * PROHIBIDO que el absorbido esquive, lance ataques individuales en el campo de batalla, sea atacado por rivales o actúe con autonomía corporal.
+     * Majin Buu o Cell adquieren el intelecto y las técnicas del absorbido (ej: Buu ejecutando Makankosappo con su propio cuerpo), pero el absorbido NO lucha en el ring.
+5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CONSTITUCIONAL 2):**
+   - El Kaiō-ken NO es compatible con las transformaciones de Super Saiyan (SSJ1, SSJ2, SSJ3) en el canon de Dragon Ball Z debido a la inestabilidad emocional y la violencia del Ki dorado que destruiría el corazón y el cuerpo del usuario.
+   - En la era Z (Saga Saiyajin, Namek, Androides, Buu), el Kaiō-ken SOLO puede ser utilizado en estado BASE.
+   - La ÚNICA excepción canónica en toda la franquicia es el Super Saiyan Blue Kaiō-ken (SSB Kaiō-ken) en Dragon Ball Super, debido a la calma absoluta y control milimétrico del Ki Divino.
+   - Prohibido hacer que Goku use Kaiō-ken sobre SSJ1, SSJ2 o SSJ3 en combates de era Z.
+6. **CONTRIBUYENTES A LA GENKIDAMA (REGLA CONSTITUCIONAL 4):**
+   - Solo seres libres, conscientes y con autonomía biomecánica pueden enviar Ki a una Genkidama externa.
+   - Combatientes absorbidos en el interior de Buu o Cell NO pueden transferir energía de forma autónoma.
+   - Entidades fusionadas donan energía como un único bloque colectivo si defusionan o como el guerrero fusionado en sí, nunca como dos identidades simultáneas independientes.
+7. **INTERVENCIONES DE TERCEROS CONTENDIENTES Y EMBOSCADAS (LEY CANÓNICA OBLIGATORIA):**
    - Si la acción del usuario menciona la aparición o interrupción de un tercer contendiente, emboscada o escuadrón sorpresa:
      * PROHIBIDO inventar personajes genéricos ("un guerrero desconocido", "un villano metálico") o nombres inventados ("Azrath Malek").
      * DEBES SELECCIONAR OBLIGATORIAMENTE a uno (o dos en caso de emboscada o dúo sorpresa) personajes CANÓNICOS REALES Y RECONOCIBLES del universo de ${nameA} o de ${nameB} (ej: si Dragon Ball: Metal Cooler, Broly, Cell Max, Bills, Hit, Freezer, Jiren, Goku Black, Androides 17 y 18; si Marvel: Thanos, Galactus, Sentry, Thor; si DC: Doomsday, Darkseid, Superman Prime; si Jujutsu Kaisen: Sukuna, Gojo, Toji; si Baki: Yujiro Hanma, Pickle; etc.) o contendientes icónicos del Roster APEX que encajen por escala de poder, arquetipo y mitología.
      * NÓMBRALO(S) EXPLÍCITAMENTE en su primera frase con su nombre oficial completo, forma activa, motivo dramático por el que irrumpen y su choque de energías en la escala de poder.
-5. **ESTRUCTURA DE RESPUESTA OBLIGATORIA:**
+8. **FÍSICA SENSORIAL Y DIÁLOGOS:** Utiliza guion largo (—) para los diálogos y cursivas para los monólogos internos. Sé visceral: describe olores (ozono, plasma, sangre), presiones auditivas y efectos termodinámicos (roca vitrificada).
+9. **ESTRUCTURA DE RESPUESTA OBLIGATORIA:**
    Debes entregar tu crónica inmersiva (mínimo 3-4 párrafos densos) y finalizar OBLIGATORIAMENTE con el siguiente bloque biométrico:
    ||BIOMETRICS|HP_A:<XX>|STM_A:<XX>|HP_B:<XX>|STM_B:<XX>||
    (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño del texto que acabas de narrar. Ej: HP_A: 42).
@@ -1117,7 +1271,8 @@ REGLAS NARRATIVAS DE CONTINUIDAD EXTREMA:
               body: JSON.stringify({
                 model: openRouterModel,
                 messages: [{ role: 'user', content: prompt }],
-                stream: true
+                stream: true,
+                max_tokens: resolveMaxOutputTokens(openRouterModel)
               })
             });
 
@@ -1565,7 +1720,8 @@ ESTADO FINAL:
             },
             body: JSON.stringify({
               model: orModel,
-              messages: [{ role: 'user', content: prompt }]
+              messages: [{ role: 'user', content: prompt }],
+              max_tokens: resolveMaxOutputTokens(orModel)
             })
           });
           if (res.ok) {

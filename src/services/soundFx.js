@@ -11,6 +11,140 @@ class SoundEffectService {
     this.enabled = initialEnabled;
   }
 
+  playPowerUp() {
+    this.playAuraBurst();
+  }
+
+  playLevelUp() {
+    if (!this.enabled) return;
+    try {
+      const ctx = this.initContext();
+      if (!ctx) return;
+      const notes = [440, 554.37, 659.25, 880, 1108.73, 1318.51];
+      notes.forEach((freq, i) => {
+        const now = ctx.currentTime + i * 0.07;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      });
+    } catch (e) {}
+  }
+
+  playInstantTransmission() {
+    if (!this.enabled) return;
+    try {
+      const ctx = this.initContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(3400, now);
+      osc.frequency.exponentialRampToValueAtTime(800, now + 0.07);
+      osc.frequency.exponentialRampToValueAtTime(4200, now + 0.15);
+
+      gain.gain.setValueAtTime(0.4, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.18);
+    } catch (e) {}
+  }
+
+  playAuraBurst() {
+    if (!this.enabled) return;
+    try {
+      const ctx = this.initContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      // Deep rumble
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(85, now);
+      osc1.frequency.linearRampToValueAtTime(160, now + 0.3);
+      osc1.frequency.exponentialRampToValueAtTime(50, now + 0.8);
+      gain1.gain.setValueAtTime(0.55, now);
+      gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+
+      // High shimmering flare
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(650, now);
+      osc2.frequency.exponentialRampToValueAtTime(1900, now + 0.25);
+      osc2.frequency.exponentialRampToValueAtTime(400, now + 0.7);
+      gain2.gain.setValueAtTime(0.28, now);
+      gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+
+      osc1.start(now);
+      osc1.stop(now + 0.8);
+      osc2.start(now);
+      osc2.stop(now + 0.7);
+    } catch (e) {}
+  }
+
+  playDiceRoll() {
+    if (!this.enabled) return;
+    try {
+      const ctx = this.initContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      for (let i = 0; i < 5; i++) {
+        const tapTime = now + i * 0.045 + Math.random() * 0.015;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(350 + Math.random() * 320, tapTime);
+        gain.gain.setValueAtTime(0.25, tapTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, tapTime + 0.035);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(tapTime);
+        osc.stop(tapTime + 0.035);
+      }
+    } catch (e) {}
+  }
+
+  playHeal() {
+    if (!this.enabled) return;
+    try {
+      const ctx = this.initContext();
+      if (!ctx) return;
+      const freqs = [440, 554.37, 659.25, 880, 1108.73];
+      const now = ctx.currentTime;
+      freqs.forEach((f, i) => {
+        const t = now + i * 0.07;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, t);
+        gain.gain.setValueAtTime(0.25, t);
+        gain.gain.exponentialRampToValueAtTime(0.005, t + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.4);
+      });
+    } catch (e) {}
+  }
+
   setEnabled(val) {
     this.enabled = !!val;
     try {

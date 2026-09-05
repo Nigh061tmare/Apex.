@@ -1,267 +1,147 @@
 /**
- * APEX CONTINUOUS ROSTER AUDIT & AUTO-ENRICHMENT — AUTONOMOUS RUNNER
+ * APEX CONTINUOUS ROSTER AUDIT — AUTONOMOUS RUNNER (V25 BASELINE)
  * 
- * Runs autonomously in a loop while you sleep.
- * Processes characters in batches of 5 via the local OpenRouter proxy (http://127.0.0.1:4097),
- * automatically recovers from network hiccups, and saves all patches incrementally.
+ * Reglas de Operación Segura:
+ * - Operar SIEMPRE en READ_ONLY_DRAFT_MODE.
+ * - Leer única y exclusivamente V25 (ROSTER_NIVELES_PODER_CORREGIDO_V25.json).
+ * - Excluir deprecatedRecords de análisis de combatientes activos.
+ * - Toda salida se genera en src/data/enrichmentDrafts/ con status: PROPOSAL_ONLY_NOT_APPLIED.
+ * - PROHIBIDO escribir a V25, characters.js, App.jsx, roster activo o versiones previas.
+ * - PROHIBIDO ejecutar git, vercel, deploy, commit, push o scripts de aplicación.
  */
 
 import fs from 'fs';
 import path from 'path';
-import http from 'http';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../../');
 
-const CHARACTERS_FILE = path.join(projectRoot, 'src/data/characters.js');
-const PROGRESS_FILE = path.join(projectRoot, 'src/data/auditProgress.json');
-const PATCHES_FILE = path.join(projectRoot, 'src/data/rosterEnrichmentPatches.json');
-const V22_FILE = path.join(projectRoot, 'src/data/ROSTER_NIVELES_PODER_CORREGIDO_V22.json');
-const V22_MAP = new Map();
-if (fs.existsSync(V22_FILE)) {
-  const v22Data = JSON.parse(fs.readFileSync(V22_FILE, 'utf8'));
-  v22Data.forEach(c => V22_MAP.set(c.id, c));
-}
+const V25_FILE = path.join(projectRoot, 'src/data/ROSTER_NIVELES_PODER_CORREGIDO_V25.json');
+const DRAFTS_DIR = path.join(projectRoot, 'src/data/enrichmentDrafts');
 
-const BATCH_SIZE = 5;
-const MODEL = process.argv[2] || 'nvidia/nemotron-3.5-lightning:free';
-const PROXY_PORT = 4097;
-
-const SYSTEM_PROMPT = `APEX CONTINUOUS ROSTER AUDIT & AUTO-ENRICHMENT ENGINE
-MODO AUTÓNOMO SECUENCIAL — NEMOTRON ULTRA / LAGUNA COMPATIBLE
-AUDITA, CONSERVA, COMPLETA Y EMITE PARCHES LISTOS PARA INTEGRAR
-
-SALIDA ESTRICTA: Devuelve EXCLUSIVAMENTE un objeto JSON válido según el esquema APEX_CONTINUOUS_ROSTER_AUDIT.
-No incluyas texto fuera del JSON, ni markdown exterior, ni saludos.
-BASE INALTERABLE ROSTER V22:
-- Roster oficial e inalterable: ROSTER_NIVELES_PODER_CORREGIDO_V22.json.
-- PROHIBIDO MODIFICAR O RECALCULAR tiers, Ki, multiplicadores, forms, universe, franchise ni IDs de la versión oficial.
-- APEX_NEEDS_REVIEW_BACKLOG_V22.json se utiliza EXCLUSIVAMENTE para advertir que una ficha tiene una incidencia pendiente de revisión editorial.
-- Si un combate, equipo, sinergia o ficha necesita interpretar un registro de needsReview: conserva el roster V22, explica la limitación, no inventes correcciones y no alteres el dato persistente.
-Campos protegidos (PROHIBIDO MODIFICAR): tierExact, tierRank, powerKey, APEX-Ki, Source Ki, numericStats, simulationOutput, forms, franchise, universe.
-Usa tags en inglés snake_case (ki_user, martial_artist, saiyan, etc.).
-Respeta la continuidad temporal estricta de cada saga.
-
-REGLAS DE SINERGIAS & PASIVAS CANÓNICAS:
-1. AISLAMIENTO TOTAL: partnerTags solo pueden apuntar a personajes o facciones de su mismo universo y lore.
-2. CERO CONTAMINACIÓN BIOLÓGICA: Zenkai solo para Saiyajins legítimos; Biomasa/absorción solo para Cell/bio-androides; Cursed Energy solo para hechiceros JJK; Nen solo para cazadores HxH; Stands solo para usuarios de Stand.
-3. EFECTOS TÁCTICOS: Los efectos deben otorgar buffs mecánicos fundamentados (ej: cobertura, distracción, sincronización de energía, impulso de furia por caída de aliado).`;
-
-// Load Characters
-async function loadCharacters() {
-  const content = fs.readFileSync(CHARACTERS_FILE, 'utf8');
-  // Simple extraction of INITIAL_CHARACTERS
-  const mod = await import('file://' + CHARACTERS_FILE.replace(/\\/g, '/'));
-  return mod.INITIAL_CHARACTERS || [];
-}
-
-// Load Progress
-function loadProgress() {
-  if (fs.existsSync(PROGRESS_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
-    } catch {
-      return { lastIndex: 0, completedBatches: 0, startTime: new Date().toISOString() };
-    }
-  }
-  return { lastIndex: 0, completedBatches: 0, startTime: new Date().toISOString() };
-}
-
-// Save Progress
-function saveProgress(data) {
-  fs.writeFileSync(PROGRESS_FILE, JSON.stringify(data, null, 2), 'utf8');
-}
-
-// Load Existing Patches
-function loadPatches() {
-  if (fs.existsSync(PATCHES_FILE)) {
-    try {
-      return JSON.parse(fs.readFileSync(PATCHES_FILE, 'utf8'));
-    } catch {
-      return [];
-    }
-  }
-  return [];
-}
-
-// Save Patches
-function savePatches(patches) {
-  fs.writeFileSync(PATCHES_FILE, JSON.stringify(patches, null, 2), 'utf8');
-}
-
-import { executeResilientCompletion } from './aiKeyRotator.js';
-
-// Send Request con Auto-Rotación y Fallback de 3 Vías
-function sendCompletion(payload) {
-  return executeResilientCompletion(SYSTEM_PROMPT, payload, MODEL);
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// Clean JSON text from markdown fences
-function cleanJsonText(raw) {
-  let text = raw.trim();
-  if (text.startsWith('```')) {
-    text = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '');
-  }
-  const firstBrace = text.indexOf('{');
-  const lastBrace = text.lastIndexOf('}');
-  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-    return text.substring(firstBrace, lastBrace + 1);
-  }
-  return text;
-}
-
-// Main Autonomous Loop
-async function run() {
+export async function runAutonomousAudit(options = {}) {
   console.log('================================================================');
-  console.log('  🌙 AUDITORÍA NOCTURNA AUTÓNOMA — APEX ROSTER ENRICHMENT');
-  console.log('================================================================');
-  console.log(`  • Modelo: ${MODEL}`);
-  console.log(`  • Proxy:  http://127.0.0.1:${PROXY_PORT}`);
-  console.log(`  • Lotes:  ${BATCH_SIZE} personajes por iteración`);
+  console.log('  🌙 AUDITORÍA NOCTURNA AUTÓNOMA — APEX V25 [READ-ONLY DRAFT MODE]');
   console.log('================================================================\n');
 
-  // Load expansion patches (synergy/pasiva extras)
-  const EXPANSION_PATCHES_FILE = path.join(projectRoot, 'src/data/rosterExpansionPatches.json');
-  function loadExpansionPatches() {
-    if (fs.existsSync(EXPANSION_PATCHES_FILE)) {
-      try { return JSON.parse(fs.readFileSync(EXPANSION_PATCHES_FILE, 'utf8')); } catch { return []; }
-    }
-    return [];
-  }
-  function applyExpansion(characters) {
-    const patches = loadExpansionPatches();
-    const map = {};
-    patches.forEach(p => { map[p.charId] = p; });
-    characters.forEach(c => {
-      const p = map[c.id];
-      if (p) {
-        if (p.addedSynergies) c.synergies = (c.synergies || []).concat(p.addedSynergies);
-        if (p.addedPassives) c.passives = (c.passives || []).concat(p.addedPassives);
-        if (p.addedTags) c.haxTags = (c.haxTags || []).concat(p.addedTags);
-      }
-    });
-    return characters;
+  // 1. Cargar y validar baseline V25 obligatorio
+  if (!fs.existsSync(V25_FILE)) {
+    throw new Error(`[CRITICAL ERROR] Roster V25 no encontrado en ${V25_FILE}. Abortando sin fallback.`);
   }
 
-  // After loading characters
-  let characters = await loadCharacters();
-  characters = applyExpansion(characters);
+  const rawV25 = fs.readFileSync(V25_FILE, 'utf8');
+  let v25;
+  try {
+    v25 = JSON.parse(rawV25);
+  } catch (err) {
+    throw new Error(`[CRITICAL ERROR] Fallo al parsear JSON de V25: ${err.message}. Abortando.`);
+  }
 
-  const total = characters.length;
-  let progress = loadProgress();
-  let allPatches = loadPatches();
+  const activeRecords = v25.characters || [];
+  const deprecatedRecords = v25.deprecatedRecords || [];
+  const historicalTotal = activeRecords.length + deprecatedRecords.length;
 
-  let currentIndex = progress.lastIndex || 0;
-  console.log(`📌 Reanudando desde el índice ${currentIndex} de ${total} personajes.`);
-  console.log(`📦 Parches acumulados actualmente: ${allPatches.length}\n`);
+  if (activeRecords.length !== 756 || deprecatedRecords.length !== 13 || historicalTotal !== 769) {
+    throw new Error(`[CRITICAL ERROR] Censo de V25 inválido: activos=${activeRecords.length} (esperado 756), deprecados=${deprecatedRecords.length} (esperado 13), total=${historicalTotal} (esperado 769). Abortando.`);
+  }
 
-  while (currentIndex < total) {
-    const end = Math.min(currentIndex + BATCH_SIZE, total);
-    const batch = characters.slice(currentIndex, end);
-    const batchId = `roster_audit_batch_${Math.floor(currentIndex / BATCH_SIZE) + 1}`;
+  const baselineSha256 = crypto.createHash('sha256').update(rawV25).digest('hex');
 
-    const batchSummary = batch.map(c => c.name).join(', ');
-    console.log(`\n⏳ [${currentIndex + 1}-${end}/${total}] Procesando Lote: ${batchSummary}...`);
+  // 2. Verificar Pending Gates obligatorios
+  const mandatoryGates = [
+    'GATE-001-TAMAGAMI-SOURCE',
+    'GER_MODEL_PENDING_CONSOLIDATION',
+    'VALENTINE_HAX_MODEL_PENDING_SIMULATION_RULES',
+    'Hatchiyack PROPOSAL_ONLY_NOT_ACTIVE',
+    'daima_ssj4_representation_review_pending'
+  ];
 
-    const payload = {
-      mode: 'APEX_CONTINUOUS_ROSTER_AUDIT',
-      batchId: batchId,
-      auditMode: 'continuous_auto_enrichment',
-      crossVerseMode: false,
-      allowApexCustomAutoIntegration: true,
-      maxRecordsPerRun: BATCH_SIZE,
-      requestedFocus: [
-        'full_audit', 'tags', 'abilities', 'passives', 
-        'special_mechanics', 'hax', 'weaknesses', 'synergies', 
-        'team_combos', 'forms', 'artifacts'
-      ],
-      records: batch
-    };
+  const pendingGates = mandatoryGates.map(gateId => ({
+    gateId,
+    status: 'LOCKED_PENDING_EDITORIAL_DECISION',
+    policy: 'MUTATION_BLOCKED_AUTONOMOUS_PROTECTION'
+  }));
 
-    let attempts = 0;
-    let success = false;
+  // 3. Chequear violaciones de referencias deprecadas
+  const deprecatedIds = new Set(deprecatedRecords.map(d => d.recordId));
+  const deprecatedReferenceViolations = [];
+  const errors = [];
+  const warnings = [];
 
-    while (attempts < 5 && !success) {
-      attempts++;
-      try {
-        const rawResponse = await sendCompletion(payload);
-        const cleaned = cleanJsonText(rawResponse);
-        const parsed = JSON.parse(cleaned);
-
-        if (parsed.results || parsed.integrationPatch) {
-          const patchCount = (parsed.integrationPatch || []).length;
-          console.log(`  ✅ Lote completado con éxito. Operaciones emitidas: ${patchCount}`);
-
-          
-          // ─── FILTRO CONSTITUCIONAL V22: RECHAZAR ALTERACIONES DE POWER SCALING ───
-          if (parsed.integrationPatch && Array.isArray(parsed.integrationPatch)) {
-            const PROTECTED_V22_KEYWORDS = ['tier', 'ki', 'multiplier', 'form', 'universe', 'franchise', 'id', 'powerschema'];
-            parsed.integrationPatch = parsed.integrationPatch.filter(patch => {
-              const charId = patch.characterId;
-              if (charId && V22_MAP.has(charId)) {
-                const normalizedPath = (patch.path || '').toLowerCase();
-                const isProtected = PROTECTED_V22_KEYWORDS.some(kw => normalizedPath.includes(kw));
-                if (isProtected) {
-                  console.log(`  🛡️ [BLINDAJE V22] Parche descartado para '${charId}' en '${patch.path}' (Power Scaling congelado en V22).`);
-                  return false;
-                }
-              }
-              return true;
-            });
+  // Excluir deprecatedRecords de análisis de combatientes activos
+  activeRecords.forEach(c => {
+    if (c.forms) {
+      c.forms.forEach(f => {
+        const str = JSON.stringify(f);
+        deprecatedIds.forEach(dId => {
+          if (str.includes(dId)) {
+            deprecatedReferenceViolations.push({ recordId: c.id, formId: f.id, target: dId });
           }
-          // ─────────────────────────────────────────────────────────────────────────
+        });
+      });
+    }
+  });
 
-          if (parsed.integrationPatch && parsed.integrationPatch.length > 0) {
-            allPatches.push(...parsed.integrationPatch);
-            savePatches(allPatches);
-          }
+  // 4. Generar reporte obligatorio
+  const proposedDraftFileName = `APEX_V25_AUTONOMOUS_AUDIT_PROPOSAL_${Date.now()}.json`;
+  const draftOutputPath = path.join(DRAFTS_DIR, proposedDraftFileName);
 
-          currentIndex = end;
-          progress.lastIndex = currentIndex;
-          progress.completedBatches = (progress.completedBatches || 0) + 1;
-          progress.lastUpdated = new Date().toISOString();
-          saveProgress(progress);
-
-          const percent = ((currentIndex / total) * 100).toFixed(1);
-          console.log(`  📊 Progreso Global: ${currentIndex}/${total} (${percent}%) | Total Parches Guardados: ${allPatches.length}`);
-          success = true;
-        } else {
-          throw new Error('La respuesta JSON no contiene results ni integrationPatch.');
-        }
-      } catch (err) {
-        console.error(`  ⚠️ Intento ${attempts}/5 falló: ${err.message}`);
-        if (attempts < 5) {
-          const waitTime = attempts * 6000;
-          console.log(`  ⏳ Esperando ${waitTime / 1000}s antes de reintentar...`);
-          await sleep(waitTime);
-        }
+  const auditReport = {
+    baselineVersion: 'V25',
+    baselineSha256,
+    activeCount: activeRecords.length,
+    deprecatedCount: deprecatedRecords.length,
+    historicalTotal,
+    status: 'PROPOSAL_ONLY_NOT_APPLIED',
+    auditMode: 'READ_ONLY_DRAFT_MODE',
+    generatedAt: new Date().toISOString(),
+    pendingGates,
+    deprecatedReferenceViolations,
+    proposedEnrichmentDrafts: [
+      {
+        draftFile: proposedDraftFileName,
+        status: 'PROPOSAL_ONLY_NOT_APPLIED',
+        notes: 'Auditoría nocturna V25 generada en modo lectura estricto.'
       }
-    }
+    ],
+    blockedAutoFixes: [
+      'Auto-mutaciones en caliente deshabilitadas por gobernanza V25.',
+      'Cualquier cambio requiere revisión y patch con aprobación explícita.'
+    ],
+    errors,
+    warnings
+  };
 
-    if (!success) {
-      console.error(`\n❌ No se pudo completar el lote tras 5 intentos. Pausando 15 segundos y continuando con el siguiente para no detener la noche...`);
-      currentIndex = end;
-      progress.lastIndex = currentIndex;
-      saveProgress(progress);
-      await sleep(15000);
-    } else {
-      // Cooldown between batches to avoid rate limits
-      await sleep(2500);
-    }
+  if (!fs.existsSync(DRAFTS_DIR)) {
+    fs.mkdirSync(DRAFTS_DIR, { recursive: true });
   }
 
-  console.log('\n================================================================');
-  console.log('  🎉 ¡AUDITORÍA COMPLETA DE LOS 821 PERSONAJES FINALIZADA!');
-  console.log(`  • Total de parches generados: ${allPatches.length}`);
-  console.log(`  • Archivo de salida: src/data/rosterEnrichmentPatches.json`);
-  console.log('================================================================\n');
+  // Escribir ÚNICAMENTE en src/data/enrichmentDrafts/
+  fs.writeFileSync(draftOutputPath, JSON.stringify(auditReport, null, 2), 'utf8');
+
+  console.log('--- REPORTE DE AUDITORÍA NOCTURNA V25 ---');
+  console.log(`• baselineVersion:              ${auditReport.baselineVersion}`);
+  console.log(`• baselineSha256:             ${auditReport.baselineSha256}`);
+  console.log(`• activeCount:                ${auditReport.activeCount}`);
+  console.log(`• deprecatedCount:            ${auditReport.deprecatedCount}`);
+  console.log(`• historicalTotal:            ${auditReport.historicalTotal}`);
+  console.log(`• pendingGates detectados:    ${auditReport.pendingGates.length}`);
+  console.log(`• deprecatedRefViolations:    ${auditReport.deprecatedReferenceViolations.length}`);
+  console.log(`• proposedEnrichmentDrafts:   ${auditReport.proposedEnrichmentDrafts.length}`);
+  console.log(`• blockedAutoFixes:           ${auditReport.blockedAutoFixes.length}`);
+  console.log(`• errors:                     ${auditReport.errors.length}`);
+  console.log(`• warnings:                   ${auditReport.warnings.length}`);
+  console.log(`\n💾 Propuesta de auditoría guardada en: src/data/enrichmentDrafts/${proposedDraftFileName}`);
+  console.log('🔒 Prohibida escritura en V25, characters.js o producción. Status: PROPOSAL_ONLY_NOT_APPLIED.\n');
+
+  return auditReport;
 }
 
-run().catch(err => {
-  console.error('Error crítico en el corredor autónomo:', err);
-});
+if (process.argv[1] && process.argv[1].includes('runAutonomousAudit.js')) {
+  runAutonomousAudit().catch(err => {
+    console.error('❌ ERROR BLOQUEANTE EN AUDITORÍA NOCTURNA:', err.message);
+    process.exit(1);
+  });
+}

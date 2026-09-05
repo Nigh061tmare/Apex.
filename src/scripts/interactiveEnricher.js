@@ -29,7 +29,7 @@ async function runMenu() {
   console.clear();
   console.log('\x1b[36m╔════════════════════════════════════════════════════════════════════╗\x1b[0m');
   console.log('\x1b[36m║\x1b[0m \x1b[1m\x1b[33m🌟 APEX POWER SCALING — ENRIQUECEDOR AUTÓNOMO DE ROSTER           \x1b[0m\x1b[36m║\x1b[0m');
-  console.log('\x1b[36m║\x1b[0m \x1b[90m   Auditoría de Formas, Arsenal con Stamina, Sinergias y Ki       \x1b[0m\x1b[36m║\x1b[0m');
+  console.log('\x1b[36m║\x1b[0m \x1b[90m   V25 · 756 activos · 13 archivados · Modo Seguro Proposal\x1b[0m\x1b[36m║\x1b[0m');
   console.log('\x1b[36m╚════════════════════════════════════════════════════════════════════╝\x1b[0m\n');
 
   // 1. Tarea
@@ -50,7 +50,7 @@ async function runMenu() {
 
   // 2. Universo
   console.log('\n\x1b[1m\x1b[32m[2/4] SELECCIONA EL UNIVERSO:\x1b[0m');
-  console.log('  • Presiona \x1b[1mEnter\x1b[0m para procesar \x1b[33mtodo el Roster completo (821+ personajes)\x1b[0m');
+  console.log('  • Presiona \x1b[1mEnter\x1b[0m para procesar \x1b[33mtodo el Roster activo V25 (756 combatientes)\x1b[0m');
   console.log('  • O escribe un universo (ej: Dragon Ball, Baki, Marvel, DC, Jujutsu Kaisen)');
   const universe = await ask('\n👉 Universo [Enter=all]: ', 'all');
 
@@ -118,7 +118,7 @@ async function runMenu() {
 
   // 4. Vueltas al Roster
   console.log('\n\x1b[1m\x1b[32m[4/5] SELECCIONA EL MODO DE VUELTAS AL ROSTER:\x1b[0m');
-  console.log('  \x1b[33m1.\x1b[0m \x1b[1m1 Vuelta Completa al Roster\x1b[0m (Audita y enriquece los 769 pjs una vez) \x1b[32m[RECOMENDADO]\x1b[0m');
+  console.log('  \x1b[33m1.\x1b[0m \x1b[1m1 Vuelta Completa al Roster\x1b[0m (Audita los 756 activos de V25 en modo propuesta) \x1b[32m[RECOMENDADO]\x1b[0m');
   console.log('  \x1b[33m2.\x1b[0m 2 Vueltas de Refinamiento Maestro (Pasa 2 veces puliendo cada detalle)');
   console.log('  \x1b[33m3.\x1b[0m 3 Vueltas a Fondo');
   console.log('  \x1b[33m4.\x1b[0m \x1b[1mBucle Infinito Nocturno\x1b[0m (Sigue dando vueltas continuas toda la noche)');
@@ -167,7 +167,7 @@ async function runMenu() {
   child.on('close', (code) => {
     console.log(`\n\x1b[36m════════════════════════════════════════════════════════════════════\x1b[0m`);
     console.log(`\x1b[32m  Proceso finalizado con código: ${code}\x1b[0m`);
-    console.log(`\x1b[90m  Para aplicar todas las mejoras al juego, ejecuta APLICAR_PARCHES_AL_ROSTER.bat\x1b[0m`);
+    console.log(`\x1b[90m  Los borradores generados requieren revisión y aprobación antes de ser aplicados.\x1b[0m`);
     console.log(`\x1b[36m════════════════════════════════════════════════════════════════════\x1b[0m\n`);
   });
 }

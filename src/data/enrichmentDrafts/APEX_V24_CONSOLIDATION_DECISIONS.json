@@ -1,0 +1,619 @@
+{
+  "meta": {
+    "title": "APEX V24 — Decisiones de Consolidación Editorial: Lotes de Fuente, Escala y Modelo de Combate",
+    "status": "AUDIT_ONLY_PENDING_USER_APPROVAL",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V24.json",
+    "generatedAt": "2026-09-04T09:59:04.581Z",
+    "totalCases": 11,
+    "isReadOnlyAudit": true
+  },
+  "cases": [
+    {
+      "caseIndex": 1,
+      "lote": "LOTE 1 — Fuente y escala",
+      "title": "Tamagami #1: Discrepancia de Escala de Ki en Daima (634.2M vs 1.11B)",
+      "recordsInvolved": [
+        "tamagami-1-espada-daima",
+        "tamagami-n-mero-1-dragon-ball-daima-763"
+      ],
+      "opcionA": {
+        "recordIdConservar": "tamagami-1-espada-daima",
+        "fichaOFormaArchivarOSeparar": "tamagami-n-mero-1-dragon-ball-daima-763 (archivar)",
+        "efectoKiYForms": "Ki fijado en 634.200.000 (Tier 4-B). Ficha mono-forma limpia; elimina la forma duplicada x1.35 (1.50B Ki).",
+        "efectoHax": "Conserva arsenal demoníaco y dominio de espada.",
+        "riesgos": "Si futuras guías de Daima escalan a los Tamagami en el rango del billón, el valor de 634.2M requerirá ajuste."
+      },
+      "opcionB": {
+        "recordIdConservar": "tamagami-n-mero-1-dragon-ball-daima-763 (purgado)",
+        "fichaOFormaArchivarOSeparar": "tamagami-1-espada-daima (archivar) y forma[1] de 763 (eliminar)",
+        "efectoKiYForms": "Ki fijado en 1.113.000.000 (Tier 4-B). Se remueve la forma inflada x1.35.",
+        "efectoHax": "Conserva capacidades básicas de guardián de Dragon Ball.",
+        "riesgos": "1.11B supera en casi 3x a Goku Mini SSJ3 (420M), lo que podría sobredimensionar el combate visto en pantalla."
+      },
+      "opcionC": {
+        "recordIdConservar": "Ambos registros retenidos provisionalmente sin cambios",
+        "fichaOFormaArchivarOSeparar": "Ninguna hasta publicación de databook oficial de Daima",
+        "efectoKiYForms": "Sin efecto; se mantiene la dualidad 634.2M y 1.11B.",
+        "efectoHax": "Sin efecto.",
+        "riesgos": "Persistencia de duplicado semántico evidente en el roster de Daima."
+      },
+      "recomendacion": "Opción C",
+      "confianza": "MEDIUM",
+      "evidenciaLocal": "Anime Dragon Ball Daima (Episodios 6-8). El guardián exige combate coordinado de Goku Mini SSJ, pero no hay databooks numéricos oficiales.",
+      "requiereFuenteExterna": true,
+      "sourceEvidenceStatus": "SOURCE_EVIDENCE_INSUFFICIENT"
+    },
+    {
+      "caseIndex": 2,
+      "lote": "LOTE 1 — Fuente y escala",
+      "title": "Menthuthuyoupi: Inversión Metodológica de Tier y Ki en Hunter x Hunter",
+      "recordsInvolved": [
+        "menthuthuyoupi-hxh-ca",
+        "youpi-hxh-ca"
+      ],
+      "opcionA": {
+        "recordIdConservar": "youpi-hxh-ca",
+        "fichaOFormaArchivarOSeparar": "menthuthuyoupi-hxh-ca (archivar)",
+        "efectoKiYForms": "Ki fijado en 4.746 (Tier 7-A Mountain level) con forma Centauro de 6.407,1 Ki (mult x1.35).",
+        "efectoHax": "Metamorfosis biológica, manipulación de ira y explosiones masivas Nen (Rage Blast) intactas.",
+        "riesgos": "Leve reducción respecto a los 5.030 Ki de la otra ficha, pero normaliza el tier al rango 7-A."
+      },
+      "opcionB": {
+        "recordIdConservar": "menthuthuyoupi-hxh-ca",
+        "fichaOFormaArchivarOSeparar": "youpi-hxh-ca (archivar)",
+        "efectoKiYForms": "Ki fijado en 5.030 Ki pero manteniendo Tier 7-B (City level). Forma Centauro en 6.790,5 Ki.",
+        "efectoHax": "Capacidades de Guardia Real Quimera conservadas.",
+        "riesgos": "Incoherente con el consenso de hazañas de Youpi, cuyo poder destructivo supera ampliamente el nivel ciudad 7-B."
+      },
+      "opcionC": {
+        "recordIdConservar": "menthuthuyoupi-hxh-ca (re-tiering formal a 7-A)",
+        "fichaOFormaArchivarOSeparar": "youpi-hxh-ca (archivar)",
+        "efectoKiYForms": "Ki en 5.030 y corrección explícita de su baseTier de 7-B a 7-A.",
+        "efectoHax": "Hax completo preservado.",
+        "riesgos": "Requiere modificar un campo protegido (baseTier) en una ficha de V24."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Hunter x Hunter (Arco de las Hormigas Quimera). La escala de destrucción de Youpi frente a Knuckle, Morel y Shoot encaja en Mountain level (7-A).",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 3,
+      "lote": "LOTE 1 — Fuente y escala",
+      "title": "Kenjaku: Disparidad de Escala Grado Especial vs Stub Pseudo-Geto (252.5K vs 7.2K)",
+      "recordsInvolved": [
+        "kenjaku-jjk",
+        "kenjaku-pseudo-geto"
+      ],
+      "opcionA": {
+        "recordIdConservar": "kenjaku-jjk",
+        "fichaOFormaArchivarOSeparar": "kenjaku-pseudo-geto (archivar como stub desfasado)",
+        "efectoKiYForms": "Ki fijado en 252.525 Ki (Tier 7-A). Forma Expansión de Dominio: Womb Profusion con 454.545 Ki (mult x1.8).",
+        "efectoHax": "Manipulación de Maldiciones, Gravedad / Anti-Gravedad de Kaori Itadori, Dominio sin barrera Taidō Kyūshū.",
+        "riesgos": "Ninguno. kenjaku-jjk es el perfil técnico completo que refleja su rango de Grado Especial en JJK."
+      },
+      "opcionB": {
+        "recordIdConservar": "kenjaku-pseudo-geto",
+        "fichaOFormaArchivarOSeparar": "kenjaku-jjk (archivar)",
+        "efectoKiYForms": "Ki en 7.203 Ki (Tier 7-A). Mono-forma sin Expansión de Dominio.",
+        "efectoHax": "Pierde el Dominio Womb Profusion y técnicas avanzadas de maldición.",
+        "riesgos": "Crítico: sitúa a Kenjaku por debajo de hechiceros de Grado 1, rompiendo la escala de Shibuya."
+      },
+      "opcionC": {
+        "recordIdConservar": "Ambos registros divididos por era",
+        "fichaOFormaArchivarOSeparar": "Renombrar kenjaku-pseudo-geto a etapa previa a Shibuya",
+        "efectoKiYForms": "Mantiene 7.203 Ki en la inicial y 252.525 Ki en la final.",
+        "efectoHax": "Desglosa habilidades pre y post Culling Game.",
+        "riesgos": "Artificioso: Kenjaku en el cuerpo de Geto tuvo el mismo poder latente antes y durante Shibuya."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Jujutsu Kaisen (Incidente de Shibuya / Culling Game). Kenjaku compite con Yuki Tsukumo, Choso y domina barreras abiertas.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 4,
+      "lote": "LOTE 1 — Fuente y escala",
+      "title": "Funny Valentine: Fijación de Ki Físico Base SBR (1.292 vs 547 Ki)",
+      "recordsInvolved": [
+        "funny-valentine-jojo-sbr",
+        "funny-valentine-poder-completo"
+      ],
+      "opcionA": {
+        "recordIdConservar": "funny-valentine-jojo-sbr",
+        "fichaOFormaArchivarOSeparar": "funny-valentine-poder-completo (archivar)",
+        "efectoKiYForms": "Ki fijado en 1.292 Ki (Tier 8-C). Mono-forma.",
+        "efectoHax": "Hax de D4C y Love Train se preservan en perfil conceptual sin alterar Ki.",
+        "riesgos": "Ninguno; 1.292 Ki refleja a Valentine en óptima condición física tras el rejuvenecimiento."
+      },
+      "opcionB": {
+        "recordIdConservar": "funny-valentine-poder-completo",
+        "fichaOFormaArchivarOSeparar": "funny-valentine-jojo-sbr (archivar)",
+        "efectoKiYForms": "Ki fijado en 547 Ki (Tier 8-C Físico). Mono-forma.",
+        "efectoHax": "Hax idéntico.",
+        "riesgos": "547 Ki es muy bajo dentro del rango de luchadores atléticos de JoJo, aproximándolo al humano medio."
+      },
+      "opcionC": {
+        "recordIdConservar": "Ambos retenidos hasta auditar todo el verso SBR",
+        "fichaOFormaArchivarOSeparar": "Ninguna",
+        "efectoKiYForms": "Sin efecto.",
+        "efectoHax": "Sin efecto.",
+        "riesgos": "Mantiene la duplicación del presidente de EE.UU."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Steel Ball Run (JoJo's Bizarre Adventure). Valentine rejuvenecido posee físico militar entrenado de Tier 8-C.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 5,
+      "lote": "LOTE 1 — Fuente y escala",
+      "title": "Dr. Raichi: Base Física Anciana (24.5K) vs Reserva Hatchiyack (845.25M)",
+      "recordsInvolved": [
+        "dr-raichi-dbm-u3",
+        "dr-raichi-fantasmas-del-odio-u3-dbm"
+      ],
+      "opcionA": {
+        "recordIdConservar": "dr-raichi-dbm-u3 (reformulado)",
+        "fichaOFormaArchivarOSeparar": "dr-raichi-fantasmas-del-odio-u3-dbm (archivar)",
+        "efectoKiYForms": "Ki biológico fijado en 24.518 Ki (Tier 7-A con barrera Tier 4-B). Fantasmas desvinculados de Ki multiplicativo.",
+        "efectoHax": "Invocación de fantasmas del odio (Broly, Cell, etc.) tratada como sinergia de combate autónoma.",
+        "riesgos": "El motor debe evaluar a los fantasmas como entidades aliadas y no como ataque directo de Raichi."
+      },
+      "opcionB": {
+        "recordIdConservar": "dr-raichi-fantasmas-del-odio-u3-dbm",
+        "fichaOFormaArchivarOSeparar": "dr-raichi-dbm-u3 (archivar)",
+        "efectoKiYForms": "Ki fijado en 845.250.000 Ki (Tier 4-B) mono-forma.",
+        "efectoHax": "Asume que Raichi tiene Ki equivalente a una legión de guerreros zombi.",
+        "riesgos": "Falsedad fisiológica: el cuerpo físico de Raichi jamás poseyó 845 millones de Ki."
+      },
+      "opcionC": {
+        "recordIdConservar": "Congelar unificación por debate de modelado de invocador vs invocaciones",
+        "fichaOFormaArchivarOSeparar": "Ninguna",
+        "efectoKiYForms": "Sin efecto.",
+        "efectoHax": "Sin efecto.",
+        "riesgos": "Mantiene dos interpretaciones radicalmente incompatibles de DBM U3."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Multiverse (Capítulo U3). Raichi es un fantasma tsufuru en una máquina; su escudo resiste pero su cuerpo no combate físicamente.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 6,
+      "lote": "LOTE 1 — Fuente y escala",
+      "title": "Super Baby God: Escala Controlada x50 (1.33T) vs Multiplicador Arbitrario x6400 (283.58T)",
+      "recordsInvolved": [
+        "baby-god-brokoly",
+        "baby-vegeta-god-brokoly"
+      ],
+      "opcionA": {
+        "recordIdConservar": "baby-god-brokoly",
+        "fichaOFormaArchivarOSeparar": "baby-vegeta-god-brokoly (archivar por mult x6400 corrupto)",
+        "efectoKiYForms": "Ki base en 26.565.000.000 Ki (Tier 3-B). Baby 2 en 53.13B (x2). Baby God en 1.328.250.000.000 Ki (mult x50, Tier High 3-A).",
+        "efectoHax": "Infección tsufuru, posesión divina y control de saiyajins conservados.",
+        "riesgos": "Ninguno; expulsa un multiplicador artificial desmedido que carece de base."
+      },
+      "opcionB": {
+        "recordIdConservar": "baby-vegeta-god-brokoly",
+        "fichaOFormaArchivarOSeparar": "baby-god-brokoly (archivar)",
+        "efectoKiYForms": "Ki base en 44.31B y Baby God en 283.584.000.000.000 Ki (mult x6400).",
+        "efectoHax": "Idéntico.",
+        "riesgos": "Crítico: 283 Trillones de Ki descalabra el escalado de fan-mangas de DB, superando sin fundamento a fusiones y hakaishins."
+      },
+      "opcionC": {
+        "recordIdConservar": "Congelar unificación y clasificar SOURCE_EVIDENCE_INSUFFICIENT",
+        "fichaOFormaArchivarOSeparar": "Ninguna",
+        "efectoKiYForms": "Sin efecto.",
+        "efectoHax": "Sin efecto.",
+        "riesgos": "Mantiene en el roster un registro con multiplicador x6400 contaminante."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Canal de YouTube @Brokoly350. El concepto es Baby absorbiendo energía divina; el multiplicador x50 refleja el acceso a SSG sin hipérboles matemáticas descontroladas.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 7,
+      "lote": "LOTE 2 — Modelo de combate",
+      "title": "Giorno Giovanna: Desacoplamiento de Stand Causal GER vs Ki Físico",
+      "recordsInvolved": [
+        "giorno-giovanna-ger-jojo-gg001",
+        "giorno-giovanna-jojo-va"
+      ],
+      "opcionA": {
+        "recordIdConservar": "giorno-giovanna-jojo-va (perfil único desacoplado)",
+        "fichaOFormaArchivarOSeparar": "giorno-giovanna-ger-jojo-gg001 (archivar)",
+        "efectoKiYForms": "Ki humano de 1.365 Ki (Tier 8-C). GER se retira de forms multiplicativas y se traslada a haxProfile / realityWarpingRules.",
+        "efectoHax": "Return to Zero opera como pasiva absoluta de anulación causal. El Bucle de Muerte opera como condición de muerte al conectar golpe de gracia.",
+        "riesgos": "El simulador de combate debe resolver la interacción causal de Return to Zero mediante reglas de hax y no por diferencia de Ki."
+      },
+      "opcionB": {
+        "recordIdConservar": "giorno-giovanna-ger-jojo-gg001 (manteniendo forma multiplicativa)",
+        "fichaOFormaArchivarOSeparar": "giorno-giovanna-jojo-va (archivar)",
+        "efectoKiYForms": "Forma 1 GER con multiplicador x1.35 (3.558,6 Ki).",
+        "efectoHax": "Return to Zero atado al estado transformado.",
+        "riesgos": "Crítico: un multiplicador de +35% hace que personajes con 5.000 Ki derroten a GER por simple DPS ignorando su invulnerabilidad causal."
+      },
+      "opcionC": {
+        "recordIdConservar": "Separar en dos entidades independientes (Giorno Base vs GER Cósmico)",
+        "fichaOFormaArchivarOSeparar": "Dividir en dos personajes distintos en el roster",
+        "efectoKiYForms": "Giorno Base en 1.365 Ki (Tier 8-C); GER Entidad en Tier 2-C / Hax Infinito sin Ki.",
+        "efectoHax": "Aísla el hax cósmico del combate físico.",
+        "riesgos": "Viola la regla canónica de JoJo: Stand y usuario son la misma entidad vital."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "JoJo's Bizarre Adventure: Vento Aureo. Stand Arrow otorga a Gold Experience una habilidad de causalidad que trasciende las estadísticas físicas.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 8,
+      "lote": "LOTE 2 — Modelo de combate",
+      "title": "Funny Valentine: Desacoplamiento de D4C y Love Train respecto al Ki Físico",
+      "recordsInvolved": [
+        "funny-valentine-jojo-sbr"
+      ],
+      "opcionA": {
+        "recordIdConservar": "funny-valentine-jojo-sbr (con haxProfile desacoplado)",
+        "fichaOFormaArchivarOSeparar": "Evitar toda forma que aplique multiplicadores numéricos a D4C o Love Train",
+        "efectoKiYForms": "Ki físico estable en 1.292 Ki (Tier 8-C). Mono-forma.",
+        "efectoHax": "D4C: Salto dimensional y transferencia de consciencia / reemplazo de cuerpos infinitos como pasiva de resurrección. Love Train: barrera de redirección absoluta de infortunio como hax situacional.",
+        "riesgos": "Requiere que el motor modele la condición de victoria contra Valentine (anulación dimensional como Infinite Rotation de Tusk Act 4)."
+      },
+      "opcionB": {
+        "recordIdConservar": "funny-valentine-jojo-sbr (con forma Love Train multiplicativa)",
+        "fichaOFormaArchivarOSeparar": "Crear forma 'Modo Love Train' con multiplicador de Ki",
+        "efectoKiYForms": "Eleva el Ki numérico artificialmente a Tier 4 o superior.",
+        "efectoHax": "Convierte una barrera dimensional en aumento de fuerza física de golpes.",
+        "riesgos": "Viola la regla: 'No convertir hax conceptual o Stand en multiplicadores de Ki'."
+      },
+      "opcionC": {
+        "recordIdConservar": "Congelar modelado hasta estandarizar subsistema de Stand en APEX",
+        "fichaOFormaArchivarOSeparar": "Ninguna",
+        "efectoKiYForms": "Sin efecto.",
+        "efectoHax": "Sin efecto.",
+        "riesgos": "Valentine permanece sin codificación formal de su invulnerabilidad dimensional."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Steel Ball Run. D4C requiere atraparse entre dos objetos para saltar entre dimensiones; Love Train redirige el daño hacia otros lugares del planeta sin otorgar poder destructivo adicional.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 9,
+      "lote": "LOTE 2 — Modelo de combate",
+      "title": "Dr. Raichi: Fantasmas del Odio como Invocaciones y Sinergia, No Multiplicador Biológico",
+      "recordsInvolved": [
+        "dr-raichi-dbm-u3"
+      ],
+      "opcionA": {
+        "recordIdConservar": "dr-raichi-dbm-u3 (remodelado a Invocador Tsufuru)",
+        "fichaOFormaArchivarOSeparar": "Eliminar forms[1] ('ghost-broly-unleashed', mult x2000) de su array de transformaciones",
+        "efectoKiYForms": "Raichi en cápsula: 24.518 Ki (Tier 7-A con escudo Tier 4-B). Forms count: 1 (mono-forma).",
+        "efectoHax": "Fantasmas del Odio (Broly LSSJ, Cell, etc.) se codifican en `arsenal` y `teamCombos` / `partnerTags` como invocaciones autónomas con su propio Ki independiente.",
+        "riesgos": "Requiere soporte del simulador para combate de invocador + invocación simultánea."
+      },
+      "opcionB": {
+        "recordIdConservar": "dr-raichi-dbm-u3 (conservar mult biológico x2000)",
+        "fichaOFormaArchivarOSeparar": "Mantener forma Broly con 49.036.000 Ki",
+        "efectoKiYForms": "Transformación biológica personal x2000.",
+        "efectoHax": "Raichi absorbe las características físicas de un saiyajin legendario.",
+        "riesgos": "Rompe las reglas biológicas del motor y falsea el combate de DBM."
+      },
+      "opcionC": {
+        "recordIdConservar": "Congelar decisión hasta crear el esquema de entidades invocadas",
+        "fichaOFormaArchivarOSeparar": "Ninguna",
+        "efectoKiYForms": "Sin efecto.",
+        "efectoHax": "Sin efecto.",
+        "riesgos": "Raichi permanece con una transformación no canónica biológica x2000."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Multiverse (U3). El Dr. Raichi nunca pelea con sus puños; su poder es Hatchiyack condensando el odio en guerreros independientes.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 10,
+      "lote": "LOTE 2 — Modelo de combate",
+      "title": "Forma 4 SSJ4 Primal Daima (Mini): Retención Estricta en Daima vs Futura Escisión",
+      "recordsInvolved": [
+        "son-goku-mini-daima-full (forms[4])"
+      ],
+      "opcionA": {
+        "recordIdConservar": "son-goku-mini-daima-full (con forma 4 retenida bajo migrationGate)",
+        "fichaOFormaArchivarOSeparar": "Mantener forms[4] ('ssj4-daima-mini', 4.2B Ki, Tier 3-B) intacta sin borrar ni migrar",
+        "efectoKiYForms": "Sin cambios de Ki, tier ni multiplicadores. 5 formas conservadas.",
+        "efectoHax": "Se añade en metadatos de la forma: `isWhatIf: true`, `migrationGate: active`.",
+        "riesgos": "Ninguno; cumple con la directriz estricta de no mover ni borrar formas en esta fase."
+      },
+      "opcionB": {
+        "recordIdConservar": "son-goku-mini-daima-full (purgando forma 4 sin crear What-If)",
+        "fichaOFormaArchivarOSeparar": "Eliminar forma 4 por no ser canónica",
+        "efectoKiYForms": "Ficha queda con 4 formas canónicas (Base, SSJ1, SSJ2, SSJ3).",
+        "efectoHax": "Pérdida de la forma fan-manga.",
+        "riesgos": "Viola el requisito del usuario: 'No migrar ni borrar formas de Goku Daima'."
+      },
+      "opcionC": {
+        "recordIdConservar": "Escisión inmediata hacia son-goku-ssj4-primal-daima-what-if",
+        "fichaOFormaArchivarOSeparar": "Mover forma 4 fuera de Daima hacia Fan-Mangas & What-If",
+        "efectoKiYForms": "Crea un nuevo personaje en el roster.",
+        "efectoHax": "Separación total de continuidades.",
+        "riesgos": "Viola explícitamente la directriz del usuario: 'No crear la ficha SSJ4 Primal What-If. No mover SSJ4 Primal fuera de Daima'."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Daima (Akira Toriyama). La transformación SSJ4 no existe en la obra canónica de Daima; es un concepto popular del fandom.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    },
+    {
+      "caseIndex": 11,
+      "lote": "LOTE 2 — Modelo de combate",
+      "title": "Forma 4 SSJ4 Primal Daima (Adulto): Retención Estricta en Daima Adulto vs Futura Escisión",
+      "recordsInvolved": [
+        "son-goku-adulto-daima (forms[4])"
+      ],
+      "opcionA": {
+        "recordIdConservar": "son-goku-adulto-daima (con forma 4 retenida bajo migrationGate)",
+        "fichaOFormaArchivarOSeparar": "Mantener forms[4] ('ssj4-adulto-daima', 554.4B Ki, Tier 4-A) intacta sin borrar ni migrar",
+        "efectoKiYForms": "Sin cambios de Ki, tier ni multiplicadores. 5 formas conservadas.",
+        "efectoHax": "Marcado de metadatos `isWhatIf: true`, `migrationGate: active`.",
+        "riesgos": "Ninguno; respeta el congelamiento absoluto de las formas de Daima."
+      },
+      "opcionB": {
+        "recordIdConservar": "son-goku-adulto-daima (purgando forma 4)",
+        "fichaOFormaArchivarOSeparar": "Eliminar forma 4 por ser What-If",
+        "efectoKiYForms": "Ficha queda con 4 formas canónicas adultas.",
+        "efectoHax": "Pérdida de la forma sin respaldo.",
+        "riesgos": "Viola la regla de no alterar formas en esta etapa."
+      },
+      "opcionC": {
+        "recordIdConservar": "Escisión inmediata creando nueva entidad What-If",
+        "fichaOFormaArchivarOSeparar": "Mover a Fan-Mangas & What-If",
+        "efectoKiYForms": "Crea ficha nueva.",
+        "efectoHax": "Separación canónica.",
+        "riesgos": "Viola la prohibición estricta del usuario."
+      },
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Daima. El prólogo y clímax adulto solo contemplan formas estándar SSJ.",
+      "requiereFuenteExterna": false,
+      "sourceEvidenceStatus": "SUFFICIENT"
+    }
+  ],
+  "finalTable": [
+    {
+      "caso": "1. Tamagami #1: Discrepancia de Escala de Ki en Daima (634.2M vs 1.11B)",
+      "opcionA": "tamagami-1-espada-daima | Ki fijado en 634.200.000 (Tier 4-B). Ficha mono-forma limpia; elimina la forma duplicada x1.35 (1.50B Ki).",
+      "opcionB": "tamagami-n-mero-1-dragon-ball-daima-763 (purgado) | Ki fijado en 1.113.000.000 (Tier 4-B). Se remueve la forma inflada x1.35.",
+      "opcionC": "Ambos registros retenidos provisionalmente sin cambios | Sin efecto; se mantiene la dualidad 634.2M y 1.11B.",
+      "recomendacion": "Opción C",
+      "confianza": "MEDIUM",
+      "evidenciaLocal": "Anime Dragon Ball Daima (Episodios 6-8). El guardián exige combate coordinado de Goku Mini SSJ, pero no hay databooks numéricos oficiales.",
+      "requiereFuenteExterna": true
+    },
+    {
+      "caso": "2. Menthuthuyoupi: Inversión Metodológica de Tier y Ki en Hunter x Hunter",
+      "opcionA": "youpi-hxh-ca | Ki fijado en 4.746 (Tier 7-A Mountain level) con forma Centauro de 6.407,1 Ki (mult x1.35).",
+      "opcionB": "menthuthuyoupi-hxh-ca | Ki fijado en 5.030 Ki pero manteniendo Tier 7-B (City level). Forma Centauro en 6.790,5 Ki.",
+      "opcionC": "menthuthuyoupi-hxh-ca (re-tiering formal a 7-A) | Ki en 5.030 y corrección explícita de su baseTier de 7-B a 7-A.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Hunter x Hunter (Arco de las Hormigas Quimera). La escala de destrucción de Youpi frente a Knuckle, Morel y Shoot encaja en Mountain level (7-A).",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "3. Kenjaku: Disparidad de Escala Grado Especial vs Stub Pseudo-Geto (252.5K vs 7.2K)",
+      "opcionA": "kenjaku-jjk | Ki fijado en 252.525 Ki (Tier 7-A). Forma Expansión de Dominio: Womb Profusion con 454.545 Ki (mult x1.8).",
+      "opcionB": "kenjaku-pseudo-geto | Ki en 7.203 Ki (Tier 7-A). Mono-forma sin Expansión de Dominio.",
+      "opcionC": "Ambos registros divididos por era | Mantiene 7.203 Ki en la inicial y 252.525 Ki en la final.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Jujutsu Kaisen (Incidente de Shibuya / Culling Game). Kenjaku compite con Yuki Tsukumo, Choso y domina barreras abiertas.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "4. Funny Valentine: Fijación de Ki Físico Base SBR (1.292 vs 547 Ki)",
+      "opcionA": "funny-valentine-jojo-sbr | Ki fijado en 1.292 Ki (Tier 8-C). Mono-forma.",
+      "opcionB": "funny-valentine-poder-completo | Ki fijado en 547 Ki (Tier 8-C Físico). Mono-forma.",
+      "opcionC": "Ambos retenidos hasta auditar todo el verso SBR | Sin efecto.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Steel Ball Run (JoJo's Bizarre Adventure). Valentine rejuvenecido posee físico militar entrenado de Tier 8-C.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "5. Dr. Raichi: Base Física Anciana (24.5K) vs Reserva Hatchiyack (845.25M)",
+      "opcionA": "dr-raichi-dbm-u3 (reformulado) | Ki biológico fijado en 24.518 Ki (Tier 7-A con barrera Tier 4-B). Fantasmas desvinculados de Ki multiplicativo.",
+      "opcionB": "dr-raichi-fantasmas-del-odio-u3-dbm | Ki fijado en 845.250.000 Ki (Tier 4-B) mono-forma.",
+      "opcionC": "Congelar unificación por debate de modelado de invocador vs invocaciones | Sin efecto.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Multiverse (Capítulo U3). Raichi es un fantasma tsufuru en una máquina; su escudo resiste pero su cuerpo no combate físicamente.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "6. Super Baby God: Escala Controlada x50 (1.33T) vs Multiplicador Arbitrario x6400 (283.58T)",
+      "opcionA": "baby-god-brokoly | Ki base en 26.565.000.000 Ki (Tier 3-B). Baby 2 en 53.13B (x2). Baby God en 1.328.250.000.000 Ki (mult x50, Tier High 3-A).",
+      "opcionB": "baby-vegeta-god-brokoly | Ki base en 44.31B y Baby God en 283.584.000.000.000 Ki (mult x6400).",
+      "opcionC": "Congelar unificación y clasificar SOURCE_EVIDENCE_INSUFFICIENT | Sin efecto.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Canal de YouTube @Brokoly350. El concepto es Baby absorbiendo energía divina; el multiplicador x50 refleja el acceso a SSG sin hipérboles matemáticas descontroladas.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "7. Giorno Giovanna: Desacoplamiento de Stand Causal GER vs Ki Físico",
+      "opcionA": "giorno-giovanna-jojo-va (perfil único desacoplado) | Ki humano de 1.365 Ki (Tier 8-C). GER se retira de forms multiplicativas y se traslada a haxProfile / realityWarpingRules.",
+      "opcionB": "giorno-giovanna-ger-jojo-gg001 (manteniendo forma multiplicativa) | Forma 1 GER con multiplicador x1.35 (3.558,6 Ki).",
+      "opcionC": "Separar en dos entidades independientes (Giorno Base vs GER Cósmico) | Giorno Base en 1.365 Ki (Tier 8-C); GER Entidad en Tier 2-C / Hax Infinito sin Ki.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "JoJo's Bizarre Adventure: Vento Aureo. Stand Arrow otorga a Gold Experience una habilidad de causalidad que trasciende las estadísticas físicas.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "8. Funny Valentine: Desacoplamiento de D4C y Love Train respecto al Ki Físico",
+      "opcionA": "funny-valentine-jojo-sbr (con haxProfile desacoplado) | Ki físico estable en 1.292 Ki (Tier 8-C). Mono-forma.",
+      "opcionB": "funny-valentine-jojo-sbr (con forma Love Train multiplicativa) | Eleva el Ki numérico artificialmente a Tier 4 o superior.",
+      "opcionC": "Congelar modelado hasta estandarizar subsistema de Stand en APEX | Sin efecto.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Steel Ball Run. D4C requiere atraparse entre dos objetos para saltar entre dimensiones; Love Train redirige el daño hacia otros lugares del planeta sin otorgar poder destructivo adicional.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "9. Dr. Raichi: Fantasmas del Odio como Invocaciones y Sinergia, No Multiplicador Biológico",
+      "opcionA": "dr-raichi-dbm-u3 (remodelado a Invocador Tsufuru) | Raichi en cápsula: 24.518 Ki (Tier 7-A con escudo Tier 4-B). Forms count: 1 (mono-forma).",
+      "opcionB": "dr-raichi-dbm-u3 (conservar mult biológico x2000) | Transformación biológica personal x2000.",
+      "opcionC": "Congelar decisión hasta crear el esquema de entidades invocadas | Sin efecto.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Multiverse (U3). El Dr. Raichi nunca pelea con sus puños; su poder es Hatchiyack condensando el odio en guerreros independientes.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "10. Forma 4 SSJ4 Primal Daima (Mini): Retención Estricta en Daima vs Futura Escisión",
+      "opcionA": "son-goku-mini-daima-full (con forma 4 retenida bajo migrationGate) | Sin cambios de Ki, tier ni multiplicadores. 5 formas conservadas.",
+      "opcionB": "son-goku-mini-daima-full (purgando forma 4 sin crear What-If) | Ficha queda con 4 formas canónicas (Base, SSJ1, SSJ2, SSJ3).",
+      "opcionC": "Escisión inmediata hacia son-goku-ssj4-primal-daima-what-if | Crea un nuevo personaje en el roster.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Daima (Akira Toriyama). La transformación SSJ4 no existe en la obra canónica de Daima; es un concepto popular del fandom.",
+      "requiereFuenteExterna": false
+    },
+    {
+      "caso": "11. Forma 4 SSJ4 Primal Daima (Adulto): Retención Estricta en Daima Adulto vs Futura Escisión",
+      "opcionA": "son-goku-adulto-daima (con forma 4 retenida bajo migrationGate) | Sin cambios de Ki, tier ni multiplicadores. 5 formas conservadas.",
+      "opcionB": "son-goku-adulto-daima (purgando forma 4) | Ficha queda con 4 formas canónicas adultas.",
+      "opcionC": "Escisión inmediata creando nueva entidad What-If | Crea ficha nueva.",
+      "recomendacion": "Opción A",
+      "confianza": "HIGH",
+      "evidenciaLocal": "Dragon Ball Daima. El prólogo y clímax adulto solo contemplan formas estándar SSJ.",
+      "requiereFuenteExterna": false
+    }
+  ],
+  "proposals": {
+    "batch_source_scale_proposal": {
+      "title": "Propuesta de Parche de Consolidación: Lote 1 — Fuente y Escala",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V24.json",
+      "description": "Propuestas editoriales para resolución de escalas y fuentes en HxH, JJK, SBR, DBM y Fan-Manga. Sin instrucciones ejecutables in-place.",
+      "entries": [
+        {
+          "targetCase": 1,
+          "targetRecordIds": [
+            "tamagami-1-espada-daima",
+            "tamagami-n-mero-1-dragon-ball-daima-763"
+          ],
+          "actionProposed": "freeze_scale_pending_external_source",
+          "note": "SOURCE_EVIDENCE_INSUFFICIENT para dirimir 634.2M vs 1.11B en Dragon Ball Daima."
+        },
+        {
+          "targetCase": 2,
+          "targetRecordId": "youpi-hxh-ca",
+          "retainedRecordId": "youpi-hxh-ca (Tier 7-A, 4.746 Ki)",
+          "deprecatedCandidateId": "menthuthuyoupi-hxh-ca",
+          "actionProposed": "retain_canonical_deprecate_duplicate_pending_approval"
+        },
+        {
+          "targetCase": 3,
+          "targetRecordId": "kenjaku-jjk",
+          "retainedRecordId": "kenjaku-jjk (252.525 Ki)",
+          "deprecatedCandidateId": "kenjaku-pseudo-geto",
+          "actionProposed": "retain_canonical_deprecate_stub_pending_approval"
+        },
+        {
+          "targetCase": 4,
+          "targetRecordId": "funny-valentine-jojo-sbr",
+          "retainedRecordId": "funny-valentine-jojo-sbr (1.292 Ki)",
+          "deprecatedCandidateId": "funny-valentine-poder-completo",
+          "actionProposed": "retain_canonical_deprecate_duplicate_pending_approval"
+        },
+        {
+          "targetCase": 5,
+          "targetRecordId": "dr-raichi-dbm-u3",
+          "retainedRecordId": "dr-raichi-dbm-u3 (24.518 Ki base)",
+          "deprecatedCandidateId": "dr-raichi-fantasmas-del-odio-u3-dbm",
+          "actionProposed": "retain_individual_deprecate_swarm_pending_approval"
+        },
+        {
+          "targetCase": 6,
+          "targetRecordId": "baby-god-brokoly",
+          "retainedRecordId": "baby-god-brokoly (mult x50, 1.33T Ki)",
+          "deprecatedCandidateId": "baby-vegeta-god-brokoly",
+          "actionProposed": "retain_canonical_deprecate_corrupt_multiplier_pending_approval"
+        }
+      ]
+    },
+    "batch_combat_model_proposal": {
+      "title": "Propuesta de Parche de Consolidación: Lote 2 — Modelo de Combate",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V24.json",
+      "description": "Propuestas de arquitectura de simulación para Stands conceptuales, invocaciones y retención What-If sin mutación de Ki.",
+      "entries": [
+        {
+          "targetCase": 7,
+          "recordId": "giorno-giovanna-jojo-va",
+          "actionProposed": "decouple_stand_hax_from_ki",
+          "note": "Return to Zero modelado en haxProfile sin multiplicar Ki numérico (+35%)."
+        },
+        {
+          "targetCase": 8,
+          "recordId": "funny-valentine-jojo-sbr",
+          "actionProposed": "decouple_d4c_lovetrain_from_ki",
+          "note": "Inmortalidad dimensional y redirección de daño modelados en haxProfile sin alterar Ki físico (1.292 Ki)."
+        },
+        {
+          "targetCase": 9,
+          "recordId": "dr-raichi-dbm-u3",
+          "actionProposed": "convert_transformation_to_summoning_hax",
+          "note": "Eliminar forma biológica x2000; codificar Broly Fantasma como entidad invocada en arsenal/sinergia."
+        },
+        {
+          "targetCase": 10,
+          "recordId": "son-goku-mini-daima-full",
+          "targetFormId": "ssj4-daima-mini",
+          "actionProposed": "retain_in_situ_under_migration_gate",
+          "note": "Forma 4 retenida intacta en Daima Mini; sin escisión ni creación de nueva ficha."
+        },
+        {
+          "targetCase": 11,
+          "recordId": "son-goku-adulto-daima",
+          "targetFormId": "ssj4-adulto-daima",
+          "actionProposed": "retain_in_situ_under_migration_gate",
+          "note": "Forma 4 retenida intacta en Daima Adulto; sin escisión ni creación de nueva ficha."
+        }
+      ]
+    }
+  },
+  "summary": {
+    "decisionesRecomendadasSinFuenteExterna": [
+      "Caso 2 (Menthuthuyoupi): Opción A — Adoptar escala Mountain level 7-A (4.746 Ki) y archivar duplicado 7-B.",
+      "Caso 3 (Kenjaku): Opción A — Conservar ficha completa Grado Especial con Dominio (252.525 Ki) y archivar stub.",
+      "Caso 4 (Funny Valentine): Opción A — Fijar Ki en 1.292 Ki en ficha canónica SBR y archivar stub duplicado.",
+      "Caso 5 (Dr. Raichi Ki Base): Opción A — Adoptar Ki biológico real de 24.518 Ki para el científico anciano y archivar ficha de Ki inflado de 845M.",
+      "Caso 6 (Super Baby God): Opción A — Conservar escala sustentada de x50 (1.33T Ki) y archivar ficha con multiplicador corrupto x6400."
+    ],
+    "decisionesBloqueadasPorFaltaDeFuente": [
+      "Caso 1 (Tamagami #1): Opción C — Bloqueado por SOURCE_EVIDENCE_INSUFFICIENT para discernir entre 634.2M y 1.11B sin databook de Daima."
+    ],
+    "decisionesDeModeloQueRequierenAprobacion": [
+      "Caso 7 (Giorno Giovanna GER): Opción A — Desacoplar GER a haxProfile con invulnerabilidad causal, eliminando el multiplicador +35% de Ki.",
+      "Caso 8 (Funny Valentine D4C / Love Train): Opción A — Desacoplar D4C y Love Train como pasivas dimensionales puras sin alterar Ki físico.",
+      "Caso 9 (Dr. Raichi Fantasmas): Opción A — Convertir forma Broly x2000 en invocación/sinergia de Hatchiyack con Ki autónomo.",
+      "Caso 10 (SSJ4 Daima Mini): Opción A — Mantener forma 4 in-situ en Goku Mini bajo migrationGate estricto sin escindir a What-If.",
+      "Caso 11 (SSJ4 Daima Adulto): Opción A — Mantener forma 4 in-situ en Goku Adulto bajo migrationGate estricto sin escindir a What-If."
+    ],
+    "confirmacionReadOnly": "Estrictamente verificado. V22, V23, V24 y characters.js permanecen 100% inalterados. Ninguna mutación fue aplicada."
+  }
+}

@@ -8,6 +8,7 @@ import { calculateFormScaledStats, POWERSCALING_TIERING_SYSTEM, SPEED_SCALE_SYST
 import { SoundFX } from '../services/soundFx';
 import { calculateScouterReading, getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
 import { resolveCombatState } from '../lib/combatStateResolver';
+import { getBodilyForms } from '../lib/externalEntityFramework';
 
 // Full VS Battles tier scoring with sub-tiers A/B/C
 const TIER_SCORE_MAP = [
@@ -151,10 +152,14 @@ function buildPolygonPath(stats, maxR, cx, cy) {
 
 function computeEffectiveStats(character, selectedFormId) {
   if (!character) return null;
-  const combatState = resolveCombatState(character, selectedFormId);
-  const scaled = calculateFormScaledStats(character, selectedFormId);
-  const forms = character.forms || [];
-  const form = forms.find(f => f.id === selectedFormId) || forms[0] || { id: 'base', name: 'Forma Base', stats: character.tier };
+  const isRaichi = character.id === 'dr-raichi-dbm-u3';
+  const forms = getBodilyForms(character);
+  const effectiveFormId = (isRaichi && selectedFormId === 'ghost-broly-unleashed')
+    ? (forms[0]?.id || 'base')
+    : selectedFormId;
+  const combatState = resolveCombatState(character, effectiveFormId);
+  const scaled = calculateFormScaledStats(character, effectiveFormId);
+  const form = forms.find(f => f.id === effectiveFormId) || forms[0] || { id: 'base', name: 'Forma Base', stats: character.tier };
   
   const effectiveTier = combatState.tierExact || scaled.currentTier || character.tier;
   const baseScore = parseTierScore(effectiveTier);
@@ -354,9 +359,13 @@ function FighterCardConfig({
   color = 'red',
   title = 'Contendiente'
 }) {
-  const forms = character?.forms || [];
+  const isRaichi = character?.id === 'dr-raichi-dbm-u3';
+  const forms = getBodilyForms(character);
+  const effectiveFormId = (isRaichi && selectedFormId === 'ghost-broly-unleashed')
+    ? (forms[0]?.id || 'base')
+    : selectedFormId;
   const allowedForms = formLimit !== null && formLimit !== undefined ? forms.slice(0, formLimit + 1) : forms;
-  const effectiveForm = allowedForms.find(f => f.id === selectedFormId) || allowedForms[0] || { id: 'base', name: 'Forma Base' };
+  const effectiveForm = allowedForms.find(f => f.id === effectiveFormId) || allowedForms[0] || { id: 'base', name: 'Forma Base' };
   const eff = computeEffectiveStats(character, effectiveForm.id);
 
   return (
@@ -763,7 +772,7 @@ export default function StatComparatorModal({
   const raidSquad = localTeamB.length > 0 ? localTeamB : [selectedB];
   const bossScore = effA.effectiveScore * 1.35;
   const squadCombinedScore = raidSquad.reduce((acc, c) => {
-    const cFormId = teamBForms[c.id] || c.forms?.[0]?.id || 'base';
+    const cFormId = teamBForms[c.id] || getBodilyForms(c)[0]?.id || 'base';
     const cEff = computeEffectiveStats(c, cFormId);
     return acc + (cEff.effectiveScore * 0.7);
   }, 0) + (raidSquad.length * 6);
@@ -775,11 +784,11 @@ export default function StatComparatorModal({
   const currentTeamA = localTeamA.length > 0 ? localTeamA : [selectedA];
   const currentTeamB = localTeamB.length > 0 ? localTeamB : [selectedB];
   const teamScoreA = currentTeamA.reduce((acc, c) => {
-    const fId = teamAForms[c.id] || c.forms?.[0]?.id || 'base';
+    const fId = teamAForms[c.id] || getBodilyForms(c)[0]?.id || 'base';
     return acc + (computeEffectiveStats(c, fId)?.effectiveScore || 50);
   }, 0) + (currentTeamA.length * 4);
   const teamScoreB = currentTeamB.reduce((acc, c) => {
-    const fId = teamBForms[c.id] || c.forms?.[0]?.id || 'base';
+    const fId = teamBForms[c.id] || getBodilyForms(c)[0]?.id || 'base';
     return acc + (computeEffectiveStats(c, fId)?.effectiveScore || 50);
   }, 0) + (currentTeamB.length * 4);
   const teamDiff = teamScoreA - teamScoreB;
@@ -790,7 +799,7 @@ export default function StatComparatorModal({
   const currentBr = localBR.length >= 2 ? localBR : [selectedA, selectedB, characters[2] || characters[0], characters[3] || characters[0]].filter(Boolean);
   const brRankings = useMemo(() => {
     const scores = currentBr.map(c => {
-      const fId = brForms[c.id] || c.forms?.[0]?.id || 'base';
+      const fId = brForms[c.id] || getBodilyForms(c)[0]?.id || 'base';
       const eff = computeEffectiveStats(c, fId);
       return {
         ...c,
@@ -894,7 +903,7 @@ export default function StatComparatorModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <FighterCardConfig
                 character={selectedA}
-                onCharacterChange={c => { setSelectedA(c); setSelectedFormAId(c.forms?.[0]?.id || 'base'); setSimResults(null); }}
+                onCharacterChange={c => { setSelectedA(c); setSelectedFormAId(getBodilyForms(c)[0]?.id || 'base'); setSimResults(null); }}
                 allCharacters={characters}
                 selectedFormId={selectedFormAId}
                 onFormChange={fId => { setSelectedFormAId(fId); setSimResults(null); }}
@@ -905,7 +914,7 @@ export default function StatComparatorModal({
               />
               <FighterCardConfig
                 character={selectedB}
-                onCharacterChange={c => { setSelectedB(c); setSelectedFormBId(c.forms?.[0]?.id || 'base'); setSimResults(null); }}
+                onCharacterChange={c => { setSelectedB(c); setSelectedFormBId(getBodilyForms(c)[0]?.id || 'base'); setSimResults(null); }}
                 allCharacters={characters}
                 selectedFormId={selectedFormBId}
                 onFormChange={fId => { setSelectedFormBId(fId); setSimResults(null); }}
@@ -1120,7 +1129,7 @@ export default function StatComparatorModal({
               {/* Boss Config */}
               <FighterCardConfig
                 character={raidBoss}
-                onCharacterChange={c => { setSelectedA(c); setSelectedFormAId(c.forms?.[0]?.id || 'base'); }}
+                onCharacterChange={c => { setSelectedA(c); setSelectedFormAId(getBodilyForms(c)[0]?.id || 'base'); }}
                 allCharacters={characters}
                 selectedFormId={selectedFormAId}
                 onFormChange={setSelectedFormAId}
@@ -1166,7 +1175,7 @@ export default function StatComparatorModal({
                           </div>
                         </div>
 
-                        {c.forms && c.forms.length > 0 && (
+                        {getBodilyForms(c).length > 0 && (
                           <div className="flex items-center gap-2">
                             <span className="text-[9px] text-amber-400 font-bold flex-shrink-0">Forma:</span>
                             <select
@@ -1174,7 +1183,7 @@ export default function StatComparatorModal({
                               onChange={e => setTeamBForms(prev => ({ ...prev, [c.id]: e.target.value }))}
                               className="w-full bg-slate-950 border border-slate-700 rounded p-1 text-[10px] text-amber-300 outline-none cursor-pointer"
                             >
-                              {c.forms.map(f => (
+                              {getBodilyForms(c).map(f => (
                                 <option key={f.id} value={f.id}>{f.name}</option>
                               ))}
                             </select>
@@ -1259,13 +1268,13 @@ export default function StatComparatorModal({
                             )}
                           </div>
                         </div>
-                        {c.forms && c.forms.length > 0 && (
+                        {getBodilyForms(c).length > 0 && (
                           <select
                             value={fId}
                             onChange={e => setTeamAForms(prev => ({ ...prev, [c.id]: e.target.value }))}
                             className="w-full bg-slate-950 border border-slate-700 rounded p-1 text-[10px] text-amber-300 outline-none cursor-pointer"
                           >
-                            {c.forms.map(f => (
+                            {getBodilyForms(c).map(f => (
                               <option key={f.id} value={f.id}>{f.name}</option>
                             ))}
                           </select>
@@ -1297,7 +1306,7 @@ export default function StatComparatorModal({
                 </div>
                 <div className="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
                   {currentTeamB.map((c, i) => {
-                    const fId = teamBForms[c.id] || c.forms?.[0]?.id || 'base';
+                    const fId = teamBForms[c.id] || getBodilyForms(c)[0]?.id || 'base';
                     const eff = computeEffectiveStats(c, fId);
                     return (
                       <div key={i} className="p-2 bg-slate-900/80 rounded-xl border border-slate-800 space-y-1 group">
@@ -1312,13 +1321,13 @@ export default function StatComparatorModal({
                             )}
                           </div>
                         </div>
-                        {c.forms && c.forms.length > 0 && (
+                        {getBodilyForms(c).length > 0 && (
                           <select
                             value={fId}
                             onChange={e => setTeamBForms(prev => ({ ...prev, [c.id]: e.target.value }))}
                             className="w-full bg-slate-950 border border-slate-700 rounded p-1 text-[10px] text-amber-300 outline-none cursor-pointer"
                           >
-                            {c.forms.map(f => (
+                            {getBodilyForms(c).map(f => (
                               <option key={f.id} value={f.id}>{f.name}</option>
                             ))}
                           </select>
@@ -1397,13 +1406,13 @@ export default function StatComparatorModal({
                     </div>
 
                     <div className="flex items-center gap-3 self-end sm:self-auto">
-                      {c.forms && c.forms.length > 0 && (
+                      {getBodilyForms(c).length > 0 && (
                         <select
                           value={fId}
                           onChange={e => setBrForms(prev => ({ ...prev, [c.id]: e.target.value }))}
                           className="bg-slate-950 border border-slate-700 rounded p-1 text-[10px] text-amber-300 outline-none cursor-pointer max-w-[140px]"
                         >
-                          {c.forms.map(f => (
+                          {getBodilyForms(c).map(f => (
                             <option key={f.id} value={f.id}>{f.name}</option>
                           ))}
                         </select>

@@ -35,32 +35,115 @@ export default function AuthModal({
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
   const [lastSync, setLastSync] = useState(CloudSync.getLastSyncTime());
 
+  const getKnownAccounts = () => {
+    try {
+      const registry = CloudSync.loadAccountsRegistry();
+      const unique = [];
+      const seen = new Set();
+      for (const key of Object.keys(registry || {})) {
+        const a = registry[key];
+        if (a && a.id && !seen.has(a.id)) {
+          seen.add(a.id);
+          unique.push(a);
+        }
+      }
+      return unique;
+    } catch {
+      return [];
+    }
+  };
+
+  const [storedAccounts, setStoredAccounts] = useState(getKnownAccounts);
+
+  // Sincronizar estado al abrir el modal
   useEffect(() => {
-    const unsub = CloudSync.subscribe((user) => {
+    if (isOpen) {
+      const user = CloudSync.getCurrentUser();
       setCurrentUser(user);
+      setActiveTab(user ? 'profile' : 'login');
+      setStatusMsg({ type: '', text: '' });
+      setLastSync(CloudSync.getLastSyncTime());
+      setStoredAccounts(getKnownAccounts());
       if (user) {
         setEditDisplayName(user.displayName || user.username || '');
         setEditAvatarSeed(user.displayName || user.email || '');
-        if (activeTab !== 'profile' && activeTab !== 'link' && activeTab !== 'config') {
-          setActiveTab('profile');
-        }
-      } else if (activeTab === 'profile') {
-        setActiveTab('login');
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const unsub = CloudSync.subscribe((user) => {
+      setCurrentUser(user);
+      setStoredAccounts(getKnownAccounts());
+      if (user) {
+        setEditDisplayName(user.displayName || user.username || '');
+        setEditAvatarSeed(user.displayName || user.email || '');
       }
     });
     return unsub;
-  }, [activeTab]);
+  }, []);
 
   if (!isOpen) return null;
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleDirectAccountLogin = async (acc) => {
     setIsLoading(true);
     setStatusMsg({ type: '', text: '' });
     try {
-      const user = await CloudSync.login(identifier, password);
+      const user = await CloudSync.login(acc.username || acc.displayName || acc.email, acc.password || '');
+      setCurrentUser(user);
+      setActiveTab('profile');
       setStatusMsg({ type: 'success', text: `¡Bienvenido de nuevo, ${user.displayName || user.username || user.email}!` });
-      await handleDownloadSync();
+      CloudSync.downloadProfileData().then(res => {
+        if (res && res.success && res.data) {
+          if (res.data.characters && Array.isArray(res.data.characters) && res.data.characters.length > 0 && onUpdateCharacters) {
+            onUpdateCharacters(res.data.characters);
+          }
+          if (res.data.oracleCoins !== undefined && onUpdateCoins) {
+            onUpdateCoins(res.data.oracleCoins);
+          }
+          setLastSync(res.data.timestamp || new Date().toISOString());
+        }
+      }).catch(() => {});
+    } catch (err) {
+      setStatusMsg({ type: 'error', text: err.message || 'Error al cargar la cuenta.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLogin = async (e) => {
+    if (e) e.preventDefault();
+    if (!identifier.trim()) {
+      setStatusMsg({ type: 'error', text: 'Por favor introduce tu nombre de usuario o correo.' });
+      return;
+    }
+    setIsLoading(true);
+    setStatusMsg({ type: '', text: '' });
+    try {
+      const user = await CloudSync.login(identifier.trim(), password);
+      setCurrentUser(user);
+      setActiveTab('profile');
+      setStatusMsg({ type: 'success', text: `¡Bienvenido de nuevo, ${user.displayName || user.username || user.email}!` });
+
+      // Sincronización en segundo plano sin interrumpir ni sobrescribir el mensaje de login
+      CloudSync.downloadProfileData().then(res => {
+        if (res && res.success && res.data) {
+          if (res.data.characters && Array.isArray(res.data.characters) && res.data.characters.length > 0 && onUpdateCharacters) {
+            onUpdateCharacters(res.data.characters);
+          }
+          if (res.data.oracleCoins !== undefined && onUpdateCoins) {
+            onUpdateCoins(res.data.oracleCoins);
+          }
+          if (res.data.combatHistory && Array.isArray(res.data.combatHistory)) {
+            try {
+              const curHist = JSON.parse(localStorage.getItem('apex_combat_history') || '[]');
+              const merged = [...res.data.combatHistory, ...curHist.filter(c => !res.data.combatHistory.some(i => i.id === c.id))];
+              localStorage.setItem('apex_combat_history', JSON.stringify(merged));
+            } catch {}
+          }
+          setLastSync(res.data.timestamp || new Date().toISOString());
+        }
+      }).catch(err => console.warn('Silent download sync:', err));
     } catch (err) {
       setStatusMsg({ type: 'error', text: err.message || 'Error al iniciar sesión.' });
     } finally {
@@ -70,12 +153,43 @@ export default function AuthModal({
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    if (!identifier.trim()) {
+      setStatusMsg({ type: 'error', text: 'Por favor introduce tu correo o nombre de usuario.' });
+      return;
+    }
+    if (!password || password.length < 6) {
+      setStatusMsg({ type: 'error', text: 'La contraseña debe tener al menos 6 caracteres.' });
+      return;
+    }
     setIsLoading(true);
     setStatusMsg({ type: '', text: '' });
     try {
       const user = await CloudSync.signUp(identifier, password, displayName);
+      setCurrentUser(user);
+      setActiveTab('profile');
       setStatusMsg({ type: 'success', text: `¡Cuenta creada exitosamente! Conectado como ${user.displayName}.` });
-      await handleUploadSync();
+
+      // Subida inicial en segundo plano
+      try {
+        let combatHistory = [];
+        let customScenarios = [];
+        try {
+          combatHistory = JSON.parse(localStorage.getItem('apex_combat_history') || '[]');
+          customScenarios = JSON.parse(localStorage.getItem('apex_custom_scenarios') || '[]');
+        } catch {}
+
+        CloudSync.uploadProfileData({
+          characters: allCharacters,
+          combatHistory,
+          oracleCoins,
+          customScenarios,
+          aiConfig
+        }).then(res => {
+          if (res && res.timestamp) {
+            setLastSync(res.timestamp);
+          }
+        }).catch(err => console.warn('Silent upload sync:', err));
+      } catch {}
     } catch (err) {
       setStatusMsg({ type: 'error', text: err.message || 'Error al registrar la cuenta.' });
     } finally {
@@ -168,8 +282,18 @@ export default function AuthModal({
   };
 
   const handleLogout = async () => {
-    await CloudSync.logout();
-    setStatusMsg({ type: 'info', text: 'Has cerrado sesión correctamente.' });
+    setIsLoading(true);
+    try {
+      await CloudSync.logout();
+      setCurrentUser(null);
+      setActiveTab('login');
+      setPassword('');
+      setStatusMsg({ type: 'info', text: 'Has cerrado sesión correctamente.' });
+    } catch (err) {
+      setStatusMsg({ type: 'error', text: 'Error al cerrar sesión.' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUploadSync = async () => {
@@ -300,6 +424,16 @@ export default function AuthModal({
                 <Link2 className="w-3.5 h-3.5" />
                 <span>Enlace Rápido Móvil</span>
               </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('login')}
+                className={`flex items-center gap-1.5 px-3 py-2 font-bold border-b-2 transition cursor-pointer whitespace-nowrap ${
+                  activeTab === 'login' ? 'border-cyan-400 text-cyan-300' : 'border-transparent text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>Cambiar Cuenta</span>
+              </button>
             </>
           ) : (
             <>
@@ -353,8 +487,61 @@ export default function AuthModal({
         <div className="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4">
           
           {/* TAB 1: LOGIN */}
-          {activeTab === 'login' && !currentUser && (
+          {activeTab === 'login' && (
             <form onSubmit={handleLogin} className="space-y-4">
+              {currentUser && (
+                <div className="p-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-xs flex items-center justify-between gap-2">
+                  <span>Sesión iniciada como <strong>{currentUser.displayName || currentUser.username || currentUser.email}</strong></span>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('profile')}
+                    className="px-2.5 py-1 rounded-lg bg-cyan-950 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-900 text-[11px] font-bold cursor-pointer"
+                  >
+                    Ver Mi Perfil
+                  </button>
+                </div>
+              )}
+
+              {/* Acceso Rápido: Cuentas Detectadas en este Dispositivo */}
+              {storedAccounts.length > 0 && (
+                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900 to-cyan-950/40 border border-cyan-500/50 space-y-2.5 shadow-lg shadow-cyan-950/40">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                      <span>Cuentas guardadas en este dispositivo (1 clic para entrar):</span>
+                    </span>
+                    <span className="text-[10px] text-emerald-400 font-mono font-bold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/40">
+                      Detectada(s): {storedAccounts.length}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {storedAccounts.map((acc) => (
+                      <button
+                        key={acc.id}
+                        type="button"
+                        onClick={() => handleDirectAccountLogin(acc)}
+                        className="px-3.5 py-2 rounded-xl bg-cyan-950/80 hover:bg-cyan-800 border-2 border-cyan-400/60 text-white text-xs font-bold transition flex items-center gap-2.5 cursor-pointer shadow-md hover:scale-102 hover:border-cyan-300"
+                        title={`Haz clic para entrar directamente como ${acc.displayName || acc.username}`}
+                      >
+                        <div className="w-6 h-6 rounded-full overflow-hidden bg-slate-950 border border-cyan-400 shrink-0">
+                          <img 
+                            src={acc.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${acc.displayName || acc.email}`} 
+                            alt="" 
+                            className="w-full h-full object-contain" 
+                          />
+                        </div>
+                        <div className="text-left">
+                          <span className="block font-bold leading-none">{acc.displayName || acc.username}</span>
+                          <span className="text-[9.5px] text-cyan-300 font-mono block mt-0.5">{acc.email}</span>
+                        </div>
+                        <span className="ml-1 text-[11px] text-emerald-400 font-bold">➔ Entrar</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-500/30 text-cyan-200 text-[11px] leading-relaxed flex items-start gap-2.5">
                 <Smartphone className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
@@ -385,10 +572,9 @@ export default function AuthModal({
                     <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                     <input
                       type="password"
-                      required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
+                      placeholder="•••••••• (Opcional si es tu usuario local)"
                       className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 pl-9 text-white focus:border-cyan-400 outline-none"
                     />
                   </div>
@@ -434,7 +620,7 @@ export default function AuthModal({
           )}
 
           {/* TAB 2: SIGNUP */}
-          {activeTab === 'signup' && !currentUser && (
+          {activeTab === 'signup' && (
             <form onSubmit={handleSignUp} className="space-y-4">
               <div className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-200 text-[11px] leading-relaxed flex items-start gap-2.5">
                 <Sparkles className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
@@ -465,11 +651,11 @@ export default function AuthModal({
                   <div className="relative">
                     <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                     <input
-                      type="email"
+                      type="text"
                       required
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
-                      placeholder="tu_email@ejemplo.com"
+                      placeholder="tu_email@ejemplo.com o apodo"
                       className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 pl-9 text-white focus:border-amber-400 outline-none"
                     />
                   </div>
@@ -523,181 +709,211 @@ export default function AuthModal({
             </form>
           )}
 
-          {/* TAB 3: PROFILE (LOGGED IN) */}
-          {currentUser && activeTab === 'profile' && (
-            <div className="space-y-4">
-              
-              {/* Identity Card */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-cyan-500/40 shadow-xl flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl p-1 bg-slate-950 border border-cyan-500/40 overflow-hidden shrink-0">
-                    <img 
-                      src={currentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.displayName || currentUser.email}`} 
-                      alt="" 
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-bold text-white text-sm font-cinzel">{currentUser.displayName || currentUser.username || currentUser.email}</h4>
-                      <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold">
-                        🟢 Conectado
-                      </span>
-                    </div>
-                    <p className="text-[10.5px] text-slate-400 font-mono">{currentUser.email}</p>
-                    {lastSync && (
-                      <span className="text-[9.5px] text-cyan-400 block mt-0.5">
-                        Última sincronización: {new Date(lastSync).toLocaleTimeString()}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setIsEditingProfile(!isEditingProfile)}
-                    className="p-2 rounded-xl bg-cyan-950/40 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/30 transition cursor-pointer text-[10px] flex items-center gap-1"
-                    title="Editar Perfil"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Editar</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="p-2 rounded-xl bg-red-950/40 hover:bg-red-900 text-red-300 border border-red-500/30 transition cursor-pointer text-[10px] flex items-center gap-1 shrink-0"
-                    title="Cerrar Sesión"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Salir</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Edit Profile Form */}
-              {isEditingProfile && (
-                <form onSubmit={handleSaveProfile} className="p-3.5 rounded-2xl bg-cyan-950/20 border border-cyan-500/40 space-y-3 animate-in fade-in duration-200">
-                  <div className="font-bold text-cyan-300 text-xs flex items-center gap-1.5">
-                    <Edit3 className="w-3.5 h-3.5" />
-                    <span>Personalizar mi Nombre de Usuario y Avatar</span>
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-300 font-bold mb-1 text-[11px]">Nombre de Usuario / Apodo:</label>
-                    <input
-                      type="text"
-                      required
-                      value={editDisplayName}
-                      onChange={(e) => setEditDisplayName(e.target.value)}
-                      placeholder="Ej: nigh061tmare"
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-white text-xs focus:border-cyan-400 outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-300 font-bold mb-1 text-[11px]">Semilla de Avatar (Escribe cualquier palabra para cambiar tu robot):</label>
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        value={editAvatarSeed}
-                        onChange={(e) => setEditAvatarSeed(e.target.value)}
-                        placeholder="Ej: shadow_master, saiyan_99..."
-                        className="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-white text-xs focus:border-cyan-400 outline-none"
+          {/* TAB 3: PROFILE */}
+          {activeTab === 'profile' && (
+            currentUser ? (
+              <div className="space-y-4">
+                
+                {/* Identity Card */}
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-cyan-500/40 shadow-xl flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl p-1 bg-slate-950 border border-cyan-500/40 overflow-hidden shrink-0">
+                      <img 
+                        src={currentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.displayName || currentUser.email}`} 
+                        alt="" 
+                        className="w-full h-full object-contain"
                       />
-                      <div className="w-8 h-8 rounded-lg bg-slate-900 border border-cyan-500/40 overflow-hidden shrink-0">
-                        <img 
-                          src={`https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(editAvatarSeed || editDisplayName || currentUser.email)}`} 
-                          alt="" 
-                          className="w-full h-full object-contain"
-                        />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-bold text-white text-sm font-cinzel">{currentUser.displayName || currentUser.username || currentUser.email}</h4>
+                        <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold">
+                          🟢 Conectado
+                        </span>
                       </div>
+                      <p className="text-[10.5px] text-slate-400 font-mono">{currentUser.email}</p>
+                      {lastSync && (
+                        <span className="text-[9.5px] text-cyan-400 block mt-0.5">
+                          Última sincronización: {new Date(lastSync).toLocaleTimeString()}
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <div className="flex gap-2 pt-1">
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="flex-1 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition cursor-pointer flex items-center justify-center gap-1.5"
-                    >
-                      <Save className="w-3.5 h-3.5" />
-                      <span>Guardar Nombre</span>
-                    </button>
+                  <div className="flex items-center gap-1.5">
                     <button
                       type="button"
-                      onClick={() => setIsEditingProfile(false)}
-                      className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 text-xs border border-slate-700 transition cursor-pointer"
+                      onClick={() => setIsEditingProfile(!isEditingProfile)}
+                      className="p-2 rounded-xl bg-cyan-950/40 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/30 transition cursor-pointer text-[10px] flex items-center gap-1"
+                      title="Editar Perfil"
                     >
-                      Cancelar
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Editar</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="p-2 rounded-xl bg-red-950/40 hover:bg-red-900 text-red-300 border border-red-500/30 transition cursor-pointer text-[10px] flex items-center gap-1 shrink-0"
+                      title="Cerrar Sesión"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Salir</span>
                     </button>
                   </div>
-                </form>
-              )}
-
-              {/* Bóveda Stats */}
-              <div className="grid grid-cols-3 gap-2.5">
-                <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
-                  <Swords className="w-4 h-4 text-cyan-400 mx-auto" />
-                  <div className="font-black text-white text-base">{allCharacters.length}</div>
-                  <span className="text-[9.5px] text-slate-400 block uppercase">Personajes</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
-                  <Star className="w-4 h-4 text-amber-400 mx-auto" />
-                  <div className="font-black text-amber-300 text-base">
-                    {(() => {
-                      try {
-                        const h = JSON.parse(localStorage.getItem('apex_combat_history') || '[]');
-                        return h.filter(x => x.isFavorite).length;
-                      } catch { return 0; }
-                    })()}
+                {/* Edit Profile Form */}
+                {isEditingProfile && (
+                  <form onSubmit={handleSaveProfile} className="p-3.5 rounded-2xl bg-cyan-950/20 border border-cyan-500/40 space-y-3 animate-in fade-in duration-200">
+                    <div className="font-bold text-cyan-300 text-xs flex items-center gap-1.5">
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span>Personalizar mi Nombre de Usuario y Avatar</span>
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-300 font-bold mb-1 text-[11px]">Nombre de Usuario / Apodo:</label>
+                      <input
+                        type="text"
+                        required
+                        value={editDisplayName}
+                        onChange={(e) => setEditDisplayName(e.target.value)}
+                        placeholder="Ej: nigh061tmare"
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-white text-xs focus:border-cyan-400 outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-slate-300 font-bold mb-1 text-[11px]">Semilla de Avatar (Escribe cualquier palabra para cambiar tu robot):</label>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          value={editAvatarSeed}
+                          onChange={(e) => setEditAvatarSeed(e.target.value)}
+                          placeholder="Ej: shadow_master, saiyan_99..."
+                          className="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2 text-white text-xs focus:border-cyan-400 outline-none"
+                        />
+                        <div className="w-8 h-8 rounded-lg bg-slate-900 border border-cyan-500/40 overflow-hidden shrink-0">
+                          <img 
+                            src={`https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(editAvatarSeed || editDisplayName || currentUser.email)}`} 
+                            alt="" 
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="flex-1 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition cursor-pointer flex items-center justify-center gap-1.5"
+                      >
+                        <Save className="w-3.5 h-3.5" />
+                        <span>Guardar Nombre</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsEditingProfile(false)}
+                        className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 text-xs border border-slate-700 transition cursor-pointer"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Bóveda Stats */}
+                <div className="grid grid-cols-3 gap-2.5">
+                  <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+                    <Swords className="w-4 h-4 text-cyan-400 mx-auto" />
+                    <div className="font-black text-white text-base">{allCharacters.length}</div>
+                    <span className="text-[9.5px] text-slate-400 block uppercase">Personajes</span>
                   </div>
-                  <span className="text-[9.5px] text-slate-400 block uppercase">Favoritos</span>
+
+                  <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+                    <Star className="w-4 h-4 text-amber-400 mx-auto" />
+                    <div className="font-black text-amber-300 text-base">
+                      {(() => {
+                        try {
+                          const h = JSON.parse(localStorage.getItem('apex_combat_history') || '[]');
+                          return h.filter(x => x.isFavorite).length;
+                        } catch { return 0; }
+                      })()}
+                    </div>
+                    <span className="text-[9.5px] text-slate-400 block uppercase">Favoritos</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+                    <Coins className="w-4 h-4 text-yellow-400 mx-auto" />
+                    <div className="font-black text-yellow-300 text-base">{oracleCoins}</div>
+                    <span className="text-[9.5px] text-slate-400 block uppercase">Monedas</span>
+                  </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
-                  <Coins className="w-4 h-4 text-yellow-400 mx-auto" />
-                  <div className="font-black text-yellow-300 text-base">{oracleCoins}</div>
-                  <span className="text-[9.5px] text-slate-400 block uppercase">Monedas</span>
+                {/* Multi-Device Sync Action Buttons */}
+                <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-200 text-xs flex items-center gap-1.5">
+                      <Laptop className="w-4 h-4 text-cyan-400" />
+                      <span>Control de Sincronización Manual</span>
+                      <Smartphone className="w-4 h-4 text-cyan-400" />
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={handleUploadSync}
+                      className="p-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-cyan-950 disabled:opacity-50"
+                    >
+                      <ArrowUp className="w-4 h-4" />
+                      <span>Subir este Dispositivo ➔ Nube</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={handleDownloadSync}
+                      className="p-3 rounded-xl bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-amber-950 disabled:opacity-50"
+                    >
+                      <ArrowDown className="w-4 h-4" />
+                      <span>Descargar Nube ➔ Este Móvil/PC</span>
+                    </button>
+                  </div>
                 </div>
+
               </div>
-
-              {/* Multi-Device Sync Action Buttons */}
-              <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-200 text-xs flex items-center gap-1.5">
-                    <Laptop className="w-4 h-4 text-cyan-400" />
-                    <span>Control de Sincronización Manual</span>
-                    <Smartphone className="w-4 h-4 text-cyan-400" />
-                  </span>
+            ) : (
+              <div className="p-6 text-center space-y-4 bg-slate-900/40 rounded-2xl border border-slate-800">
+                <div className="w-12 h-12 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-slate-400">
+                  <User className="w-6 h-6" />
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="space-y-1">
+                  <h4 className="font-bold text-white text-base">Sin sesión activa</h4>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    Inicia sesión o crea una cuenta para personalizar tu perfil, sincronizar tus personajes y guardar tus batallas en la nube.
+                  </p>
+                </div>
+                <div className="flex justify-center gap-3 pt-2">
                   <button
                     type="button"
-                    disabled={isLoading}
-                    onClick={handleUploadSync}
-                    className="p-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-cyan-950 disabled:opacity-50"
+                    onClick={() => setActiveTab('login')}
+                    className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition shadow-md cursor-pointer"
                   >
-                    <ArrowUp className="w-4 h-4" />
-                    <span>Subir este Dispositivo ➔ Nube</span>
+                    Iniciar Sesión
                   </button>
-
                   <button
                     type="button"
-                    disabled={isLoading}
-                    onClick={handleDownloadSync}
-                    className="p-3 rounded-xl bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-amber-950 disabled:opacity-50"
+                    onClick={() => setActiveTab('signup')}
+                    className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition shadow-md cursor-pointer"
                   >
-                    <ArrowDown className="w-4 h-4" />
-                    <span>Descargar Nube ➔ Este Móvil/PC</span>
+                    Crear Cuenta
                   </button>
                 </div>
               </div>
-
-            </div>
+            )
           )}
 
           {/* TAB 4: QUICK LINK CODE (PC <-> MOBILE) */}

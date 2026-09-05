@@ -21,8 +21,10 @@ const TASK_CATEGORIES = [
     category: '🧠 TAREA 2: CONTEXTO MASIVO 1M+ Y PROYECTO COMPLETO (100% GRATIS)',
     desc: 'Modelos con 1 Millón a 1.05M de tokens para leer y refactorizar todo el proyecto.',
     models: [
+      { id: 'openrouter/nvidia/nemotron-3-ultra-550b-a55b:free', name: 'NVIDIA Nemotron 3 Ultra 550B [GRATIS]', badge: '👑 1M CTX / 65K OUT (550B MoE · Razonamiento Supremo & Auditoría)' },
       { id: 'openrouter/meta/muse-spark-1.3-contributor:free', name: 'Meta Muse Spark 1.3 [GRATIS]', badge: '🔥 1M CTX / 131K OUT (Razonamiento Agéntico Holístico, Combos & Auditoría)' },
-      { id: 'openrouter/z-ai/glm-5.2:free', name: 'Z.ai GLM 5.2 [GRATIS]', badge: '🥇 1M CTX (Razonamiento Extremo xhigh · Ingeniería)' },
+      { id: 'openrouter/minimax/minimax-m3:free', name: 'MiniMax M3 [GRATIS]', badge: '✨ 1M CTX / 131K OUT (Brainstorming & Análisis de Gran Escala)' },
+      { id: 'openrouter/z-ai/glm-5.2:free', name: 'Z.ai GLM 5.2 [GRATIS]', badge: '🥇 256K CTX / 65K OUT (Razonamiento Extremo xhigh · Ingeniería)' },
       { id: 'openrouter/thinkingmachines/inkling:free', name: 'Thinking Machines Inkling [GRATIS]', badge: '🦁 1.05M CTX (975B MoE · Multimodal & Razonamiento)' },
       { id: 'openrouter/thinkingmachines/inkling-small:free', name: 'Thinking Machines Inkling Small [GRATIS]', badge: '💎 1.05M CTX (276B MoE · Rápido y Ligero)' }
     ]

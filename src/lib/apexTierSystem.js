@@ -275,7 +275,7 @@ export function formatSourceKi(value) {
   if (num >= 1e15) return (num / 1e15).toFixed(2) + " Trillones (Scouter)";
   if (num >= 1e12) return (num / 1e12).toFixed(2) + " Billones (Scouter)";
   if (num >= 1e9)  return (num / 1e9).toFixed(2) + " Mil Millones (Scouter)";
-  if (num >= 1e6)  return (num / 1e6).toFixed(1) + " Millones (Scouter)";
+  if (num >= 1e6)  return (num / 1e6).toFixed(2) + " Millones (Scouter)";
   if (num >= 1e3)  return num.toLocaleString('es-ES') + " Unidades (Scouter)";
   return Math.round(num) + " Unidades (Scouter)";
 }

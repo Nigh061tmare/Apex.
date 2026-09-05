@@ -1,7 +1,8 @@
 // APEX Power Scaling Engine — Master Characters Roster
 // Refinado y enriquecido automáticamente con Estándar Dorado APEX
+import v26Data from './ROSTER_NIVELES_PODER_CORREGIDO_V26.json' with { type: 'json' };
 
-export const INITIAL_CHARACTERS = [
+const RAW_TACTICAL_PROFILES = [
   {
     "id": "androide-8-dragon-ball-cl-sico-704",
     "name": "Androide 8",
@@ -35081,7 +35082,7 @@ export const INITIAL_CHARACTERS = [
         "exitCondition": "Transición a Full Power.",
         "counterplay": "Provocar gasto de Stamina antes de aplicar Shunkanido.",
         "canonStatus": "source_backed",
-        "tier": "4-A",
+        "tier": "High 4-C",
         "category": "transformation",
         "multiplier": "50x",
         "apexKi": 15277500000,
@@ -35121,7 +35122,7 @@ export const INITIAL_CHARACTERS = [
         "exitCondition": "Estado natural; solo cambia por estrategia a Base.",
         "counterplay": "Engañarlo emocionalmente (como hizo Cell con Gohan) para provocar un error táctico.",
         "canonStatus": "source_backed",
-        "tier": "4-A",
+        "tier": "High 4-C",
         "category": "transformation",
         "multiplier": "50x",
         "apexKi": 15277500000,
@@ -40454,56 +40455,56 @@ export const INITIAL_CHARACTERS = [
         "multiplier": "1x",
         "staminaDrain": 0,
         "category": "base",
-        "apexKi": 86625000,
-        "burstKi": 129937500,
-        "durabilityKi": 86625000,
+        "apexKi": 280000000,
+        "burstKi": 392000000,
+        "durabilityKi": 280000000,
         "sourceKi": null,
-        "kiFormatted": "86.63 Millones"
+        "kiFormatted": "280.00 Millones"
       },
       {
         "id": "trunks-v2-ssj1",
         "name": "Super Saiyan (Control Básico / Armadura)",
-        "stats": "Tier 4-C | Nivel Estrella Enana Alta. Super Saiyan con armadura de combate saiyajin.",
+        "stats": "Tier High 4-C | Nivel Estrella Enana Alta. Super Saiyan con armadura de combate saiyajin.",
         "apexKiMultiplier": 50,
         "tier": "High 4-C",
         "staminaDrain": 60,
         "category": "transformation",
         "multiplier": "50x",
-        "apexKi": 4331250000,
-        "burstKi": 5847187500,
-        "durabilityKi": 4331250000,
+        "apexKi": 14000000000,
+        "burstKi": 18900000000,
+        "durabilityKi": 14000000000,
         "sourceKi": null,
-        "kiFormatted": "4.33 Mil Millones"
+        "kiFormatted": "14.00 Mil Millones"
       },
       {
         "id": "trunks-v2-grado-2",
         "name": "Super Saiyan Grado 2 (Ascendido)",
-        "stats": "Tier 4-C a 4-B | Mayor potencia y masa muscular moderada sin gran pérdida de velocidad.",
-        "apexKiMultiplier": 50,
+        "stats": "Tier High 4-C | Mayor potencia y masa muscular moderada sin gran pérdida de velocidad.",
+        "apexKiMultiplier": 65,
         "tier": "High 4-C",
         "staminaDrain": 60,
         "category": "transformation",
-        "multiplier": "50x",
-        "apexKi": 4331250000,
-        "burstKi": 5847187500,
-        "durabilityKi": 4331250000,
+        "multiplier": "65x",
+        "apexKi": 18200000000,
+        "burstKi": 24570000000,
+        "durabilityKi": 18200000000,
         "sourceKi": null,
-        "kiFormatted": "4.33 Mil Millones"
+        "kiFormatted": "18.20 Mil Millones"
       },
       {
         "id": "trunks-v2-grado-3",
         "name": "Super Saiyan Grado 3 (Ultra Super Saiyan)",
-        "stats": "Tier 4-B | Nivel Sistema Solar Menor. Masa muscular gigantesca y fuerza bruta abrumadora, pero con un -75% de velocidad efectiva.",
-        "apexKiMultiplier": 62.5,
-        "tier": "High 4-C",
+        "stats": "Tier 4-B | Nivel Sistema Solar. Masa muscular gigantesca y fuerza bruta abrumadora (x85), superando a Cell Perfecto en impacto pero con un -75% de velocidad efectiva.",
+        "apexKiMultiplier": 85,
+        "tier": "4-B",
         "staminaDrain": 60,
         "category": "transformation",
-        "multiplier": "62.5x",
-        "apexKi": 5414062500,
-        "burstKi": 7308984375,
-        "durabilityKi": 5414062500,
+        "multiplier": "85x",
+        "apexKi": 23800000000,
+        "burstKi": 32130000000,
+        "durabilityKi": 23800000000,
         "sourceKi": null,
-        "kiFormatted": "5.41 Mil Millones"
+        "kiFormatted": "23.80 Mil Millones"
       }
     ],
     "feats": [
@@ -41648,8 +41649,8 @@ export const INITIAL_CHARACTERS = [
     "universe": "Dragon Ball Z",
     "saga": "Saga Androides / Cell",
     "version": "Super Saiyan Grado 2 (Ascendido)",
-    "tier": "4-A",
-    "ap": "Nivel Sistema Solar Menor. Tras la Habitación del Tiempo, Vegeta superó el límite del Super Saiyajin ordinario. En su estado 'Super Vegeta' destrozó literalmente a Cell Semi-Perfecto, poseyendo el Final Flash, un ataque tan devastador que Cell reconoció que si no lo esquivaba destruiría el planeta y su núcleo celular.",
+    "tier": "4-C",
+    "ap": "Nivel Estrella a Sistema Solar Menor. Tras su entrenamiento en la Habitación del Tiempo, Vegeta superó las barreras del Super Saiyajin ordinario. En su estado de 'Super Vegeta' (Super Saiyan 2do Grado) humilló a Cell Semi-Perfecto, culminando con el devastador Final Flash capaz de pulverizar cuerpos celestes y núcleos celulares.",
     "range": "Planetario a Sistema Solar Menor (Final Flash).",
     "speed": {
       "combat": "MFTL.",
@@ -41778,21 +41779,53 @@ export const INITIAL_CHARACTERS = [
         "name": "Vegeta (Saga Cell) (Estado Base)",
         "apexKiMultiplier": 1,
         "staminaDrain": 0,
-        "tier": "4-A",
-        "stats": "Forma Base canónica de Vegeta (Saga Cell) previo a cualquier transformación.",
+        "tier": "4-C",
+        "stats": "Forma Base canónica de Vegeta (Saga Cell). Tier 4-C, Ki 280.00 Millones. Fuerza y disciplina potenciadas en la Habitación del Tiempo.",
         "category": "base",
-        "apexKi": 2058000000,
-        "burstKi": 2881200000,
-        "durabilityKi": 2058000000,
+        "apexKi": 280000000,
+        "burstKi": 392000000,
+        "durabilityKi": 280000000,
         "sourceKi": null,
         "multiplier": "1x",
-        "kiFormatted": "2.06 Mil Millones"
+        "kiFormatted": "280.00 Millones"
+      },
+      {
+        "id": "vegeta-cell-ssj1",
+        "name": "Super Saiyajin (Super Saiyan Ordinario)",
+        "stats": "Transformación canónica en Super Saiyajin (x50). Tier High 4-C, Ki 14.00 Mil Millones. Despertado por la rabia de superarse en el espacio exterior, superó con facilidad al Androide 19 mediante el Big Bang Attack.",
+        "apexKiMultiplier": 50,
+        "staminaDrain": 5,
+        "activationCondition": "Ira y orgullo desatados en el espacio exterior.",
+        "grantedTags": [
+          "Aura Dorada Saiyajin",
+          "Furia de Combate",
+          "Super Saiyan Ordinario"
+        ],
+        "suppressedTags": [],
+        "grantedAbilities": [
+          "Big Bang Attack",
+          "Ataque Bing Bang",
+          "Galick Gun SSJ"
+        ],
+        "limitations": "Consumo de stamina moderado en comparación con el estado base.",
+        "drawbacks": "Exceso de confianza inicial frente a androides de absorción o modelos avanzados.",
+        "exitCondition": "Desactivación voluntaria o agotamiento extremo.",
+        "counterplay": "Agotar sus reservas de energía mediante combate de desgaste.",
+        "canonStatus": "source_backed",
+        "tier": "High 4-C",
+        "category": "transformation",
+        "multiplier": "50x",
+        "apexKi": 14000000000,
+        "burstKi": 18900000000,
+        "durabilityKi": 14000000000,
+        "sourceKi": null,
+        "kiFormatted": "14.00 Mil Millones"
       },
       {
         "id": "vegeta-cell-ssj-grade2",
         "name": "Super Vegeta (SSJ 2do Grado)",
-        "stats": "Nivel Sistema Solar Menor. Gran aumento muscular y de Ki bruto. Multiplicador x100 sobre la base. Humilló a Cell Semi-Perfecto.",
-        "apexKiMultiplier": 50,
+        "stats": "Nivel Estrella Grande a Sistema Solar. Gran aumento muscular y de Ki concentrado. Multiplicador x65 sobre la base. Tier High 4-C, Ki 18.20 Mil Millones. Humilló y dominó a Cell Semi-Perfecto.",
+        "apexKiMultiplier": 65,
         "staminaDrain": 12,
         "activationCondition": "Compresión de masa muscular alcanzada en la Habitación del Tiempo.",
         "grantedTags": [
@@ -41812,14 +41845,14 @@ export const INITIAL_CHARACTERS = [
         "exitCondition": "Desactivación o regreso a SSJ base.",
         "counterplay": "Esquivar con Shunkan Idou y atacar la movilidad reducida.",
         "canonStatus": "source_backed",
-        "tier": "3-C",
+        "tier": "High 4-C",
         "category": "transformation",
-        "multiplier": "50x",
-        "apexKi": 102900000000,
-        "burstKi": 138915000000,
-        "durabilityKi": 102900000000,
+        "multiplier": "65x",
+        "apexKi": 18200000000,
+        "burstKi": 24570000000,
+        "durabilityKi": 18200000000,
         "sourceKi": null,
-        "kiFormatted": "102.90 Mil Millones"
+        "kiFormatted": "18.20 Mil Millones"
       }
     ],
     "feats": [
@@ -70065,49 +70098,49 @@ export const INITIAL_CHARACTERS = [
         "kiFormatted": "1.20 Mil Millones"
       },
       {
-        "id": "freezer-rof-1ra",
-        "name": "Freezer 1ª Forma (Silla Espacial / Entrenado)",
-        "apexKiMultiplier": 1.35,
-        "staminaDrain": 0,
-        "tier": "4-B",
-        "stats": "Forma inicial tras 4 meses de entrenamiento con la que derrota a Gohan de un golpe.",
-        "category": "transformation",
-        "multiplier": "1.35x",
-        "apexKi": 1615950000,
-        "burstKi": 2181532500,
-        "durabilityKi": 1615950000,
-        "sourceKi": null,
-        "kiFormatted": "1.62 Mil Millones"
-      },
-      {
-        "id": "freezer-rof-final",
-        "name": "Freezer Forma Final (Poder Real Desatado)",
+        "id": "ssj1",
+        "name": "Super Saiyajin (Despertar en Chándal Verde)",
         "apexKiMultiplier": 50,
         "staminaDrain": 15,
-        "tier": "3-A",
-        "stats": "Forma auténtica que rivaliza con Goku Estado Más Allá de Dios.",
+        "tier": "3-C",
+        "stats": "Despertar del Super Saiyan con chándal verde para enfrentar a la infantería de Freezer y Shisami tras meses de inactividad.",
         "category": "transformation",
         "multiplier": "50x",
         "apexKi": 59850000000,
-        "burstKi": 80797500000,
+        "burstKi": 83790000000,
         "durabilityKi": 59850000000,
         "sourceKi": null,
         "kiFormatted": "59.85 Mil Millones"
       },
       {
-        "id": "freezer-rof-golden",
-        "name": "Golden Freezer (Evolución Dorada / Desgaste Rápido)",
-        "apexKiMultiplier": 250,
-        "staminaDrain": 60,
-        "tier": "Low 2-C",
-        "stats": "Metamorfosis dorada con poder superior a Goku SSJ Blue, con severo desgaste por no acostumbrar el cuerpo.",
+        "id": "ssj2",
+        "name": "Super Saiyajin 2 (Ráfaga de Furia / Entrenamiento con Piccolo)",
+        "apexKiMultiplier": 1000,
+        "staminaDrain": 25,
+        "tier": "3-B",
+        "stats": "Manifestación del Super Saiyajin 2 con chispas eléctricas durante el re-entrenamiento severo con Piccolo para recuperar el instinto guerrero.",
         "category": "transformation",
-        "multiplier": "250x",
-        "apexKi": 299250000000,
-        "burstKi": 403987500000,
-        "durabilityKi": 299250000000,
+        "multiplier": "1000x",
+        "apexKi": 1197000000000,
+        "burstKi": 1675800000000,
+        "durabilityKi": 1197000000000,
         "sourceKi": null,
-        "kiFormatted": "Trascendente Cósmico"
+        "kiFormatted": "1.20 Billones"
+      },
+      {
+        "id": "ultimate",
+        "name": "Estado Definitivo (Potencial Desbloqueado Recuperado)",
+        "apexKiMultiplier": 10000,
+        "staminaDrain": 40,
+        "tier": "Low 2-C",
+        "stats": "Recuperación absoluta del Estado Definitivo con mirada afilada y aura blanca mística, rivalizando contra Goku SSJ Blue.",
+        "category": "transformation",
+        "multiplier": "10000x",
+        "apexKi": 11970000000000,
+        "burstKi": 16758000000000,
+        "durabilityKi": 11970000000000,
+        "sourceKi": null,
+        "kiFormatted": "11.97 Billones"
       }
     ],
     "feats": [
@@ -81143,6 +81176,11 @@ export const INITIAL_CHARACTERS = [
         "durabilityKi",
         "liftingStrength"
       ]
+    },
+    "narrativeCombatProfile": {
+      "canonical_daima_ssj4_present": true,
+      "daima_ssj4_representation_review_pending": true,
+      "daima_ssj4_description": "Super Saiyan 4 aparece canónicamente en Dragon Ball Daima. La pendiente es únicamente cómo representar de modo coherente las versiones Mini y Adulta, sus etiquetas y relación interna."
     }
   },
   {
@@ -81667,6 +81705,11 @@ export const INITIAL_CHARACTERS = [
         "durabilityKi",
         "liftingStrength"
       ]
+    },
+    "narrativeCombatProfile": {
+      "canonical_daima_ssj4_present": true,
+      "daima_ssj4_representation_review_pending": true,
+      "daima_ssj4_description": "Super Saiyan 4 aparece canónicamente en Dragon Ball Daima. La pendiente es únicamente cómo representar de modo coherente las versiones Mini y Adulta, sus etiquetas y relación interna."
     }
   },
   {
@@ -82525,6 +82568,18 @@ export const INITIAL_CHARACTERS = [
         "apexKi",
         "durabilityKi",
         "liftingStrength"
+      ]
+    },
+    "narrativeCombatProfile": {
+      "pendingSourceGate": "GATE-001-TAMAGAMI-SOURCE",
+      "sourceStatus": "SOURCE_EVIDENCE_INSUFFICIENT",
+      "sourceWarning": "Existen dos registros del mismo guardián con escalas incompatibles. No fusionar, deprecar, recalibrar ni seleccionar una cifra hasta contar con una fuente aceptada o una decisión editorial explícita.",
+      "blockedActions": [
+        "merge",
+        "deprecate",
+        "rescale",
+        "form_migration",
+        "auto_fix"
       ]
     }
   },
@@ -83564,6 +83619,18 @@ export const INITIAL_CHARACTERS = [
         "apexKi",
         "durabilityKi",
         "liftingStrength"
+      ]
+    },
+    "narrativeCombatProfile": {
+      "pendingSourceGate": "GATE-001-TAMAGAMI-SOURCE",
+      "sourceStatus": "SOURCE_EVIDENCE_INSUFFICIENT",
+      "sourceWarning": "Existen dos registros del mismo guardián con escalas incompatibles. No fusionar, deprecar, recalibrar ni seleccionar una cifra hasta contar con una fuente aceptada o una decisión editorial explícita.",
+      "blockedActions": [
+        "merge",
+        "deprecate",
+        "rescale",
+        "form_migration",
+        "auto_fix"
       ]
     }
   },
@@ -115053,7 +115120,7 @@ export const INITIAL_CHARACTERS = [
     "saga": "Torneo del Multiverso / Universo 3",
     "version": "Generador de Guerreros Fantasma Hatchiyack",
     "tier": "7-A",
-    "ap": "Nivel Galáctico. El científico Tsufur sobreviviente que creó la máquina Hatchiyack. Puede invocar a los 'Guerreros Fantasma' de cualquier ser asesinado por saiyans o absorbido por el rencor (Broly SSJ Legendario, Rey Vegeta, Tullece, Cold, Cooler) con el 100% de su fuerza viva.",
+    "ap": "Nivel Galáctico. El científico Tsufur sobreviviente que creó la máquina Hatchiyack. Puede invocar a los 'Guerreros Fantasma' de cualquier ser asesinado por saiyans o absorbido por el rencor (Broly SSJ Legendario, Tullece, Cold, Cooler) con el 100% de su fuerza viva.",
     "range": "Galáctico (Invocaciones en masa).",
     "speed": {
       "combat": "MFTL+ (Vía guerreros fantasma invocados).",
@@ -115066,102 +115133,41 @@ export const INITIAL_CHARACTERS = [
     "stamina": "Infinita: Funciona con energía de odio acumulada.",
     "battleIQ": "Supergenio Científico Tsufur / Estratega de Guerra Asimétrica.",
     "haxTags": [
-      "Invocación de Guerreros Fantasma Inmortales (Ghost Warriors)",
-      "Invocación de Broly Super Saiyan Legendario Fantasma",
-      "Barrera de Odio Absoluta de Hatchiyack",
-      "Acumulación de Rencor (Potenciación por Muertes)",
-      "Invocación de Guerreros Fantasma Inmortales"
+      "summoning",
+      "soul_manipulation",
+      "barrier_creation",
+      "adaptive_summon_selection",
+      "psionic_control",
+      "mind_control_resistance",
+      "forcefield",
+      "hatred_empowerment"
     ],
-    "arsenal": {
-      "basicAttacks": [
-        {
-          "name": "Láseres de Cápsula",
-          "cost": 3,
-          "desc": "Disparos de energía rápida desde los cañones integrados de la cápsula de control."
-        },
-        {
-          "name": "Pulso de Repulsión",
-          "cost": 5,
-          "desc": "Ondas de choque cortas para mantener a los enemigos cuerpo a cuerpo alejados."
-        },
-        {
-          "name": "Láser de Cápsula",
-          "desc": "Disparos rápidos de energía concentrada desde los emisores de su cápsula de control.",
-          "cost": 3,
-          "damageType": "Energético"
-        },
-        {
-          "name": "Pulso Defensivo",
-          "desc": "Breve emisión de la barrera para repeler ataques cuerpo a cuerpo cercanos.",
-          "cost": 5,
-          "damageType": "Contundente"
-        }
-      ],
-      "superAttacks": [
-        {
-          "name": "Invocación de Escuadrón Fantasma",
-          "desc": "Invoca simultáneamente a Tullece, Rey Vegeta y guerreros Saiyans caídos como fantasmas incorpóreos.",
-          "cost": "Bajo"
-        },
-        {
-          "name": "Invocación Fantasma: Broly Legendario",
-          "desc": "Invoca al fantasma de Broly en Super Saiyan Legendario desatando un bombardeo verde de Omega Blasters.",
-          "cost": "Alto odio"
-        }
-      ],
-      "ultimateAttacks": [
-        {
-          "name": "Revenge Cannon de Hatchiyack",
-          "desc": "Canaliza todo el rencor de la raza Tsufur en un haz de antimateria que desintegra galaxias.",
-          "cost": "Sobrecarga del generador"
-        }
-      ],
-      "passives": [
-        {
-          "name": "Escudo Inmune a Ataques Físicos Menores",
-          "desc": "Una barrera de energía envuelve al Dr. Raichi haciéndolo intocable mientras el generador esté activo.",
-          "cost": "Pasivo continuo"
-        },
-        {
-          "name": "Reciclaje de Rencor",
-          "desc": "Convierte la energía de los ataques enemigos absorbidos por el escudo en poder para las invocaciones.",
-          "cost": "Pasivo continuo"
-        },
-        {
-          "name": "Resonancia de Rencor",
-          "desc": "El poder de los guerreros fantasma aumenta proporcionalmente al odio acumulado en la máquina Hatchiyack.",
-          "cost": "Pasivo continuo"
-        }
-      ],
-      "specialMechanics": [
-        {
-          "name": "Soporte de Hatchiyack",
-          "desc": "El núcleo mecánico fuera del campo mantiene la fuente inagotable de fantasmas."
-        },
-        {
-          "name": "Control Espectral",
-          "desc": "Permite gestionar múltiples entidades fantasmales simultáneamente sin desgaste físico para el doctor."
-        }
-      ],
-      "weaknesses": [
-        {
-          "name": "Vulnerabilidad de la Máquina",
-          "desc": "Si la esfera generadora de Hatchiyack es destruida, todos los fantasmas desaparecen.",
-          "counterTags": [
-            "destrucción de núcleo",
-            "ataques de área espacial"
-          ]
-        },
-        {
-          "name": "Vulnerabilidad del Generador Hatchiyack",
-          "desc": "Si la esfera generadora o la cápsula principal sufren daños críticos, todos los fantasmas desaparecen instantáneamente.",
-          "counterTags": [
-            "Destrucción de Núcleo",
-            "Ataques Perforantes de Alta Precisión"
-          ]
-        }
-      ]
-    },
+    "arsenal": [
+      {
+        "name": "Despliegue del Archivo Fantasma",
+        "type": "summoning_action",
+        "cost": "Gasto táctico de odio acumulado",
+        "desc": "Materializa una o más entidades del archivo según el estado de invocación activo (scouting, raid, overrun, elite_pincer o emergency)."
+      },
+      {
+        "name": "Sobrecarga de Barrera de Odio",
+        "type": "defensive_action",
+        "cost": "Consumo de reserva de odio",
+        "desc": "Fortalece temporalmente la integridad del escudo frente a ráfagas concentradas."
+      },
+      {
+        "name": "Bombardeo Espectral Coordinado",
+        "type": "team_assault",
+        "cost": "Coordinación de unidades activas",
+        "desc": "Ordena a todos los fantasmas en el campo descargar simultáneamente sus técnicas especiales sobre un único objetivo."
+      },
+      {
+        "name": "Pulso de Resonancia de Rencor",
+        "type": "psychological_wave",
+        "cost": "Pulso psiónico del orbe",
+        "desc": "Onda de energía negativa que desestabiliza a oponentes con trauma histórico, rencor previo o vulnerabilidad psicológica ante las entidades proyectadas."
+      }
+    ],
     "forms": [
       {
         "id": "base",
@@ -115200,61 +115206,36 @@ export const INITIAL_CHARACTERS = [
       "Derrotó a Vegeta del Universo 13 invocando a los guerreros que el propio Vegeta había matado.",
       "Forzó a Gast Carcolh a usar su máxima potencia de sellado mágico para detener a su Broly fantasma."
     ],
-    "weaknesses": "Vulnerabilidad de la máquina: Si la esfera generadora de Hatchiyack es destruida, todos los fantasmas desaparecen.",
+    "weaknesses": [
+      "Dependencia total del orbe/trono tecnológico de Hatchiyack; si es sellado, destruido o neutralizado, Raichi pierde la capacidad de convocar y sostener fantasmas.",
+      "Inmovilidad y fragilidad física de Raichi fuera de su barrera; carece de velocidad de combate cuerpo a cuerpo y capacidad de evasión ágil.",
+      "Fijación obsesiva y odio ciego hacia los Saiyajins, lo que reduce su flexibilidad táctica frente a combatientes de esa raza.",
+      "Vulnerabilidad ante técnicas de sellado de almas, purificación de energía negativa o colapso psíquico del rencor."
+    ],
     "avatar": "https://image.pollinations.ai/prompt/Dr%20Raichi%20Dragon%20Ball%20Multiverse,%20old%20alien%20scientist,%20floating%20on%20sphere,%20ghost%20warriors%20behind%20him,%20glowing%20red%20hate%20aura,%20masterpiece%20anime?width=512&height=512&nologo=true",
     "synergies": [
       {
-        "partnerTags": [
-          "Guerrero Fantasma",
-          "Tsufur"
-        ],
-        "effect": "Aumenta la velocidad de invocación y la resistencia de las barreras en un 25%."
+        "partnerGroup": "Guerreros Fantasma de DBM",
+        "benefit": "Coordinación psiónica sin retraso comunicativo; las unidades ejecutan órdenes al unísono."
       },
       {
-        "name": "Venganza Tsufur",
-        "partnerTags": [
-          "Tsufur",
-          "Tecnología Avanzada"
-        ],
-        "effect": "Aumenta la velocidad de recarga del Revenge Cannon en un 25%."
+        "partnerGroup": "Entidades Psiónicas y Tecnológicas Tsufur",
+        "benefit": "Alineación en objetivos de venganza y compatibilidad con maquinaria de rencor."
       }
     ],
     "teamCombos": [
       {
+        "comboName": "Asedio Espectral Tsufur",
         "partners": [
-          "Rey Vegeta (Multiverse — U13)"
+          "dr-raichi-dbm-u3"
         ],
         "sequence": [
-          "Dr. Raichi inmoviliza al objetivo con campos de estasis de odio.",
-          "Rey Vegeta canaliza el Cañón Ejecutor Real a través del escudo.",
-          "Impacto combinado que desintegra el sector espacial del enemigo."
+          "Raichi levanta la barrera defensiva mientras el orbe convoca a los fantasmas de vanguardia.",
+          "Las unidades de asalto cercan al oponente forzándolo a una posición defensiva desfavorable.",
+          "El orbe descarga un pulso concentrado de rencor mientras los fantasmas rematan con sus técnicas características."
         ],
-        "staminaCostPerParticipant": [
-          20,
-          25
-        ],
-        "effect": "Daño masivo de tipo galáctico con penetración de armadura absoluta.",
-        "partialFailureResult": "El escudo de odio absorbe parte del daño y se sobrecarga, aturdiendo a Raichi.",
-        "canonStatus": "apex_custom"
-      },
-      {
-        "name": "Juicio del Rencor Galáctico",
-        "partners": [
-          "dr-raichi-dbm-u3",
-          "rey-vegeta-dbm-u13"
-        ],
-        "sequence": [
-          "Dr. Raichi inmoviliza al rival mediante una red de energía espectral.",
-          "Rey Vegeta canaliza el Cañón Ejecutor sobre el objetivo atrapado.",
-          "Dr. Raichi desata el Revenge Cannon conjunto con el remate real."
-        ],
-        "staminaCostPerParticipant": [
-          30,
-          35
-        ],
-        "effect": "Inflige daño masivo de tipo energético y desestabiliza las defensas del enemigo.",
-        "partialFailureResult": "Si el paso intermedio es esquivado, el ataque se disipa y los usuarios quedan expuestos por sobrecarga de Ki.",
-        "canonStatus": "apex_custom"
+        "effect": "Ataque coordinado de alta presión táctica y desgaste.",
+        "canonStatus": "dbm_conceptual"
       }
     ],
     "powerScaling": {
@@ -115578,6 +115559,578 @@ export const INITIAL_CHARACTERS = [
         "durabilityKi",
         "liftingStrength"
       ]
+    },
+    "artifacts": [
+      {
+        "name": "Hatchiyack Creation Orb & Throne Device",
+        "type": "core_amplifier_and_spawner",
+        "description": "Orbe tecnológico/místico tsufur montado en la cápsula-trono de levitación. Actúa como unidad de almacenamiento de odio, procesador psiónico y catalizador para materializar Guerreros Fantasma.",
+        "effects": [
+          "Canaliza y procesa el rencor psíquico de seres exterminados para manifestar proyecciones ectoplásmicas en combate.",
+          "Proyecta una barrera defensiva continua que aísla a Raichi del daño directo mientras el orbe permanezca operativo.",
+          "Vulnerable a ataques directos concentrados si la barrera se ve comprometida por saturación o impacto destructivo."
+        ],
+        "canonStatus": "dbm_canonical"
+      }
+    ],
+    "passives": [
+      {
+        "name": "Nexo de Invocación de Guerreros Fantasma",
+        "desc": "Raichi actúa como comandante que combate mediante entidades invocadas. No ataca físicamente ni entabla combate cuerpo a cuerpo por sí mismo; toda proyección ofensiva y de desgaste se realiza a través de su archivo de fantasmas.",
+        "canonStatus": "dbm_canonical"
+      },
+      {
+        "name": "hate_charge_conversion_engine",
+        "desc": "Hatchiyack procesa rencor y bajas como recurso táctico cualitativo para mantener invocaciones, coordinar oleadas y evaluar contingencias. No multiplica Ki, tier, durabilidad ni daño físico de Raichi.",
+        "canonStatus": "dbm_canonical"
+      },
+      {
+        "name": "Aura de Mando Colectivo",
+        "desc": "Permite coordinar múltiples fantasmas simultáneamente para ejecutar maniobras de cerco, asalto simultáneo o sacrificios de intercepción.",
+        "canonStatus": "dbm_canonical"
+      },
+      {
+        "name": "hatchiyack_orb_barrier_system",
+        "desc": "Barrera eficaz frente a amenazas comparables a SSJ2, pero vulnerable a presión coordinada, hax, desgaste prolongado o fuerza sostenida equivalente a SSJ3+.",
+        "canonStatus": "dbm_canonical"
+      },
+      {
+        "name": "Ciclo de Rematerialización Espectral",
+        "desc": "Los Guerreros Fantasma destruidos en combate son desmaterializados en ectoplasma; mientras el orbe posea rencor suficiente, pueden ser convocados de nuevo tras un intervalo táctico de enfriamiento.",
+        "canonStatus": "dbm_canonical"
+      },
+      {
+        "name": "Intercepción de Sacrificio",
+        "desc": "Raichi puede forzar a cualquier fantasma activo a interponerse ante un ataque letal dirigido hacia su trono o barrera, consumiendo a la invocación para preservar el núcleo.",
+        "canonStatus": "dbm_canonical"
+      },
+      {
+        "name": "adaptive_summon_selection",
+        "desc": "Raichi cambia composición de escuadra según el rival, resonancia y situación de campo; no altera sus estadísticas.",
+        "canonStatus": "dbm_conceptual"
+      }
+    ],
+    "combatStatuses": [
+      {
+        "name": "Hate Charge: Scouting",
+        "state": "scouting",
+        "hateResonance": "low",
+        "desc": "Nivel inicial de rencor acumulado. Permite despliegues rápidos de unidades menores para reconocimiento y desgaste inicial."
+      },
+      {
+        "name": "Hate Charge: Raid",
+        "state": "raid",
+        "hateResonance": "medium",
+        "desc": "Rencor en crecimiento. Habilita despliegues de múltiples guerreros o unidades de asalto medio."
+      },
+      {
+        "name": "Hate Charge: Overrun",
+        "state": "overrun",
+        "hateResonance": "high",
+        "desc": "Alta saturación de rencor. Permite enjambres coordinados y presión asfixiante continua sobre el oponente."
+      },
+      {
+        "name": "Hate Charge: Elite Pincer",
+        "state": "elite_pincer",
+        "hateResonance": "high",
+        "desc": "Nivel elevado de rencor. Acceso a proyecciones de mayor calibre técnico y maniobras en pinza."
+      },
+      {
+        "name": "Hate Charge: Emergency / Critical",
+        "state": "emergency",
+        "hateResonance": "critical",
+        "desc": "Máxima acumulación de rencor provocada por daño extremo, pérdida masiva de fantasmas o amenaza letal inminente."
+      },
+      {
+        "name": "Barrera de Odio Intacta",
+        "desc": "Escudo operativo protegiendo a Raichi y al orbe."
+      },
+      {
+        "name": "Orbe de Odio Comprometido",
+        "desc": "Barrera destruida o sobrecargada. El núcleo de Hatchiyack y Raichi quedan directamente expuestos a ataques enemigos."
+      }
+    ],
+    "arenaAffinities": [
+      {
+        "arena": "Estadio del Torneo Multiverso (DBM)",
+        "affinity": "favorable",
+        "effect": "La presencia de gradas masivas y combatientes caídos en el torneo nutre cualitativamente el odio ambiental procesado por el orbe."
+      },
+      {
+        "arena": "Planeta Plant / Ruinas de Tsufur",
+        "affinity": "favorable",
+        "effect": "Acelera cualitativamente la acumulación de rencor mediante resonancia ambiental histórica con el genocidio Tsufur."
+      }
+    ],
+    "narrativeCombatProfile": {
+      "externalEntityController": {
+        "controllerType": "ghost_tuffle_commander",
+        "coreArtifact": "Hatchiyack Orb",
+        "bodyStatIsolation": true,
+        "entityFrameworkVersion": "v1"
+      },
+      "commanderRole": {
+        "isPhysicalFighter": false,
+        "isSummonerCommander": true,
+        "hateResonancePolicy": "simulation-managed, no Ki multiplier",
+        "coreDescription": "Dr. Raichi combate exclusivamente como comandante psiónico a través de su archivo espectral. El Hatchiyack Creation Orb canaliza el rencor y materializa proyecciones ectoplásmicas con las capacidades exactas de su forma de origen en V25, sin alterar el baseKiNumeric ni el tier de Raichi."
+      },
+      "canonicalGhostArchive": [
+        {
+          "entityId": "ghost-tidar-u19",
+          "displayName": "Tidar (Universo 19 — DBM)",
+          "entityType": "ghost_warrior",
+          "relationshipType": "summon",
+          "sourceRecordId": "tidar-u19-individual",
+          "sourceFormId": "base",
+          "sourceFormIndex": 0,
+          "recordId": "tidar-u19-individual",
+          "recordName": "Tidar (Universo 19 — DBM)",
+          "formId": "base",
+          "formIndex": 0,
+          "canonicalStatus": "confirmed_dbm_onscreen",
+          "evidenceLevel": "confirmed_dbm_onscreen",
+          "evidenceNote": "Invocado explícitamente en DBM (Capítulo 17) contra Gast Carcolh tras morir vs Uub U18.",
+          "availability": "usable_now",
+          "defaultAvailability": "conditional",
+          "bodyStatIsolation": true,
+          "summonClass": "minor",
+          "combatRole": "vanguard_tank",
+          "selectionTags": [
+            "anti_speed",
+            "cutting_blade",
+            "energy_shield",
+            "dbm_canonical"
+          ],
+          "cooldownPolicy": "reformation_cooldown",
+          "cooldownClass": "low",
+          "uiVisibility": "external_entities_tab",
+          "counterplayTags": [
+            "armor_shatter",
+            "core_strike",
+            "command_disruption"
+          ],
+          "enemyResonanceTags": [
+            "anti_speed",
+            "cutting_blade",
+            "energy_shield"
+          ]
+        },
+        {
+          "entityId": "ghost-cell-jr-u17",
+          "displayName": "Cell Jr. (Universo 17 — DBM)",
+          "entityType": "ghost_warrior",
+          "relationshipType": "summon",
+          "sourceRecordId": "cell-jr-u17-dbm",
+          "sourceFormId": "base",
+          "sourceFormIndex": 0,
+          "recordId": "cell-jr-u17-dbm",
+          "recordName": "Cell Jr. (Universo 17 — DBM)",
+          "formId": "base",
+          "formIndex": 0,
+          "canonicalStatus": "confirmed_dbm_onscreen",
+          "evidenceLevel": "confirmed_dbm_onscreen",
+          "evidenceNote": "Invocado en enjambre múltiple en DBM; genera presión rápida y hostigamiento.",
+          "availability": "usable_now",
+          "defaultAvailability": "conditional",
+          "bodyStatIsolation": true,
+          "summonClass": "minor",
+          "combatRole": "swarm_harasser",
+          "selectionTags": [
+            "swarm",
+            "high_speed",
+            "cloning",
+            "dbm_canonical"
+          ],
+          "cooldownPolicy": "reformation_cooldown",
+          "cooldownClass": "low",
+          "uiVisibility": "external_entities_tab",
+          "counterplayTags": [
+            "aoe_blast",
+            "core_strike",
+            "attrition"
+          ],
+          "enemyResonanceTags": [
+            "swarm",
+            "high_speed",
+            "cloning"
+          ]
+        },
+        {
+          "entityId": "ghost-bojack-u6",
+          "displayName": "Bojack (Multiverse — U6)",
+          "entityType": "ghost_warrior",
+          "relationshipType": "summon",
+          "sourceRecordId": "bojack-dbm",
+          "sourceFormId": "base",
+          "sourceFormIndex": 0,
+          "recordId": "bojack-dbm",
+          "recordName": "Bojack (Multiverse — U6)",
+          "formId": "base",
+          "formIndex": 0,
+          "canonicalStatus": "confirmed_dbm_onscreen",
+          "evidenceLevel": "confirmed_dbm_onscreen",
+          "evidenceNote": "Invocado como fantasma de asalto pesado en DBM; combate de choque frontal.",
+          "availability": "usable_now",
+          "defaultAvailability": "conditional",
+          "bodyStatIsolation": true,
+          "summonClass": "major",
+          "combatRole": "heavy_frontliner",
+          "selectionTags": [
+            "brute_force",
+            "line_breaker",
+            "tank",
+            "dbm_canonical"
+          ],
+          "cooldownPolicy": "reformation_cooldown",
+          "cooldownClass": "medium",
+          "uiVisibility": "external_entities_tab",
+          "counterplayTags": [
+            "range_kiting",
+            "heavy_hax",
+            "core_strike"
+          ],
+          "enemyResonanceTags": [
+            "brute_force",
+            "line_breaker",
+            "tank"
+          ]
+        },
+        {
+          "entityId": "ghost-pan-ssj-u16",
+          "displayName": "Pan Super Saiyan (Multiverse — U16)",
+          "entityType": "ghost_warrior",
+          "relationshipType": "summon",
+          "sourceRecordId": "pan-ssj-dbm-u16",
+          "sourceFormId": "base",
+          "sourceFormIndex": 0,
+          "recordId": "pan-ssj-dbm-u16",
+          "recordName": "Pan Super Saiyan (Multiverse — U16)",
+          "formId": "base",
+          "formIndex": 0,
+          "canonicalStatus": "confirmed_dbm_onscreen",
+          "evidenceLevel": "confirmed_dbm_onscreen",
+          "evidenceNote": "Invocada por Raichi como arma psicológica traumática contra el Universo 16 (Vegetto / Son Bra).",
+          "availability": "usable_now",
+          "defaultAvailability": "conditional",
+          "bodyStatIsolation": true,
+          "summonClass": "psychological_specialist",
+          "combatRole": "psychological_pressure",
+          "selectionTags": [
+            "psychological_trauma",
+            "family_bond",
+            "moral_inhibition",
+            "dbm_canonical"
+          ],
+          "cooldownPolicy": "reformation_cooldown",
+          "cooldownClass": "situational",
+          "uiVisibility": "external_entities_tab",
+          "restrictions": "Permitida solo como psychological_pressure; disponibilidad condicionada a rival/escenario compatible; nunca seleccionarla como unidad genérica de daño máximo.",
+          "counterplayTags": [
+            "emotional_resolve",
+            "counter_psychology",
+            "core_strike"
+          ],
+          "enemyResonanceTags": [
+            "psychological_trauma",
+            "family_bond",
+            "moral_inhibition"
+          ]
+        },
+        {
+          "entityId": "ghost-vegeta-u13",
+          "displayName": "Vegeta (Multiverse — U13, Príncipe Saiyajin Superviviente)",
+          "entityType": "ghost_warrior",
+          "relationshipType": "summon",
+          "sourceRecordId": "vegeta-u13-dbm",
+          "sourceFormId": "base",
+          "sourceFormIndex": 0,
+          "recordId": "vegeta-u13-dbm",
+          "recordName": "Vegeta (Multiverse — U13, Príncipe Saiyajin Superviviente)",
+          "formId": "base",
+          "formIndex": 0,
+          "canonicalStatus": "confirmed_dbm_onscreen",
+          "evidenceLevel": "confirmed_dbm_onscreen",
+          "evidenceNote": "Invocado por Raichi en su combate contra Gast Carcolh. Forma base exacta de V25; no asumir transformaciones no canónicas.",
+          "availability": "usable_now",
+          "defaultAvailability": "conditional",
+          "bodyStatIsolation": true,
+          "summonClass": "major",
+          "combatRole": "tactical_blaster",
+          "selectionTags": [
+            "pride_clash",
+            "saiyan_hatred",
+            "concentrated_energy",
+            "dbm_canonical"
+          ],
+          "cooldownPolicy": "reformation_cooldown",
+          "cooldownClass": "high",
+          "uiVisibility": "external_entities_tab",
+          "counterplayTags": [
+            "saiyan_counter",
+            "core_strike",
+            "interruption"
+          ],
+          "enemyResonanceTags": [
+            "pride_clash",
+            "saiyan_hatred",
+            "concentrated_energy"
+          ]
+        }
+      ],
+      "legacyGhostReferences": [
+        {
+          "entityId": "ghost-broly-unleashed",
+          "displayName": "Fantasma de Broly LSSJ",
+          "entityType": "legacy_reference",
+          "relationshipType": "summon",
+          "legacyReference": true,
+          "referenceOnly": true,
+          "availability": "legacy_reference_only",
+          "defaultAvailability": "legacy_reference_only",
+          "bodyStatIsolation": true,
+          "uiVisibility": "informational_card_only",
+          "combatRole": "legacy_extreme_siege",
+          "selectionTags": [
+            "legacy_v25_reference",
+            "hatchiyack_memory",
+            "traceability_only"
+          ],
+          "counterplayTags": [
+            "non_selectable_bodily_form",
+            "requires_approved_model_patch",
+            "sealed_by_gast"
+          ],
+          "cooldownPolicy": "locked_legacy_policy",
+          "notes": "Fantasma de Broly LSSJ: referencia legacy conservada para trazabilidad histórica. No es transformación corporal de Raichi, no modifica sus estadísticas y no es invocable automáticamente hasta un patch de migración de modelo explícitamente aprobado."
+        }
+      ],
+      "resonanceProjectionLibrary": [
+        {
+          "recordId": "freezer-dbs-top",
+          "recordName": "Freezer (Dragon Ball Super — Torneo del Poder)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Super (Canon Oficial)",
+          "formId": "base",
+          "formIndex": 0,
+          "simulation_design_only": true,
+          "defaultAvailability": "not_summonable_by_default",
+          "not_summonable_by_default": true,
+          "requiresResonanceCondition": true,
+          "notCanonicalDBMGhost": true,
+          "selectionReason": "confirmed_historical_enemy",
+          "relationshipStatus": "HISTORICAL_DYNASTIC_TYRANT",
+          "tacticalRole": "long_range_precision_blaster",
+          "designNotes": "Proyección contextual para escenarios de confrontación donde intervenga la dinastía de tiranos galácticos."
+        },
+        {
+          "recordId": "cooler-u8-dbm",
+          "recordName": "Cooler (Continuidad Universo 8, Imperio Intacto)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "formId": "base",
+          "formIndex": 0,
+          "simulation_design_only": true,
+          "defaultAvailability": "not_summonable_by_default",
+          "not_summonable_by_default": true,
+          "requiresResonanceCondition": true,
+          "notCanonicalDBMGhost": true,
+          "selectionReason": "confirmed_historical_enemy",
+          "relationshipStatus": "HISTORICAL_COLD_DYNASTY",
+          "tacticalRole": "armored_striker",
+          "designNotes": "Proyección de simulación basada en el rencor histórico contra la familia de Cold."
+        },
+        {
+          "recordId": "cell-u17-dbm",
+          "recordName": "Cell (Multiverse — U17)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "formId": "base",
+          "formIndex": 0,
+          "simulation_design_only": true,
+          "defaultAvailability": "not_summonable_by_default",
+          "not_summonable_by_default": true,
+          "requiresResonanceCondition": true,
+          "notCanonicalDBMGhost": true,
+          "selectionReason": "confirmed_factional_conflict",
+          "relationshipStatus": "BIO_ANDROID_GENETIC_RESONANCE",
+          "tacticalRole": "adaptive_regenerator",
+          "designNotes": "Proyección de simulación táctica ante conflictos con bio-androides o entidades regenerativas."
+        },
+        {
+          "recordId": "baby-god-brokoly",
+          "recordName": "Super Baby Vegeta (Baby God)",
+          "franchise": "Dragon Ball",
+          "universe": "Brokoly What-If",
+          "formId": "base",
+          "formIndex": 0,
+          "simulation_design_only": true,
+          "defaultAvailability": "not_summonable_by_default",
+          "not_summonable_by_default": true,
+          "requiresResonanceCondition": true,
+          "notCanonicalDBMGhost": true,
+          "selectionReason": "historical_tuffle_saiyan_resonance",
+          "relationshipStatus": "SHARED_TUFFLE_PARASITE_RESONANCE",
+          "tacticalRole": "tsufur_parasitic_subversion",
+          "designNotes": "Resonancia conceptual de la venganza Tsufur canalizada contra huéspedes Saiyajin; diseño de simulación sin valor canónico en DBM."
+        },
+        {
+          "recordId": "youpi-hxh-ca",
+          "recordName": "Menthuthuyoupi (Youpi)",
+          "franchise": "Hunter x Hunter",
+          "universe": "Hunter x Hunter (Canon)",
+          "formId": "base",
+          "formIndex": 0,
+          "simulation_design_only": true,
+          "defaultAvailability": "not_summonable_by_default",
+          "not_summonable_by_default": true,
+          "requiresResonanceCondition": true,
+          "notCanonicalDBMGhost": true,
+          "selectionReason": "tactical_role_only",
+          "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+          "tacticalRole": "grotesque_morphology_tank",
+          "designNotes": "Proyección cruzada puramente funcional para cobertura de impacto físico masivo cuando no existe afinidad de rencor previa."
+        },
+        {
+          "recordId": "kenjaku-jjk",
+          "recordName": "Kenjaku",
+          "franchise": "Jujutsu Kaisen",
+          "universe": "Jujutsu Kaisen (Canon)",
+          "formId": "base",
+          "formIndex": 0,
+          "simulation_design_only": true,
+          "defaultAvailability": "not_summonable_by_default",
+          "not_summonable_by_default": true,
+          "requiresResonanceCondition": true,
+          "notCanonicalDBMGhost": true,
+          "selectionReason": "tactical_role_only",
+          "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+          "tacticalRole": "curse_manipulator_strategist",
+          "designNotes": "Proyección cruzada seleccionada por afinidad de rol táctico en control de maldiciones/espíritus, sin vínculo relacional verificable."
+        }
+      ],
+      "opponentEchoSelection": {
+        "description": "Criterios del motor de simulación para seleccionar ecos de rencor y proyecciones contextuales según las características del oponente.",
+        "allowedSelectionReasons": [
+          "historical_tuffle_saiyan_resonance",
+          "confirmed_historical_enemy",
+          "confirmed_victim_link",
+          "confirmed_factional_conflict",
+          "battlefield_casualty",
+          "tactical_role_only"
+        ],
+        "unverifiedFallback": {
+          "selectionReason": "tactical_role_only",
+          "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+          "rule": "Si el oponente no posee vínculo histórico o relacional verificado en el lore local, la selección opera exclusivamente por rol táctico defensivo/ofensivo sin asumir afinidades ficticias."
+        },
+        "behaviorPolicies": {
+          "CaseA_SaiyanOpponent": {
+            "trigger": "Oponente de raza o herencia Saiyajin",
+            "hateResonance": "critical",
+            "selectionReason": "historical_tuffle_saiyan_resonance",
+            "tacticalBehavior": "Odio exacerbado. Máxima prioridad en desplegar ecos de rencor anti-Saiyajin o invocar fantasmas de su propia especie para provocar trauma y humillación psicológica.",
+            "recommendedSummonState": "raid | overrun"
+          },
+          "CaseB_RelatedRival": {
+            "trigger": "Oponente con vínculo de tiranía histórica, opresión o linaje de Cold",
+            "hateResonance": "high",
+            "selectionReason": "confirmed_historical_enemy",
+            "tacticalBehavior": "Despliegue de proyecciones ligadas a las víctimas de su dinastía o contra-ataque con tiranos derrotados.",
+            "recommendedSummonState": "raid | elite_pincer"
+          },
+          "CaseC_CrossFranchiseUnrelated": {
+            "trigger": "Oponente de universo externo sin relación histórica",
+            "hateResonance": "low",
+            "selectionReason": "tactical_role_only",
+            "relationshipStatus": "UNVERIFIED_RELATIONAL_RESONANCE",
+            "tacticalBehavior": "Selección puramente utilitaria basada en complementariedad de roles (tanques de interrupción, hostigadores rápidos) sin presumir rencor personal.",
+            "recommendedSummonState": "scouting | emergency"
+          },
+          "CaseD_TeamBattleAndCasualties": {
+            "trigger": "Combate multitudinario o caída de aliados/enemigos en la contienda",
+            "hateResonance": "medium | high",
+            "selectionReason": "battlefield_casualty",
+            "tacticalBehavior": "El orbe absorbe cualitativamente el rencor liberado por las bajas del combate en curso, acelerando la disponibilidad de nuevos despliegues.",
+            "recommendedSummonState": "overrun | emergency"
+          },
+          "CaseE_ColossalPressure": {
+            "trigger": "Presión sostenida de escala destructiva masiva",
+            "hateResonance": "critical",
+            "selectionReason": "tactical_role_only",
+            "barrierPolicy": "DESIGN_ASSUMPTION_SIMULATION_ONLY: La barrera psiónica no es indestructible frente a bombardeos continuos de escala masiva. Ante una ruptura del escudo, el orbe queda expuesto y Raichi entra en vulnerabilidad crítica.",
+            "recommendedSummonState": "emergency"
+          }
+        }
+      },
+      "hateChargeRules": {
+        "description": "Mecánica cualitativa de simulación para la acumulación y consumo de rencor en combate.",
+        "chargePolicy": "simulation-managed, no Ki multiplier",
+        "qualitativeStates": [
+          {
+            "state": "scouting",
+            "hateResonance": "low",
+            "summary": "Fase de apertura. Permite sondeo con unidades menores y sostenimiento básico de barrera."
+          },
+          {
+            "state": "raid",
+            "hateResonance": "medium",
+            "summary": "Fase intermedia. Despliegue de unidades medias o múltiples combatientes coordinados."
+          },
+          {
+            "state": "overrun",
+            "hateResonance": "high",
+            "summary": "Saturación ofensiva. Despliegue simultáneo de enjambres y unidades mayores."
+          },
+          {
+            "state": "elite_pincer",
+            "hateResonance": "high",
+            "summary": "Asalto de alta gama técnica con proyecciones especializadas."
+          },
+          {
+            "state": "emergency",
+            "hateResonance": "critical",
+            "summary": "Respuesta de contingencia límite ante daño extremo o colapso inminente."
+          }
+        ],
+        "environmentalCatalysts": [
+          "Presencia hostil de combatientes Saiyajin en el campo de batalla.",
+          "Disipación o destrucción de guerreros fantasma en combate (genera rencor cualitativo contra el agresor).",
+          "Presencia de gradas, espectadores hostiles o campos de batalla cargados de historia de guerra."
+        ]
+      },
+      "hatchiyackManifestEventProposal": {
+        "status": "PROPOSAL_ONLY_NOT_ACTIVE",
+        "activationRequirements": [
+          "Raichi derrotado/incapacitado o vínculo colapsado;",
+          "orbe todavía funcional;",
+          "acumulación narrativa suficiente;",
+          "sin sellado o interrupción."
+        ],
+        "nature": "autonomous_supercomputer_event",
+        "designRules": [
+          "Hatchiyack no es una forma de Dr. Raichi.",
+          "Hatchiyack no añade multiplicadores ni buffs numéricos de Ki a la ficha de Raichi.",
+          "Hatchiyack no crea una nueva entidad activa en V25 en este patch.",
+          "La manifestación queda exclusivamente como propuesta de diseño para futuros eventos del motor de combate.",
+          "No autoactivar bajo ninguna circunstancia sin autorización explícita del usuario."
+        ]
+      },
+      "legacyMigrationPlan": {
+        "formsCompatibility": "La forma forms[1] (ghost-broly-unleashed) se mantiene intacta en V25 por inmutabilidad de schema legacy. No se toca ni se altera en este patch.",
+        "targetArchitecture": "En futuras revisiones de arquitectura, las formas espectrales serán desvinculadas de la ficha personal de Raichi y gestionadas enteramente por el motor de simulación."
+      },
+      "evidenceAndUncertainty": {
+        "onscreenConfirmedGhosts": [
+          "tidar-u19-individual",
+          "cell-jr-u17-dbm",
+          "bojack-dbm",
+          "pan-ssj-dbm-u16",
+          "vegeta-u13-dbm"
+        ],
+        "simulationOnlyNotice": "Toda entidad fuera del canonicalGhostArchive pertenece estrictamente a la biblioteca de proyección contextual para simulación (simulation_design_only: true) y requiere validación de resonancia previa.",
+        "governanceCompliance": "Completamente alineado con la lista blanca de enriquecimiento APEX."
+      }
     }
   },
   {
@@ -118887,7 +119440,7 @@ export const INITIAL_CHARACTERS = [
     "legacy_status": "active",
     "universe_number": "U6",
     "members": null,
-    "parent_team_profile": "kat-syd-u6-dbm",
+    "parent_team_profile": null,
     "team_affiliation": "Clan de Bojack (Universo 6)",
     "notes": "Datos individuales limitados en la obra; preservada con rigor factual.",
     "arsenal": {
@@ -125303,481 +125856,143 @@ export const INITIAL_CHARACTERS = [
   },
   {
     "id": "king-piccolo-u3-dbm",
-    "name": "Rey Demonio Piccolo (Continuidad Universo 3)",
-    "alias": "El Demonio que Sobrevivió a Su Propia Era",
+    "name": "Piccolo (Fusión con Kami-sama), Continuidad Universo 3",
+    "alias": "El Namekiano Primordial Reunificado del Universo 3",
     "universe": "Dragon Ball Multiverse (Fan-Manga)",
-    "saga": "Torneo Interuniversal DBM — Universo 3",
-    "version": "Versión donde nunca fue derrotado por Goku joven, sobreviviendo hasta la era del torneo multiversal",
-    "tier": "7-B",
-    "ap": "Al no haber sido derrotado en su línea temporal, tuvo siglos adicionales de existencia para acumular poder y experiencia de combate.",
-    "range": "Extendido, técnicas de energía demoníaca y Makankosappo propio.",
+    "saga": "Torneo Interuniversal DBM – Universo 3",
+    "version": "Fusión con Kami-sama consumada en el Universo 3 previo al Torneo Interuniversal",
+    "tier": "4-C",
+    "ap": "Nivel Continental (Tier 4-C). Tras reconciliarse y fusionarse con Kami-sama en el Universo 3, recuperó la plenitud del Namekiano primordial, elevando su poder de combate a la escala cósmica de las sagas de Namek y Androides.",
+    "range": "Planetario / Interdimensional con Makankosappo y ráfagas concentradas de Ki divino-namekiano.",
     "speed": {
       "combat": "MFTL bajo.",
-      "reaction": "Excelente, milenios de experiencia como tirano demoníaco.",
+      "reaction": "Excelente, sabiduría combinada y reflejos marciales namekianos.",
       "attack": "MFTL bajo.",
       "travel": "MFTL bajo."
     },
     "strength": "Class Stellar.. Levantamiento: Class Stellar.",
-    "durability": "Muy alta, cuerpo demoníaco reforzado por siglos de tiranía.",
-    "stamina": "Muy alta.",
-    "battleIQ": "Cruel y calculador, con siglos adicionales de gobierno tiránico.",
+    "durability": "Nivel Continental (Tier 4-C). Cuerpo namekiano reforzado por la energía vital de Kami-sama.",
+    "stamina": "Muy alta; reserva namekiana completa con regeneración celular optimizada.",
+    "battleIQ": "Genio táctico supremo. Combina la astucia marcial de Piccolo con la milenaria sabiduría cósmica de Kami-sama.",
     "haxTags": [
-      "Regeneración demoníaca acelerada",
-      "Regenerador Celular",
-      "Namekiano",
-      "Antagonista Encarnación del Mal",
-      "Lanzador de Makankosappo"
+      "Regeneración Namekiana Avanzada",
+      "Namekiano Reunificado",
+      "Sabiduría de Kami-sama",
+      "Lanzador de Makankosappo",
+      "Control de Ki Puro"
     ],
     "arsenal": {
       "basicAttacks": [
         {
-          "name": "Golpe Demoniaco de Cortante",
+          "name": "Golpe Marcial Namekiano",
           "cost": 5,
-          "damageType": "Cortante/Contundente",
-          "desc": "Ataque físico rápido imbuido de ki oscuro."
-        },
-        {
-          "name": "Golpe Marcial Demoníaco",
-          "type": "contundente",
-          "staminaCost": 5,
-          "desc": "Ataque físico rápido imbuido de ki oscuro."
-        },
-        {
-          "name": "Corte de Garra Tétrica",
-          "type": "cortante",
-          "staminaCost": 6,
-          "desc": "Zarpa condensada con energía maligna capaz de desgarrar armaduras."
-        },
-        {
-          "id": "patada_de_reinado",
-          "name": "Patada del Reinado Infernal",
-          "type": "basic",
-          "cost": 6,
           "damageType": "Contundente",
-          "desc": "Patada pesada descendente con ki opresivo para castigar saltos y evasivas aéreas."
+          "desc": "Impacto físico de alta precisión imbuido de Ki concentrado."
+        },
+        {
+          "name": "Ráfaga Mística de Ki",
+          "cost": 6,
+          "damageType": "Energía",
+          "desc": "Disparos veloces de Ki concentrado para control de espacio y hostigamiento."
+        },
+        {
+          "name": "Estiramiento de Extremidades",
+          "cost": 4,
+          "damageType": "Físico / Táctico",
+          "desc": "Extensión elástica de brazos namekianos para captura y castigo a media distancia."
         }
       ],
       "superAttacks": [
         {
-          "name": "Makankosappo Demoníaco",
-          "desc": "Variante propia del Special Beam Cannon desarrollada independientemente.",
-          "cost": "30% de reserva de energía demoníaca"
+          "name": "Makankosappo (Cañón de Haz Especial)",
+          "desc": "Haz perforante en espiral que condensa todo su Ki en la punta de los dedos, perforando defensas de tier equivalente.",
+          "cost": "30% Ki"
         },
         {
-          "name": "Onda Explosiva de Ira Oscura",
-          "desc": "Liberación esférica de ki demoníaco para sacudirse oponentes cercanos.",
-          "cost": 20,
-          "chargeTime": "Instantáneo",
-          "counterplay": "Retroceder mediante salto espacial o absorción de impactos con cobertura."
+          "name": "Masenko Perforador",
+          "desc": "Disparo frontal bimano de gran potencia y rápida activación.",
+          "cost": 15
         },
         {
-          "id": "multiplicacion_de_soldados",
-          "name": "Multiplicación de Soldados Demoníacos",
-          "type": "super",
-          "cost": 25,
-          "staminaCost": 25,
-          "chargeTime": "Instantáneo",
-          "damageType": "Contundente/Energía",
-          "desc": "Genera clones menores para abrumar al rival con oleadas de presión.",
-          "counterplay": "Ataque de área واسع para barrer múltiples objetivos simultáneamente."
-        }
-      ],
-      "ultimateAttacks": [
-        {
-          "name": "Técnica Suprema de Rey Demonio Piccolo",
-          "desc": "Descarga máxima de poder destructivo.",
-          "cost": "Gasto alto de energía"
-        },
-        {
-          "id": "espiral_infernal_doppio",
-          "name": "Espiral Infernal de Dos Rayos",
-          "type": "ultimate",
-          "cost": 40,
-          "staminaCost": 40,
-          "chargeTime": "1 turno",
-          "damageType": "Penetrante/Energía",
-          "desc": "Disparo combinado de dos Makankosappo en espiral convergente que bloquea la evasión lateral.",
-          "activationRequirement": "Oponente inmovilizado, desorientado o con evasivas limitadas.",
-          "counterplay": "Volar hacia arriba fuera del plano de convergencia o anular el ki con Hax."
+          "name": "Barrera de Ki Namekiana",
+          "desc": "Escudo esférico de contención para dispersar ataques a distancia y proyectiles de Ki.",
+          "cost": 20
         }
       ],
       "passives": [
         {
-          "name": "Tiranía Milenaria",
-          "desc": "Siglos de gobierno sin oposición le dieron tiempo para refinar técnicas superiores.",
-          "cost": "Pasivo narrativo"
+          "name": "Sabiduría de la Fusión Ancestral",
+          "desc": "La unificación con Kami-sama otorga lectura de flujo de batalla y calma estratégica absoluta.",
+          "cost": "Pasivo"
         },
         {
-          "name": "Regeneración Namekiana Avanzada",
-          "desc": "Capacidad de sanar extremidades menores y fatiga de combate de forma pasiva.",
-          "staminaCost": 2
-        },
-        {
-          "name": "Regeneración Demoniaca Namekiana",
-          "desc": "Capacidad de regenerar extremidades menores y sanar heridas graves a costa de reservas de stamina.",
-          "cost": "15 stamina por segmento restaurado"
-        },
-        {
-          "id": "inmunidad_psicologica_al_miedo",
-          "name": "Inmunidad Psicológica al Miedo",
-          "desc": "Su naturaleza demoníaca lo hace inmune a presión espiritual e intimidación de rivales morales.",
-          "staminaCost": 0
+          "name": "Regeneración Celular Namekiana",
+          "desc": "Regenera extremidades perdidas siempre que el núcleo cerebral permanezca intacto.",
+          "cost": "10% Stamina"
         }
       ],
       "specialMechanics": [
         {
-          "name": "Barra de Ki Oscuro",
-          "desc": "Acumula energía demoníaca al recibir daño, potenciando los ataques especiales."
-        },
-        {
-          "name": "Ki Maligno Ancestral",
-          "desc": "Genera una barra de presión psicológica que reduce la regeneración de ki de oponentes con dudas morales."
-        },
-        {
-          "name": "Maldición del Huevo Demoníaco",
-          "desc": "Permite sellar un demonio menor en un huevo para invocarlo en combate como aliado temporal.",
-          "staminaCost": 20
+          "name": "Concentración Estratégica",
+          "desc": "Incrementa la penetración de sus técnicas especiales al analizar las pautas del rival."
         }
       ],
       "weaknesses": [
         {
-          "name": "Arrogancia Milenaria",
-          "desc": "Subestima a oponentes jóvenes o desconocidos.",
-          "counterTags": [
-            "Burlar",
-            "Engaño"
-          ]
-        },
-        {
-          "name": "Dependencia de Ki Demoniaco",
-          "desc": "Su ki oscuro pierde eficiencia en entornos de alta pureza espiritual como el Planeta del Kaioshin.",
-          "counterTags": [
-            "Ambiente Sagrado",
-            "Anulación de Ki"
-          ]
-        },
-        {
-          "name": "Cuerpo Físico Limitado",
-          "desc": "A pesar de la regeneración, su cuerpo no escala a multiplanetario sin una amplificación extrema.",
-          "counterTags": [
-            "Daño Físico Sostenido",
-            "Agotamiento"
-          ]
+          "name": "Daño al Núcleo Craneal",
+          "desc": "Si el cerebro sufre daño letal, la capacidad de regeneración se anula por completo."
         }
       ]
     },
     "forms": [
       {
         "id": "base",
-        "name": "Piccolo Daimaoh (Anciano / Estado Base)",
-        "stats": "Tier 6-C Alto | Nivel Isla Grande. Rey demonio envejecido que sometió la Tierra.",
+        "name": "Piccolo Rejuvenecido (Fusión con Kami-sama)",
+        "stats": "Tier 4-C | Nivel Continental. Piccolo namekiano fusionado con Kami-sama, rejuvenecido y en pleno dominio de su potencial de combate.",
         "apexKiMultiplier": 1,
         "staminaDrain": 0,
         "canonStatus": "source_backed",
-        "tier": "7-B",
+        "tier": "4-C",
         "category": "base",
-        "apexKi": 273,
-        "burstKi": 410,
-        "durabilityKi": 273,
+        "apexKi": 250000000,
+        "burstKi": 375000000,
+        "durabilityKi": 250000000,
         "sourceKi": null,
         "multiplier": "1x",
-        "tierExact": "7-B",
-        "kiFormatted": "273 Unidades"
+        "tierExact": "4-C",
+        "kiFormatted": "250.00 Millones"
       },
       {
-        "id": "piccolo-daimaoh-joven",
-        "name": "Piccolo Daimaoh (Rejuvenecido / Máximo Poder)",
-        "stats": "Tier 6-B | Nivel País Menor. Juventud eterna restaurada por Shenlong, pleno poder demoníaco.",
-        "apexKiMultiplier": 2.2,
-        "staminaDrain": 3,
+        "id": "piccolo-u3-full-power",
+        "name": "Piccolo U3 a Máximo Poder / Pleno Potencial Desatado",
+        "stats": "Tier 4-C | Nivel Continental. Pleno potencial desatado de Piccolo U3; máxima expresión de combate de la fusión con Kami-sama en el Torneo Interuniversal.",
+        "apexKiMultiplier": 1.5,
+        "staminaDrain": 2,
         "canonStatus": "source_backed",
-        "tier": "7-B",
+        "tier": "4-C",
         "category": "transformation",
-        "multiplier": "2.2x",
-        "apexKi": 600.6,
-        "burstKi": 811,
-        "durabilityKi": 600.6,
+        "multiplier": "1.5x",
+        "apexKi": 375000000,
+        "burstKi": 500000000,
+        "durabilityKi": 375000000,
         "sourceKi": null,
-        "tierExact": "7-B",
-        "kiFormatted": "601 Unidades"
+        "tierExact": "4-C",
+        "kiFormatted": "375.00 Millones"
       }
     ],
     "feats": [
-      "Sobrevivió y prosperó como tirano en su línea temporal del Universo 3.",
-      "Representa a su universo en DBM junto a Bardock, Raichi y Tapion.",
-      "Poder recalibrado muy por encima de su aparición clásica."
+      "Consumó la fusión con Kami-sama en el Universo 3, recuperando la plenitud del Namekiano original.",
+      "Participante de honor del Universo 3 en el Torneo de los Universos DBM junto a Tapion, Raichi y Bardock.",
+      "Poder y sabiduría amplificados por la unificación de su mitad benevolente y marcial."
     ],
-    "psychology": "Cruel, tiránico, disfruta genuinamente del sufrimiento ajeno.",
-    "weaknesses": "Carece de las transformaciones y multiplicadores Saiyan de otros universos.",
-    "avatar": "https://static.wikia.nocookie.net/dragonball/images/b/be/King_Piccolo_DB.png/revision/latest?cb=20170825141020",
-    "image": "https://static.wikia.nocookie.net/dragonball/images/b/be/King_Piccolo_DB.png/revision/latest?cb=20170825141020",
+    "psychology": "Sereno, reflexivo y altamente estratégico. La fusión con Kami-sama purificó los impulsos demoníacos, convirtiéndolo en un sabio guardián namekiano.",
+    "weaknesses": "Vulnerable si el núcleo craneal resulta destruido, lo que incapacita su regeneración celular.",
     "synergies": [
       {
         "partnerTags": [
-          "Saiyan del Mal",
-          "Tirano"
-        ],
-        "effect": "Aumenta la ganancia de ki oscuro un 15% al combatir junto a aliados de ideología tiránica."
-      },
-      {
-        "name": "Lazos de Maestro y Alumno",
-        "partnerTags": [
-          "Gohan"
-        ],
-        "effect": "Otorga visión táctica compartida y cobertura defensiva frontal para que Gohan cargue ataques definitivos.",
-        "canonStatus": "source_backed"
-      },
-      {
-        "name": "Unión Namekiana",
-        "partnerTags": [
-          "Nail",
-          "Kami",
-          "Dende",
-          "Saonel",
-          "Pirina"
-        ],
-        "effect": "Regenera un 10% adicional de stamina por turno gracias a la resonancia mística namekiana.",
-        "canonStatus": "source_backed"
-      },
-      {
-        "name": "Sindicato del Mal (DBM U3)",
-        "partnerTags": [
-          "Saiyan del Mal",
-          "Tirano"
-        ],
-        "effect": "Aumenta la ganancia de ki oscuro un 15% al combatir junto a aliados de ideología tiránica.",
-        "canonStatus": "apex_custom"
-      }
-    ],
-    "teamCombos": [
-      {
-        "partners": [
-          "Bardock-U3",
-          "Raichi-U3"
-        ],
-        "sequence": [
-          "Apertura: Inmovilización mental con telequinesis oscura.",
-          "Canalización: Apoyo de energía fantasma y bombardeo de ki.",
-          "Remate Definitivo: Colisión coordinada de Makankosappo Demoníaco y ráfagas masivas."
-        ],
-        "staminaCostPerParticipant": [
-          30,
-          35,
-          40
-        ],
-        "effect": "Daño masivo al rival con probabilidad de romper su guardia permanentemente.",
-        "partialFailureResult": "Si el paso 2 es interrumpido, el daño se reduce a la mitad y el usuario recibe contragolpe.",
-        "canonStatus": "apex_custom"
-      },
-      {
-        "name": "Trinidad Tiránica del Mal",
-        "partners": [
-          "Bardock-U3",
-          "Raichi-U3"
-        ],
-        "sequence": [
-          "Apertura: Bardock lanza descarga eléctrica Saiyan para inmovilizar y saturar el campo de ki rival.",
-          "Canalización: Raichi proyecta telequinesis oscura mientras Piccolo canaliza el Makankosappo Demoníaco cargado.",
-          "Remate Definitivo: Impacto simultáneo del Makankosappo y las ráfagas de Bardock y Raichi en el objetivo inmovilizado."
-        ],
-        "staminaCostPerParticipant": [
-          30,
-          35,
-          40
-        ],
-        "effect": "Daño masivo al rival con probabilidad de romper su guardia permanentemente y exponerlo a un remate limpio.",
-        "partialFailureResult": "Si el paso 2 es interrumpido, el daño se reduce a la mitad y el usuario recibe contragolpe del 20%.",
-        "canonStatus": "apex_custom"
-      }
-    ],
-    "transformativeMechanics": {
-      "canFuse": false,
-      "canAbsorb": false,
-      "fusionMethods": []
-    },
-    "franchise": "Dragon Ball",
-    "continuity": "fan_manga_dbm_u3",
-    "era_or_saga": "Torneo Interuniversal DBM — Universo 3",
-    "form_or_state": "Base",
-    "profile_type": "fan_manga",
-    "canon_status": "fan_manga_verified",
-    "variant_of": null,
-    "character_family": "Piccolo",
-    "source_confidence": "verified",
-    "legacy_status": "active",
-    "universe_number": "U3",
-    "members": null,
-    "parent_team_profile": null,
-    "team_affiliation": null,
-    "notes": "",
-    "legacy_data": "",
-    "powerScaling": {
-      "apexKi": 260,
-      "apexKiFormatted": "260 Unidades",
-      "scouterKi": 260,
-      "scouterKiFormatted": "260 Unidades",
-      "rank": "RANGO TERRESTRE",
-      "isOverload": false,
-      "speedFactor": 2.8,
-      "durabilityFactor": 1.25,
-      "haxBiqFactor": 1.25,
-      "featsStrengthFactor": 1.45,
-      "formulaExpression": "PL_Scouter = BaseEnergy(4-C) × Vel(2.8x) × Def(1.25x) × Hax/IQ(1.25x) × Hazañas/Fuerza(1.45x) × Forma(1x) = 260 Unidades | Oficial DB: 260 Unidades"
-    },
-    "numericStats": {
-      "apexKi": 273,
-      "burstKi": 410,
-      "durabilityKi": 273,
-      "initiativeModifier": 1,
-      "dodgeModifier": 1,
-      "hitChanceModifier": 1,
-      "comboWindowModifier": 1
-    },
-    "entityType": "fighter",
-    "sagaOrArc": "Torneo Interuniversal DBM — Universo 3",
-    "physicalTier": "4-C",
-    "haxTier": "4-C",
-    "sourceMedium": "fan_manga",
-    "haxResistances": {
-      "existenceErasure": 25,
-      "timeManipulation": 15,
-      "mindControl": 60,
-      "matterManipulation": 20,
-      "soulDamage": 35,
-      "powerNullification": 30
-    },
-    "combatAIPersonality": {
-      "aggression": 80,
-      "tacticalIQ": 85,
-      "mercyThreshold": 5,
-      "clutchFactor": 75,
-      "preferredEngagementRange": "mid_range"
-    },
-    "environmentalAffinity": {
-      "spaceSurvival": true,
-      "gravityResistance": "100G",
-      "favoredBiomes": [
-        "Planetas oscuros",
-        "Campos de batalla devastados",
-        "Reinos demoníacos"
-      ],
-      "disfavoredBiomes": [
-        "Planeta del Kaioshin",
-        "Reinos sagrados",
-        "Mundo de los espíritus puros"
-      ]
-    },
-    "provenFeats": {
-      "0": "Sobrevivió y prosperó como tirano en su línea temporal del Universo 3.",
-      "1": "Representa a su universo en DBM junto a Bardock, Raichi y Tapion.",
-      "2": "Poder recalibrado muy por encima de su aparición clásica."
-    },
-    "combatDialogue": {
-      "intro": [
-        "¡Comprobemos qué tan lejos llega tu poder!"
-      ],
-      "lowHealth": [
-        "Aún no he terminado... ¡Esto apenas comienza!"
-      ],
-      "victory": [
-        "Fue una gran pelea. Entrena duro para la próxima."
-      ],
-      "onBattleStart": "¡Comprobemos qué tan lejos llega tu poder!",
-      "onTransformation": "¡Mi juventud y poder absoluto han regresado!",
-      "onUltimateReady": "¡Contempla la cúspide de la desesperación demoníaca!",
-      "onLowHealth": "Aún no he terminado... ¡Esto apenas comienza!",
-      "onVictory": "Fue una gran pelea. Entrena duro para la próxima."
-    },
-    "staminaProfile": {
-      "maxStamina": 140,
-      "recoveryRatePerTurn": 8,
-      "exhaustionThreshold": 25
-    },
-    "signatureEquipment": [
-      {
-        "name": "Eggs Demoníacos de Reserva",
-        "durability": "Consumibles",
-        "effect": "Permite invocar súbditos demoníacos de bajo nivel para soporte táctico."
-      },
-      {
-        "name": "Báculo del Rey Demonio",
-        "durability": "Alta",
-        "effect": "Canalizador opcional para proyectar Makankosappo a mayor distancia; amplifica daño +10%."
-      }
-    ],
-    "knowledgeHorizon": {
-      "canonicalEra": "Torneo Interuniversal DBM — Universo 3 (era multiversal ficticia post-años 800)",
-      "timelineRestrictions": "Rey Demonio Piccolo en DBM U3 nunca enfrentó al Goku joven, por lo que ignora por completo las transformaciones Saiyan posteriores (SSJ1/2/3, God, Blue, Ultra Instinto), las técnicas de Freezer y Beerus, y la existencia de Beerus, Whis o los Saiyajin del futuro. Solo conoce su arsenal demoníaco clásico refinado por siglos.",
-      "forbiddenConcepts": [
-        "Super Saiyajin",
-        "Ultra Instinto",
-        "Super Saiyajin Blue",
-        "Ki Divino",
-        "Hakai",
-        "Multiverso de las 12",
-        "Gran Sacerdote",
-        "Goku Black",
-        "Jiren",
-        "Arale"
-      ],
-      "crossVerseAwareness": "none"
-    },
-    "burstKi": 410,
-    "apexKiRange": [
-      221,
-      325
-    ],
-    "apexKi": 273,
-    "durabilityKi": 273,
-    "sourceType": "derived",
-    "confidence": "medium",
-    "scaling": {
-      "baseTier": "4-C",
-      "apexMethod": "vs_battles_tier_anchor_with_feat_consistency",
-      "evidence": [
-        "Clasificación establecida en base a Attack Potency en 4-C.",
-        "Consistencia frente a personajes de nivel destructivo equiparable."
-      ],
-      "uncertaintyReasons": [],
-      "balanceNotes": "Equivalencia APEX basada en Attack Potency de 4-C y consistencia física sostenida."
-    },
-    "haxProfile": {
-      "effects": [],
-      "counterplay": [
-        "Arrogancia Milenaria",
-        "Dependencia de Ki Demoniaco",
-        "Cuerpo Físico Limitado"
-      ],
-      "doesNotIncrease": [
-        "apexKi",
-        "durabilityKi",
-        "liftingStrength"
-      ]
-    },
-    "changeLog": [
-      {
-        "patchId": "patch-0065",
-        "timestamp": "2026-09-04T00:58:33.439Z",
-        "field": "forms[0].tier",
-        "oldValue": "4-C",
-        "newValue": "7-B",
-        "rationale": "Corrección de tier fuera de escala: Piccolo Daimaoh anciano cuenta con 273 unidades de Ki, idéntico a su ficha de DB Clásico (Tier 7-B)."
-      },
-      {
-        "patchId": "patch-0066",
-        "timestamp": "2026-09-04T00:58:33.439Z",
-        "field": "forms[1].tier",
-        "oldValue": "4-C",
-        "newValue": "7-B",
-        "rationale": "Corrección de tier fuera de escala: Piccolo Daimaoh rejuvenecido posee 600.6 unidades de Ki, correspondiente a Tier 7-B en la escala de DB Clásico."
-      },
-      {
-        "patchId": "patch-0067",
-        "timestamp": "2026-09-04T00:58:33.439Z",
-        "field": "baseTier",
-        "oldValue": "4-C",
-        "newValue": "7-B",
-        "rationale": "Alineación del tier base raíz del personaje con sus formas canónicas corregidas a 7-B."
+          "Namekiano",
+          "Guerrero Z"
+        ]
       }
     ]
   },
@@ -128443,7 +128658,7 @@ export const INITIAL_CHARACTERS = [
     "legacy_status": "active",
     "universe_number": "U6",
     "members": null,
-    "parent_team_profile": "kat-syd-u6-dbm",
+    "parent_team_profile": null,
     "team_affiliation": "Clan de Bojack (Universo 6)",
     "notes": "Datos individuales limitados en la obra salvo su técnica insignia de intercambio corporal documentada en DBM.",
     "arsenal": {
@@ -192148,72 +192363,54 @@ export const INITIAL_CHARACTERS = [
     "stamina": "Infinita (Puede cambiar de cuerpo cuantas veces quiera).",
     "battleIQ": "Líder Político y Táctico Supremo. Manipula el destino de América, engaña con falsas negociaciones y usa las leyes del multiverso como armas ofensivas.",
     "haxTags": [
-      "Viaje y Transferencia Multiversal (D4C)",
-      "Desintegración por Paradoja Dimensional (Menger Sponge)",
-      "Inmortalidad por Sustitución de Cuerpos",
-      "Redirección de Toda la Mala Suerte (Love Train)"
+      "dimensional_travel",
+      "parallel_variant_collision",
+      "consciousness_transfer",
+      "misfortune_redirection",
+      "conditional_defense",
+      "stand_user"
     ],
     "arsenal": {
       "basicAttacks": [
         {
-          "name": "Disparos con Revólver Colt",
-          "cost": 4,
-          "desc": "Ráfaga de disparos de precisión a media distancia usando su arma reglamentaria de época."
-        },
-        {
-          "name": "Golpes de D4C",
-          "cost": 6,
-          "desc": "Golpes marciales físicos ejecutados por su Stand Dirty Deeds Done Dirt Cheap."
-        },
-        {
-          "name": "Colt Revolver Shots",
+          "name": "Dirty Deeds Done Dirt Cheap",
           "cost": 5,
-          "desc": "Disparos a quemarropa o distancia media con su revólver reglamentario."
+          "damageType": "Físico",
+          "desc": "Asalto cuerpo a cuerpo directo de alta potencia ejecutado por el Stand D4C."
         },
         {
-          "name": "D4C Barrage / Chop",
-          "cost": 7,
-          "desc": "Golpes físicos y tajos precisos ejecutados por Dirty Deeds Done Dirt Cheap."
+          "name": "Disparo Táctico Presidencial",
+          "cost": 3,
+          "damageType": "Perforante",
+          "desc": "Disparo con revólver convencional coordinado con saltos de ángulo dimensional."
         }
       ],
       "superAttacks": [
         {
-          "name": "Colisión Dimensional (Menger Sponge)",
-          "desc": "Trae a la contraparte dimensional del oponente. Si los dos seres idénticos se acercan a pocos centímetros, las leyes del multiverso los atraen y se autodestruyen en cubos de polvo molecular instantáneamente.",
-          "cost": "Instakill Absoluto si no se esquiva."
+          "name": "Dimensional Traversal",
+          "cost": 15,
+          "damageType": "Dimensional",
+          "desc": "Desplazamiento a dimensiones paralelas al quedar comprimido entre dos objetos o superficies."
         },
         {
-          "name": "Sustitución de Emergencia (D4C Transfer)",
-          "desc": "Al recibir daño letal, se atrapa entre dos superficies y transfiere su alma a un Valentine sano de otra dimensión, volviendo al 100% de HP.",
-          "cost": "Hax de Resurrección Continua."
+          "name": "Parallel Variant Collision",
+          "cost": 25,
+          "damageType": "Paradoja Dimensional",
+          "desc": "Arrastra a una variante paralela del oponente; al encontrarse, ambas son atraídas y desintegradas por la ley de paradoja de D4C."
+        },
+        {
+          "name": "Consciousness Transfer",
+          "cost": 20,
+          "damageType": "Transferencia",
+          "desc": "Al sufrir daño mortal, transfiere a D4C y sus recuerdos a un Valentine de otra dimensión para continuar la batalla intacto."
         }
       ],
       "ultimateAttacks": [
         {
-          "name": "D4C: Love Train (La Brecha de Luz Santa)",
-          "desc": "Se oculta dentro de una brecha dimensional generada por el Cadáver Santo. Cualquier ataque, herida, mala suerte o daño dirigido a Valentine es automáticamente redirigido y enviado a cualquier otro lugar aleatorio de la Tierra en forma de calamidad o muerte para un inocente.",
-          "cost": "Invulnerabilidad Absoluta en el Universo (Solo rota por el Giro Infinito/Super Spin de Tusk Act 4 o Ball Breaker)."
-        }
-      ],
-      "passives": [
-        {
-          "name": "Corazón y Acciones sin Vacilación",
-          "desc": "Inmune a la culpa o manipulación psicológica; cree firmemente que sus actos son por el bien supremo de su nación ('Mis acciones no tienen ni un ápice de malicia').",
-          "cost": "Defensa Mental Absoluta."
-        }
-      ],
-      "actives": [],
-      "specialMechanics": [
-        {
-          "name": "Dirty Deeds Done Dirt Cheap (D4C)",
-          "desc": "Habilidad para viajar entre universos paralelos y manipular objetos o personas mediante superposición dimensional."
-        }
-      ],
-      "weaknesses": [
-        {
-          "name": "Giro Infinito (Super Spin)",
-          "counterTag": "Infinite_Spin",
-          "desc": "Energía rotacional infinita que atraviesa dimensiones y anula la transferencia de D4C."
+          "name": "Love Train Conditional Defense",
+          "cost": 40,
+          "damageType": "Redirección de Infortunio",
+          "desc": "Barrera dimensional que redirige todo infortunio y daño recibido lejos de Valentine hacia otros puntos del planeta."
         }
       ]
     },
@@ -192240,7 +192437,13 @@ export const INITIAL_CHARACTERS = [
       "Activó Love Train, convirtiéndose en el ser más invulnerable de la historia de JoJo hasta la llegada del Giro Infinito."
     ],
     "psychology": "Patriota fanático y maquiavélico. No busca poder para sí mismo, sino para que los Estados Unidos tomen la 'Primera Servilleta' del mundo y prosperen a costa de la desgracia del resto del planeta. Es elegante, elocuente y no vacila en mentir o matar si sirve a su visión patriótica.",
-    "weaknesses": "El Giro Infinito (Super Spin / Gravedad Trascendente). Técnicas que atraviesen dimensiones mediante energía infinita (Tusk Act 4) persiguen su alma a través de los universos e impiden que D4C transfiera su cuerpo. Para viajar entre dimensiones, requiere estrictamente ser presionado entre dos objetos (Si lo suspenden en el aire, no puede cambiar de cuerpo).",
+    "weaknesses": [
+      "Love Train requiere condición/soporte narrativo externo (convergencia del cadáver sagrado).",
+      "Infinite Spin o equivalentes aprobados pueden contrarrestar y penetrar la barrera dimensional.",
+      "Vulnerabilidad previa a activación y dependencia de superficies para compresión.",
+      "Restricciones de superficies y posicionamiento físico.",
+      "No convertir hax en multiplicador de Ki."
+    ],
     "synergies": [
       {
         "partnerTags": [
@@ -192404,6 +192607,27 @@ export const INITIAL_CHARACTERS = [
         "durabilityKi",
         "liftingStrength"
       ]
+    },
+    "passives": [
+      {
+        "name": "dimensional_escape_route",
+        "desc": "Ruta de escape dimensional al quedar atrapado entre dos superficies cualesquiera."
+      },
+      {
+        "name": "cross_dimension_replacement",
+        "desc": "Sustitución transdimensional por versiones paralelas preservando la conciencia y el Stand."
+      },
+      {
+        "name": "misfortune_redirection_conditional",
+        "desc": "Redirección condicional de infortunio bajo la presencia de la brecha dimensional de Love Train."
+      }
+    ],
+    "narrativeCombatProfile": {
+      "haxModelStatus": "VALENTINE_HAX_MODEL_PENDING_SIMULATION_RULES",
+      "d4cRules": "D4C cambia de universo/posición bajo condiciones físicas de compresión.",
+      "variantCollisionRule": "Colisión de variantes es una maniobra táctica y no daño infinito automático.",
+      "loveTrainRule": "Love Train desvía infortunio/daño; no aumenta fuerza física ni Ki.",
+      "simulationRulesNotice": "Requiere reglas de escenario y activación previa para su despliegue efectivo."
     }
   },
   {
@@ -192828,76 +193052,46 @@ export const INITIAL_CHARACTERS = [
     "stamina": "Infinita (Impulsado por la Flecha Stand y la consciencia de GER).",
     "battleIQ": "Hijo de Dio y Jonathan. Es analítico, resolutivo, no tiene misericordia contra villanos. Descifra Hax enemigos (White Album, Baby Face) sacrificando su propia sangre/partes. (Aunque con GER no necesita pelear ni pensar).",
     "haxTags": [
-      "Reversión de Causalidad (Return to Zero)",
-      "Bucle de Muerte Infinito (Instakill Eterno)",
-      "Creación y Reflejo de Vida (Dador de Vida)",
-      "Bucle de Muerte Infinito",
-      "Creación y Reflejo de Vida"
+      "life_manipulation",
+      "biological_manipulation",
+      "soul_interaction_contextual",
+      "stand_user"
     ],
     "arsenal": {
       "basicAttacks": [
         {
-          "name": "MUDA MUDA Ráfaga",
-          "cost": 3,
-          "desc": "Golpes físicos consecutivos a velocidad sobrehumana impartidos por GER."
-        },
-        {
-          "name": "Proyectil Vital",
-          "cost": 5,
-          "desc": "Lanzamiento de objetos transmutados en fauna que atacan al rival."
-        },
-        {
-          "name": "Ráfaga MUDA",
+          "name": "Combate de Stand (Gold Experience)",
           "cost": 4,
-          "desc": "Golpes físicos hiperveloces ejecutados por Gold Experience Requiem con precisión quirúrgica."
+          "damageType": "Contundente",
+          "desc": "Golpes físicos rápidos cuerpo a cuerpo manifestados por el Stand Gold Experience dentro de su rango efectivo."
         },
         {
-          "name": "Transmutación de Roca a Vida",
+          "name": "Proyección Vital Directa",
           "cost": 5,
-          "desc": "Transforma escombros en animales menores para interceptar ataques o distraer al rival."
+          "damageType": "Biológico",
+          "desc": "Inyección de energía vital en objetos inanimados para transformarlos instantáneamente en plantas o pequeños animales."
         }
       ],
       "superAttacks": [
         {
-          "name": "Dador de Vida (Reflejo Espiritual)",
-          "desc": "Toca una piedra y crea una rana o planta. Si el oponente ataca al animal creado, el daño contundente (sea nivel Muro o Galáctico) se refleja instantáneamente devolviéndose al oponente en un 100%.",
-          "cost": "Utilidad de Trampa/Defensa Pasiva y Curación Menor."
+          "name": "Creación de Vida y Manipulación de Organismos",
+          "cost": 15,
+          "damageType": "Transmutación",
+          "desc": "Transforma materia inerte en organismos vivos (árboles, ranas, serpientes) controlados o programados con funciones específicas."
         },
         {
-          "name": "Láser de Vida Puro",
-          "desc": "Dispara desde sus dedos una roca transmutada a velocidad láser, perforando el cuerpo del oponente y devolviéndolo al estado físico normal de carne muerta.",
-          "cost": "Proyectil Rápido CQC."
+          "name": "Curación y Reemplazo de Tejidos",
+          "cost": 20,
+          "damageType": "Curación",
+          "desc": "Crea partes de órganos o carne viva a partir de materia inorgánica para cerrar heridas mortales y restaurar el cuerpo propio o de aliados."
         }
       ],
       "ultimateAttacks": [
         {
-          "name": "El Retorno a Cero (Return to Zero)",
-          "desc": "Auto-Defensa/Ataque. Cancela el Ultimate, el Time-Skip, Borrado de Realidad o Universo del oponente y lo deshace. Seguido de un golpe inesquivable. El enemigo muere y despierta muriendo otra vez para siempre (Game Over Bucle Cósmico).",
-          "cost": "Insta-Win o Stale Mate Absoluto frente a cualquier personaje no Inconmensurable."
-        }
-      ],
-      "passives": [
-        {
-          "name": "GER Conciencia Autónoma",
-          "desc": "El Stand actúa por su cuenta para proteger a Giorno, incluso si el tiempo está detenido o borrado y el cerebro de Giorno no sabe qué está pasando, GER siempre lo defenderá pasivamente.",
-          "cost": "Inmunidad Total de Gameplay."
-        }
-      ],
-      "actives": [],
-      "specialMechanics": [
-        {
-          "name": "Inmunidad Causal",
-          "desc": "Ningún parámetro físico o temporal ordinario puede alterar el estado de Giorno."
-        }
-      ],
-      "weaknesses": [
-        {
-          "name": "Inmunidades Abstractas Mayores",
-          "desc": "Vulnerable únicamente ante entidades con manipulación de la realidad de escala multiversal superior o superior a la flecha Stand.",
-          "counterTags": [
-            "Outerversal Hax",
-            "Reality Overwrite"
-          ]
+          "name": "Sobrecarga Sensorial de Vida",
+          "cost": 35,
+          "damageType": "Psíquico / Causal Menor",
+          "desc": "Golpe directo de Gold Experience que desborda la conciencia del objetivo, acelerando sus percepciones mientras su cuerpo físico reacciona con lentitud extrema."
         }
       ]
     },
@@ -192924,7 +193118,11 @@ export const INITIAL_CHARACTERS = [
       "Obligó al líder de Passione a vivir trillones de muertes consecutivas sin descanso por la eternidad."
     ],
     "psychology": "Tranquilo, cortés, elegante y de voluntad resuelta inquebrantable. A diferencia de otros protagonistas de Shonen o JoJo, Giorno NO vacila en asesinar a sangre fría a quienes considere escoria imperdonable (Polpo, Cioccolata). Tiene el idealismo de la justicia de Jonathan Joestar mezclado con el pragmatismo despiadado y la ambición sádica de Dio Brando.",
-    "weaknesses": "Inmunidades Abstractas Mayores. El único Hax capaz de contrarrestar a GER es el The World Over Heaven (Reality Overwrite de Dios del Lore expandido de Jojo) o Hax de Nivel 1 (Tier Dios Supremo Marvel/DC tipo The Presence/One Above All) que gobiernen la causalidad a nivel Outerversal absoluto. Contra casi todos los combatientes convencionales (Goku, Saitama, Superman Físico), es un muro irrompible/invencible que genera Empate Técnico en APEX.",
+    "weaknesses": [
+      "Dependencia estricta del alcance físico del Stand (rango E en distancia, ~2 metros para máxima potencia).",
+      "Usuario físico vulnerable: Giorno es un ser humano biológico ordinario si es sorprendido fuera del alcance de su Stand.",
+      "Requiere condiciones ambientales específicas e interpretación de habilidad para que las creaciones orgánicas operen efectivamente."
+    ],
     "synergies": [
       {
         "partnerTags": [
@@ -193106,6 +193304,25 @@ export const INITIAL_CHARACTERS = [
         "durabilityKi",
         "liftingStrength"
       ]
+    },
+    "passives": [
+      {
+        "name": "bio_life_creation",
+        "desc": "Capacidad de transmutar materia inerte en organismos vivos capaces de responder a estímulos o rastrear objetivos."
+      },
+      {
+        "name": "damage_reflection_contextual",
+        "desc": "Cualquier ataque dirigido directamente a las creaciones de vida de Gold Experience se refleja sobre el agresor en circunstancias contextuales de contacto."
+      },
+      {
+        "name": "sensory_overload_contextual",
+        "desc": "El contacto directo continuo con seres vivos produce una sobrecarga de conciencia que desincroniza mente y cuerpo."
+      }
+    ],
+    "narrativeCombatProfile": {
+      "standDefinition": "Gold Experience base separado de GER. Se especializa en creación de vida, transmutación biológica y combate táctico de corto alcance sin habilidades de reversión causal.",
+      "same_character_variant_relation": "giorno-giovanna-ger-jojo-gg001",
+      "consolidationStatus": "GER_MODEL_PENDING_CONSOLIDATION"
     }
   },
   {
@@ -193129,95 +193346,42 @@ export const INITIAL_CHARACTERS = [
     "stamina": "Infinita (El Stand tiene voluntad propia autónoma).",
     "battleIQ": "Heredero de la brillantez estratégica de DIO y Jonathan Joestar; GER además posee consciencia cósmica independiente.",
     "haxTags": [
-      "Retorno a Cero (Return to Zero - Anulación Causal Absoluta)",
-      "Bucle de Muerte Infinita",
-      "Creación de Vida Orgánica y Reflejo de Daño"
+      "causality_manipulation",
+      "action_negation",
+      "outcome_reset",
+      "infinite_death_loop",
+      "stand_user",
+      "conditional_hax"
     ],
     "arsenal": {
       "basicAttacks": [
         {
-          "name": "Muda Beatdown",
-          "desc": "Ráfagas continuas de puñetazos físicos marciales directos del Stand.",
+          "name": "Gold Experience Requiem Barrage",
           "cost": 5,
-          "damageType": "contundente"
+          "damageType": "Contundente / Causal",
+          "desc": "Ráfaga de golpes a velocidad desmesurada ejecutada por el Stand autónomo evolucionado."
         },
         {
-          "name": "Muda Barrage",
-          "cost": 5,
-          "type": "contundente",
-          "desc": "Ráfaga de golpes relámpago que distorsionan la materia."
+          "name": "Flick de Proyectil de Alta Presión",
+          "cost": 8,
+          "damageType": "Perforante",
+          "desc": "Dispara un fragmento de escombro con energía concentrada suficiente para atravesar estructuras sólidas."
         }
       ],
       "superAttacks": [
         {
-          "name": "Disparo de Piedra Viva",
-          "desc": "Arroja un escombro imbuido de vida que atraviesa la mano del oponente y se convierte en un enjambre de escorpiones o avispas.",
-          "cost": "0% Stand"
-        },
-        {
-          "name": "Reflejo de Daño",
-          "desc": "Si un ataque impacta a Giorno, GER invierte la causalidad haciendo que el atacante reciba su propio daño.",
-          "cost": "20 Stamina (Automático si Stand está activo)"
+          "name": "Return to Zero",
+          "cost": 25,
+          "damageType": "Anulación Causal",
+          "desc": "Reversión de cualquier acción, ataque, fuerza o voluntad enemiga al punto cero, impidiendo que el efecto se consolide en la realidad."
         }
       ],
       "ultimateAttacks": [
         {
-          "name": "Retorno a Cero (Return to Zero)",
-          "desc": "Anula por completo la causa y el efecto de cualquier ataque, habilidad divina o alteración del tiempo dirigida contra Giorno, devolviendo el estado del universo a 'Cero'.",
-          "cost": "Defensa Causal Automática"
-        },
-        {
-          "name": "Bucle de Muerte Infinita (Infinite Death Loop)",
-          "desc": "Condena al oponente derrotado a morir eternamente en infinitas realidades y escenarios paralelos sin llegar jamás a la verdad de la muerte real (Como hizo con Diavolo).",
-          "cost": "Condena Eterna"
-        }
-      ],
-      "passives": [
-        {
-          "name": "Autonomía del Réquiem",
-          "desc": "GER actúa de forma automática e independiente de la consciencia de Giorno, protegiéndolo incluso si Giorno no es consciente del ataque enemigo.",
-          "cost": "Pasivo Defensivo Absoluto"
-        },
-        {
-          "name": "Inmunidad a Paradojas Temporales",
-          "desc": "Retorno a Cero anula los resultados de borrar tiempo (como King Crimson) o saltar en el tiempo (The World).",
-          "cost": "Pasivo Causal"
-        }
-      ],
-      "specialMechanics": [
-        {
-          "name": "Absorción Causal",
-          "desc": "Ignora por completo las leyes físicas estándar al operar en un plano supratemporal."
-        },
-        {
-          "name": "Anulación de Causalidad",
-          "desc": "El medidor de daño del usuario se congela permanentemente de manera pasiva."
-        }
-      ],
-      "weaknesses": [
-        {
-          "name": "Potencia Física Base Limitada",
-          "desc": "Aparte del hax absoluto de la flecha, su fuerza física bruta no supera la de un Stand promedio de melée.",
-          "counterTags": [
-            "fuerza_bruta_inmunizada",
-            "tanque_fisico"
-          ]
-        },
-        {
-          "name": "Poder Físico Estándar",
-          "desc": "Sin su hax Réquiem, su fuerza bruta es equivalente a la de un Stand de nivel medio.",
-          "counterTags": [
-            "Fuerza Bruta",
-            "Ataque Físico Masivo"
-          ]
-        },
-        {
-          "name": "Vulnerabilidad a Manipulación de Realidad Superior",
-          "desc": "Entidades con existencia axiomática absoluta (Dios, Angels con HAAL) operan fuera de su rango de anulación causal.",
-          "counterTags": [
-            "Axiomatic Existence",
-            "Omnipotencia Verdadera"
-          ]
+          "name": "Death Loop",
+          "cost": 50,
+          "damageType": "Causal / Existencial",
+          "desc": "Bucle de muerte infinita: tras una resolución letal validada, condena al oponente a un ciclo continuo de muertes sucesivas sin alcanzar jamás su fin definitivo."
         }
       ]
     },
@@ -193261,7 +193425,11 @@ export const INITIAL_CHARACTERS = [
       "Exhibió dominio de su arsenal y resistencia frente a técnicas enemigas."
     ],
     "psychology": "Un joven de convicción dorada inquebrantable; despiadado con los criminales que traicionan su confianza pero bondadoso con sus compañeros.",
-    "weaknesses": "Su poder físico bruto destructivo (sin contar el hax de Réquiem) es comparable al de un Stand de combate estándar.",
+    "weaknesses": [
+      "No traducir hax a Ki: Return to Zero no incrementa estadísticas de Ki numérico ni durabilidad física.",
+      "Requiere condición/regla del escenario para operar.",
+      "Interacciones con acausalidad, inmunidad causal, manipulación conceptual superior o reglas narrativas deben resolverse por el motor de simulación."
+    ],
     "synergies": [
       {
         "partnerTags": [
@@ -193484,7 +193652,30 @@ export const INITIAL_CHARACTERS = [
         "timestamp": "2026-09-04T00:35:26.236Z",
         "rationale": "Normalización de códigos de tier estandarizados eliminando sufijo informal Físico."
       }
-    ]
+    ],
+    "passives": [
+      {
+        "name": "causal_negation_reactive",
+        "desc": "Anulación causal reactiva que intercepta ofensivas revirtiendo causa y efecto a su estado original de cero."
+      },
+      {
+        "name": "outcome_reset",
+        "desc": "Reinicio automático del resultado ante alteraciones perjudiciales impuestas sobre Giorno o GER."
+      },
+      {
+        "name": "death_loop_after_validated_lethal_resolution",
+        "desc": "Death Loop solo se evalúa y aplica tras una resolución letal válida y no opera como daño automático pasivo."
+      }
+    ],
+    "narrativeCombatProfile": {
+      "standDefinition": "Gold Experience Requiem opera como un Stand de voluntad autónoma con manipulación causal absoluta.",
+      "haxRules": {
+        "returnToZero": "Return to Zero no es multiplicador de Ki ni da daño físico automático; se resuelve como regla reactiva condicional.",
+        "deathLoop": "Death Loop solo se evalúa tras una resolución letal válida."
+      },
+      "same_character_variant_relation": "giorno-giovanna-jojo-va",
+      "consolidationStatus": "GER_MODEL_PENDING_CONSOLIDATION"
+    }
   },
   {
     "id": "guido-mista-jojo-va",
@@ -282337,3 +282528,114 @@ export const INITIAL_CHARACTERS = [
     }
   }
 ];
+
+// Map raw tactical profiles by id for fast O(1) lookup
+const tacticalMap = new Map();
+for (const profile of RAW_TACTICAL_PROFILES) {
+  if (profile && profile.id) {
+    tacticalMap.set(profile.id, profile);
+  }
+}
+
+// Deprecated record ID set from V26
+export const DEPRECATED_RECORD_IDS = new Set(
+  (v26Data.deprecatedRecords || []).map(r => r.recordId || r.id)
+);
+
+// Track any active character that lacks a tactical profile
+export const MISSING_TACTICAL_PROFILE_IDS = [];
+
+const v26CharList = Array.isArray(v26Data.characters)
+  ? v26Data.characters
+  : Object.values(v26Data.characters);
+
+// Construct canonical INITIAL_CHARACTERS strictly from v26Data.characters (756 active)
+export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
+  const tactical = tacticalMap.get(v26Char.id);
+
+  if (!tactical) {
+    MISSING_TACTICAL_PROFILE_IDS.push(v26Char.id);
+  }
+
+  // Safe fallback defaults for tactical data if missing
+  const defaultTactical = {
+    alias: v26Char.name,
+    version: 'Base Canonical',
+    tier: v26Char.baseTier || '10-B',
+    ap: `Nivel ${v26Char.baseTier || '10-B'}.`,
+    range: 'Cuerpo a cuerpo estándar.',
+    speed: { combat: 'Desconocida', reaction: 'Desconocida', travel: 'Desconocida', attack: 'Desconocida' },
+    strength: 'Desconocida',
+    durability: `Nivel ${v26Char.baseTier || '10-B'}.`,
+    stamina: 'Media',
+    battleIQ: 'Estándar',
+    haxTags: [],
+    arsenal: { basicAttacks: [], superAttacks: [], ultimateAttacks: [] },
+    feats: [],
+    psychology: 'Estándar',
+    weaknesses: [],
+    synergies: [],
+    teamCombos: [],
+    combatStatuses: [],
+    arenaAffinities: [],
+    narrativeCombatProfile: {}
+  };
+
+  const baseProfile = tactical ? { ...tactical } : { ...defaultTactical };
+
+  const mergedForms = (v26Char.forms || []).map((v26Form, formIndex) => {
+    const tacticalForm = (tactical?.forms || []).find(f => f && f.id === v26Form.id) || (tactical?.forms || [])[formIndex];
+    const merged = {
+      ...(tacticalForm || {}),
+      ...v26Form,
+      tier: v26Form.tier,
+      multiplier: v26Form.multiplier,
+      kiNumeric: v26Form.kiNumeric,
+      kiFormatted: v26Form.kiFormatted,
+      apexKiMultiplier: v26Form.multiplier,
+      apexKi: v26Form.kiNumeric,
+      stats: v26Form.stats || tacticalForm?.stats || `Forma oficial APEX V26 (${v26Form.name}). Tier ${v26Form.tier}, Multiplicador ${v26Form.multiplier}x.`
+    };
+    if (v26Form.tier) {
+      merged.tierExact = v26Form.tier;
+    }
+    if (v26Char.lorePriorForm) {
+      merged.lorePriorForm = v26Char.lorePriorForm;
+    }
+    return merged;
+  });
+
+  return {
+    ...baseProfile,
+    id: v26Char.id,
+    name: v26Char.name,
+    franchise: v26Char.franchise,
+    universe: v26Char.universe,
+    saga: v26Char.saga,
+    tier: v26Char.baseTier,
+    baseTier: v26Char.baseTier,
+    baseKiFormatted: v26Char.baseKiFormatted,
+    baseKiNumeric: v26Char.baseKiNumeric,
+    powerSchema: v26Char.powerSchema,
+    powerCorrectionVersion: v26Char.powerCorrectionVersion || 'V26',
+    lorePriorForm: v26Char.lorePriorForm || null,
+    forms: mergedForms
+  };
+});
+
+// Development / Runtime Assertions
+if (INITIAL_CHARACTERS.length !== 756) {
+  throw new Error(`[APEX FATAL] INITIAL_CHARACTERS must have exactly 756 active characters, found ${INITIAL_CHARACTERS.length}`);
+}
+
+const seenIds = new Set();
+for (const char of INITIAL_CHARACTERS) {
+  if (seenIds.has(char.id)) {
+    throw new Error(`[APEX FATAL] Duplicate character ID detected in INITIAL_CHARACTERS: "${char.id}"`);
+  }
+  seenIds.add(char.id);
+
+  if (DEPRECATED_RECORD_IDS.has(char.id)) {
+    throw new Error(`[APEX FATAL] Deprecated record ID found in active INITIAL_CHARACTERS: "${char.id}"`);
+  }
+}

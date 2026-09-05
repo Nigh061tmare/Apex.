@@ -1,0 +1,249 @@
+{
+  "meta": {
+    "title": "APEX V25 — Propuesta de Actualización de Infraestructura de Auditoría y Parcheo Seguro",
+    "status": "AUDIT_ONLY_PENDING_USER_APPROVAL",
+    "baselineRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V25.json",
+    "baselineSha256": "ee4d7554cb7a832d8dda984c8a9bf57e2245dd1831ee9f33edb99d03ace44729",
+    "historicalBaselines": {
+      "v22Sha256": "68dd6750f4acc7bce09e16f66f48f8072b455268df1d74aaf95f2a89c716074f",
+      "v23Sha256": "a6dfff76c7001594d1428a70497154ffcdac7d679ad5c616b70ff027892e5578",
+      "v24Sha256": "d1e6aeb35f107f97eb00f196fc4b934cd5e94d9c9f583264f34bd0e83db8fa61"
+    },
+    "generatedAt": "2026-09-04T10:10:25.714Z",
+    "totalFilesAudited": 13
+  },
+  "architecturalPillars": {
+    "pillar1_baseline": {
+      "name": "1. Baseline Único V25 y Fallback Estricto",
+      "rules": [
+        "V25 (ROSTER_NIVELES_PODER_CORREGIDO_V25.json) es el baseline oficial y obligatorio para toda auditoría y simulación.",
+        "V22, V23 y V24 quedan sellados como registros históricos inmutables de solo lectura.",
+        "Fallback explícito: si ROSTER_NIVELES_PODER_CORREGIDO_V25.json no está disponible o su SHA-256 está corrupto, la auditoría DEBE detenerse inmediatamente con error bloqueante.",
+        "PROHIBICIÓN CONSTITUCIONAL: Nunca degradar o caer silenciosamente a V22 ni a characters.js cuando falte V25."
+      ]
+    },
+    "pillar2_seguridad": {
+      "name": "2. Seguridad y Prohibición de Auto-Mutaciones",
+      "rules": [
+        "Toda auditoría nocturna es estrictamente READ-ONLY.",
+        "Prohibido el auto-fix de identity, recordId, forms, Ki, tier, multiplicadores, saga, universo o canonStatus.",
+        "Cualquier sugerencia detectada por IA o scripts debe escribirse en un archivo de propuesta en src/data/enrichmentDrafts/ con status PROPOSAL_ONLY_NOT_APPLIED.",
+        "Cero comandos de commit, push o deploy dentro de scripts de auditoría o enriquecimiento."
+      ]
+    },
+    "pillar3_versionado": {
+      "name": "3. Protocolo Criptográfico de Versionado y Parches",
+      "rules": [
+        "Todo archivo de parche debe declarar explícitamente: sourceRoster, sourceRosterSha256, targetResolutionVersion, appliedPatchIds y skippedPatchIds.",
+        "Cada entrada debe incluir: targetRecordId, currentValueSnapshot completo y idempotencyKey única.",
+        "Rechazo obligatorio: si el currentValueSnapshot o el sourceRosterSha256 no coinciden exactamente con el baseline en el momento de aplicar, el parche se aborta sin escribir."
+      ]
+    },
+    "pillar4_deprecatedRecords": {
+      "name": "4. Auditoría y Protección de Registros Deprecados",
+      "rules": [
+        "Los validadores deben cargar simultáneamente characters y deprecatedRecords.",
+        "Verificación de conjunto disjunto: ningún recordId presente en deprecatedRecords puede reaparecer en characters.",
+        "Conservación del censo total: characters.length + deprecatedRecords.length === 769 (invariante absoluto).",
+        "Validación de campos obligatorios en cada deprecatedRecord: recordId, snapshot completo, reason, canonicalRecordId/canonicalRecordIds, sourcePatchId y timestamp."
+      ]
+    },
+    "pillar5_pendingGates": {
+      "name": "5. Backlog Formal de Gates Editoriales Pendientes",
+      "rules": [
+        "Los siguientes 6 gates editoriales se registran como no resueltos y protegidos contra auto-cierre:",
+        "  • V25-PENDING-TAMAGAMI-SOURCE: Bloqueado por falta de fuente (634.2M vs 1.11B en Daima).",
+        "  • V25-PENDING-GIORNO-MODEL: Bloqueado por decisión de modelo (Return to Zero en haxProfile sin mult de Ki).",
+        "  • V25-PENDING-VALENTINE-MODEL: Bloqueado por decisión de modelo (D4C y Love Train en haxProfile sin mult de Ki).",
+        "  • V25-PENDING-RAICHI-MODEL: Bloqueado por decisión de modelo (Broly Fantasma como invocación autónoma, no transformación biológica).",
+        "  • V23-PATCH-0011: Bloqueado por migrationGate (SSJ4 Primal Daima Mini retenido in-situ).",
+        "  • V23-PATCH-0013: Bloqueado por migrationGate (SSJ4 Primal Daima Adulto retenido in-situ).",
+        "La auditoría debe reportar estos gates en su resumen pero jamás intentar resolverlos automáticamente."
+      ]
+    },
+    "pillar6_reportes": {
+      "name": "6. Esquema Estandarizado de Reporte de Auditoría",
+      "outputSchema": [
+        "baselineVersion: string (ej: 'V25')",
+        "baselineSha256: string (checksum SHA-256 verificado)",
+        "activeCount: number (debe ser 756)",
+        "deprecatedCount: number (debe ser 13)",
+        "historicalTotal: number (debe ser 769)",
+        "duplicateIds: array (debe ser [])",
+        "invalidForms: array (debe ser [])",
+        "pendingGates: array (los 6 gates activos)",
+        "proposedPatches: array (propuestas generadas en draft)",
+        "blockedAutoFixes: array (mutaciones no permitidas interceptadas)",
+        "errors: array",
+        "warnings: array"
+      ]
+    },
+    "pillar7_enrichment": {
+      "name": "7. Lista Blanca Estricta de Enriquecimiento Táctico",
+      "allowedFields": [
+        "arsenal",
+        "passives",
+        "haxTags",
+        "weaknesses",
+        "artifacts",
+        "synergies",
+        "teamCombos",
+        "combatStatuses",
+        "arenaAffinities",
+        "narrativeCombatProfile"
+      ],
+      "blockedFields": [
+        "id",
+        "franchise",
+        "universe",
+        "saga",
+        "baseTier",
+        "baseKiNumeric",
+        "forms",
+        "tiers",
+        "kiNumeric (en forms)",
+        "multiplier",
+        "changeLog"
+      ],
+      "enforcementRule": "Si un draft o proceso intenta añadir, modificar o eliminar cualquiera de los blockedFields en un personaje activo, la operación es rechazada con un error bloqueante inmediato."
+    }
+  },
+  "fileAudits": [
+    {
+      "archivo": "src/scripts/runAutonomousAudit.js",
+      "comportamientoActualDetectado": "Importa V22_FILE estáticamente (línea 20) y carga caracteres desde characters.js (línea 52). El prompt del sistema cita 'BASE INALTERABLE ROSTER V22'. No conoce la existencia de V23, V24 ni V25 ni su estructura con deprecatedRecords.",
+      "riesgo": "Alto desalineamiento: la auditoría nocturna autónoma puede evaluar personajes deprecados en V23/V24/V25 como si fueran válidos o reportar discrepancias ficticias basadas en el baseline antiguo V22.",
+      "cambioPropuesto": "Actualizar la carga a V25_FILE por defecto ({ meta, characters, deprecatedRecords }). Si V25 no existe, detener la ejecución con error explícito sin caer a V22. Filtrar personajes activos y excluir los 13 IDs deprecados. Emitir únicamente parches de propuesta a enrichmentDrafts sin auto-mutación.",
+      "tipo": "safe_readonly_change",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "src/scripts/rosterCanonicalValidator.js",
+      "comportamientoActualDetectado": "Lee exclusivamente characters.js (línea 20). En modo normal audita y en modo --fix (línea 8) sobrescribe in-place characters.js. Espera un censo estático de 769 personajes sin contemplar deprecatedRecords.",
+      "riesgo": "Crítico: ejecutar con --fix mutaría el roster activo omitiendo las 13 deprecaciones aprobadas y regenerando 769 personajes planos. Además, valida characters.js en vez del JSON canónico V25.",
+      "cambioPropuesto": "Adaptar el validador para auditar ROSTER_NIVELES_PODER_CORREGIDO_V25.json. Validar que characters.length === 756, deprecatedRecords.length === 13 y total === 769. Desactivar el modo --fix destructivo o condicionarlo a un modo seguro que genere archivos de propuesta sin tocar el archivo base.",
+      "tipo": "validator_change",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "src/scripts/applyEnrichmentPatches.js",
+      "comportamientoActualDetectado": "Lee patches de rosterEnrichmentPatches.json o apex_golden_enriched_*.json y muta directamente characters.js (línea 47-53). Intenta borrar campos protegidos solo si target.forms[0] existe, pero permite mutaciones en el roster maestro sin control de versiones V25.",
+      "riesgo": "Crítico: ejecución inadvertida corrompe characters.js, añade formas prohibidas y puede reactivar IDs deprecados sin validación de idempotencia ni hash SHA-256.",
+      "cambioPropuesto": "Reescribir como motor de parches controlado: debe exigir sourceRosterSha256 (hash de V25), idempotencyKey, validar que ningún campo protegido sea alterado (lista blanca estricta de enriquecimiento) y generar un nuevo archivo de draft o versión formal en lugar de editar in-place.",
+      "tipo": "patch_engine_change",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "src/scripts/interactiveEnricher.js",
+      "comportamientoActualDetectado": "CLI interactivo para lanzar auditorías nocturnas. En la línea 121 declara 'Audita y enriquece los 769 pjs una vez'. Lanza runAutonomousTask.js como proceso hijo con stdio: inherit.",
+      "riesgo": "Confusión operativa: sigue asumiendo 769 personajes activos cuando en V25 hay 756 activos y 13 deprecados.",
+      "cambioPropuesto": "Ajustar mensajes e inicialización: leer el conteo activo dinámicamente desde V25 (756 activos) y aclarar que las mejoras se guardan como drafts sin tocar el juego activo.",
+      "tipo": "safe_readonly_change",
+      "prioridad": "P1"
+    },
+    {
+      "archivo": "src/scripts/runAutonomousTask.js",
+      "comportamientoActualDetectado": "Ejecuta enriquecimiento vía LLM (OpenRouter) en lotes de 2-4 personajes leyendo characters.js. Guarda archivos en src/data/apex_golden_enriched_*.json. Establece reglas de forma base en índice 0 pero no conoce la estructura V25.",
+      "riesgo": "Generación de propuestas para personajes que ya están formalmente deprecados (ej: Broly DBM stub, Rey Vegeta U13, Panzy, Poseidón RoR, Kat/Syd grupal, Goku 751).",
+      "cambioPropuesto": "Alimentar el lector desde los registros activos de V25 (756 personajes). Añadir comprobación de exclusión contra deprecatedRecords. Restringir la salida LLM únicamente a los 10 campos de enriquecimiento permitidos.",
+      "tipo": "patch_engine_change",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "src/services/needsReviewService.js",
+      "comportamientoActualDetectado": "Consume apexNeedsReviewBacklog.js (línea 14) basado en V22. Devuelve advertencias a la UI para incidencias pendientes sin aplicar mutaciones (comportamiento seguro).",
+      "riesgo": "Bajo en seguridad pero desfasado: no reporta los nuevos gates de V25 (Tamagami, Giorno, Valentine, Raichi, SSJ4 Daima).",
+      "cambioPropuesto": "Actualizar para incorporar los gates editoriales de V25 (V25-PENDING-*) sin resolverlos, mostrándolos en la UI de combate como avisos de revisión activa.",
+      "tipo": "safe_readonly_change",
+      "prioridad": "P1"
+    },
+    {
+      "archivo": "VERIFICAR_Y_CORREGIR_ROSTER.bat",
+      "comportamientoActualDetectado": "Ejecuta `node src/scripts/rosterCanonicalValidator.js` sobre characters.js.",
+      "riesgo": "Reporta el estado de characters.js (769 personajes heredados) en vez del baseline consolidado V25.",
+      "cambioPropuesto": "Modificar para invocar el validador en modo lectura específica de V25: `node src/scripts/rosterCanonicalValidator.js --v25 --read-only`.",
+      "tipo": "validator_change",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "EJECUTAR_AUDITORIA_NOCTURNA.bat",
+      "comportamientoActualDetectado": "Lanza `node src\\scripts\\interactiveEnricher.js`.",
+      "riesgo": "Si el operador luego corre APLICAR_PARCHES_AL_ROSTER.bat, se aplicarán parches sin validación de V25.",
+      "cambioPropuesto": "Mantener el launcher pero asegurar que interactiveEnricher opere estrictamente en modo draft read-only sobre V25.",
+      "tipo": "safe_readonly_change",
+      "prioridad": "P1"
+    },
+    {
+      "archivo": "APLICAR_PARCHES_AL_ROSTER.bat",
+      "comportamientoActualDetectado": "Lanza applyEnrichmentPatches.js y en la línea 28-34 pregunta: 'Deseas desplegar los cambios a Vercel ahora mismo? (S/N) [Enter=S]' llamando a DESPLEGAR_A_VERCEL.bat.",
+      "riesgo": "CRÍTICO EXTREMO: Si el usuario presiona Enter por defecto, dispara DESPLEGAR_A_VERCEL.bat que hace `git add .`, `git commit -m` y `git push origin main` a producción.",
+      "cambioPropuesto": "Eliminar el prompt y la llamada a DESPLEGAR_A_VERCEL.bat. Reemplazarlo por una verificación de que los parches se guardan como drafts y requieren revisión manual. Bloquear todo despliegue automático.",
+      "tipo": "blocked_requires_design",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "ENRIQUECER_ROSTER_AUTONOMO.bat",
+      "comportamientoActualDetectado": "Lanza interactiveEnricher.js en consola autónoma.",
+      "riesgo": "Mismo riesgo de interactiveEnricher: asume 769 personajes activos de V22/characters.js.",
+      "cambioPropuesto": "Configurar para apuntar exclusivamente al universo activo de 756 personajes de V25.",
+      "tipo": "safe_readonly_change",
+      "prioridad": "P1"
+    },
+    {
+      "archivo": "DESPLEGAR_A_VERCEL.bat",
+      "comportamientoActualDetectado": "Ejecuta directamente: `git add .`, `git commit -m 'feat: sync y despliegue'`, `git push origin main` y `npx vercel --prod --yes`.",
+      "riesgo": "CRÍTICO EXTREMO: Despliega indiscriminadamente todos los archivos no rastreados, drafts, temporales y modificaciones locales directamente a producción en GitHub y Vercel.",
+      "cambioPropuesto": "Bloquear este script con un guardia de confirmación obligatoria. Excluir explícitamente `git add .` indiscriminado; añadir pre-check que rechace el despliegue si existen drafts de auditoría sin congelar o si V25 no está validado.",
+      "tipo": "blocked_requires_design",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "SINCRONIZAR_TODO.bat",
+      "comportamientoActualDetectado": "Ejecuta: `git add .`, `git commit -m 'feat: sync y despliegue limpio'`, `git push vercel-origin main`, `git push origin main` y `node src/scripts/autoDeployVercel.js`.",
+      "riesgo": "CRÍTICO EXTREMO: Hace commit y push automático descontrolado a dos orígenes remotos (GitHub y Vercel).",
+      "cambioPropuesto": "Desactivar la sincronización git automática. Reemplazar por un validador de estado local que solo informe diferencias sin realizar commits ni pushes.",
+      "tipo": "blocked_requires_design",
+      "prioridad": "P0"
+    },
+    {
+      "archivo": "INICIAR_OPENCODE_WEB.bat y herramientas OpenCode (opencode-tools/*)",
+      "comportamientoActualDetectado": "Inicia el servidor local/LAN OpenCode Web en el puerto 4096 y expone agentes (build, brainstorm, powerscaler, deep_research, nemotron_ultra). En opencode-tools existen accesos directos equivalentes a los .bat anteriores.",
+      "riesgo": "Medio/Alto: si agentes en OpenCode ejecutan comandos de terminal automáticos llamando a SINCRONIZAR_TODO o DESPLEGAR_A_VERCEL, podrían disparar commits no deseados.",
+      "cambioPropuesto": "Configurar la suite OpenCode con reglas de entorno que prohíban la ejecución de comandos de commit/push/deploy y definan V25 como baseline protegido de lectura.",
+      "tipo": "blocked_requires_design",
+      "prioridad": "P1"
+    }
+  ],
+  "sectionA_cambiosP0": [
+    "1. rosterCanonicalValidator.js: Adaptar para leer V25 ({ meta, characters, deprecatedRecords }). Validar 756 activos + 13 deprecados = 769 total. Desactivar modo --fix que sobrescribe characters.js sin control.",
+    "2. APLICAR_PARCHES_AL_ROSTER.bat: Desactivar inmediatamente la invocación automática a DESPLEGAR_A_VERCEL.bat (líneas 28-34) para evitar commits y deploys involuntarios a producción.",
+    "3. DESPLEGAR_A_VERCEL.bat y SINCRONIZAR_TODO.bat: Bloquear la ejecución ciega de 'git add .' y 'git push' agregando una barrera de confirmación que impida subir borradores de auditoría no aprobados.",
+    "4. runAutonomousAudit.js: Reemplazar la referencia rígida a V22 por V25 con verificación previa de hash SHA-256 y detención bloqueante si V25 no existe (nunca caer a V22).",
+    "5. applyEnrichmentPatches.js: Incorporar la lista blanca estricta de enriquecimiento (10 campos permitidos) y rechazo bloqueante ante cualquier intento de alterar campos protegidos de escala."
+  ],
+  "sectionB_requierenDiseno": [
+    "1. Arquitectura de Despliegue: Definir si characters.js debe regenerarse desde V25 para el cliente web o si el cliente debe importar directamente ROSTER_NIVELES_PODER_CORREGIDO_V25.json.",
+    "2. Esquema de Invocaciones de Raichi: Diseñar el contenedor en el motor para entidades de invocación (Broly Fantasma) que operan con Ki autónomo fuera del array forms biológico.",
+    "3. Integración de Stands JoJo: Definir el formato de haxProfile para invulnerabilidad causal (GER) y redirección dimensional (Love Train) sin requerir subida de Ki en la UI.",
+    "4. Políticas de OpenCode Web: Configurar los perfiles de agentes en opencode-tools para operar bajo sandbox sin permisos de ejecución git ni despliegue."
+  ],
+  "sectionC_planPruebasReadOnly": [
+    "Prueba 1: Ejecución de verificación de integridad hash (V22, V23, V24, V25) antes y después de cualquier script.",
+    "Prueba 2: Test del validador canónico sobre V25 confirmando: 756 activos, 13 deprecados, 0 colisiones, 0 duplicados.",
+    "Prueba 3: Test de inyección simulada en applyEnrichmentPatches intentando modificar 'baseKiNumeric' o 'multiplier' -> Verificar que el motor lo rechaza y no toca el archivo.",
+    "Prueba 4: Test de fallback: simular ausencia temporal de V25 -> Verificar que el runner se detiene con error bloqueante y NO ejecuta V22.",
+    "Prueba 5: Test de aislamiento Git: ejecutar scripts de auditoría y verificar con 'git status' que el working tree permanece 100% limpio en archivos trackeados."
+  ],
+  "sectionD_confirmacion": {
+    "isReadOnly": true,
+    "filesModifiedCount": 0,
+    "productionScriptsCreated": 0,
+    "gitCommitsExecuted": 0,
+    "vercelDeployExecuted": 0,
+    "v22Sha256": "68dd6750f4acc7bce09e16f66f48f8072b455268df1d74aaf95f2a89c716074f",
+    "v23Sha256": "a6dfff76c7001594d1428a70497154ffcdac7d679ad5c616b70ff027892e5578",
+    "v24Sha256": "d1e6aeb35f107f97eb00f196fc4b934cd5e94d9c9f583264f34bd0e83db8fa61",
+    "v25Sha256": "ee4d7554cb7a832d8dda984c8a9bf57e2245dd1831ee9f33edb99d03ace44729",
+    "statement": "Confirmación explícita: Ningún archivo existente fue modificado. No se crearon scripts de producción. Cero commits, pushes y deploys."
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "title": "APEX V24 — Approved Batch A: Safe Duplicate Cleanup",
+    "status": "APPROVED_FOR_FUTURE_V24_NOT_APPLIED",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V23.json",
+    "sourceAudit": "APEX_V23_PENDING_SCALE_DECISIONS.json",
+    "requiresUserFinalApprovalBeforeApply": true,
+    "allowedScope": "Only two safe deprecations. No power-scale, tier, multiplier, form migration, What-If creation, source resolution, or modeling changes.",
+    "generatedAt": "2026-09-04T09:53:25.825Z",
+    "totalPatches": 2
+  },
+  "patchEntries": [
+    {
+      "patchId": "V24-PATCH-0001",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "kat-syd-u6-dbm",
+      "canonicalRecordIds": [
+        "kat-u6-individual",
+        "syd-u6-individual"
+      ],
+      "reason": "La ficha grupal posee 289.800.000 Ki, valor idéntico a la firma de plantilla contaminada detectada en panzy-dragon-ball-daima-138. No representa una sinergia de equipo verificable ni una suma coherente de Kat y Syd individuales. Conservar las fichas individuales sin modificar sus Ki, tiers, forms ni multiplicadores.",
+      "sourceAuditCase": 12,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 289,
+        "id": "kat-syd-u6-dbm",
+        "name": "Kat y Syd (Guerreras Misteriosas, Universo 6)",
+        "franchise": "Dragon Ball",
+        "universe": "Dragon Ball Multiverse (Fan-Manga)",
+        "saga": "Torneo Interuniversal DBM — Universo 6",
+        "baseTier": "4-C",
+        "baseKiFormatted": "289.80 Millones",
+        "baseKiNumeric": 289800000,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Base",
+            "multiplier": 1,
+            "tier": "4-C",
+            "kiFormatted": "289.80 Millones",
+            "kiNumeric": 289800000
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "4-C",
+          "baseFormTier": "4-C",
+          "tierStatus": "internally_aligned",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "v22Index": 291
+      },
+      "proposedEffect": "En la futura V24, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordIds, sourcePatchId y timestamp. No recalcular ni crear una ficha grupal sustitutiva.",
+      "status": "pending_final_application"
+    },
+    {
+      "patchId": "V24-PATCH-0002",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "son-goku-mini-dragon-ball-daima-751",
+      "canonicalRecordId": "son-goku-mini-daima-full",
+      "reason": "Duplicado de Goku Mini Daima con formas SSJ repetidas, labels APEX/custom y subtiers no estándar. No migrar ninguna forma, Ki, tier, multiplier, hax o tag desde este registro a la ficha canónica son-goku-mini-daima-full.",
+      "sourceAuditCase": 13,
+      "confidence": "HIGH",
+      "requiresManualApproval": true,
+      "currentValueSnapshot": {
+        "index": 195,
+        "id": "son-goku-mini-dragon-ball-daima-751",
+        "name": "Son Goku (Mini)",
+        "franchise": "Dragon Ball",
+        "universe": "Dragon Ball Daima",
+        "saga": "Reino de los Demonios",
+        "baseTier": "4-B",
+        "baseKiFormatted": "1.05 Millones",
+        "baseKiNumeric": 1050000,
+        "forms": [
+          {
+            "index": 0,
+            "id": "base",
+            "name": "Goku Mini (Estado Base Daima)",
+            "multiplier": 1,
+            "tier": "4-B",
+            "kiFormatted": "1.05 Millones",
+            "kiNumeric": 1050000
+          },
+          {
+            "index": 1,
+            "id": "goku-mini-ssj",
+            "name": "Goku Mini (Super Saiyan)",
+            "multiplier": 50,
+            "tier": "5-A+",
+            "kiFormatted": "52.50 Millones",
+            "kiNumeric": 52500000
+          },
+          {
+            "index": 2,
+            "id": "goku-mini-ssj1",
+            "name": "Super Saiyan (Daima)",
+            "multiplier": 50,
+            "tier": "4-A",
+            "kiFormatted": "52.50 Millones",
+            "kiNumeric": 52500000
+          },
+          {
+            "index": 3,
+            "id": "goku-mini-ssj2-daima",
+            "name": "Super Saiyan 2 (Daima)",
+            "multiplier": 100,
+            "tier": "3-C",
+            "kiFormatted": "105.00 Millones",
+            "kiNumeric": 105000000
+          },
+          {
+            "index": 4,
+            "id": "goku-mini-ssj2",
+            "name": "Goku Mini (Super Saiyan 2) [Apex Daima]",
+            "multiplier": 100,
+            "tier": "5-A+",
+            "kiFormatted": "105.00 Millones",
+            "kiNumeric": 105000000
+          },
+          {
+            "index": 5,
+            "id": "goku-mini-ssj3-daima",
+            "name": "Super Saiyan 3 (Daima)",
+            "multiplier": 400,
+            "tier": "3-C",
+            "kiFormatted": "420.00 Millones",
+            "kiNumeric": 420000000
+          },
+          {
+            "index": 6,
+            "id": "goku-mini-ssj3",
+            "name": "Goku Mini (Super Saiyan 3) [Apex Daima]",
+            "multiplier": 400,
+            "tier": "5-A",
+            "kiFormatted": "420.00 Millones",
+            "kiNumeric": 420000000
+          }
+        ],
+        "powerSchema": {
+          "profileTier": "4-B",
+          "baseFormTier": "4-B",
+          "tierStatus": "internally_aligned",
+          "legacyBaseTierRetained": true
+        },
+        "powerCorrectionVersion": "APEX-power-numeric-v1",
+        "v22Index": 196
+      },
+      "proposedEffect": "En la futura V24, mover el registro completo a deprecatedRecords con snapshot, reason, canonicalRecordId, sourcePatchId y timestamp. No modificar son-goku-mini-daima-full. No tocar ssj4-daima-mini. No crear son-goku-ssj4-primal-daima-what-if.",
+      "status": "pending_final_application"
+    }
+  ],
+  "excludedCases": [
+    "tamagami-1-espada-daima",
+    "tamagami-n-mero-1-dragon-ball-daima-763",
+    "menthuthuyoupi-hxh-ca",
+    "youpi-hxh-ca",
+    "kenjaku-jjk",
+    "kenjaku-pseudo-geto",
+    "giorno-giovanna-ger-jojo-gg001",
+    "giorno-giovanna-jojo-va",
+    "funny-valentine-jojo-sbr",
+    "funny-valentine-poder-completo",
+    "dr-raichi-dbm-u3",
+    "dr-raichi-fantasmas-del-odio-u3-dbm",
+    "baby-god-brokoly",
+    "baby-vegeta-god-brokoly",
+    "ssj4-daima-mini",
+    "ssj4-adulto-daima"
+  ],
+  "excludedReason": "Requires source-resolution, scale-resolution, modeling decision, or separate explicit What-If approval.",
+  "changeLogDraft": [
+    {
+      "patchId": "V24-PATCH-0001",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "kat-syd-u6-dbm",
+      "canonicalRecordIds": [
+        "kat-u6-individual",
+        "syd-u6-individual"
+      ],
+      "rationale": "Deprecación propuesta para V24: ficha grupal contaminada por valor residual de plantilla (289.8M Ki). Se preservan las combatientes individuales sin alteraciones.",
+      "timestamp": "2026-09-04T09:53:25.825Z"
+    },
+    {
+      "patchId": "V24-PATCH-0002",
+      "action": "deprecate_record_candidate",
+      "targetRecordId": "son-goku-mini-dragon-ball-daima-751",
+      "canonicalRecordId": "son-goku-mini-daima-full",
+      "rationale": "Deprecación propuesta para V24: duplicado de Goku Mini con formas SSJ repetidas y tiers custom. Se preserva son-goku-mini-daima-full como única canónica sin migración de formas.",
+      "timestamp": "2026-09-04T09:53:25.825Z"
+    }
+  ]
+}

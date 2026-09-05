@@ -27,6 +27,33 @@ function charCode(str, i) {
   return str.charCodeAt(i) || 0;
 }
 
+// Safe Puter KV wrappers that check authentication and timeout after 1.5s to prevent hanging
+async function safePuterGet(key) {
+  try {
+    if (typeof window === 'undefined' || !window.puter?.kv) return null;
+    if (!window.puter.auth?.isSignedIn?.()) return null;
+    return await Promise.race([
+      window.puter.kv.get(key).catch(() => null),
+      new Promise(resolve => setTimeout(() => resolve(null), 1500))
+    ]);
+  } catch {
+    return null;
+  }
+}
+
+async function safePuterSet(key, value) {
+  try {
+    if (typeof window === 'undefined' || !window.puter?.kv) return null;
+    if (!window.puter.auth?.isSignedIn?.()) return null;
+    return await Promise.race([
+      window.puter.kv.set(key, value).catch(() => null),
+      new Promise(resolve => setTimeout(() => resolve(null), 1500))
+    ]);
+  } catch {
+    return null;
+  }
+}
+
 class CloudSyncService {
   constructor() {
     this.user = this.loadStoredUser();
@@ -163,6 +190,7 @@ class CloudSyncService {
       email: email,
       username: cleanDisplayName,
       displayName: cleanDisplayName,
+      password: password,
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
       avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanDisplayName || email)}`,
@@ -180,25 +208,23 @@ class CloudSyncService {
         userEmail: newUser.email,
         displayName: newUser.displayName,
         avatar: newUser.avatar
-      }).catch(() => {});
+      });
     } catch {}
 
-    // Puter KV backup
+    // Puter KV backup safely
     try {
-      if (typeof window !== 'undefined' && window.puter && window.puter.kv) {
-        await window.puter.kv.set(`apex_user_${userId}`, newUser).catch(() => {});
-        await window.puter.kv.set(`apex_acc_${cleanInput}`, newUser).catch(() => {});
-      }
+      await safePuterSet(`apex_user_${userId}`, newUser);
+      await safePuterSet(`apex_acc_${cleanInput}`, newUser);
     } catch {}
 
     return newUser;
   }
 
   /**
-   * Inicia sesión con Email o Nombre de Usuario y Contraseña
+   * Inicia sesión con Email o Nombre de Usuario y Contraseña (opcional para cuentas locales)
    */
-  async login(identifier, password) {
-    if (!identifier || !password) throw new Error('Introduce tu email/usuario y contraseña.');
+  async login(identifier, password = '') {
+    if (!identifier || !identifier.trim()) throw new Error('Introduce tu email o nombre de usuario.');
 
     const cleanInput = identifier.toLowerCase().trim();
     const accounts = this.loadAccountsRegistry();
@@ -230,10 +256,10 @@ class CloudSyncService {
       } catch (e) {}
     }
 
-    // 3. Check Puter KV cross-device storage
-    if (!existingAccount && typeof window !== 'undefined' && window.puter && window.puter.kv) {
+    // 3. Check Puter KV cross-device storage safely (guarded against hangs)
+    if (!existingAccount) {
       try {
-        const cloudAcc = await window.puter.kv.get(`apex_acc_${cleanInput}`);
+        const cloudAcc = await safePuterGet(`apex_acc_${cleanInput}`);
         if (cloudAcc && typeof cloudAcc === 'object' && cloudAcc.id) {
           existingAccount = cloudAcc;
         }
@@ -242,8 +268,13 @@ class CloudSyncService {
 
     let userToLog;
     if (existingAccount) {
+      // Si la cuenta tiene contraseña guardada Y el usuario suministró contraseña, verificar coincidencia
+      if (password && existingAccount.password && existingAccount.password !== password) {
+        throw new Error('Contraseña incorrecta. Por favor verifica tus credenciales.');
+      }
       userToLog = {
         ...existingAccount,
+        password: existingAccount.password || password,
         lastLogin: new Date().toISOString(),
         token: `apex_jwt_${existingAccount.id}`
       };
@@ -258,6 +289,7 @@ class CloudSyncService {
         email: email,
         username: fallbackName,
         displayName: fallbackName,
+        password: password,
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
         avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(fallbackName)}`,
@@ -268,8 +300,12 @@ class CloudSyncService {
 
     this.saveUser(userToLog);
     
-    // Auto-fetch latest cloud vault data for this user
-    await this.downloadProfileData().catch(e => console.warn('Auto-sync on login note:', e));
+    // Auto-fetch latest cloud vault data for this user safely
+    try {
+      await this.downloadProfileData();
+    } catch (e) {
+      console.warn('Auto-sync on login note:', e);
+    }
     
     return userToLog;
   }
@@ -304,9 +340,9 @@ class CloudSyncService {
 
     // Fallback in-memory/puter code
     const fallbackCode = `APX-${Math.floor(1000 + Math.random() * 9000)}`;
-    if (typeof window !== 'undefined' && window.puter && window.puter.kv) {
-      await window.puter.kv.set(`apex_link_${fallbackCode}`, { payload, account: this.user });
-    }
+    try {
+      await safePuterSet(`apex_link_${fallbackCode}`, { payload, account: this.user });
+    } catch {}
     return fallbackCode;
   }
 
@@ -329,10 +365,10 @@ class CloudSyncService {
       }
     } catch (e) {}
 
-    // 2. Try Puter KV fallback
-    if (!result && typeof window !== 'undefined' && window.puter && window.puter.kv) {
+    // 2. Try Puter KV fallback safely
+    if (!result) {
       try {
-        const item = await window.puter.kv.get(`apex_link_${cleanCode}`);
+        const item = await safePuterGet(`apex_link_${cleanCode}`);
         if (item && item.payload) {
           result = item;
         }
@@ -397,11 +433,9 @@ class CloudSyncService {
         await this._postBackend('/api/cloud/sync', payload).catch(() => {});
       } catch (err) {}
 
-      // 3. Subir a Puter KV
+      // 3. Subir a Puter KV safely
       try {
-        if (typeof window !== 'undefined' && window.puter && window.puter.kv) {
-          await window.puter.kv.set(`apex_vault_${this.user.id}`, payload).catch(() => {});
-        }
+        await safePuterSet(`apex_vault_${this.user.id}`, payload);
       } catch (err) {}
 
       return { success: true, timestamp: payload.timestamp, stats: {
@@ -434,10 +468,10 @@ class CloudSyncService {
         }
       } catch (e) {}
 
-      // 2. Intentar Puter KV
-      if (!cloudData && typeof window !== 'undefined' && window.puter && window.puter.kv) {
+      // 2. Intentar Puter KV safely
+      if (!cloudData) {
         try {
-          const puterVault = await window.puter.kv.get(`apex_vault_${this.user.id}`);
+          const puterVault = await safePuterGet(`apex_vault_${this.user.id}`);
           if (puterVault && typeof puterVault === 'object' && puterVault.characters) {
             cloudData = puterVault;
           }
@@ -482,21 +516,31 @@ class CloudSyncService {
   }
 
   async _postBackend(endpoint, body) {
-    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    const url = isLocal ? `http://${window.location.hostname}:3001${endpoint}` : endpoint;
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    return res.json();
+    try {
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const url = isLocal ? `http://${window.location.hostname}:3001${endpoint}` : endpoint;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).catch(() => null);
+      if (!res || !res.ok) return null;
+      return await res.json().catch(() => null);
+    } catch {
+      return null;
+    }
   }
 
   async _getBackend(endpoint) {
-    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    const url = isLocal ? `http://${window.location.hostname}:3001${endpoint}` : endpoint;
-    const res = await fetch(url);
-    return res.json();
+    try {
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const url = isLocal ? `http://${window.location.hostname}:3001${endpoint}` : endpoint;
+      const res = await fetch(url).catch(() => null);
+      if (!res || !res.ok) return null;
+      return await res.json().catch(() => null);
+    } catch {
+      return null;
+    }
   }
 }
 

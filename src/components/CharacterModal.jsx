@@ -12,6 +12,8 @@ import { UNIVERSE_PRESETS } from '../services/franchiseHelper';
 import { SoundFX } from '../services/soundFx';
 import { calculateScouterReading, getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
 import { resolveCombatState } from '../lib/combatStateResolver';
+import { getBodilyForms, getExternalEntities, getExternalEntityUiModel } from '../lib/externalEntityFramework';
+import { TIER_ORDER, SCOUTER_ENERGY_ANCHORS } from '../lib/apexTierSystem';
 
 const COMMON_HAX_TAGS = [
   'Negación de Durabilidad',
@@ -52,6 +54,14 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
   const [translationStatus, setTranslationStatus] = useState('');
   const [isCustomUniverseInput, setIsCustomUniverseInput] = useState(false);
   const [isScanningKi, setIsScanningKi] = useState(false);
+  const [showTechniqueForge, setShowTechniqueForge] = useState(false);
+  const [forgedTech, setForgedTech] = useState({
+    name: '',
+    type: 'Energía / Ki',
+    targetCategory: 'superAttacks',
+    cost: '15% Ki / 1 Turno de carga',
+    effect: 'Perforante (Ignora el 50% de la durabilidad menor)'
+  });
 
   const [formData, setFormData] = useState(() => {
     if (character) {
@@ -149,6 +159,27 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
   };
 
   // Arsenal Array Helpers
+  const handleAddForgedTechnique = () => {
+    if (!forgedTech.name.trim()) return alert('Asigna un nombre a la técnica forjada.');
+    const fullDesc = `[Tipo: ${forgedTech.type}] ${forgedTech.effect}. Ejecutada con precisión marcial y canalización directa de energía.`;
+    setFormData(prev => {
+      const currentArsenal = prev.arsenal || { basicAttacks: '', superAttacks: [], ultimateAttacks: [], passives: [], actives: [] };
+      const list = [...(currentArsenal[forgedTech.targetCategory] || [])];
+      list.push({
+        name: forgedTech.name.trim(),
+        desc: fullDesc,
+        cost: forgedTech.cost
+      });
+      return {
+        ...prev,
+        arsenal: { ...currentArsenal, [forgedTech.targetCategory]: list }
+      };
+    });
+    setForgedTech(prev => ({ ...prev, name: '' }));
+    setShowTechniqueForge(false);
+    SoundFX?.playSuperAttack?.();
+  };
+
   const addArsenalItem = (category) => {
     setFormData(prev => {
       const currentArsenal = prev.arsenal || { basicAttacks: '', superAttacks: [], ultimateAttacks: [], passives: [], actives: [] };
@@ -187,6 +218,70 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
   const activeReference = selectedReferenceCharId === 'auto'
     ? detectedReferences[0]
     : (selectedReferenceCharId === 'none' ? null : allCharacters.find(c => c.id === selectedReferenceCharId));
+
+  const handleAutoCalibrateByTier = (targetTier) => {
+    const cleanTier = (targetTier || '').replace('Tier ', '').trim();
+    const scouterKi = SCOUTER_ENERGY_ANCHORS[cleanTier] || 5000000;
+    
+    let apText = '';
+    let duraText = '';
+    let speedProfile = { combat: '', reaction: '', travel: '', attack: '' };
+    const tierIndex = TIER_ORDER.indexOf(cleanTier);
+
+    if (tierIndex <= 2) {
+      apText = `Nivel Humano / Atleta (${cleanTier}). Fuerza muscular máxima convencional.`;
+      duraText = `Durabilidad humana estándar. Vulnerable a armas cortopunzantes y de fuego.`;
+      speedProfile = { combat: 'Humano Atlético', reaction: '0.15 a 0.25 s', travel: '10 a 35 km/h', attack: 'Humano Rápido' };
+    } else if (tierIndex <= 5) {
+      apText = `Nivel Estructura / Muro / Edificio (${cleanTier}). Capaz de demoler hormigón y blindajes.`;
+      duraText = `Soporta impactos de artillería ligera, impactos contra concreto reforzado y caídas.`;
+      speedProfile = { combat: 'Subsónico / Ojo Desarmado', reaction: 'Supersónica de corta distancia', travel: '100 a 300 km/h', attack: 'Transónico' };
+    } else if (tierIndex <= 9) {
+      apText = `Nivel Bloque Urbano / Rascacielos (${cleanTier}). Ráfagas de energía que pulverizan manzanas enteras.`;
+      duraText = `Resiste explosiones de misiles balísticos y ondas de choque térmicas a quemarropa.`;
+      speedProfile = { combat: 'Hipersónico (Mach 5 - 25)', reaction: 'Microsegundos', travel: 'Supersónico prolongado', attack: 'Hipersónico Alto' };
+    } else if (tierIndex <= 16) {
+      apText = `Nivel Ciudad / Montaña (${cleanTier}). Impactos de megatones capaces de evaporar macizos rocosos.`;
+      duraText = `Inmune a armamento militar convencional. Resiste el epicentro de detonaciones nucleares.`;
+      speedProfile = { combat: 'Hipersónico Masivo+ (Mach 100 - 1,000)', reaction: 'Nanosegundos', travel: 'Hipersónico Global', attack: 'Sub-relativista' };
+    } else if (tierIndex <= 23) {
+      apText = `Nivel Isla / Continental (${cleanTier}). Teratones de energía; fractura de placas tectónicas.`;
+      duraText = `Resiste la disipación térmica y cinética de un cataclismo continental directo.`;
+      speedProfile = { combat: 'Relativista (1% - 50% de la velocidad de la luz c)', reaction: 'Relativista', travel: 'Sub-orbital instantáneo', attack: 'Relativista Alto' };
+    } else if (tierIndex <= 28) {
+      apText = `Nivel Planetario (${cleanTier}). Exatones / Yottatones; energía suficiente para pulverizar un planeta rocoso.`;
+      duraText = `Resiste la compresión del núcleo planetario y explosiones colosales sin brecha estructural.`;
+      speedProfile = { combat: 'Velocidad de la Luz (FTL a FTL+)', reaction: 'Instantánea de combate', travel: 'Interplanetario rápido', attack: 'FTL+' };
+    } else if (tierIndex <= 33) {
+      apText = `Nivel Estelar / Sistema Solar (${cleanTier}). Capaz de desencadenar supernovas y colapsar estrellas.`;
+      duraText = `Soporta la gravedad de gigantes rojas y el impacto de llamaradas estelares masivas.`;
+      speedProfile = { combat: 'MFTL (Miles de veces la velocidad de la luz)', reaction: 'Pico-segundos', travel: 'Interestelar', attack: 'MFTL+' };
+    } else if (tierIndex <= 37) {
+      apText = `Nivel Galáctico / Universal (${cleanTier}). Energía suficiente para arrasar galaxias o deformar el espacio cósmico.`;
+      duraText = `Resiste la radiación de quásares y colisiones de agujeros negros supermasivos.`;
+      speedProfile = { combat: 'MFTL+ (Millones de veces c)', reaction: 'Fempto-segundos', travel: 'Inter-galáctico', attack: 'MFTL+ Extremo' };
+    } else if (tierIndex <= 41) {
+      apText = `Nivel Multiversal (${cleanTier}). Destrucción de continuos espacio-temporales completos.`;
+      duraText = `Cuerpo o esencia anclada más allá del tiempo convencional. Resiste el colapso de líneas temporales.`;
+      speedProfile = { combat: 'Inconmensurable / Trascendente', reaction: 'Atemporal', travel: 'Omnipresencia local', attack: 'Inconmensurable' };
+    } else {
+      apText = `Nivel Trascendente / Hiperversal / Exterior (${cleanTier}). Por encima de toda dimensión espacial y conceptual.`;
+      duraText = `Invulnerabilidad metafísica. Inmune a conceptos de daño físico o causalidad lógica.`;
+      speedProfile = { combat: 'Irrelevante / Trascendente', reaction: 'Irrelevante', travel: 'Omnipresente', attack: 'Irrelevante' };
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      tier: `Tier ${cleanTier}`,
+      ap: apText,
+      durability: duraText,
+      speed: speedProfile,
+      ki: scouterKi,
+      sourceKiCurrent: scouterKi
+    }));
+
+    SoundFX?.playPowerUp?.();
+  };
 
   const handleAutoFill = async () => {
     if (!formData.name) return alert('Pon un nombre primero para buscar.');
@@ -296,14 +391,28 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                             (formData.arsenal?.passives?.length || 0) + 
                             (formData.arsenal?.actives?.length || 0);
 
+  const isRaichi = formData.id === 'dr-raichi-dbm-u3';
+  const bodilyForms = getBodilyForms(formData);
+  const externalEntities = getExternalEntities(formData);
+  const isEntityCommander = !!formData.narrativeCombatProfile?.externalEntityController || isRaichi;
+  const canonicalGhosts = formData.narrativeCombatProfile?.canonicalGhostArchive || [];
+  const legacyGhosts = formData.narrativeCombatProfile?.legacyGhostReferences || [];
+  const resonanceGhosts = formData.narrativeCombatProfile?.resonanceProjectionLibrary || [];
+
   const TABS = [
     { id: 'basico', label: 'Básico', shortLabel: 'Básico', count: null, icon: <Book className="w-4 h-4 text-cyan-400" /> },
-    { id: 'formas', label: 'Transformaciones', shortLabel: 'Formas', count: formData.forms?.length || 0, icon: <ListPlus className="w-4 h-4 text-amber-400" /> },
+    { id: 'formas', label: 'Transformaciones', shortLabel: 'Formas', count: bodilyForms.length || 0, icon: <ListPlus className="w-4 h-4 text-amber-400" /> },
     { id: 'arsenal', label: 'Ataques & Habilidades', shortLabel: 'Ataques', count: totalAttacksCount || null, icon: <Flame className="w-4 h-4 text-orange-400" /> },
     { id: 'hax', label: 'Hax & Tags', shortLabel: 'Hax', count: formData.haxTags?.length || null, icon: <Sparkles className="w-4 h-4 text-fuchsia-400" /> },
     { id: 'cinetica', label: 'Cinética & Velocidad', shortLabel: 'Cinética', count: null, icon: <Move className="w-4 h-4 text-cyan-400" /> },
     { id: 'biomecanica', label: 'Biomecánica & Salud', shortLabel: 'Salud', count: null, icon: <Activity className="w-4 h-4 text-emerald-400" /> },
-    { id: 'invocaciones', label: 'Stands / Armas', shortLabel: 'Stands', count: formData.subEntity?.name ? 1 : null, icon: <Users className="w-4 h-4 text-purple-400" /> },
+    { 
+      id: 'invocaciones', 
+      label: isEntityCommander ? 'Entidades Externas' : 'Stands / Armas', 
+      shortLabel: isEntityCommander ? 'Entidades' : 'Stands', 
+      count: isEntityCommander ? (canonicalGhosts.length + legacyGhosts.length) : (formData.subEntity?.name ? 1 : null), 
+      icon: <Users className="w-4 h-4 text-purple-400" /> 
+    },
     { id: 'psicologia', label: 'Psicología & IQ', shortLabel: 'IQ', count: null, icon: <Brain className="w-4 h-4 text-indigo-400" /> }
   ];
 
@@ -826,17 +935,38 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 </div>
 
                 <div>
-                  <label className="block text-amber-400 mb-1 font-bold">Tier / Power Level</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-amber-400 font-bold text-xs">Tier / Power Level</label>
+                    {isEditingMode && (
+                      <span className="text-[10px] text-amber-300 font-mono">⚖️ Auto-Calibrar</span>
+                    )}
+                  </div>
                   {isEditingMode ? (
-                    <input 
-                      type="text" 
-                      value={formData.tier || ''} 
-                      onChange={e => handleChange('tier', e.target.value)} 
-                      placeholder="Ej: Tier 2-C (Multiversal Bajo)"
-                      className="w-full bg-slate-900 border border-amber-900/50 rounded-lg p-2 text-white text-xs" 
-                    />
+                    <div className="space-y-1.5">
+                      <input 
+                        type="text" 
+                        value={formData.tier || ''} 
+                        onChange={e => handleChange('tier', e.target.value)} 
+                        placeholder="Ej: Tier 2-C (Multiversal Bajo)"
+                        className="w-full bg-slate-900 border border-amber-900/50 rounded-lg p-2 text-white text-xs font-mono" 
+                      />
+                      <select
+                        onChange={(e) => {
+                          if (e.target.value) handleAutoCalibrateByTier(e.target.value);
+                        }}
+                        defaultValue=""
+                        className="w-full bg-slate-950 border border-amber-500/40 rounded-lg px-2 py-1 text-[10px] font-mono text-amber-300 cursor-pointer"
+                      >
+                        <option value="" disabled>⚡ Calibrar AP/Speed/Ki por Tier...</option>
+                        {TIER_ORDER.map((t) => (
+                          <option key={t} value={t}>
+                            Tier {t} (Ki ~{SCOUTER_ENERGY_ANCHORS[t] ? Number(SCOUTER_ENERGY_ANCHORS[t]).toLocaleString('es-ES') : 'N/A'})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   ) : (
-                    <p className="text-amber-300 font-bold p-2 bg-amber-950/30 rounded-lg">{formData.tier || 'No asignado'}</p>
+                    <p className="text-amber-300 font-bold p-2 bg-amber-950/30 rounded-lg font-mono">{formData.tier || 'No asignado'}</p>
                   )}
                 </div>
 
@@ -974,6 +1104,17 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 ) : (
                   <p className="text-slate-200 p-2.5 bg-slate-900/50 rounded-xl leading-relaxed">{formData.ap || 'Sin datos de AP.'}</p>
                 )}
+                {formData.lorePriorForm && (
+                  <div className="mt-2.5 p-3 rounded-xl bg-slate-950/85 border border-amber-500/25 text-slate-300 shadow-sm">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-400 text-xs font-mono tracking-wide mb-1">
+                      <span>📜</span>
+                      <span>Legado Histórico (no combate activo):</span>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                      {formData.lorePriorForm}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Fuerza de Impacto y Levantamiento */}
@@ -1020,7 +1161,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 <div>
                   <h3 className="text-amber-400 font-bold flex items-center gap-2 text-sm font-cinzel">
                     <ListPlus className="w-4 h-4 text-amber-400" />
-                    Gestor Exhaustivo de Transformaciones ({formData.forms?.length || 0})
+                    Gestor Exhaustivo de Transformaciones ({bodilyForms.length})
                   </h3>
                   <p className="text-[10px] text-slate-400">
                     Fases de combate, multiplicadores de poder y coste energético.
@@ -1039,7 +1180,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 )}
               </div>
               
-              {(!formData.forms || formData.forms.length === 0) ? (
+              {(!bodilyForms || bodilyForms.length === 0) ? (
                 <div className="py-10 text-center text-slate-500 bg-slate-900/30 rounded-2xl border border-slate-800">
                   <p>Este personaje no tiene transformaciones adicionales registradas (Lucha en su Forma Base).</p>
                   {isEditingMode && (
@@ -1054,7 +1195,10 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {formData.forms.map((f, i) => (
+                  {bodilyForms.map((f, i) => {
+                    const originalIdx = (formData.forms || []).findIndex(formItem => formItem.id === f.id);
+                    const targetIdx = originalIdx > -1 ? originalIdx : i;
+                    return (
                     <div 
                       key={i} 
                       className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border border-amber-500/30 shadow-lg space-y-2 relative group hover:border-amber-400/60 transition"
@@ -1067,7 +1211,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                             </span>
                             <button 
                               type="button" 
-                              onClick={() => removeForm(i)} 
+                              onClick={() => removeForm(targetIdx)} 
                               className="p-1 rounded text-red-400 hover:bg-red-950/60 hover:text-red-300 text-xs font-bold cursor-pointer"
                               title="Eliminar esta forma"
                             >
@@ -1080,14 +1224,14 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                               type="text" 
                               placeholder="Nombre de la Forma (Ej: Super Saiyan Blue, Bankai, Gear 5)" 
                               value={f.name || ''} 
-                              onChange={e => updateForm(i, 'name', e.target.value)} 
+                              onChange={e => updateForm(targetIdx, 'name', e.target.value)} 
                               className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-amber-300 font-bold text-xs outline-none focus:border-amber-400" 
                             />
                             <input 
                               type="text" 
                               placeholder="Multiplicador / Multiplier (Ej: x50, x400, Nivel Divino)" 
                               value={f.multiplier || ''} 
-                              onChange={e => updateForm(i, 'multiplier', e.target.value)} 
+                              onChange={e => updateForm(targetIdx, 'multiplier', e.target.value)} 
                               className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-300 text-xs" 
                             />
                           </div>
@@ -1096,7 +1240,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                             rows={2} 
                             placeholder="Aumento de stats, buffs, características del aura y descripción..." 
                             value={f.stats || ''} 
-                            onChange={e => updateForm(i, 'stats', e.target.value)} 
+                            onChange={e => updateForm(targetIdx, 'stats', e.target.value)} 
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-300 text-xs" 
                           />
 
@@ -1104,7 +1248,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                             type="text" 
                             placeholder="Desgaste / Coste (Ej: 10% Stamina por minuto, Daño de rebote cardiaco)" 
                             value={f.cost || ''} 
-                            onChange={e => updateForm(i, 'cost', e.target.value)} 
+                            onChange={e => updateForm(targetIdx, 'cost', e.target.value)} 
                             className="w-full bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-red-300 text-[10px]" 
                           />
                         </div>
@@ -1133,10 +1277,24 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                               ⚠️ Desgaste: {f.cost}
                             </div>
                           )}
+
+                          {/* Historical Lore Legacy Note (Purely Informative / Non-Combat) */}
+                          {(f.lorePriorForm || formData.lorePriorForm) && (
+                            <div className="mt-3 p-3 rounded-xl bg-slate-950/85 border border-amber-500/25 text-slate-300 shadow-sm">
+                              <div className="flex items-center gap-1.5 font-bold text-amber-400 text-xs font-mono tracking-wide mb-1">
+                                <span>📜</span>
+                                <span>Legado Histórico (no combate activo):</span>
+                              </div>
+                              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                                {f.lorePriorForm || formData.lorePriorForm}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
-                  ))}
+                  );
+                })}
                 </div>
               )}
             </div>
@@ -1145,7 +1303,25 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
           {/* TAB 3: ARSENAL, ATAQUES Y HABILIDADES */}
           {activeTab === 'arsenal' && (
             <div className="space-y-5">
-              
+              {/* Legacy Summon Reference Card (Dr. Raichi) */}
+              {isRaichi && (
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 via-purple-950/30 to-slate-900 border border-amber-500/40 text-amber-200 shadow-lg">
+                  <div className="flex items-center gap-2 font-bold text-sm text-amber-300">
+                    <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Invocación élite legacy: Fantasma de Broly LSSJ</span>
+                  </div>
+                  <p className="text-xs text-amber-300/80 italic mt-1">
+                    Referencia de invocación de Hatchiyack; no es una transformación ni un multiplicador corporal de Dr. Raichi.
+                  </p>
+                  <ul className="mt-2 space-y-1 text-xs text-slate-300 list-disc list-inside leading-relaxed">
+                    <li>La referencia legacy preserva el registro histórico de V25.</li>
+                    <li>El sistema futuro de Ghost Archive decidirá despliegue, resonancia, recarga y counterplay.</li>
+                    <li>No suma Ki ni multiplica las estadísticas personales de Raichi.</li>
+                    <li>Hatchiyack Manifest sigue como propuesta no activa.</li>
+                  </ul>
+                </div>
+              )}
+
               {/* 1. Ataques Básicos */}
               <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
                 <label className="block text-amber-400 font-bold mb-1 flex items-center gap-2">
@@ -1199,15 +1375,109 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                   </div>
 
                   {isEditingMode && (
-                    <button 
-                      type="button" 
-                      onClick={() => addArsenalItem('superAttacks')} 
-                      className="px-2.5 py-1 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-bold cursor-pointer"
-                    >
-                      + Añadir Súper Ataque
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        type="button" 
+                        onClick={() => setShowTechniqueForge(!showTechniqueForge)} 
+                        className="px-2.5 py-1 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-slate-950 rounded-lg text-xs font-bold font-mono cursor-pointer flex items-center gap-1 shadow-md"
+                      >
+                        <Zap className="w-3.5 h-3.5 text-slate-950" />
+                        <span>{showTechniqueForge ? 'Cerrar Forja ▲' : '⚡ Forja Rápida de Técnicas'}</span>
+                      </button>
+                      <button 
+                        type="button" 
+                        onClick={() => addArsenalItem('superAttacks')} 
+                        className="px-2.5 py-1 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-bold cursor-pointer"
+                      >
+                        + Añadir Manual
+                      </button>
+                    </div>
                   )}
                 </div>
+
+                {/* Interactive Technique Forge Panel */}
+                {isEditingMode && showTechniqueForge && (
+                  <div className="p-3.5 rounded-xl bg-slate-950 border border-amber-500/40 space-y-3 font-mono text-xs animate-fade-in">
+                    <div className="flex items-center justify-between pb-2 border-b border-amber-500/20 text-amber-300 font-bold">
+                      <span>⚡ FORJA INTERACTIVA DE TÉCNICAS & HAX COMBINADO</span>
+                      <span className="text-[10px] text-slate-400">Inserción instantánea en arsenal</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-slate-300 text-[10px] mb-1">Nombre de la Técnica:</label>
+                        <input
+                          type="text"
+                          value={forgedTech.name}
+                          onChange={(e) => setForgedTech(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="Ej: Destello Cósmico, Corte de Vacío..."
+                          className="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-white text-xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-300 text-[10px] mb-1">Destino en Ficha:</label>
+                        <select
+                          value={forgedTech.targetCategory}
+                          onChange={(e) => setForgedTech(prev => ({ ...prev, targetCategory: e.target.value }))}
+                          className="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-slate-200 text-xs"
+                        >
+                          <option value="superAttacks">Súper Ataque (Técnica Especial)</option>
+                          <option value="ultimateAttacks">Ataque Definitivo (Finisher)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-300 text-[10px] mb-1">Tipo de Energía / Vector:</label>
+                        <select
+                          value={forgedTech.type}
+                          onChange={(e) => setForgedTech(prev => ({ ...prev, type: e.target.value }))}
+                          className="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-slate-200 text-xs"
+                        >
+                          <option value="Energía / Ki Pura">Energía / Ki Pura</option>
+                          <option value="Impacto Físico / CQC">Impacto Físico / CQC</option>
+                          <option value="Corte / Filo Espiritual">Corte / Filo Espiritual</option>
+                          <option value="Espacial / Rasgadura Dimensional">Espacial / Rasgadura Dimensional</option>
+                          <option value="Mental / Ilusión Óptica">Mental / Ilusión Óptica</option>
+                          <option value="Maldición / Daño de Alma">Maldición / Daño de Alma</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-300 text-[10px] mb-1">Efecto Especial Primario:</label>
+                        <select
+                          value={forgedTech.effect}
+                          onChange={(e) => setForgedTech(prev => ({ ...prev, effect: e.target.value }))}
+                          className="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-slate-200 text-xs"
+                        >
+                          <option value="Perforante (Ignora el 50% de la durabilidad menor)">Perforante (Ignora el 50% de durabilidad)</option>
+                          <option value="Aturdidor (Reduce reflejos enemigos un 40% por 10s)">Aturdidor (Conmoción sensorial)</option>
+                          <option value="Parálisis de Ki (Bloquea flujo de energía del objetivo)">Parálisis de Ki / Energía</option>
+                          <option value="Inesquivable (Trayectoria homing guiada por firma espiritual)">Inesquivable (Proyectil guiado)</option>
+                          <option value="Detonación Interna (Explosión atómica tras penetración)">Detonación Interna Retardada</option>
+                          <option value="Negación de Regeneración Celular">Anulación de Regeneración</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+                      <input
+                        type="text"
+                        value={forgedTech.cost}
+                        onChange={(e) => setForgedTech(prev => ({ ...prev, cost: e.target.value }))}
+                        placeholder="Coste (Ej: 15% Ki, 1 turno de carga)"
+                        className="w-2/3 bg-slate-900 border border-slate-700 rounded p-1 text-slate-300 text-[11px]"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddForgedTechnique}
+                        className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs cursor-pointer shadow"
+                      >
+                        ⚡ Forjar e Insertar
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {(!formData.arsenal?.superAttacks || formData.arsenal.superAttacks.length === 0) ? (
                   <p className="text-slate-500 italic text-[11px]">No hay súper ataques registrados.</p>
@@ -1536,9 +1806,144 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
             </div>
           )}
 
-          {/* TAB 7: STANDS / ARMAS */}
+          {/* TAB 7: STANDS / ENTIDADES EXTERNAS / ARMAS */}
           {activeTab === 'invocaciones' && (
             <div className="space-y-4">
+              {/* External Entity Controller Header (e.g. Dr. Raichi) */}
+              {isEntityCommander && (
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-950/60 via-slate-900 to-indigo-950/60 border border-purple-500/40 shadow-xl space-y-3">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-5 h-5 text-purple-400" />
+                      <h4 className="font-bold text-white text-sm font-cinzel">
+                        Controlador Espectral: {formData.narrativeCombatProfile?.externalEntityController?.coreArtifact || 'Núcleo Psiónico'}
+                      </h4>
+                    </div>
+                    <span className="px-2.5 py-0.5 rounded-full bg-red-950/80 border border-red-500/50 text-red-300 font-mono text-[10px] font-bold">
+                      🛡️ bodyStatIsolation: STRICT
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {formData.narrativeCombatProfile?.commanderRole?.coreDescription ||
+                     'Las invocaciones y proyecciones no alteran el Ki base, Tier ni multiplicador corporal del personaje.'}
+                  </p>
+                  <div className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-[11px] text-slate-400 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-purple-300 font-semibold">Tier Corporal del Usuario:</span>
+                      <span className="font-mono text-white font-bold">{formData.tier} (Sin alteración por fantasmas)</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-purple-300 font-semibold">Ki Corporal Base:</span>
+                      <span className="font-mono text-white font-bold">{formData.forms?.[0]?.kiFormatted || '24.52 Mil'} (1x)</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Canonical Ghost Archive (5 confirmed DBM summons) */}
+              {canonicalGhosts.length > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-cyan-300 flex items-center gap-2 font-cinzel">
+                      <Shield className="w-4 h-4 text-cyan-400" />
+                      Archivo Fantasma Canónico ({canonicalGhosts.length} Unidades DBM)
+                    </h4>
+                    <span className="text-[10px] text-slate-400 font-mono">confirmed_dbm_onscreen</span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {canonicalGhosts.map((ghost, gIdx) => (
+                      <div key={gIdx} className="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/30 hover:border-cyan-400/60 transition space-y-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-white text-xs">{ghost.displayName}</span>
+                          <span className="px-2 py-0.5 rounded bg-cyan-950 border border-cyan-500/40 text-cyan-300 text-[10px] font-mono">
+                            {ghost.combatRole}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-300 leading-relaxed">{ghost.evidenceNote}</p>
+                        {ghost.restrictions && (
+                          <div className="p-1.5 rounded bg-amber-950/40 border border-amber-500/30 text-[10px] text-amber-300">
+                            ⚠️ {ghost.restrictions}
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-800 text-[10px] font-mono text-slate-400">
+                          <span>Cooldown: <strong className="text-slate-200">{ghost.cooldownPolicy}</strong></span>
+                          <span>Counter: <strong className="text-slate-200">{(ghost.counterplayTags || []).slice(0, 2).join(', ')}</strong></span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Legacy Summon Reference (Fantasma de Broly LSSJ) */}
+              {legacyGhosts.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-bold text-amber-300 flex items-center gap-2 font-cinzel">
+                    <AlertTriangle className="w-4 h-4 text-amber-400" />
+                    Invocación Élite Legacy (No Seleccionable como Forma Propia)
+                  </h4>
+                  {legacyGhosts.map((leg, lIdx) => (
+                    <div key={lIdx} className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/40 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-amber-200 text-xs">{leg.displayName}</span>
+                        <span className="px-2 py-0.5 rounded bg-amber-950 text-amber-300 text-[10px] font-mono border border-amber-500/30">
+                          {leg.availability}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-300 leading-relaxed">{leg.notes}</p>
+                      <div className="text-[10px] text-slate-400 font-mono">
+                        Tags: {(leg.counterplayTags || []).join(' | ')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Contextual Resonance Library */}
+              {resonanceGhosts.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-purple-300 flex items-center gap-2 font-cinzel">
+                      <Sparkles className="w-4 h-4 text-purple-400" />
+                      Biblioteca de Resonancia Contextual ({resonanceGhosts.length} Proyecciones)
+                    </h4>
+                    <span className="text-[10px] text-purple-400 font-mono">simulationDesignOnly</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400">
+                    Proyecciones cualitativas activadas por rencor histórico ante oponentes o escenarios compatibles. No son invocables por defecto ni forman parte del arsenal canónico en pantalla.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {resonanceGhosts.map((res, rIdx) => (
+                      <div key={rIdx} className="p-2.5 rounded-lg bg-slate-950/60 border border-purple-900/40 text-xs space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-slate-200 text-[11px] truncate max-w-[180px]">{res.recordName}</span>
+                          <span className="text-[9px] font-mono text-purple-300 bg-purple-950/80 px-1.5 py-0.5 rounded">
+                            {res.relationshipStatus || 'Contextual'}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 line-clamp-2">{res.designNotes}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Hatchiyack Contingency Proposal */}
+              {formData.hatchiyackManifestEventProposal && (
+                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 text-xs space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-red-300">Contingencia Hatchiyack (Propuesta de Modelo)</span>
+                    <span className="px-2 py-0.5 rounded bg-red-950 text-red-400 font-mono text-[10px]">
+                      {formData.hatchiyackManifestEventProposal.status || 'PROPOSAL_ONLY_NOT_ACTIVE'}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    {formData.hatchiyackManifestEventProposal.condition}
+                  </p>
+                </div>
+              )}
+
+              {/* Standard Sub-Entity / Stand / Invocación */}
               <div className="p-4 bg-purple-900/20 border border-purple-500/30 rounded-2xl space-y-2">
                 <label className="block text-purple-400 font-bold mb-1 flex items-center gap-2">
                   <Users className="w-4 h-4"/> Sub-Entidad / Stand / Invocación / Simbionte
@@ -1565,6 +1970,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 </div>
               </div>
 
+              {/* Equipment */}
               <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl space-y-1">
                 <label className="block text-amber-400 mb-1 font-bold flex items-center gap-1">
                   <Wrench className="w-3.5 h-3.5"/> Armamento, Reliquias & Objetos Clave

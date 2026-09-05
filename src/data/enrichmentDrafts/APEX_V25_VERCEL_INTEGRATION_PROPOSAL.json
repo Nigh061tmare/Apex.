@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "title": "APEX V25 — Propuesta de Integración Mínima para Despliegue en Vercel",
+    "status": "PROPOSAL_ONLY_NOT_APPLIED",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V25.json",
+    "sourceRosterSha256": "ee4d7554cb7a832d8dda984c8a9bf57e2245dd1831ee9f33edb99d03ace44729",
+    "activeCharactersCount": 756,
+    "deprecatedRecordsCount": 13,
+    "censusTotal": 769,
+    "generatedAt": "2026-09-04T10:16:41.156Z",
+    "isReadOnlyProposal": true
+  },
+  "seccion1_arquitecturaActual": {
+    "archivoFuenteUI": "src/data/characters.js (exporta INITIAL_CHARACTERS con 769 personajes heredados)",
+    "consumidorPrimario": "src/App.jsx (inicializa el estado `characters` en useState y gestiona persistencia en localStorage)",
+    "cadenaCompletaImports": [
+      "src/data/characters.js -> src/App.jsx",
+      "src/data/characters.js -> src/components/RandomMatchmakerModal.jsx",
+      "src/data/characters.js -> src/services/simulationEngine.js",
+      "src/App.jsx -> props `characters` / `allCharacters` pasados a 12 componentes modales y paneles"
+    ],
+    "formatoEsperadoUI": {
+      "identidadYEscala": [
+        "id",
+        "name",
+        "alias",
+        "universe",
+        "saga",
+        "version",
+        "tier",
+        "forms",
+        "powerSchema"
+      ],
+      "combateTactico": [
+        "ap",
+        "range",
+        "speed",
+        "strength",
+        "durability",
+        "stamina",
+        "battleIQ",
+        "haxTags",
+        "arsenal",
+        "feats",
+        "psychology",
+        "weaknesses",
+        "synergies",
+        "teamCombos"
+      ]
+    },
+    "importDirectoJsonV25": {
+      "soportadoPorVite": true,
+      "limitacionDetectada": "v25.characters contiene identidad, tiers, Ki y forms canónicas (756 registros), pero no incluye el arsenal táctico detallado, speed ni haxTags que simulationEngine y CharacterCard requieren para el combate.",
+      "conclusion": "Un import JSON puro sin enriquecimiento táctico deshabilitaría los ataques y estadísticas de combate. Se requiere un adaptador que combine la escala V25 con los arsenales tácticos."
+    }
+  },
+  "seccion2_opcionRecomendada": {
+    "estrategia": "Adaptador Seguro de Sincronización en src/data/characters.js",
+    "descripcion": "Convertir src/data/characters.js en un adaptador canónico sincronizado que itere estrictamente sobre v25Data.characters (756 activos), fusionando los arsenales tácticos preexistentes y excluyendo por diseño el 100% de los 13 deprecatedRecords.",
+    "archivosAModificarFuturos": [
+      "src/data/characters.js (transformar en adaptador o regenerar con 756 activos y forms de V25)",
+      "src/App.jsx (actualizar ROSTER_VERSION a 'v25.0_CANONICAL_756_ACTIVE' para purga obligatoria de localStorage)"
+    ],
+    "diffConceptualMinimo": {
+      "characters_js": "\n// En src/data/characters.js:\nimport v25Data from './ROSTER_NIVELES_PODER_CORREGIDO_V25.json';\nimport { TACTICAL_DATA_MAP } from './tacticalDataStore.js'; // o mapa en memoria\n\nexport const INITIAL_CHARACTERS = v25Data.characters.map(v25Char => {\n  const tactical = TACTICAL_DATA_MAP.get(v25Char.id) || {};\n  return {\n    ...tactical,\n    ...v25Char, // Sobrescribe id, name, franchise, universe, saga, baseTier, baseKiNumeric\n    forms: v25Char.forms // Formas canónicas oficiales V25 (ej: Gohan U16 con 3 forms)\n  };\n});\n      ",
+      "app_jsx": "\n// En src/App.jsx:\n- const ROSTER_VERSION = 'v9.2_SYNC_SLOTS_AND_PURGE_CACHE_1788366100000';\n+ const ROSTER_VERSION = 'v25.0_CANONICAL_BASELINE_756_ACTIVE_1788517001157';\n      "
+    },
+    "compatibilidadEcosistema": "100% retrocompatible: al mantener el contrato de exportación `INITIAL_CHARACTERS` con 756 elementos ricos, cero componentes React requieren modificaciones."
+  },
+  "seccion3_proteccionFrontend": {
+    "aislamientoDeprecated": "Al iterar exclusivamente sobre v25Data.characters, los 13 deprecatedRecords nunca son incluidos en INITIAL_CHARACTERS ni expuestos en selectores, filtros o simulaciones.",
+    "badgeCensoUI": "Mostrar opcionalmente en el footer de App.jsx o en el Modal de Roster: 'APEX Engine V25 · 756 combatientes activos · 13 archivados'.",
+    "invariabilidadDeDatos": "Prohibición absoluta de mutar Ki, tiers, multiplicadores o forms en tiempo de ejecución de la UI."
+  },
+  "seccion4_verificacionYBuild": {
+    "comandoBuild": "npm run build (vite build)",
+    "tiempoBuildMedido": "17.77 segundos",
+    "salidaBuildMedida": "dist/assets/index-*.js (~8.9 MB minificado / ~2.2 MB gzip)",
+    "comprobacionesPostBuild": [
+      "Verificar que ninguno de los 13 IDs deprecados aparece en el bundle de producción como activo.",
+      "Verificar que gohan-u16-dbm-espectador cuenta con exactamente 3 formas en el selector.",
+      "Confirmar que V22, V23 y V24 no son importados por ningún módulo de src/App.jsx."
+    ]
+  },
+  "seccion5_planCommitDeployControlado": {
+    "prohibicionTajante": "PROHIBIDO ejecutar 'git add .' o scripts automáticos (DESPLEGAR_A_VERCEL.bat, SINCRONIZAR_TODO.bat).",
+    "listaBlancaArchivosCommit": [
+      "src/data/ROSTER_NIVELES_PODER_CORREGIDO_V25.json",
+      "src/data/characters.js",
+      "src/App.jsx",
+      "src/data/enrichmentDrafts/APEX_V25_VERCEL_INTEGRATION_PROPOSAL.json"
+    ],
+    "mensajeCommitRecomendado": "feat(roster): integrate V25 canonical baseline (756 active characters, 13 deprecated)",
+    "procedimientoDeployVercelPreview": [
+      "Paso 1: Crear una rama de preview segura: `git checkout -b preview/v25-baseline`.",
+      "Paso 2: Subir únicamente los archivos de la lista blanca mediante comandos Git explícitos.",
+      "Paso 3: Abrir PR en GitHub para disparar el despliegue de Preview automático en Vercel (URL efímera tipo `apex-engine-git-preview-*.vercel.app`).",
+      "Paso 4: Inspeccionar la URL de Preview: validar selector de personajes (756 pjs), ausencia de Panzy/Broly DBM stub, y ejecutar 1 combate de prueba.",
+      "Paso 5: Tras aprobación humana, realizar merge a `main` para promoción automática a producción.",
+      "Paso 6 (Rollback de emergencia): Si se detecta anomalía, ejecutar `git revert HEAD` en `main` para volver inmediatamente al estado anterior."
+    ]
+  },
+  "seccion6_analisisDeRiesgos": {
+    "riesgo1_localStorageStale": {
+      "descripcion": "Los usuarios con visitas previas tienen guardados en su navegador los 769 personajes antiguos en localStorage ('apex_custom_characters').",
+      "impacto": "Verían personajes viejos o rotos a pesar de la actualización del servidor.",
+      "mitigacion": "Garantizada por el incremento de `ROSTER_VERSION` en App.jsx, que purga automáticamente el localStorage en la primera carga."
+    },
+    "riesgo2_tamanioBundle": {
+      "descripcion": "El bundle principal ronda los 8.9 MB debido al lore exhaustivo.",
+      "impacto": "Tiempos de carga inicial de 1-2s en redes móviles.",
+      "mitigacion": "La transición a V25 reduce ligeramente el bundle al remover 13 personajes redundantes. No introduce sobrepeso."
+    },
+    "riesgo3_referenciasRotasPorIdsArchivados": {
+      "descripcion": "Marcadores locales o equipos guardados con personajes deprecados (ej: kat-syd-u6-dbm).",
+      "impacto": "Ficha nula al intentar resolver el personaje.",
+      "mitigacion": "CharacterCard ya cuenta con guardias null-safe (`if (!character || !character.id) return 'Selecciona un combatiente...'`)."
+    }
+  },
+  "confirmacionReadOnly": {
+    "isReadOnly": true,
+    "filesModifiedCount": 0,
+    "commitsExecuted": 0,
+    "deploysExecuted": 0,
+    "v25HashVerified": "ee4d7554cb7a832d8dda984c8a9bf57e2245dd1831ee9f33edb99d03ace44729",
+    "statement": "Propuesta puramente técnica. Ningún archivo fue modificado ni creado fuera de enrichmentDrafts. Cero commits y cero deploys."
+  }
+}

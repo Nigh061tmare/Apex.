@@ -1,0 +1,41 @@
+{
+  "baselineVersion": "V25",
+  "baselineSha256": "ee4d7554cb7a832d8dda984c8a9bf57e2245dd1831ee9f33edb99d03ace44729",
+  "status": "PROPOSAL_ONLY_NOT_APPLIED",
+  "mode": "SIMULATION_ONLY_NO_IN_PLACE_MUTATION",
+  "evaluatedAt": "2026-09-04T11:57:46.661Z",
+  "totalEvaluated": 4,
+  "totalValid": 4,
+  "totalRejected": 0,
+  "results": [
+    {
+      "patchId": "A1-PATCH-0001",
+      "targetRecordId": "dr-raichi-dbm-u3",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "patchId": "A1-PATCH-0002",
+      "targetRecordId": "kat-u6-individual",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "patchId": "A1-PATCH-0003",
+      "targetRecordId": "syd-u6-individual",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "patchId": "A2-PATCH-0001",
+      "targetRecordId": "dr-raichi-dbm-u3",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "notice": "PATCHES ARE PROPOSALS ONLY. EXPLICIT USER APPROVAL REQUIRED BEFORE APPLICATION."
+}

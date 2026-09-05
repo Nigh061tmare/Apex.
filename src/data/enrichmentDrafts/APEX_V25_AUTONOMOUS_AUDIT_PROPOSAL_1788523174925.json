@@ -1,0 +1,51 @@
+{
+  "baselineVersion": "V25",
+  "baselineSha256": "ee4d7554cb7a832d8dda984c8a9bf57e2245dd1831ee9f33edb99d03ace44729",
+  "activeCount": 756,
+  "deprecatedCount": 13,
+  "historicalTotal": 769,
+  "status": "PROPOSAL_ONLY_NOT_APPLIED",
+  "auditMode": "READ_ONLY_DRAFT_MODE",
+  "generatedAt": "2026-09-04T11:59:34.925Z",
+  "pendingGates": [
+    {
+      "gateId": "GATE-001-TAMAGAMI-SOURCE",
+      "status": "LOCKED_PENDING_EDITORIAL_DECISION",
+      "policy": "MUTATION_BLOCKED_AUTONOMOUS_PROTECTION"
+    },
+    {
+      "gateId": "GER_MODEL_PENDING_CONSOLIDATION",
+      "status": "LOCKED_PENDING_EDITORIAL_DECISION",
+      "policy": "MUTATION_BLOCKED_AUTONOMOUS_PROTECTION"
+    },
+    {
+      "gateId": "VALENTINE_HAX_MODEL_PENDING_SIMULATION_RULES",
+      "status": "LOCKED_PENDING_EDITORIAL_DECISION",
+      "policy": "MUTATION_BLOCKED_AUTONOMOUS_PROTECTION"
+    },
+    {
+      "gateId": "Hatchiyack PROPOSAL_ONLY_NOT_ACTIVE",
+      "status": "LOCKED_PENDING_EDITORIAL_DECISION",
+      "policy": "MUTATION_BLOCKED_AUTONOMOUS_PROTECTION"
+    },
+    {
+      "gateId": "daima_ssj4_representation_review_pending",
+      "status": "LOCKED_PENDING_EDITORIAL_DECISION",
+      "policy": "MUTATION_BLOCKED_AUTONOMOUS_PROTECTION"
+    }
+  ],
+  "deprecatedReferenceViolations": [],
+  "proposedEnrichmentDrafts": [
+    {
+      "draftFile": "APEX_V25_AUTONOMOUS_AUDIT_PROPOSAL_1788523174925.json",
+      "status": "PROPOSAL_ONLY_NOT_APPLIED",
+      "notes": "Auditoría nocturna V25 generada en modo lectura estricto."
+    }
+  ],
+  "blockedAutoFixes": [
+    "Auto-mutaciones en caliente deshabilitadas por gobernanza V25.",
+    "Cualquier cambio requiere revisión y patch con aprobación explícita."
+  ],
+  "errors": [],
+  "warnings": []
+}

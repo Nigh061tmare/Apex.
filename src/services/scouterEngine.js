@@ -33,7 +33,7 @@ export const KNOWN_CANON_DB_LEVELS = [
   { pattern: /cymbal/i, base: 148, name: 'Cymbal' },
   { pattern: /drum/i, base: 182, name: 'Drum' },
   { pattern: /piano/i, base: 3, name: 'Piano' },
-  { pattern: /kami-sama|kamisama/i, base: 310, name: 'Kami-sama' },
+  { pattern: /^(?!.*piccolo).*(?:kami-sama|kamisama)/i, base: 310, name: 'Kami-sama' },
   { pattern: /mr\. popo|popo/i, base: 1070, name: 'Mr. Popo' },
   { pattern: /gyumao|ox-king/i, base: 73, name: 'Gyumao (Ox-King)' },
   { pattern: /bora\b/i, base: 23, name: 'Bora' },

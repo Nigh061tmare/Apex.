@@ -1,0 +1,1845 @@
+{
+  "meta": {
+    "title": "APEX Power Scaling Engine — Auditoría Profunda de Duplicados y Decisiones de Escala Pendientes",
+    "version": "V23-PENDING-SCALE-AUDIT-V1",
+    "status": "AUDIT_ONLY_PENDING_USER_APPROVAL",
+    "sourceRoster": "ROSTER_NIVELES_PODER_CORREGIDO_V23.json",
+    "generatedAt": "2026-09-04T09:50:49.165Z",
+    "isReadOnlyAudit": true,
+    "totalCases": 15,
+    "countsByGroup": {
+      "seguroParaAplicar": 4,
+      "requiereDecisionFuente": 6,
+      "requiereDecisionModelo": 5
+    },
+    "warningsCount": 0,
+    "constitutionalGuarantees": [
+      "No se modificó V22, V23, characters.js, roster activo ni backlog.",
+      "No se generaron patches ejecutables ni se aplicaron mutaciones in-place.",
+      "No se recalcularon Ki, tiers ni multiplicadores.",
+      "Cero commits, cero push, cero deploys."
+    ]
+  },
+  "summaryGroups": {
+    "groupA_seguroParaAplicar": {
+      "name": "A. SEGURO PARA APLICAR",
+      "description": "Casos cuya identidad/duplicación sea inequívoca (stubs verificados, plantillas manifiestamente contaminadas o duplicados formales demostrados).",
+      "count": 4,
+      "caseIndexes": [
+        4,
+        6,
+        12,
+        13
+      ]
+    },
+    "groupB_requiereDecisionFuente": {
+      "name": "B. REQUIERE DECISIÓN DE FUENTE",
+      "description": "Casos con multiplicadores, Ki o canon incompatibles que requieren arbitraje editorial o confrontación de fuentes antes de tocar el roster.",
+      "count": 6,
+      "caseIndexes": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        10
+      ]
+    },
+    "groupC_requiereDecisionModelo": {
+      "name": "C. REQUIERE DECISIÓN DE MODELO",
+      "description": "Casos donde hay que decidir cómo representar variantes, perfiles de sinergia/equipo, Stands/hax desacoplados de Ki, o escisiones What-If.",
+      "count": 5,
+      "caseIndexes": [
+        8,
+        9,
+        11,
+        14,
+        15
+      ]
+    }
+  },
+  "finalTable": [
+    {
+      "lote": "LOTE A",
+      "caso": 1,
+      "fichaAConservar": "tamagami-1-espada-daima (si se valida 634.2M) o 763 purgado",
+      "fichaOFormaADeprecarOSeparar": "tamagami-n-mero-1-dragon-ball-daima-763",
+      "decision": "manual_scale_resolution_required",
+      "confianza": "MEDIUM",
+      "motivoConcreto": "Incompatibilidad directa en la escala de Ki de Daima (634.2M vs 1.11B). Requiere consenso editorial sobre la base oficial de los Tamagami antes de unificar.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0014"
+    },
+    {
+      "lote": "LOTE A",
+      "caso": 2,
+      "fichaAConservar": "menthuthuyoupi-hxh-ca (o youpi-hxh-ca tras normalizar tier)",
+      "fichaOFormaADeprecarOSeparar": "youpi-hxh-ca",
+      "decision": "manual_scale_resolution_required",
+      "confianza": "MEDIUM",
+      "motivoConcreto": "Incoherencia entre tier asignado y valor de Ki numérico (7-B con 5.030 Ki vs 7-A con 4.746 Ki). Requiere fijar la frontera de Ki entre 7-B y 7-A en Hunter x Hunter.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0015"
+    },
+    {
+      "lote": "LOTE A",
+      "caso": 3,
+      "fichaAConservar": "kenjaku-jjk (perfil completo con Expansión de Dominio)",
+      "fichaOFormaADeprecarOSeparar": "kenjaku-pseudo-geto",
+      "decision": "manual_scale_resolution_required",
+      "confianza": "MEDIUM",
+      "motivoConcreto": "Discrepancia extrema de orden de magnitud (252.525 vs 7.203 Ki) en la misma saga y cuerpo. Requiere definir la escala de energía maldita Grado Especial.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0016"
+    },
+    {
+      "lote": "LOTE A",
+      "caso": 4,
+      "fichaAConservar": "poseidon-shuumatsu",
+      "fichaOFormaADeprecarOSeparar": "poseidon-ror-r3 (ya en deprecatedRecords)",
+      "decision": "deprecate_stub_record",
+      "confianza": "HIGH",
+      "motivoConcreto": "Deprecación ya confirmada y consistente en V23 (V23-PATCH-0003). poseidon-shuumatsu es la ficha canónica oficial.",
+      "patchFuturoSugerido": "V23-PATCH-0003 (YA APLICADO EN V23)"
+    },
+    {
+      "lote": "LOTE A",
+      "caso": 5,
+      "fichaAConservar": "funny-valentine-jojo-sbr (o unificado limpio)",
+      "fichaOFormaADeprecarOSeparar": "funny-valentine-poder-completo",
+      "decision": "manual_scale_resolution_required",
+      "confianza": "MEDIUM",
+      "motivoConcreto": "Diferencia no resuelta de Ki base (1.292 vs 547). Se debe fijar el valor base humano antes de consolidar el perfil de Stand.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0017"
+    },
+    {
+      "lote": "LOTE A",
+      "caso": 6,
+      "fichaAConservar": "broly-u20-dbm-congelado",
+      "fichaOFormaADeprecarOSeparar": "broly-legendario-dbm (ya en deprecatedRecords)",
+      "decision": "deprecate_stub_record",
+      "confianza": "HIGH",
+      "motivoConcreto": "Deprecación ya confirmada y consistente en V23 (V23-PATCH-0004). broly-u20-dbm-congelado retiene la progresión DBM íntegra.",
+      "patchFuturoSugerido": "V23-PATCH-0004 (YA APLICADO EN V23)"
+    },
+    {
+      "lote": "LOTE A",
+      "caso": 7,
+      "fichaAConservar": "dr-raichi-dbm-u3 (reformulado)",
+      "fichaOFormaADeprecarOSeparar": "dr-raichi-fantasmas-del-odio-u3-dbm",
+      "decision": "manual_scale_resolution_required",
+      "confianza": "MEDIUM",
+      "motivoConcreto": "Incompatibilidad directa en el valor numérico base (24.518 vs 845.250.000) derivada de confundir la entidad invocadora con el poder del enjambre.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0018"
+    },
+    {
+      "lote": "LOTE B",
+      "caso": 8,
+      "fichaAConservar": "giorno-giovanna-jojo-va (ampliado con estado GER limpio sin multiplicar Ki)",
+      "fichaOFormaADeprecarOSeparar": "giorno-giovanna-ger-jojo-gg001",
+      "decision": "manual_modeling_decision_required",
+      "confianza": "HIGH",
+      "motivoConcreto": "Se debe conservar un único registro para Giorno Giovanna. Su poder físico/Stand no debe traducirse a un multiplicador de Ki; GER debe modelarse como hax/estado independiente.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0019"
+    },
+    {
+      "lote": "LOTE B",
+      "caso": 9,
+      "fichaAConservar": "funny-valentine-jojo-sbr (con D4C y Love Train en haxProfile)",
+      "fichaOFormaADeprecarOSeparar": "funny-valentine-poder-completo",
+      "decision": "manual_modeling_decision_required",
+      "confianza": "HIGH",
+      "motivoConcreto": "No duplicar al usuario. D4C (inmortalidad interdimensional por reemplazo) y Love Train (desvío de infortunio) son hax dimensionales que no alteran el Ki físico.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0020"
+    },
+    {
+      "lote": "LOTE C",
+      "caso": 10,
+      "fichaAConservar": "baby-god-brokoly",
+      "fichaOFormaADeprecarOSeparar": "baby-vegeta-god-brokoly (deprecar por multiplicador x6400 corrupto)",
+      "decision": "manual_source_resolution_required",
+      "confianza": "HIGH",
+      "motivoConcreto": "Detección de multiplicador x6400 artificial que infla el Ki a 283 Trillones. Requiere descartar el mult x6400 y adoptar la escala sustentada (mult x50 con base controlada).",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0021"
+    },
+    {
+      "lote": "LOTE C",
+      "caso": 11,
+      "fichaAConservar": "dr-raichi-dbm-u3 (remodelado sin multiplicador de invocación biológico)",
+      "fichaOFormaADeprecarOSeparar": "dr-raichi-fantasmas-del-odio-u3-dbm",
+      "decision": "manual_modeling_decision_required",
+      "confianza": "HIGH",
+      "motivoConcreto": "Se debe separar el Ki individual de Raichi/Hatchiyack del Ki de los fantasmas invocados. La invocación no es un multiplicador biológico x2000, sino una sinergia/hax de combate.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0022"
+    },
+    {
+      "lote": "LOTE C",
+      "caso": 12,
+      "fichaAConservar": "kat-u6-individual y syd-u6-individual (conservar individuales; modelar sinergia en draft)",
+      "fichaOFormaADeprecarOSeparar": "kat-syd-u6-dbm (deprecar registro contaminado)",
+      "decision": "deprecate_contaminated_record",
+      "confianza": "HIGH",
+      "motivoConcreto": "kat-syd-u6-dbm está contaminada por la plantilla errónea de 289.800.000 Ki (al igual que la deprecada Panzy). Debe deprecarse o reescribirse a la escala real de 477.015 Ki.",
+      "patchFuturoSugerido": "V23-PATCH-PENDING-0023"
+    },
+    {
+      "lote": "LOTE D",
+      "caso": 13,
+      "fichaAConservar": "son-goku-mini-daima-full",
+      "fichaOFormaADeprecarOSeparar": "son-goku-mini-dragon-ball-daima-751",
+      "decision": "retain_canonical_deprecate_duplicate",
+      "confianza": "HIGH",
+      "motivoConcreto": "Confirmado: el registro 751 contiene formas internamente duplicadas con etiquetas APEX/custom y tiers corruptos. Acción futura al aprobar V23-PATCH-0010: deprecar 751 sin migrar sus formas.",
+      "patchFuturoSugerido": "V23-PATCH-0010 (PENDIENTE DE APROBACIÓN FINAL)"
+    },
+    {
+      "lote": "LOTE D",
+      "caso": 14,
+      "fichaAConservar": "son-goku-mini-daima-full (formas 0 a 3 canónicas)",
+      "fichaOFormaADeprecarOSeparar": "forma[4] ssj4-daima-mini (a escindir a What-If)",
+      "decision": "split_what_if_from_canonical",
+      "confianza": "HIGH",
+      "motivoConcreto": "Forma What-If retenida temporalmente bajo migrationGate. Acción futura al aprobar V23-PATCH-0011: escindir la forma 4 de son-goku-mini-daima-full hacia la nueva entidad What-If son-goku-ssj4-primal-daima-what-if.",
+      "patchFuturoSugerido": "V23-PATCH-0011 (PENDIENTE DE APROBACIÓN FINAL)"
+    },
+    {
+      "lote": "LOTE D",
+      "caso": 15,
+      "fichaAConservar": "son-goku-adulto-daima (formas 0 a 3 canónicas)",
+      "fichaOFormaADeprecarOSeparar": "forma[4] ssj4-adulto-daima (a escindir a What-If)",
+      "decision": "split_what_if_from_canonical",
+      "confianza": "HIGH",
+      "motivoConcreto": "Forma What-If retenida temporalmente bajo migrationGate. Acción futura al aprobar V23-PATCH-0013: escindir la forma 4 de son-goku-adulto-daima hacia la entidad What-If son-goku-ssj4-primal-daima-what-if.",
+      "patchFuturoSugerido": "V23-PATCH-0013 (PENDIENTE DE APROBACIÓN FINAL)"
+    }
+  ],
+  "auditCases": [
+    {
+      "caseIndex": 1,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Tamagami #1: Guardián de la Espada vs Registro 763",
+      "recordsInvolved": [
+        {
+          "recordId": "tamagami-1-espada-daima",
+          "name": "Tamagami #1 (Guardián de la Espada de Fuego)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Daima",
+          "saga": "Aventura en el Reino Demoníaco (Daima)",
+          "baseTier": "4-B",
+          "baseKiNumeric": 634200000,
+          "baseKiFormatted": "634.20 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Tamagami #1 (Guardián de la Espada de Fuego)",
+              "tier": "4-B",
+              "kiNumeric": 634200000,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Espada de Llamas Demoníacas",
+            "Inmunidad a Fatiga y Venenos",
+            "Armadura de Mineral Namekiano",
+            "Resistencia al Fuego Mágico",
+            "Cortes Térmicos de Área"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "anime"
+          }
+        },
+        {
+          "recordId": "tamagami-n-mero-1-dragon-ball-daima-763",
+          "name": "Tamagami Número 1",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Daima",
+          "saga": "Reino de los Demonios",
+          "baseTier": "4-B",
+          "baseKiNumeric": 1113000000,
+          "baseKiFormatted": "1.11 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Tamagami Número 1 (Estado Base)",
+              "tier": "4-B",
+              "kiNumeric": 1113000000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "tamagami-1",
+              "name": "Tamagami #1",
+              "tier": "4-B",
+              "kiNumeric": 1502550000,
+              "multiplier": 1.35
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Autómata Mágico Ancestral",
+            "Espada del Guardián",
+            "Inmunidad al Dolor",
+            "Regeneración de Materia Mágica",
+            "Centinela Inquebrantable"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": 1060000000,
+            "sourceType": "guidebook",
+            "sourceMedium": "anime"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "634.200.000 vs 1.113.000.000 (Diferencia de 478.800.000 Ki, factor ~1.75x)",
+        "multiplierComparison": "tamagami-1-espada-daima mono-forma (mult x1); registro 763 incluye forma redundante x1.35 con 1.502.550.000 Ki."
+      },
+      "contaminationIndicators": "Registro 763 contiene forma redundante 'tamagami-1' generada por multiplicador genérico x1.35 heredado de plantillas APEX.",
+      "duplicateFormIndicators": "Forma 1 en 763 repite la entidad 'Tamagami #1' bajo multiplicador inflado x1.35.",
+      "localSourceEvidence": "Ambos registros derivan de la saga Reino de los Demonios (Dragon Ball Daima). No existe multiplicador canónico x1.35 para Tamagami.",
+      "decision": "manual_scale_resolution_required",
+      "confidence": "MEDIUM",
+      "reason": "Incompatibilidad directa en la escala de Ki de Daima (634.2M vs 1.11B). Requiere consenso editorial sobre la base oficial de los Tamagami antes de unificar.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0014",
+      "suggestedRetainedRecord": "tamagami-1-espada-daima (si se valida 634.2M) o 763 purgado",
+      "suggestedDeprecateOrSplit": "tamagami-n-mero-1-dragon-ball-daima-763",
+      "groupClassification": "B. REQUIERE DECISIÓN DE FUENTE"
+    },
+    {
+      "caseIndex": 2,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Menthuthuyoupi: Inversión de Tier y Ki entre registros HxH",
+      "recordsInvolved": [
+        {
+          "recordId": "menthuthuyoupi-hxh-ca",
+          "name": "Menthuthuyoupi",
+          "franchise": "Hunter x Hunter",
+          "universe": "Hunter x Hunter",
+          "saga": "Arco de las Hormigas Quimera",
+          "baseTier": "7-B",
+          "baseKiNumeric": 5030,
+          "baseKiFormatted": "5.03 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Menthuthuyoupi (Estado Base)",
+              "tier": "7-B",
+              "kiNumeric": 5030,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "youpi-centaur",
+              "name": "Centauro Controlado",
+              "tier": "7-B",
+              "kiNumeric": 6790.5,
+              "multiplier": 1.35
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Metamorfosis Física Extrema (Brazos Múltiples, Centauro, Ojos extras)",
+            "Explosiones de Ira (Rage Blast AoE)",
+            "Regeneración de Heridas Físicas por Mutación",
+            "Vuelo y Crecimiento Orgánico",
+            "Metamorfosis Física Extrema",
+            "Explosiones de Ira"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "youpi-hxh-ca",
+          "name": "Menthuthuyoupi (Youpi)",
+          "franchise": "Hunter x Hunter",
+          "universe": "Hunter x Hunter",
+          "saga": "Arco de las Hormigas Quimera",
+          "baseTier": "7-A",
+          "baseKiNumeric": 4746,
+          "baseKiFormatted": "4.75 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base Quimera",
+              "tier": "7-A",
+              "kiNumeric": 4746,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "youpi-centaur",
+              "name": "Forma Centauro (Ira Dominada)",
+              "tier": "7-A",
+              "kiNumeric": 6407.1,
+              "multiplier": 1.35
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Metamorfosis Corporal (Crecimiento celular instantáneo)",
+            "Explosión de Aura (Ira Encarnada)",
+            "Metamorfosis Corporal",
+            "Explosión de Aura"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "5.030 Ki (Tier 7-B) vs 4.746 Ki (Tier 7-A). Inversión directa: menor Ki asignado a un tier superior.",
+        "multiplierComparison": "Ambos registros utilizan mult x1.35 para su forma Centauro (6.790,5 Ki vs 6.407,1 Ki)."
+      },
+      "contaminationIndicators": "Discrepancia metodológica de tiers: un registro clasifica 5.030 Ki como 7-B mientras el otro clasifica 4.746 Ki como 7-A.",
+      "duplicateFormIndicators": "Forma Centauro (youpi-centaur) duplicada en ambos perfiles con idéntico factor x1.35.",
+      "localSourceEvidence": "Arco de las Hormigas Quimera (Hunter x Hunter). Ambos perfiles representan al mismo Guardia Real.",
+      "decision": "manual_scale_resolution_required",
+      "confidence": "MEDIUM",
+      "reason": "Incoherencia entre tier asignado y valor de Ki numérico (7-B con 5.030 Ki vs 7-A con 4.746 Ki). Requiere fijar la frontera de Ki entre 7-B y 7-A en Hunter x Hunter.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0015",
+      "suggestedRetainedRecord": "menthuthuyoupi-hxh-ca (o youpi-hxh-ca tras normalizar tier)",
+      "suggestedDeprecateOrSplit": "youpi-hxh-ca",
+      "groupClassification": "B. REQUIERE DECISIÓN DE FUENTE"
+    },
+    {
+      "caseIndex": 3,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Kenjaku: Disparidad extrema de Ki entre Pseudo-Geto y Perfil Base JJK",
+      "recordsInvolved": [
+        {
+          "recordId": "kenjaku-jjk",
+          "name": "Kenjaku",
+          "franchise": "Jujutsu Kaisen",
+          "universe": "Jujutsu Kaisen",
+          "saga": "Incidente de Shibuya / Culling Game",
+          "baseTier": "7-A",
+          "baseKiNumeric": 252525,
+          "baseKiFormatted": "252.53 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Estado Base (Pseudo-Geto con Maldiciones)",
+              "tier": "7-A",
+              "kiNumeric": 252525,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "womb-profusion",
+              "name": "Expansión de Dominio: Womb Profusion (Taidō Kyūshū)",
+              "tier": "7-A",
+              "kiNumeric": 454545,
+              "multiplier": 1.8
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Cambio de Cuerpo de Cerebro Milenario",
+            "Manipulación de Maldiciones (Curse Spirit Manipulation)",
+            "Uzumaki Máximo (Extracción de Técnicas Malditas)",
+            "Antigravedad / Gravedad Invertida de Kaori Itadori",
+            "Expansión de Dominio: Womb Profusion (Dominio sin Barrera)",
+            "Cambio de Cerebro Milenario",
+            "Cambio de Cuerpo",
+            "Manipulación de Maldiciones",
+            "Uzumaki Máximo",
+            "Antigravedad",
+            "Expansión de Dominio: Womb Profusion"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "kenjaku-pseudo-geto",
+          "name": "Kenjaku (Jujutsu Kaisen — Cuerpo de Geto / Pseudo-Geto)",
+          "franchise": "Jujutsu Kaisen",
+          "universe": "Jujutsu Kaisen",
+          "saga": "Incidente de Shibuya / Culling Game",
+          "baseTier": "7-A",
+          "baseKiNumeric": 7203,
+          "baseKiFormatted": "7.20 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Forma Base (Cuerpo de Geto)",
+              "tier": "7-A",
+              "kiNumeric": 7203,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Manipulación de Espíritus Malditos (CSM)",
+            "Sistema Antigravedad (Kaori Itadori)",
+            "Transfiguración Inerte Asimilada (Mahito)",
+            "Expansión de Dominio de Barrera Abierta (Womb Profusion)",
+            "Técnica de Maldición Inversa (RCT)"
+          ],
+          "tags": [],
+          "canonStatus": "canon_manga",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "252.525 Ki vs 7.203 Ki (Discrepancia masiva de ~35x).",
+        "multiplierComparison": "kenjaku-jjk incluye Womb Profusion con mult x1.8 (454.545 Ki); kenjaku-pseudo-geto es mono-forma estático (7.203 Ki)."
+      },
+      "contaminationIndicators": "kenjaku-pseudo-geto es un stub mono-forma desfasado. La diferencia de 35x evidencia dos sistemas incompatibles de conversión Energía Maldita -> Ki.",
+      "duplicateFormIndicators": "Ambos modelan a Kenjaku habitando el cuerpo de Suguru Geto en Shibuya / Culling Game.",
+      "localSourceEvidence": "Jujutsu Kaisen (Incidente de Shibuya / Culling Game).",
+      "decision": "manual_scale_resolution_required",
+      "confidence": "MEDIUM",
+      "reason": "Discrepancia extrema de orden de magnitud (252.525 vs 7.203 Ki) en la misma saga y cuerpo. Requiere definir la escala de energía maldita Grado Especial.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0016",
+      "suggestedRetainedRecord": "kenjaku-jjk (perfil completo con Expansión de Dominio)",
+      "suggestedDeprecateOrSplit": "kenjaku-pseudo-geto",
+      "groupClassification": "B. REQUIERE DECISIÓN DE FUENTE"
+    },
+    {
+      "caseIndex": 4,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Poseidón: Consistencia de la Deprecación de Stub RoR en V23",
+      "recordsInvolved": [
+        {
+          "recordId": "poseidon-shuumatsu",
+          "name": "Poseidon",
+          "franchise": "Record of Ragnarok",
+          "universe": "Shuumatsu no Valkyrie (Record of Ragnarok)",
+          "saga": "Ronda 3: El Tirano de los Mares vs El Mayor Perdedor",
+          "baseTier": "4-B",
+          "baseKiNumeric": 1176000000,
+          "baseKiFormatted": "1.18 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Estado Base (El Dios Imperturbable)",
+              "tier": "4-B",
+              "kiNumeric": 1176000000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "40-day-flood",
+              "name": "Diluvio de los 40 Días (Modo Cúpula)",
+              "tier": "4-A",
+              "kiNumeric": 58800000000,
+              "multiplier": 50
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Lluvia de 40 Días e Inundación (40 Day Flood)",
+            "Anfitrita & Quíone Typhon",
+            "Orgullo de Dios Perfecto (Cero Apoyo Necesario)",
+            "Control de Hidroquinesis y Océanos"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "poseidon-ror-r3",
+          "name": "Poseidón",
+          "franchise": "Record of Ragnarok",
+          "universe": "Shuumatsu no Valkyrie (Record of Ragnarok)",
+          "saga": "Ronda 3",
+          "baseTier": "4-B",
+          "baseKiNumeric": 1155000000,
+          "baseKiFormatted": "1.16 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Poseidón (Estado Base)",
+              "tier": "4-B",
+              "kiNumeric": 1155000000,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": true,
+          "deprecationMeta": {
+            "sourcePatchId": "V23-PATCH-0003",
+            "canonicalRecordId": "poseidon-shuumatsu",
+            "reason": "Stub redundante; poseidon-shuumatsu es la ficha canónica candidata."
+          },
+          "haxTags": [
+            "Lluvia de Estocadas Inesquivables (Hit-Scan Multidireccional)",
+            "Intimidación Divina Absoluta (Aura del Tirano)",
+            "Manipulación Oceánica Residual"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "1.176.000.000 vs 1.155.000.000 (Variación marginal de ~1.8%).",
+        "multiplierComparison": "poseidon-shuumatsu incluye Diluvio de los 40 Días mult x50 (58.800.000.000 Ki); poseidon-ror-r3 era un stub de 1 forma estática."
+      },
+      "contaminationIndicators": "poseidon-ror-r3 carecía de la técnica definitiva de cúpula y actuaba como stub redundante.",
+      "duplicateFormIndicators": "Ninguna en la ficha activa; poseidon-ror-r3 ya fue movido a deprecatedRecords en V23.",
+      "localSourceEvidence": "Shuumatsu no Valkyrie (Ronda 3). poseidon-shuumatsu contiene el set técnico completo.",
+      "decision": "deprecate_stub_record",
+      "confidence": "HIGH",
+      "reason": "Deprecación ya confirmada y consistente en V23 (V23-PATCH-0003). poseidon-shuumatsu es la ficha canónica oficial.",
+      "suggestedFuturePatch": "V23-PATCH-0003 (YA APLICADO EN V23)",
+      "suggestedRetainedRecord": "poseidon-shuumatsu",
+      "suggestedDeprecateOrSplit": "poseidon-ror-r3 (ya en deprecatedRecords)",
+      "groupClassification": "A. SEGURO PARA APLICAR"
+    },
+    {
+      "caseIndex": 5,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Funny Valentine: Discrepancia de Ki en Físico Base SBR",
+      "recordsInvolved": [
+        {
+          "recordId": "funny-valentine-jojo-sbr",
+          "name": "Funny Valentine",
+          "franchise": "JoJo's Bizarre Adventure",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Steel Ball Run",
+          "baseTier": "8-C",
+          "baseKiNumeric": 1292,
+          "baseKiFormatted": "1.29 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Funny Valentine (Estado Base)",
+              "tier": "8-C",
+              "kiNumeric": 1292,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Viaje y Transferencia Multiversal (D4C)",
+            "Desintegración por Paradoja Dimensional (Menger Sponge)",
+            "Inmortalidad por Sustitución de Cuerpos",
+            "Redirección de Toda la Mala Suerte (Love Train)"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "funny-valentine-poder-completo",
+          "name": "Funny Valentine (Poder Completo con D4C)",
+          "franchise": "JoJo's Bizarre Adventure",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Steel Ball Run — arco final",
+          "baseTier": "Tier 8-C Físico",
+          "baseKiNumeric": 547,
+          "baseKiFormatted": "547 Unidades",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base",
+              "tier": "8-C",
+              "kiNumeric": 547,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Viaje entre universos paralelos infinitos",
+            "Reemplazo dimensional (evita la muerte sustituyéndose por una contraparte paralela)",
+            "Transferencia de mala fortuna a un objeto/persona vinculado",
+            "Manipulador Psicológico",
+            "Transferencia de mala fortuna",
+            "Manipulación de la barrera dimensional (Love Train)",
+            "Conciencia Multiversal Distribuida",
+            "Reemplazo dimensional"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "1.292 Ki vs 547 Ki (Diferencia de 2.36x).",
+        "multiplierComparison": "Ambos registros son mono-forma (mult x1); ninguno desglosa multiplicadores numéricos."
+      },
+      "contaminationIndicators": "Confusión metodológica entre Ki base corporal atlético (Tier 8-C Físico) y habilidades de D4C / Love Train.",
+      "duplicateFormIndicators": "Dos registros mono-forma que representan exactamente al mismo usuario en el mismo arco final de Steel Ball Run.",
+      "localSourceEvidence": "Steel Ball Run (JoJo's Bizarre Adventure).",
+      "decision": "manual_scale_resolution_required",
+      "confidence": "MEDIUM",
+      "reason": "Diferencia no resuelta de Ki base (1.292 vs 547). Se debe fijar el valor base humano antes de consolidar el perfil de Stand.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0017",
+      "suggestedRetainedRecord": "funny-valentine-jojo-sbr (o unificado limpio)",
+      "suggestedDeprecateOrSplit": "funny-valentine-poder-completo",
+      "groupClassification": "B. REQUIERE DECISIÓN DE FUENTE"
+    },
+    {
+      "caseIndex": 6,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Broly DBM U20: Consistencia de la Deprecación de Stub en V23",
+      "recordsInvolved": [
+        {
+          "recordId": "broly-u20-dbm-congelado",
+          "name": "Broly (Universo 20 — DBM, Superviviente Congelado)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM — Universo 20",
+          "baseTier": "3-B",
+          "baseKiNumeric": 18900000000,
+          "baseKiFormatted": "18.90 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base",
+              "tier": "3-B",
+              "kiNumeric": 18900000000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "legendario_apex_overload",
+              "name": "Estado Apex-Custom: Sobrecarga Legendaria Multiversal",
+              "tier": "3-B",
+              "kiNumeric": 151200000000,
+              "multiplier": 8
+            },
+            {
+              "formIndex": 2,
+              "formId": "super_saiyan_legendario",
+              "name": "Super Saiyan Legendario (Furia Desatada)",
+              "tier": "3-B",
+              "kiNumeric": 37800000000000,
+              "multiplier": 2000
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Super Saiyan Legendario sin control",
+            "Supervivencia al vacío espacial",
+            "Saiyan",
+            "Fuerza Bruta Sobrehumana",
+            "Usuario de Ki",
+            "Zenkai Ininterrumpido"
+          ],
+          "tags": [],
+          "canonStatus": "fan_manga_verified",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        },
+        {
+          "recordId": "broly-legendario-dbm",
+          "name": "Broly (Super Saiyan Legendario, Aparición DBM)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM",
+          "baseTier": "3-B",
+          "baseKiNumeric": 18900000000,
+          "baseKiFormatted": "18.90 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Forma Base / Estado Inicial",
+              "tier": "3-B",
+              "kiNumeric": 18900000000,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": true,
+          "deprecationMeta": {
+            "sourcePatchId": "V23-PATCH-0004",
+            "canonicalRecordId": "broly-u20-dbm-congelado",
+            "reason": "Stub redundante; broly-u20-dbm-congelado contiene la progresión DBM completa."
+          },
+          "haxTags": [
+            "Super Saiyan Legendario (multiplicador de poder masivo)",
+            "Resistencia al dolor extrema en combate prolongado",
+            "Saiyan",
+            "Usuario de Ki",
+            "Fuerza Bruta Sobrehumana",
+            "Super Saiyan Legendario",
+            "Resistencia al dolor extrema"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "Ambos comparten baseKiNumeric idéntico de 18.900.000.000 Ki.",
+        "multiplierComparison": "broly-u20-dbm-congelado tiene 3 formas (Base x1, Sobrecarga x8, LSSJ Furia x2000 con 37.8T Ki); el stub deprecado tenía solo forma Base."
+      },
+      "contaminationIndicators": "broly-legendario-dbm era un stub mono-forma estático sin progresión de combate.",
+      "duplicateFormIndicators": "Ninguna en la ficha activa; broly-legendario-dbm ya reside en deprecatedRecords.",
+      "localSourceEvidence": "Dragon Ball Multiverse (Fan-Manga, Universo 20).",
+      "decision": "deprecate_stub_record",
+      "confidence": "HIGH",
+      "reason": "Deprecación ya confirmada y consistente en V23 (V23-PATCH-0004). broly-u20-dbm-congelado retiene la progresión DBM íntegra.",
+      "suggestedFuturePatch": "V23-PATCH-0004 (YA APLICADO EN V23)",
+      "suggestedRetainedRecord": "broly-u20-dbm-congelado",
+      "suggestedDeprecateOrSplit": "broly-legendario-dbm (ya en deprecatedRecords)",
+      "groupClassification": "A. SEGURO PARA APLICAR"
+    },
+    {
+      "caseIndex": 7,
+      "lote": "LOTE A: Duplicados con diferencia de Ki o stub",
+      "title": "Dr. Raichi: Discrepancia de Escala entre Cápsula y Fantasmas del Odio",
+      "recordsInvolved": [
+        {
+          "recordId": "dr-raichi-dbm-u3",
+          "name": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo del Multiverso / Universo 3",
+          "baseTier": "4-B",
+          "baseKiNumeric": 24518,
+          "baseKiFormatted": "24.52 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Estado Base (Dr. Raichi en Cápsula)",
+              "tier": "7-A",
+              "kiNumeric": 24518,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "ghost-broly-unleashed",
+              "name": "Despliegue del Fantasma de Broly LSSJ",
+              "tier": "4-B",
+              "kiNumeric": 49036000,
+              "multiplier": 2000
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Invocación de Guerreros Fantasma Inmortales (Ghost Warriors)",
+            "Invocación de Broly Super Saiyan Legendario Fantasma",
+            "Barrera de Odio Absoluta de Hatchiyack",
+            "Acumulación de Rencor (Potenciación por Muertes)",
+            "Invocación de Guerreros Fantasma Inmortales"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        },
+        {
+          "recordId": "dr-raichi-fantasmas-del-odio-u3-dbm",
+          "name": "Dr. Raichi (y los Fantasmas del Odio)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM — Universo 3",
+          "baseTier": "4-B",
+          "baseKiNumeric": 845250000,
+          "baseKiFormatted": "845.25 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base",
+              "tier": "4-B",
+              "kiNumeric": 845250000,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Generación de Fantasmas del Odio (copias espectrales de combatientes muertos con poder parcial conservado)",
+            "Control y coordinación de múltiples entidades espectrales simultáneas",
+            "Semi-incorporeidad de los fantasmas (resistentes a daño físico convencional)",
+            "Absorción de rencor/odio ambiental como fuente de poder",
+            "Generador de Fantasmas/Manifestación de Odio",
+            "Namekiano",
+            "Antagonista Encarnación del Mal",
+            "Usuario de Ki",
+            "Semi-incorporeidad de los fantasmas",
+            "Tsufruiano",
+            "Científico de combate",
+            "Vínculo espectral (transferencia de daño)"
+          ],
+          "tags": [],
+          "canonStatus": "fan_manga_verified",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "24.518 Ki (Base Raichi en máquina) vs 845.250.000 Ki (Fantasmas del Odio unificados).",
+        "multiplierComparison": "dr-raichi-dbm-u3 modela el fantasma de Broly con mult x2000 (49.036.000 Ki); la otra ficha usa 845.25M mono-forma."
+      },
+      "contaminationIndicators": "dr-raichi-fantasmas-del-odio-u3-dbm asigna 845.25M directamente como Ki biológico de Raichi.",
+      "duplicateFormIndicators": "Invocación de fantasmas tratada erróneamente como transformación personal del científico.",
+      "localSourceEvidence": "Dragon Ball Multiverse (Torneo del Multiverso / Universo 3).",
+      "decision": "manual_scale_resolution_required",
+      "confidence": "MEDIUM",
+      "reason": "Incompatibilidad directa en el valor numérico base (24.518 vs 845.250.000) derivada de confundir la entidad invocadora con el poder del enjambre.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0018",
+      "suggestedRetainedRecord": "dr-raichi-dbm-u3 (reformulado)",
+      "suggestedDeprecateOrSplit": "dr-raichi-fantasmas-del-odio-u3-dbm",
+      "groupClassification": "B. REQUIERE DECISIÓN DE FUENTE"
+    },
+    {
+      "caseIndex": 8,
+      "lote": "LOTE B: JoJo, hax y formas",
+      "title": "Giorno Giovanna: Desacoplamiento de Stand Causal (GER) vs Ki Físico",
+      "recordsInvolved": [
+        {
+          "recordId": "giorno-giovanna-ger-jojo-gg001",
+          "name": "Giorno Giovanna (GER)",
+          "franchise": "JoJo's Bizarre Adventure",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Vento Aureo",
+          "baseTier": "Tier 8-C Físico",
+          "baseKiNumeric": 2636,
+          "baseKiFormatted": "2.64 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Gold Experience (Base)",
+              "tier": "8-C",
+              "kiNumeric": 2636,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "giorno-ger",
+              "name": "Gold Experience Requiem",
+              "tier": "8-C",
+              "kiNumeric": 3558.6000000000004,
+              "multiplier": 1.35
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Retorno a Cero (Return to Zero - Anulación Causal Absoluta)",
+            "Bucle de Muerte Infinita",
+            "Creación de Vida Orgánica y Reflejo de Daño"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "giorno-giovanna-jojo-va",
+          "name": "Giorno Giovanna",
+          "franchise": "JoJo's Bizarre Adventure",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Vento Aureo",
+          "baseTier": "8-C",
+          "baseKiNumeric": 1365,
+          "baseKiFormatted": "1.36 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Giorno Giovanna (Estado Base)",
+              "tier": "8-C",
+              "kiNumeric": 1365,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Reversión de Causalidad (Return to Zero)",
+            "Bucle de Muerte Infinito (Instakill Eterno)",
+            "Creación y Reflejo de Vida (Dador de Vida)",
+            "Bucle de Muerte Infinito",
+            "Creación y Reflejo de Vida"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "2.636 Ki vs 1.365 Ki.",
+        "multiplierComparison": "giorno-giovanna-ger-jojo-gg001 asigna mult x1.35 (3.558,6 Ki) a GER, lo que trivializa el hax absoluto como un minúsculo buff de energía."
+      },
+      "contaminationIndicators": "Asignación de multiplicador de Ki (+35%) a una habilidad de hax conceptual de causalidad (Return to Zero / Bucle de Muerte).",
+      "duplicateFormIndicators": "giorno-giovanna-jojo-va es un stub mono-forma sin Requiem; gg001 tiene la evolución pero con multiplicador numérico desacertado.",
+      "localSourceEvidence": "JoJo's Bizarre Adventure: Vento Aureo. Giorno Giovanna posee cuerpo humano y Stand.",
+      "decision": "manual_modeling_decision_required",
+      "confidence": "HIGH",
+      "reason": "Se debe conservar un único registro para Giorno Giovanna. Su poder físico/Stand no debe traducirse a un multiplicador de Ki; GER debe modelarse como hax/estado independiente.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0019",
+      "suggestedRetainedRecord": "giorno-giovanna-jojo-va (ampliado con estado GER limpio sin multiplicar Ki)",
+      "suggestedDeprecateOrSplit": "giorno-giovanna-ger-jojo-gg001",
+      "groupClassification": "C. REQUIERE DECISIÓN DE MODELO"
+    },
+    {
+      "caseIndex": 9,
+      "lote": "LOTE B: JoJo, hax y formas",
+      "title": "Funny Valentine: Desacoplamiento de D4C / Love Train vs Ki Corporal",
+      "recordsInvolved": [
+        {
+          "recordId": "funny-valentine-jojo-sbr",
+          "name": "Funny Valentine",
+          "franchise": "JoJo's Bizarre Adventure",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Steel Ball Run",
+          "baseTier": "8-C",
+          "baseKiNumeric": 1292,
+          "baseKiFormatted": "1.29 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Funny Valentine (Estado Base)",
+              "tier": "8-C",
+              "kiNumeric": 1292,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Viaje y Transferencia Multiversal (D4C)",
+            "Desintegración por Paradoja Dimensional (Menger Sponge)",
+            "Inmortalidad por Sustitución de Cuerpos",
+            "Redirección de Toda la Mala Suerte (Love Train)"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "funny-valentine-poder-completo",
+          "name": "Funny Valentine (Poder Completo con D4C)",
+          "franchise": "JoJo's Bizarre Adventure",
+          "universe": "JoJo's Bizarre Adventure",
+          "saga": "Steel Ball Run — arco final",
+          "baseTier": "Tier 8-C Físico",
+          "baseKiNumeric": 547,
+          "baseKiFormatted": "547 Unidades",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base",
+              "tier": "8-C",
+              "kiNumeric": 547,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Viaje entre universos paralelos infinitos",
+            "Reemplazo dimensional (evita la muerte sustituyéndose por una contraparte paralela)",
+            "Transferencia de mala fortuna a un objeto/persona vinculado",
+            "Manipulador Psicológico",
+            "Transferencia de mala fortuna",
+            "Manipulación de la barrera dimensional (Love Train)",
+            "Conciencia Multiversal Distribuida",
+            "Reemplazo dimensional"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "cross_verse_estimate",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "1.292 Ki vs 547 Ki.",
+        "multiplierComparison": "Ambos mono-forma; carecen de modelado formal para el salto interdimensional y la barrera dimensional de Love Train."
+      },
+      "contaminationIndicators": "Duplicación del usuario político del Stand bajo nombres redundantes ('Funny Valentine' vs 'Funny Valentine (Poder Completo con D4C)').",
+      "duplicateFormIndicators": "Dos fichas independientes para el mismo usuario sin ninguna forma ni diferenciación técnica.",
+      "localSourceEvidence": "JoJo's Bizarre Adventure: Steel Ball Run. Dirty Deeds Done Dirt Cheap y Ticket to Ride / Reliquia Sagrada.",
+      "decision": "manual_modeling_decision_required",
+      "confidence": "HIGH",
+      "reason": "No duplicar al usuario. D4C (inmortalidad interdimensional por reemplazo) y Love Train (desvío de infortunio) son hax dimensionales que no alteran el Ki físico.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0020",
+      "suggestedRetainedRecord": "funny-valentine-jojo-sbr (con D4C y Love Train en haxProfile)",
+      "suggestedDeprecateOrSplit": "funny-valentine-poder-completo",
+      "groupClassification": "C. REQUIERE DECISIÓN DE MODELO"
+    },
+    {
+      "caseIndex": 10,
+      "lote": "LOTE C: DBM/Fan-Manga con multiplicadores incompatibles",
+      "title": "Super Baby God: Multiplicador Arbitrario x6400 vs Escala Controlada x50",
+      "recordsInvolved": [
+        {
+          "recordId": "baby-god-brokoly",
+          "name": "Super Baby Vegeta (Baby God)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball (Fan-Mangas & What-If)",
+          "baseTier": "3-A",
+          "baseKiNumeric": 26565000000,
+          "baseKiFormatted": "26.57 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Super Baby Vegeta (Estado Base)",
+              "tier": "3-B",
+              "kiNumeric": 26565000000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "baby-god-super2",
+              "name": "Super Baby 2 (Poder Máximo)",
+              "tier": "3-A",
+              "kiNumeric": 53130000000,
+              "multiplier": 2
+            },
+            {
+              "formIndex": 2,
+              "formId": "baby-god-ssg",
+              "name": "Baby God (Super Saiyan Dios Tsufuru)",
+              "tier": "High 3-A",
+              "kiNumeric": 1328250000000,
+              "multiplier": 50
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Combate Físico Sobrehumano",
+            "Manipulación de Energía",
+            "Resistencia Biológica",
+            "Parasitismo",
+            "Corrupción Divina",
+            "Parasitismo Celular",
+            "Ki Divino"
+          ],
+          "tags": [],
+          "canonStatus": "custom_user_variant",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "manga"
+          }
+        },
+        {
+          "recordId": "baby-vegeta-god-brokoly",
+          "name": "Super Baby Vegeta (What-If Baby God)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball (Fan-Mangas & What-If)",
+          "saga": "Ruta Alterna: Baby absorbe Ki Divino",
+          "baseTier": "3-A",
+          "baseKiNumeric": 44310000000,
+          "baseKiFormatted": "44.31 Mil Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Super Baby Vegeta (Estado Base)",
+              "tier": "3-B",
+              "kiNumeric": 44310000000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "baby-vegeta-god-base",
+              "name": "Modo Baby Vegeta Infectado",
+              "tier": "3-B",
+              "kiNumeric": 59818500000.00001,
+              "multiplier": 1.35
+            },
+            {
+              "formIndex": 2,
+              "formId": "baby-vegeta-god",
+              "name": "Baby God (SSG Tsufuru)",
+              "tier": "3-A",
+              "kiNumeric": 283584000000000,
+              "multiplier": 6400
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Posesión de Ki Divino",
+            "Death Ball Negativa",
+            "Regeneración Mutante",
+            "Inmunidad Parasitaria",
+            "Hakai Parcial",
+            "Manipulación Espiritual"
+          ],
+          "tags": [],
+          "canonStatus": "custom_user_variant",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "26.565.000.000 Ki vs 44.310.000.000 Ki.",
+        "multiplierComparison": "baby-god-brokoly: Baby 2 (x2, 53.13B), Baby God (x50, 1.33T). baby-vegeta-god-brokoly: Infectado (x1.35, 59.8B), Baby God (x6400, 283.58T Ki)."
+      },
+      "contaminationIndicators": "El multiplicador x6400 en baby-vegeta-god-brokoly es un artefacto hiperinflado sin fundamento en los vídeos de @Brokoly350 ni en las fuentes canónicas.",
+      "duplicateFormIndicators": "Ambas fichas representan exactamente el mismo What-If de Baby infectando a Vegeta y alcanzando el Ki Divino.",
+      "localSourceEvidence": "Dragon Ball What-Ifs (@Brokoly350 / Fan-Manga).",
+      "decision": "manual_source_resolution_required",
+      "confidence": "HIGH",
+      "reason": "Detección de multiplicador x6400 artificial que infla el Ki a 283 Trillones. Requiere descartar el mult x6400 y adoptar la escala sustentada (mult x50 con base controlada).",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0021",
+      "suggestedRetainedRecord": "baby-god-brokoly",
+      "suggestedDeprecateOrSplit": "baby-vegeta-god-brokoly (deprecar por multiplicador x6400 corrupto)",
+      "groupClassification": "B. REQUIERE DECISIÓN DE FUENTE"
+    },
+    {
+      "caseIndex": 11,
+      "lote": "LOTE C: DBM/Fan-Manga con multiplicadores incompatibles",
+      "title": "Dr. Raichi: Multiplicador de Invocación x2000 vs Modelo de Sinergia de Entidades",
+      "recordsInvolved": [
+        {
+          "recordId": "dr-raichi-dbm-u3",
+          "name": "Dr. Raichi / Fantasmas del Odio (Multiverse — U3)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo del Multiverso / Universo 3",
+          "baseTier": "4-B",
+          "baseKiNumeric": 24518,
+          "baseKiFormatted": "24.52 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Estado Base (Dr. Raichi en Cápsula)",
+              "tier": "7-A",
+              "kiNumeric": 24518,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "ghost-broly-unleashed",
+              "name": "Despliegue del Fantasma de Broly LSSJ",
+              "tier": "4-B",
+              "kiNumeric": 49036000,
+              "multiplier": 2000
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Invocación de Guerreros Fantasma Inmortales (Ghost Warriors)",
+            "Invocación de Broly Super Saiyan Legendario Fantasma",
+            "Barrera de Odio Absoluta de Hatchiyack",
+            "Acumulación de Rencor (Potenciación por Muertes)",
+            "Invocación de Guerreros Fantasma Inmortales"
+          ],
+          "tags": [],
+          "canonStatus": null,
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        },
+        {
+          "recordId": "dr-raichi-fantasmas-del-odio-u3-dbm",
+          "name": "Dr. Raichi (y los Fantasmas del Odio)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM — Universo 3",
+          "baseTier": "4-B",
+          "baseKiNumeric": 845250000,
+          "baseKiFormatted": "845.25 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base",
+              "tier": "4-B",
+              "kiNumeric": 845250000,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Generación de Fantasmas del Odio (copias espectrales de combatientes muertos con poder parcial conservado)",
+            "Control y coordinación de múltiples entidades espectrales simultáneas",
+            "Semi-incorporeidad de los fantasmas (resistentes a daño físico convencional)",
+            "Absorción de rencor/odio ambiental como fuente de poder",
+            "Generador de Fantasmas/Manifestación de Odio",
+            "Namekiano",
+            "Antagonista Encarnación del Mal",
+            "Usuario de Ki",
+            "Semi-incorporeidad de los fantasmas",
+            "Tsufruiano",
+            "Científico de combate",
+            "Vínculo espectral (transferencia de daño)"
+          ],
+          "tags": [],
+          "canonStatus": "fan_manga_verified",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "24.518 Ki vs 845.250.000 Ki.",
+        "multiplierComparison": "Multiplicador x2000 aplicado erróneamente sobre el Ki propio de Raichi (24.518 * 2000 = 49.036.000 Ki) para simular el fantasma de Broly."
+      },
+      "contaminationIndicators": "Tratar una entidad invocada autónoma (Fantasma del Odio Broly) como un multiplicador biológico x2000 del científico anciano.",
+      "duplicateFormIndicators": "Invocación de fantasmas duplicada entre una transformación fingida (dr-raichi-dbm-u3) y una ficha de Ki fusionado (845.25M).",
+      "localSourceEvidence": "Dragon Ball Multiverse (Fan-Manga DBM).",
+      "decision": "manual_modeling_decision_required",
+      "confidence": "HIGH",
+      "reason": "Se debe separar el Ki individual de Raichi/Hatchiyack del Ki de los fantasmas invocados. La invocación no es un multiplicador biológico x2000, sino una sinergia/hax de combate.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0022",
+      "suggestedRetainedRecord": "dr-raichi-dbm-u3 (remodelado sin multiplicador de invocación biológico)",
+      "suggestedDeprecateOrSplit": "dr-raichi-fantasmas-del-odio-u3-dbm",
+      "groupClassification": "C. REQUIERE DECISIÓN DE MODELO"
+    },
+    {
+      "caseIndex": 12,
+      "lote": "LOTE C: DBM/Fan-Manga con multiplicadores incompatibles",
+      "title": "Kat y Syd U6: Contaminación de Plantilla de 289.8M Ki vs Fichas Individuales",
+      "recordsInvolved": [
+        {
+          "recordId": "kat-syd-u6-dbm",
+          "name": "Kat y Syd (Guerreras Misteriosas, Universo 6)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM — Universo 6",
+          "baseTier": "4-C",
+          "baseKiNumeric": 289800000,
+          "baseKiFormatted": "289.80 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Base",
+              "tier": "4-C",
+              "kiNumeric": 289800000,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Usuario de Ki",
+            "Origen desconocido",
+            "Voluntad Indomable",
+            "Combate Dúo",
+            "Sincronía de Dúo"
+          ],
+          "tags": [],
+          "canonStatus": "fan_manga_verified",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        },
+        {
+          "recordId": "kat-u6-individual",
+          "name": "Kat (Universo 6 — DBM)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM — Universo 6",
+          "baseTier": "5-B",
+          "baseKiNumeric": 205485,
+          "baseKiFormatted": "205.49 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Forma Base",
+              "tier": "5-B",
+              "kiNumeric": 205485,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Manipulación de Feromonas / Seducción",
+            "Ilusión",
+            "Voluntad Indomable"
+          ],
+          "tags": [],
+          "canonStatus": "fan_manga_verified",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        },
+        {
+          "recordId": "syd-u6-individual",
+          "name": "Syd (Universo 6 — DBM)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Multiverse (Fan-Manga)",
+          "saga": "Torneo Interuniversal DBM — Universo 6",
+          "baseTier": "5-B",
+          "baseKiNumeric": 271530,
+          "baseKiFormatted": "271.53 Mil",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Forma Base",
+              "tier": "5-B",
+              "kiNumeric": 271530,
+              "multiplier": 1
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Intercambio de Cuerpos (Body Swap)",
+            "Alteración Biológica",
+            "Voluntad Indomable"
+          ],
+          "tags": [],
+          "canonStatus": "fan_manga_verified",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "fan_manga"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "Ficha grupal: 289.800.000 Ki (Tier 4-C). Fichas individuales: Kat = 205.485 Ki (Tier 5-B), Syd = 271.530 Ki (Tier 5-B). Suma física real = 477.015 Ki.",
+        "multiplierComparison": "Todas mono-forma. La ficha grupal tiene un Ki 607 veces mayor que la suma combinada de sus integrantes."
+      },
+      "contaminationIndicators": "El valor de 289.800.000 Ki es exactamente la firma de plantilla corrupta detectada en panzy-dragon-ball-daima-138. No representa sinergia sino clonación de plantilla rota.",
+      "duplicateFormIndicators": "Ficha grupal inflada artificialmente por error de inicialización heredado.",
+      "localSourceEvidence": "Dragon Ball Multiverse (Universo 6). Kat y Syd son guerreras individuales que combaten de forma coordinada.",
+      "decision": "deprecate_contaminated_record",
+      "confidence": "HIGH",
+      "reason": "kat-syd-u6-dbm está contaminada por la plantilla errónea de 289.800.000 Ki (al igual que la deprecada Panzy). Debe deprecarse o reescribirse a la escala real de 477.015 Ki.",
+      "suggestedFuturePatch": "V23-PATCH-PENDING-0023",
+      "suggestedRetainedRecord": "kat-u6-individual y syd-u6-individual (conservar individuales; modelar sinergia en draft)",
+      "suggestedDeprecateOrSplit": "kat-syd-u6-dbm (deprecar registro contaminado)",
+      "groupClassification": "A. SEGURO PARA APLICAR"
+    },
+    {
+      "caseIndex": 13,
+      "lote": "LOTE D: Daima pendiente",
+      "title": "Son Goku Mini Daima: Registro 751 (Labels APEX/Sub-tiers) vs Ficha Canónica Full",
+      "recordsInvolved": [
+        {
+          "recordId": "son-goku-mini-dragon-ball-daima-751",
+          "name": "Son Goku (Mini)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Daima",
+          "saga": "Reino de los Demonios",
+          "baseTier": "4-B",
+          "baseKiNumeric": 1050000,
+          "baseKiFormatted": "1.05 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Goku Mini (Estado Base Daima)",
+              "tier": "4-B",
+              "kiNumeric": 1050000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "goku-mini-ssj",
+              "name": "Goku Mini (Super Saiyan)",
+              "tier": "5-A+",
+              "kiNumeric": 52500000,
+              "multiplier": 50
+            },
+            {
+              "formIndex": 2,
+              "formId": "goku-mini-ssj1",
+              "name": "Super Saiyan (Daima)",
+              "tier": "4-A",
+              "kiNumeric": 52500000,
+              "multiplier": 50
+            },
+            {
+              "formIndex": 3,
+              "formId": "goku-mini-ssj2-daima",
+              "name": "Super Saiyan 2 (Daima)",
+              "tier": "3-C",
+              "kiNumeric": 105000000,
+              "multiplier": 100
+            },
+            {
+              "formIndex": 4,
+              "formId": "goku-mini-ssj2",
+              "name": "Goku Mini (Super Saiyan 2) [Apex Daima]",
+              "tier": "5-A+",
+              "kiNumeric": 105000000,
+              "multiplier": 100
+            },
+            {
+              "formIndex": 5,
+              "formId": "goku-mini-ssj3-daima",
+              "name": "Super Saiyan 3 (Daima)",
+              "tier": "3-C",
+              "kiNumeric": 420000000,
+              "multiplier": 400
+            },
+            {
+              "formIndex": 6,
+              "formId": "goku-mini-ssj3",
+              "name": "Goku Mini (Super Saiyan 3) [Apex Daima]",
+              "tier": "5-A",
+              "kiNumeric": 420000000,
+              "multiplier": 400
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Fisiología Reducida",
+            "Báculo Mágico Reforzado de Ki",
+            "Kamehameha Reducido",
+            "Vuelo con Nyoibo",
+            "Transformación Saiyan (SSJ Daima)",
+            "Resistencia Demoniaca",
+            "Báculo Mágico Reforzado"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "anime"
+          }
+        },
+        {
+          "recordId": "son-goku-mini-daima-full",
+          "name": "Son Goku (Daima — Mini)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Daima",
+          "saga": "Aventura en el Reino Demoníaco (Daima)",
+          "baseTier": "4-B",
+          "baseKiNumeric": 1050000,
+          "baseKiFormatted": "1.05 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Goku Mini Estado Base (Con Báculo Sagrado)",
+              "tier": "4-B",
+              "kiNumeric": 1050000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "ssj1-daima",
+              "name": "Super Saiyan 1 (Mini)",
+              "tier": "4-B",
+              "kiNumeric": 52500000,
+              "multiplier": 50
+            },
+            {
+              "formIndex": 2,
+              "formId": "ssj2-daima",
+              "name": "Super Saiyan 2 (Mini)",
+              "tier": "4-A",
+              "kiNumeric": 105000000,
+              "multiplier": 100
+            },
+            {
+              "formIndex": 3,
+              "formId": "ssj3-daima",
+              "name": "Super Saiyan 3 (Mini)",
+              "tier": "3-C",
+              "kiNumeric": 420000000,
+              "multiplier": 400
+            },
+            {
+              "formIndex": 4,
+              "formId": "ssj4-daima-mini",
+              "name": "Super Saiyan 4 (Primal Daima) [What-If]",
+              "tier": "3-B",
+              "kiNumeric": 4200000000,
+              "multiplier": 4000
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Báculo Sagrado Nyoi-bo (Extensión y Dureza Mágica Ilimitada)",
+            "Super Saiyan 1, 2 y 3 en Cuerpo Reducido",
+            "Kamehameha Concentrado de Impacto",
+            "Resistencia a Gravedad Anómala y Gases del Reino Demoníaco",
+            "kaioken_compatible",
+            "zenkai_boost",
+            "magic_resistance_daima",
+            "Báculo Sagrado Nyoi-bo",
+            "Super Saiyan 1, 2 y 3 Mini",
+            "Kamehameha Concentrado"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "anime"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "Ambos registros coinciden exactamente en 1.050.000 Ki base (Tier 4-B).",
+        "multiplierComparison": "Registro 751 tiene 7 formas con formas SSJ repetidas (SSJ1 52.5M x50, SSJ2 105M x100, SSJ3 420M x400 duplicadas con labels 'Apex Daima' y tiers 5-A+)."
+      },
+      "contaminationIndicators": "Registro 751 contiene tiers no estándar ('5-A+') y formas internamente duplicadas bajo etiquetas no canónicas '[Apex Daima]'.",
+      "duplicateFormIndicators": "Formas 1 y 2 (ambas SSJ1 con 52.5M Ki), formas 3 y 4 (ambas SSJ2 con 105M Ki), formas 5 y 6 (ambas SSJ3 con 420M Ki).",
+      "localSourceEvidence": "Dragon Ball Daima (Reino Demoníaco).",
+      "decision": "retain_canonical_deprecate_duplicate",
+      "confidence": "HIGH",
+      "reason": "Confirmado: el registro 751 contiene formas internamente duplicadas con etiquetas APEX/custom y tiers corruptos. Acción futura al aprobar V23-PATCH-0010: deprecar 751 sin migrar sus formas.",
+      "suggestedFuturePatch": "V23-PATCH-0010 (PENDIENTE DE APROBACIÓN FINAL)",
+      "suggestedRetainedRecord": "son-goku-mini-daima-full",
+      "suggestedDeprecateOrSplit": "son-goku-mini-dragon-ball-daima-751",
+      "groupClassification": "A. SEGURO PARA APLICAR"
+    },
+    {
+      "caseIndex": 14,
+      "lote": "LOTE D: Daima pendiente",
+      "title": "Forma 4 SSJ4 Primal Daima (Mini): What-If en Ficha Canónica",
+      "recordsInvolved": [
+        {
+          "recordId": "son-goku-mini-daima-full",
+          "name": "Son Goku (Daima — Mini)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Daima",
+          "saga": "Aventura en el Reino Demoníaco (Daima)",
+          "baseTier": "4-B",
+          "baseKiNumeric": 1050000,
+          "baseKiFormatted": "1.05 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Goku Mini Estado Base (Con Báculo Sagrado)",
+              "tier": "4-B",
+              "kiNumeric": 1050000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "ssj1-daima",
+              "name": "Super Saiyan 1 (Mini)",
+              "tier": "4-B",
+              "kiNumeric": 52500000,
+              "multiplier": 50
+            },
+            {
+              "formIndex": 2,
+              "formId": "ssj2-daima",
+              "name": "Super Saiyan 2 (Mini)",
+              "tier": "4-A",
+              "kiNumeric": 105000000,
+              "multiplier": 100
+            },
+            {
+              "formIndex": 3,
+              "formId": "ssj3-daima",
+              "name": "Super Saiyan 3 (Mini)",
+              "tier": "3-C",
+              "kiNumeric": 420000000,
+              "multiplier": 400
+            },
+            {
+              "formIndex": 4,
+              "formId": "ssj4-daima-mini",
+              "name": "Super Saiyan 4 (Primal Daima) [What-If]",
+              "tier": "3-B",
+              "kiNumeric": 4200000000,
+              "multiplier": 4000
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Báculo Sagrado Nyoi-bo (Extensión y Dureza Mágica Ilimitada)",
+            "Super Saiyan 1, 2 y 3 en Cuerpo Reducido",
+            "Kamehameha Concentrado de Impacto",
+            "Resistencia a Gravedad Anómala y Gases del Reino Demoníaco",
+            "kaioken_compatible",
+            "zenkai_boost",
+            "magic_resistance_daima",
+            "Báculo Sagrado Nyoi-bo",
+            "Super Saiyan 1, 2 y 3 Mini",
+            "Kamehameha Concentrado"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "anime"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "Goku Mini Base = 1.050.000 Ki.",
+        "multiplierComparison": "Forma 4 (ssj4-daima-mini): mult x4000 (4.200.000.000 Ki, Tier 3-B)."
+      },
+      "contaminationIndicators": "Presencia de una forma What-If/fan-art (SSJ4 Primal) insertada dentro de una ficha que representa la continuidad canónica de Dragon Ball Daima.",
+      "duplicateFormIndicators": "La forma es conceptualmente paralela a la forma 4 de son-goku-adulto-daima.",
+      "localSourceEvidence": "Dragon Ball Daima / Fandom Fan-Art. No existe SSJ4 en el canon de Akira Toriyama para Daima.",
+      "decision": "split_what_if_from_canonical",
+      "confidence": "HIGH",
+      "reason": "Forma What-If retenida temporalmente bajo migrationGate. Acción futura al aprobar V23-PATCH-0011: escindir la forma 4 de son-goku-mini-daima-full hacia la nueva entidad What-If son-goku-ssj4-primal-daima-what-if.",
+      "suggestedFuturePatch": "V23-PATCH-0011 (PENDIENTE DE APROBACIÓN FINAL)",
+      "suggestedRetainedRecord": "son-goku-mini-daima-full (formas 0 a 3 canónicas)",
+      "suggestedDeprecateOrSplit": "forma[4] ssj4-daima-mini (a escindir a What-If)",
+      "groupClassification": "C. REQUIERE DECISIÓN DE MODELO"
+    },
+    {
+      "caseIndex": 15,
+      "lote": "LOTE D: Daima pendiente",
+      "title": "Forma 4 SSJ4 Primal Daima (Adulto): What-If en Ficha Canónica Adulta",
+      "recordsInvolved": [
+        {
+          "recordId": "son-goku-adulto-daima",
+          "name": "Son Goku (Daima — Adulto)",
+          "franchise": "Dragon Ball",
+          "universe": "Dragon Ball Daima",
+          "saga": "Prólogo y Clímax del Reino Demoníaco (Daima)",
+          "baseTier": "4-B",
+          "baseKiNumeric": 138600000,
+          "baseKiFormatted": "138.60 Millones",
+          "forms": [
+            {
+              "formIndex": 0,
+              "formId": "base",
+              "name": "Goku Adulto (Estado Base Daima)",
+              "tier": "4-B",
+              "kiNumeric": 138600000,
+              "multiplier": 1
+            },
+            {
+              "formIndex": 1,
+              "formId": "ssj1-adulto-daima",
+              "name": "Super Saiyan 1",
+              "tier": "4-A",
+              "kiNumeric": 6930000000,
+              "multiplier": 50
+            },
+            {
+              "formIndex": 2,
+              "formId": "ssj2-adulto-daima",
+              "name": "Super Saiyan 2",
+              "tier": "3-C",
+              "kiNumeric": 13860000000,
+              "multiplier": 100
+            },
+            {
+              "formIndex": 3,
+              "formId": "ssj3-adulto-daima",
+              "name": "Super Saiyan 3",
+              "tier": "3-C",
+              "kiNumeric": 55440000000,
+              "multiplier": 400
+            },
+            {
+              "formIndex": 4,
+              "formId": "ssj4-adulto-daima",
+              "name": "Super Saiyan 4 (Primal Daima) [What-If]",
+              "tier": "4-A",
+              "kiNumeric": 554400000000,
+              "multiplier": 4000
+            }
+          ],
+          "isDeprecatedInV23": false,
+          "haxTags": [
+            "Super Saiyan 1, 2, 3 y 4 (Forma Primitiva)",
+            "Kamehameha x10 Definitivo",
+            "Teletransportación Shunkanido Instantánea",
+            "Genkidama Cósmica",
+            "Super Saiyan 1-4 (Primitivo)",
+            "Kamehameha x10",
+            "Shunkan Ido"
+          ],
+          "tags": [],
+          "canonStatus": "canon_main",
+          "sourceFields": {
+            "sourceKi": null,
+            "sourceType": "derived",
+            "sourceMedium": "anime"
+          }
+        }
+      ],
+      "kiAndMultiplierDifferences": {
+        "baseKiDiff": "Goku Adulto Base = 138.600.000 Ki.",
+        "multiplierComparison": "Forma 4 (ssj4-adulto-daima): mult x4000 (554.400.000.000 Ki, Tier 4-A)."
+      },
+      "contaminationIndicators": "Forma What-If de transformación primitiva mezclada con el set canónico adulto del prólogo/clímax de Daima.",
+      "duplicateFormIndicators": "Segunda expresión del concepto SSJ4 Primal What-If.",
+      "localSourceEvidence": "Dragon Ball Daima / Fandom Fan-Art.",
+      "decision": "split_what_if_from_canonical",
+      "confidence": "HIGH",
+      "reason": "Forma What-If retenida temporalmente bajo migrationGate. Acción futura al aprobar V23-PATCH-0013: escindir la forma 4 de son-goku-adulto-daima hacia la entidad What-If son-goku-ssj4-primal-daima-what-if.",
+      "suggestedFuturePatch": "V23-PATCH-0013 (PENDIENTE DE APROBACIÓN FINAL)",
+      "suggestedRetainedRecord": "son-goku-adulto-daima (formas 0 a 3 canónicas)",
+      "suggestedDeprecateOrSplit": "forma[4] ssj4-adulto-daima (a escindir a What-If)",
+      "groupClassification": "C. REQUIERE DECISIÓN DE MODELO"
+    }
+  ]
+}
