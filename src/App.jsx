@@ -1193,7 +1193,7 @@ export default function App() {
               <ChronicleViewer
                 characters={characters}
                 lang={lang}
-                aiConfig={simEngine}
+                aiConfig={aiConfig}
               />
             </Suspense>
           </div>

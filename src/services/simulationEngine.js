@@ -21,6 +21,61 @@ export function resolveMaxOutputTokens(modelName = '') {
   return 16384;
 }
 
+
+export const BUILTIN_OPENROUTER_KEYS = [
+  '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',
+  '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'
+];
+
+export function resolveCandidateApiKeys(cfg, engine) {
+  const keys = [];
+  if (cfg?.apiKeys && typeof cfg.apiKeys === 'object') {
+    const list = cfg.apiKeys[engine];
+    if (Array.isArray(list)) {
+      list.forEach(k => {
+        if (k && typeof k === 'string' && k.trim() && !keys.includes(k.trim())) keys.push(k.trim());
+      });
+    }
+  }
+  if (cfg?.apiKey && typeof cfg.apiKey === 'string' && cfg.apiKey.trim()) {
+    if (!keys.includes(cfg.apiKey.trim())) {
+      keys.unshift(cfg.apiKey.trim());
+    }
+  }
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const savedProviderKeys = localStorage.getItem('apex_provider_api_keys');
+      if (savedProviderKeys) {
+        const parsed = JSON.parse(savedProviderKeys);
+        const list = parsed?.[engine];
+        if (Array.isArray(list)) {
+          list.forEach(k => {
+            if (k && typeof k === 'string' && k.trim() && !keys.includes(k.trim())) {
+              keys.push(k.trim());
+            }
+          });
+        }
+      }
+      const savedAiCfg = localStorage.getItem('apex_ai_config');
+      if (savedAiCfg) {
+        const parsedCfg = JSON.parse(savedAiCfg);
+        const sub = parsedCfg?.[engine] || parsedCfg?.simulationEngine || parsedCfg?.characterEngine;
+        if (sub?.apiKey && typeof sub.apiKey === 'string' && sub.apiKey.trim() && !keys.includes(sub.apiKey.trim())) {
+          keys.push(sub.apiKey.trim());
+        }
+      }
+    }
+  } catch (e) {}
+
+  if (engine === 'openrouter') {
+    BUILTIN_OPENROUTER_KEYS.forEach(k => {
+      if (!keys.includes(k)) keys.push(k);
+    });
+  }
+
+  return keys.length > 0 ? keys : [''];
+}
+
 export const SimulationEngine = {
   generateMasterPrompt(charA, charB, scenario, modifiers = {}, teamA = [], teamB = [], battleRoyale = [], multiTeams = [], bossMinions = []) {
     const preset = modifiers.narrativePreset || 'Equilibrado';
@@ -1065,23 +1120,7 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
       }
 
       // Universal Multi-Key Helper: Retrieves all configured keys for failover
-      const getCandidateKeys = (cfg, engine) => {
-        const keys = [];
-        if (cfg?.apiKeys && typeof cfg.apiKeys === 'object') {
-          const list = cfg.apiKeys[engine];
-          if (Array.isArray(list)) {
-            list.forEach(k => {
-              if (k && typeof k === 'string' && k.trim()) keys.push(k.trim());
-            });
-          }
-        }
-        if (cfg?.apiKey && typeof cfg.apiKey === 'string' && cfg.apiKey.trim()) {
-          if (!keys.includes(cfg.apiKey.trim())) {
-            keys.unshift(cfg.apiKey.trim());
-          }
-        }
-        return keys.length > 0 ? keys : [''];
-      };
+      const getCandidateKeys = (cfg, engine) => resolveCandidateApiKeys(cfg, engine);
 
       // 1. Google Gemini Engine (Multi-Key Failover or Free Gateway)
       const isGemini = aiConfig?.engine === 'gemini';
@@ -1582,29 +1621,58 @@ ESTADO FINAL:
 ||BIOMETRICS|HP_A:${scoreA >= scoreB ? winnerHP : 0}|STM_A:${scoreA >= scoreB ? 12 : 0}|HP_B:${scoreA < scoreB ? winnerHP : 0}|STM_B:${scoreA < scoreB ? 12 : 0}||`;
   },
 
-  async queryAiDirectly(prompt, aiConfig, isJson = false) {
-    // Universal Multi-Key Helper: Retrieves all configured keys for failover
-    const getCandidateKeys = (cfg, engine) => {
-      const keys = [];
-      if (cfg?.apiKeys && typeof cfg.apiKeys === 'object') {
-        const list = cfg.apiKeys[engine];
-        if (Array.isArray(list)) {
-          list.forEach(k => {
-            if (k && typeof k === 'string' && k.trim()) keys.push(k.trim());
-          });
-        }
-      }
-      if (cfg?.apiKey && typeof cfg.apiKey === 'string' && cfg.apiKey.trim()) {
-        if (!keys.includes(cfg.apiKey.trim())) {
-          keys.unshift(cfg.apiKey.trim());
-        }
-      }
-      return keys.length > 0 ? keys : [''];
-    };
+  async callAiApi(prompt, aiConfig, isJson = false) {
+    const targetConfig = aiConfig?.simulationEngine || aiConfig?.characterEngine || aiConfig;
+    return await this.queryAiDirectly(prompt, targetConfig, isJson);
+  },
 
-    // 1. Google Gemini Multi-Key Failover
-    if (aiConfig?.engine === 'gemini') {
-      const geminiKeys = getCandidateKeys(aiConfig, 'gemini');
+  async queryAiDirectly(prompt, aiConfig, isJson = false) {
+    const effectiveCfg = aiConfig?.simulationEngine || aiConfig?.characterEngine || aiConfig;
+    const engine = effectiveCfg?.engine || 'openrouter';
+    const getCandidateKeys = (cfg, eng) => resolveCandidateApiKeys(cfg, eng);
+
+    // 1. OpenRouter Direct & Multi-Key Failover
+    if (engine === 'openrouter') {
+      const orKeys = getCandidateKeys(effectiveCfg, 'openrouter');
+      let orModel = effectiveCfg.model || 'nvidia/nemotron-3-ultra-550b-a55b:free';
+      if (orModel.includes('flash-lite') && !orModel.includes('/')) {
+        orModel = 'google/gemini-2.0-flash-lite:free';
+      }
+
+      for (let kIdx = 0; kIdx < orKeys.length; kIdx++) {
+        const curKey = orKeys[kIdx];
+        if (!curKey) continue;
+        try {
+          const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${curKey}`,
+              'HTTP-Referer': 'https://apex-engine-six.vercel.app',
+              'X-Title': 'APEX Engine'
+            },
+            body: JSON.stringify({
+              model: orModel,
+              messages: [{ role: 'user', content: prompt }],
+              max_tokens: resolveMaxOutputTokens(orModel)
+            })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const text = data?.choices?.[0]?.message?.content || '';
+            if (text && text.trim()) return text;
+          } else {
+            console.warn(`[OpenRouter Failover Query] Clave #${kIdx + 1} (${orModel}) falló con HTTP ${res.status}. Intentando siguiente...`);
+          }
+        } catch (orErr) {
+          console.warn(`[OpenRouter Failover Query] Error en clave #${kIdx + 1}:`, orErr);
+        }
+      }
+    }
+
+    // 2. Google Gemini Multi-Key Failover
+    if (engine === 'gemini') {
+      const geminiKeys = getCandidateKeys(effectiveCfg, 'gemini');
       const hasValidKeys = geminiKeys.some(k => Boolean(k));
 
       if (hasValidKeys) {
@@ -1612,7 +1680,7 @@ ESTADO FINAL:
           const curKey = geminiKeys[kIdx];
           if (!curKey) continue;
           try {
-            let geminiModel = aiConfig.model || 'gemini-flash-lite-latest';
+            let geminiModel = effectiveCfg.model || 'gemini-flash-lite-latest';
             if (geminiModel.includes('flash-lite') || geminiModel.includes('flash_lite') || geminiModel.includes('preview-02-05')) {
               geminiModel = 'gemini-flash-lite-latest';
             }
@@ -1640,10 +1708,8 @@ ESTADO FINAL:
           }
         }
       }
-    }
 
-    // 2. Free Google Gemini Flash Lite (Zero API key required for guests & default users)
-    if (aiConfig?.engine === 'gemini' || !aiConfig?.apiKey) {
+      // Free Google Gemini Flash Lite for Gemini engine with no keys
       try {
         const res = await fetch('https://text.pollinations.ai/', {
           method: 'POST',

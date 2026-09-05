@@ -76,6 +76,7 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
   const [addCharModalOpen, setAddCharModalOpen] = useState(false);
   const [addItemModalOpen, setAddItemModalOpen] = useState(false);
   const [isGeneratingAiNovella, setIsGeneratingAiNovella] = useState(false);
+  const [isGeneratingSceneAi, setIsGeneratingSceneAi] = useState(false);
 
   // Search & Inputs
   const [newThreadInput, setNewThreadInput] = useState('');
@@ -94,6 +95,8 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
   const [forgeLocation, setForgeLocation] = useState('Santuario Interuniversal');
   const [forgeSelectedCast, setForgeSelectedCast] = useState([]);
   const [forgeSearch, setForgeSearch] = useState('');
+  const [forgePromptIdea, setForgePromptIdea] = useState('');
+  const [isGeneratingCampaignWithAi, setIsGeneratingCampaignWithAi] = useState(false);
 
   // New Item State
   const [newItemName, setNewItemName] = useState('');
@@ -195,6 +198,105 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
       setChronicle(newState);
       setSelectedTemplate(tmplId);
     }
+  };
+
+  // AI-Powered Campaign Forge Generator & Brainstormer
+  const handleGenerateCampaignWithAi = async () => {
+    if (isGeneratingCampaignWithAi) return;
+    setIsGeneratingCampaignWithAi(true);
+    SoundFX?.playPowerUp?.();
+
+    const seed = forgePromptIdea.trim();
+    const prompt = `Eres el Maestro Narrador de Campañas de APEX Powerscaling Engine. 
+Crea una campaña original y apasionante para el modo de Crónicas de Dragon Ball y el Multiverso.
+${seed ? `IDEA O SEMILLA PROPORCIONADA POR EL USUARIO: "${seed}"` : 'Genera una idea original fascinante (ej: línea temporal divergente, guerra dimensional, entrenamiento mítico o torneo cósmico).'}
+
+Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (sin texto adicional fuera del JSON):
+{
+  "title": "Título épico de la campaña",
+  "premise": "Sinopsis detallada de la trama (2-3 párrafos), explicando el catalizador, facciones enfrentadas y el objetivo supremo.",
+  "tone": "Uno de: ${CHRONICLE_TONES.join(' | ')}",
+  "continuityMode": "Uno de: canon_plus | what_if_multiverse | tournament_open | au_alternate_timeline",
+  "startingLocation": "Nombre del escenario inicial (ej: Casa del Maestro Roshi, Planeta Sagrado, etc.)",
+  "rulePreset": "Uno de: standard | hardcore_survival | tournament_rules | war_attrition",
+  "characterKeywords": ["palabras clave de 3 a 5 personajes ideales de Dragon Ball, ej: goku, vegeta, piccolo, roshi, raditz"]
+}`;
+
+    let aiOutput = null;
+    const charEngine = aiConfig?.characterEngine || aiConfig?.simulationEngine || aiConfig;
+
+    try {
+      const raw = await SimulationEngine.callAiApi(prompt, charEngine, true);
+      if (raw) {
+        const cleanJson = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+        const match = cleanJson.match(/\{[\s\S]*\}/);
+        if (match) {
+          aiOutput = JSON.parse(match[0]);
+        }
+      }
+    } catch (e) {
+      console.warn('AI campaign generation fallback to procedural:', e);
+    }
+
+    if (!aiOutput || !aiOutput.title) {
+      const proceduralPresets = [
+        {
+          title: seed ? `Crónica: ${seed.slice(0, 35)}` : 'Dragon Ball: El Destino Silencioso',
+          premise: 'En el Año 761, la ausencia imprevista de Raditz deja a la Tierra en una paz ininterrumpida tras el 23° Torneo de las Artes Marciales. Sin embargo, anomalías en el espacio profundo y la detección de energías dormidas obligan a Goku, Piccolo y los Guerreros Z a forjar nuevas sendas marciales antes de que el destino cósmico reclame su tributo.',
+          tone: 'Épico y Competitivo',
+          continuityMode: 'canon_plus',
+          startingLocation: 'Casa Del Maestro Roshi',
+          rulePreset: 'standard',
+          characterKeywords: ['goku', 'piccolo', 'krilin', 'roshi', 'raditz']
+        },
+        {
+          title: 'La Sombra de los Makaioshin: El Sello del Reino Oscuro',
+          premise: 'Fisuras dimensionales en los pilares del cosmos liberan una estirpe olvidada de hechiceros y deidades demoníacas. Los guerreros mortales deben forjar una tregua sin precedentes para contener la corrupción de la energía Kiri antes del eclipse estelar.',
+          tone: 'Grimdark y Supervivencia Extrema',
+          continuityMode: 'what_if_multiverse',
+          startingLocation: 'Plataforma Celeste en Ruinas — Templo Sagrado',
+          rulePreset: 'hardcore_survival',
+          characterKeywords: ['goku', 'vegeta', 'piccolo', 'dabura', 'gohan']
+        },
+        {
+          title: 'El Torneo del Vacío Infinito: Retorno de los Campeones',
+          premise: 'Los Vargas y los Grandes Sacerdotes erigen una arena neutral donde combatientes de todas las eras compiten bajo arbitraje estricto para definir la custodia de las Super Esferas del Dragón.',
+          tone: 'Épico y Competitivo',
+          continuityMode: 'tournament_open',
+          startingLocation: 'Arena del Vacío Cósmico (Dimensión Cero)',
+          rulePreset: 'tournament_rules',
+          characterKeywords: ['goku', 'vegeta', 'jiren', 'broly', 'trunks']
+        }
+      ];
+      aiOutput = proceduralPresets[Math.floor(Math.random() * proceduralPresets.length)];
+    }
+
+    // Apply to forge form fields
+    setForgeTitle(aiOutput.title || 'Nueva Campaña Épica');
+    setForgePremise(aiOutput.premise || '');
+    if (aiOutput.tone) setForgeTone(aiOutput.tone);
+    if (aiOutput.continuityMode) setForgeMode(aiOutput.continuityMode);
+    if (aiOutput.startingLocation) setForgeLocation(aiOutput.startingLocation);
+    if (aiOutput.rulePreset) setForgeRulePreset(aiOutput.rulePreset);
+
+    // Auto-match and select matching characters from roster
+    if (aiOutput.characterKeywords && Array.isArray(aiOutput.characterKeywords)) {
+      const selectedIds = [];
+      aiOutput.characterKeywords.forEach(kw => {
+        const lowerKw = kw.toLowerCase().trim();
+        const match = characters.find(c => 
+          !selectedIds.includes(c.id) &&
+          ((c.name || '').toLowerCase().includes(lowerKw) || (c.id || '').toLowerCase().includes(lowerKw))
+        );
+        if (match) selectedIds.push(match.id);
+      });
+      if (selectedIds.length > 0) {
+        setForgeSelectedCast(selectedIds);
+      }
+    }
+
+    setIsGeneratingCampaignWithAi(false);
+    SoundFX?.playLevelUp?.();
   };
 
   // Helper to create custom campaign
@@ -409,44 +511,100 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
     setChronicle(stateCopy);
   };
 
-  // Advance scene
-  const handleAdvanceScene = (overrideType = null, extraData = {}) => {
+  // Advance scene (Powered by AI Narrator)
+  const handleAdvanceScene = async (overrideType = null, extraData = {}) => {
+    if (isGeneratingSceneAi || isGeneratingAiNovella) return;
     const effectiveType = overrideType || sceneType;
     const loc = customLocation.trim() || chronicle.currentLocation || 'Arena Interuniversal';
     const title = customSceneTitle.trim() || (extraData.title || `Capítulo ${chronicle.chapterNumber}: ${SCENE_TYPES[effectiveType]?.name || 'Incidente Multiversal'}`);
 
-    const castNames = (chronicle.activeCast || []).map(id => charMap.get(id)?.name || id).join(', ');
+    const castChars = (chronicle.activeCast || []).map(id => charMap.get(id)).filter(Boolean);
+    const castNames = castChars.map(c => `${c.name} (${c.universe || 'DB'} · ${c.tier || 'Tier ?'})`).join(', ');
+
     let narrativeText = extraData.narrativeText || '';
 
+    // If no pre-baked narrative is provided, generate dynamically with AI Engine!
     if (!narrativeText) {
+      setIsGeneratingSceneAi(true);
+      SoundFX?.playPowerUp?.();
+
+      const lastRoll = chronicle.lastTacticalRoll;
+      const recentHistory = (chronicle.history || []).slice(-3).map(h => `- Cap. ${h.chapter}: ${h.title} (${(h.narrative || '').slice(0, 120)}...)`).join('\n');
+      const simEngine = aiConfig?.simulationEngine || aiConfig?.characterEngine || aiConfig;
+
+      const promptScene = `Eres el Maestro Narrador Cinematográfico de APEX Crónicas.
+Redacta la escena narrativa para el CAPÍTULO ${chronicle.chapterNumber} de la campaña.
+
+DATOS DE LA CAMPAÑA:
+- Título de la Campaña: "${chronicle.title}"
+- Premisa / Sinopsis: ${chronicle.premise}
+- Tono Narrativo: ${chronicle.tone}
+- Ubicación Actual: ${loc}
+- Formato / Tipo de Escena: ${SCENE_TYPES[effectiveType]?.name || effectiveType}
+- Elenco de Combatientes en Escena:
+${castChars.map(c => {
+  const cState = chronicle.characterStates?.[c.id] || {};
+  const injuries = (cState.injuries || []).map(i => i.name).join(', ');
+  return `  • ${c.name} [Tier: ${c.tier || '?'}, Ki: ${c.kiNumeric || 'N/A'}] — Condición: ${cState.shortTermCondition || 'Óptimo'}${injuries ? ` (Lesiones: ${injuries})` : ''}`;
+}).join('\n')}
+
+${lastRoll ? `CONTINGENCIA TÁCTICA ACTIVA:
+${lastRoll.actorName} ejecutó [${lastRoll.tactic.name}] contra ${lastRoll.targetName}.
+Resultado de la tirada D20: ${lastRoll.outcomeBadge} (${lastRoll.outcomeLabel}) — ${lastRoll.outcomeDesc}.` : ''}
+
+${userGuidance.trim() ? `DIRECTRIZ DEL DIRECTOR / GIRO TÁCTICO: "${userGuidance.trim()}"` : ''}
+
+${recentHistory ? `HISTORIAL DE CAPÍTULOS RECIENTES:\n${recentHistory}` : ''}
+
+REGLAS NARRATIVAS OBLIGATORIAS:
+1. Redacta de 3 a 5 párrafos ricos y cinematográficos (400 a 700 palabras), con prosa inmersiva en español y diálogos con guión largo (—).
+2. SÉ 100% FIEL A LA PREMISA de la campaña ("${chronicle.title}"). No inventes situaciones genéricas. Si la premisa es una vida pacífica en Kame House o la ausencia de Raditz, narra exactamente esa situación familiar o la tensión subyacente. Si es combate, narra la coreografía exacta de los combatientes presentes.
+3. Incorpora las técnicas canónicas de los personajes en **negrita**.
+4. Culmina con un gancho dramático para el siguiente capítulo.`;
+
+      try {
+        const aiResponse = await SimulationEngine.callAiApi(promptScene, simEngine);
+        if (aiResponse && typeof aiResponse === 'string' && aiResponse.trim().length > 60) {
+          narrativeText = aiResponse.trim();
+        }
+      } catch (e) {
+        console.warn('AI Scene generation failed, using dynamic contextual fallback:', e);
+      } finally {
+        setIsGeneratingSceneAi(false);
+      }
+    }
+
+    if (!narrativeText) {
+      const f1 = castChars[0]?.name || 'Los combatientes';
+      const f2 = castChars[1]?.name || 'los aliados';
       switch (effectiveType) {
         case 'training':
-          narrativeText = `Bajo la atmósfera densa de ${loc}, ${castNames} llevan a cabo un régimen marcial implacable. La vibración de su Ki resuena contra el espacio mismo, afinando el control y mitigando los costes energéticos de sus formas superiores.`;
+          narrativeText = `Bajo la atmósfera de ${loc}, ${f1} y ${f2} profundizan en las directrices de "${chronicle.title}". Mediante un entrenamiento de flujo de Ki milimétrico, calibran sus reflejos ante las amenazas que acechan en el horizonte del arco.`;
           break;
         case 'brief_combat':
         case 'tournament_match':
         case 'eternity_oracle_battle':
-          narrativeText = `Una colisión de proporciones cósmicas estalla en ${loc}. Los combatientes ${castNames} intercambian ráfagas fulgurantes y fintas sónicas. El impacto de las ondas de choque deforma la gravedad del entorno, poniendo a prueba su resistencia física y jerarquía táctica.`;
+          narrativeText = `El conflicto estalla en ${loc} en el marco de "${chronicle.title}". ${f1} y ${f2} intercambian ráfagas fulgurantes y fintas sónicas. La colisión de sus auras conmociona el terreno, probando la determinación de ambas partes.`;
           break;
         case 'political_faction':
         case 'diplomatic_negotiation':
-          narrativeText = `En el silencio cargado de ${loc}, las palabras pesan tanto como supernovas. Las facciones intercambian advertencias veladas y posturas innegociables mientras ${castNames} evalúan las intenciones y recursos de sus contrapartes.`;
+          narrativeText = `En ${loc}, las palabras definen el destino de la campaña "${chronicle.title}". ${f1} expone su postura mientras ${f2} sopesa los riesgos de una ruptura definitiva.`;
           break;
         case 'exploration':
         case 'investigation':
-          narrativeText = `Una patrulla minuciosa a través de ${loc} revela anomalías latentes en la trama de la realidad. ${castNames} detectan huellas de Ki exótico y vestigios que conectan con otros cuadrantes cósmicos.`;
+          narrativeText = `Una inspección minuciosa en ${loc} revela secretos latentes sobre "${chronicle.title}". ${f1} detecta vestigios de Ki y anomalías dimensionales que alteran los planes previstos.`;
           break;
         case 'rest_recovery':
-          narrativeText = `El fragor de la batalla concede un respiro en ${loc}. Los combatientes ${castNames} se repliegan para regular su respiración, ingerir provisiones y consolidar lo aprendido en los últimos asaltos.`;
+          narrativeText = `La calma se asienta brevemente en ${loc}. ${f1} y ${f2} recuperan el aliento y procesan los sucesos recientes antes de encarar la próxima fase de la contienda.`;
           break;
         default:
-          narrativeText = `Los acontecimientos se desarrollan en ${loc}. ${userGuidance ? 'Directriz activa: ' + userGuidance + '. ' : ''}${castNames} maniobran con cautela, mientras el destino del arco da un nuevo paso hacia su clímax.`;
+          narrativeText = `Los acontecimientos de "${chronicle.title}" se intensifican en ${loc}. ${userGuidance ? 'Directriz activa: ' + userGuidance + '. ' : ''}${f1} y ${f2} maniobran con cautela hacia el nuevo desenlace.`;
           break;
       }
     }
 
-    if (userGuidance.trim()) {
-      narrativeText += ` [Evolución táctica: ${userGuidance.trim()}]`;
+    if (userGuidance.trim() && !narrativeText.includes(userGuidance.trim())) {
+      narrativeText += `\n\n[Evolución táctica del Director: ${userGuidance.trim()}]`;
     }
 
     const stateCopy = JSON.parse(JSON.stringify(chronicle));
@@ -455,18 +613,19 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
       sceneType: effectiveType,
       location: loc,
       narrativeText,
-      consequences: extraData.consequences || [`Acontecimientos consolidados en Capítulo ${chronicle.chapterNumber}`],
+      consequences: extraData.consequences || [`Capítulo ${chronicle.chapterNumber} desarrollado en ${loc}`],
       advanceChapter: true
     });
 
     setChronicle(stateCopy);
     setCustomSceneTitle('');
     setUserGuidance('');
+    SoundFX?.playCombatHit?.();
   };
 
   // Generate Epic AI Novella Chapter (4 Actos Literarios, tokens extendidos 65k-131k)
   const handleGenerateAiNovella = async () => {
-    if (isGeneratingAiNovella) return;
+    if (isGeneratingAiNovella || isGeneratingSceneAi) return;
     setIsGeneratingAiNovella(true);
     SoundFX?.playPowerUp?.();
 
@@ -525,11 +684,10 @@ INSTRUCCIONES LITERARIAS ESTRICTAS DE 4 ACTOS:
 ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales con guión largo (—). NO uses jerga de videojuegos como 'HP' o 'puntos de daño'.`;
 
     let narrativeResult = '';
+    const simEngine = aiConfig?.simulationEngine || aiConfig;
 
     try {
-      if (aiConfig && (aiConfig.apiKey || aiConfig.engine === 'opencode' || aiConfig.engine === 'ollama' || aiConfig.engine === 'webllm')) {
-        narrativeResult = await SimulationEngine.callAiApi(promptNovella, aiConfig);
-      }
+      narrativeResult = await SimulationEngine.callAiApi(promptNovella, simEngine);
     } catch (e) {
       console.warn('AI call for chronicle novella fallback to procedural:', e);
     }
@@ -1734,6 +1892,61 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
               </button>
             </div>
 
+            {/* AI Assistant Banner in Campaign Forge */}
+            <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-950/80 via-teal-950/70 to-slate-950 border border-emerald-500/50 space-y-2.5 shadow-lg">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                    Asistente de Creación de Campañas (IA)
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/60 font-bold">
+                  Autocompletado & Brainstorming
+                </span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <input
+                  type="text"
+                  value={forgePromptIdea}
+                  onChange={(e) => setForgePromptIdea(e.target.value)}
+                  placeholder="Idea o semilla (ej: Torneo en Kame House con villanos clásicos)..."
+                  className="flex-1 bg-slate-950/90 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono w-full"
+                  onKeyDown={(e) => e.key === 'Enter' && handleGenerateCampaignWithAi()}
+                />
+
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <button
+                    onClick={() => {
+                      const seeds = [
+                        'Torneo en la Casa de Roshi con guerreros del Dragon Ball Clásico',
+                        'Invasión Makaioshin al Reino de los Demonios y la Tierra',
+                        'Guerra secreta entre los Seis Universos borrados por Zeno-Sama',
+                        'Crisis temporal: Fu encadena las realidades de GT y Super',
+                        'Goku y Piccolo atrapados en una dimensión hiperbólica de 500G'
+                      ];
+                      setForgePromptIdea(seeds[Math.floor(Math.random() * seeds.length)]);
+                      SoundFX?.playClick?.();
+                    }}
+                    className="px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-mono font-bold transition cursor-pointer shrink-0"
+                    title="Inspirar con una idea aleatoria"
+                  >
+                    🎲 Idea
+                  </button>
+
+                  <button
+                    onClick={handleGenerateCampaignWithAi}
+                    disabled={isGeneratingCampaignWithAi}
+                    className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-mono font-bold text-xs shadow-md shadow-emerald-950 transition cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-50"
+                  >
+                    <Sparkles className={`w-3.5 h-3.5 text-slate-950 ${isGeneratingCampaignWithAi ? 'animate-spin' : ''}`} />
+                    <span>{isGeneratingCampaignWithAi ? 'Forjando con IA...' : '🪄 Forjar con IA'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5 md:col-span-2">
                 <label className="text-xs text-slate-300 font-bold uppercase">Título de la Campaña:</label>
@@ -2070,6 +2283,26 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
                 Cerrar Recapitulación
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Global AI Generating Backdrop Overlay */}
+      {(isGeneratingSceneAi || isGeneratingAiNovella) && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-purple-500/60 p-8 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.4)] max-w-md w-full space-y-4 font-mono">
+            <Sparkles className="w-12 h-12 text-pink-400 mx-auto animate-spin" />
+            <h3 className="text-base font-bold text-white">
+              {isGeneratingAiNovella ? '🪄 Redactando Novela Épica (4 Actos)...' : '✨ Redactando Escena con IA...'}
+            </h3>
+            <p className="text-xs text-purple-300">
+              Motor: <span className="font-bold text-pink-300">{aiConfig?.simulationEngine?.model || 'NVIDIA Nemotron 3 Ultra 550B'}</span>
+            </p>
+            <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+              <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 h-full w-full animate-pulse"></div>
+            </div>
+            <p className="text-[11px] text-slate-400">
+              Generando coreografías milimétricas, prosa inmersiva y balance táctico...
+            </p>
           </div>
         </div>
       )}
