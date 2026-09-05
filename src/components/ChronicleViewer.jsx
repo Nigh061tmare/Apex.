@@ -24,7 +24,7 @@ import {
   healCharacterInjuries
 } from '../lib/chronicleContracts';
 import {
-  BookOpen, Sparkles, Swords, Shield, Activity, Flame, RefreshCw,
+  BookOpen, FolderArchive, Bookmark, Sparkles, Swords, Shield, Activity, Flame, RefreshCw,
   Download, Plus, CheckCircle2, AlertTriangle, Users, Target,
   ChevronRight, Layers, Compass, Scroll, Award, HeartHandshake, Zap,
   X, History, FileText, Play, RotateCcw, Package, Search, Trash2,
@@ -33,8 +33,10 @@ import {
 } from 'lucide-react';
 import { SimulationEngine } from '../services/simulationEngine';
 import { SoundFX } from '../services/soundFx';
+import CampaignVaultModal from './CampaignVaultModal';
 
 const STORAGE_KEY = 'apex_chronicle_active_campaign_v1';
+const STORAGE_KEY_CAMPAIGNS_VAULT = 'apex_chronicles_vault_v1';
 
 export default function ChronicleViewer({ characters = [], lang = 'es', onLaunchCombat, aiConfig = null }) {
   const [chronicle, setChronicle] = useState(() => {
@@ -73,6 +75,20 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
   const [recapModalOpen, setRecapModalOpen] = useState(false);
   const [recapText, setRecapText] = useState('');
   const [customCampaignModalOpen, setCustomCampaignModalOpen] = useState(false);
+  const [campaignVaultOpen, setCampaignVaultOpen] = useState(false);
+  const [saveToast, setSaveToast] = useState(null);
+  const [savedCampaigns, setSavedCampaigns] = useState(() => {
+    try {
+      const vault = localStorage.getItem(STORAGE_KEY_CAMPAIGNS_VAULT);
+      if (vault) {
+        const parsed = JSON.parse(vault);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.warn('Error loading campaigns vault:', e);
+    }
+    return [];
+  });
   const [addCharModalOpen, setAddCharModalOpen] = useState(false);
   const [addItemModalOpen, setAddItemModalOpen] = useState(false);
   const [isGeneratingAiNovella, setIsGeneratingAiNovella] = useState(false);
@@ -125,11 +141,29 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
     }
   }, [chronicle?.activeCast]);
 
-  // Auto-persist chronicle
+  // Auto-persist chronicle and synchronize with Campaigns Vault
   useEffect(() => {
     if (chronicle) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(chronicle));
+
+        // Auto-sync into savedCampaigns vault
+        const campId = chronicle.campaignId || chronicle.chronicleId || 'camp-default';
+        setSavedCampaigns(prev => {
+          const index = prev.findIndex(c => (c.campaignId === campId) || (c.chronicleId === campId));
+          const updatedEntry = { ...chronicle, campaignId: campId, updatedAt: Date.now() };
+          let next;
+          if (index >= 0) {
+            next = [...prev];
+            next[index] = { ...next[index], ...updatedEntry };
+          } else {
+            next = [updatedEntry, ...prev];
+          }
+          try {
+            localStorage.setItem(STORAGE_KEY_CAMPAIGNS_VAULT, JSON.stringify(next));
+          } catch {}
+          return next;
+        });
       } catch (e) {
         console.error('Failed to persist chronicle state:', e);
       }
@@ -177,6 +211,104 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
   const branchOptions = useMemo(() => {
     return generateSceneBranchOptions(chronicle, sceneType);
   }, [chronicle, sceneType]);
+
+  // Vault: Save current campaign explicitly
+  const handleSaveCampaignToVault = (manual = true) => {
+    const campId = chronicle.campaignId || chronicle.chronicleId || `camp-${Date.now()}`;
+    const entry = {
+      ...chronicle,
+      campaignId: campId,
+      updatedAt: Date.now()
+    };
+    
+    setSavedCampaigns(prev => {
+      const idx = prev.findIndex(c => (c.campaignId === campId) || (c.chronicleId === campId));
+      let next;
+      if (idx >= 0) {
+        next = [...prev];
+        next[idx] = { ...next[idx], ...entry };
+      } else {
+        next = [entry, ...prev];
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY_CAMPAIGNS_VAULT, JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+
+    if (manual) {
+      SoundFX?.playLevelUp?.();
+      setSaveToast(`¡Campaña "${chronicle.title}" guardada con éxito en la Bóveda!`);
+      setTimeout(() => setSaveToast(null), 3500);
+    }
+  };
+
+  // Vault: Load a campaign
+  const handleLoadCampaign = (target) => {
+    if (!target) return;
+    setChronicle(target);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(target));
+    } catch {}
+    setSaveToast(`Campaña "${target.title}" cargada. ¡Continuando historia!`);
+    setTimeout(() => setSaveToast(null), 3500);
+  };
+
+  // Vault: Delete a campaign
+  const handleDeleteCampaign = (targetId) => {
+    setSavedCampaigns(prev => {
+      const next = prev.filter(c => c.campaignId !== targetId && c.chronicleId !== targetId);
+      try {
+        localStorage.setItem(STORAGE_KEY_CAMPAIGNS_VAULT, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  // Vault: Toggle Favorite
+  const handleToggleFavoriteCampaign = (targetId) => {
+    setSavedCampaigns(prev => {
+      const next = prev.map(c => {
+        if (c.campaignId === targetId || c.chronicleId === targetId) {
+          return { ...c, isFavorite: !c.isFavorite };
+        }
+        return c;
+      });
+      try {
+        localStorage.setItem(STORAGE_KEY_CAMPAIGNS_VAULT, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  // Vault: Import a campaign
+  const handleImportCampaign = (imported) => {
+    if (!imported || typeof imported !== 'object') return;
+    const campId = imported.campaignId || imported.chronicleId || `camp-${Date.now()}`;
+    const normalized = {
+      ...imported,
+      campaignId: campId,
+      updatedAt: Date.now()
+    };
+    setChronicle(normalized);
+    setSavedCampaigns(prev => {
+      const next = [normalized, ...prev.filter(c => c.campaignId !== campId && c.chronicleId !== campId)];
+      try {
+        localStorage.setItem(STORAGE_KEY_CAMPAIGNS_VAULT, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+    setSaveToast(`¡Campaña "${normalized.title}" importada y cargada con éxito!`);
+    setTimeout(() => setSaveToast(null), 3500);
+  };
+
+  // Vault: Clear all campaigns
+  const handleClearAllCampaigns = () => {
+    setSavedCampaigns([]);
+    try {
+      localStorage.removeItem(STORAGE_KEY_CAMPAIGNS_VAULT);
+    } catch {}
+  };
 
   // Helper to load template
   const handleLoadTemplate = (tmplId) => {
@@ -956,11 +1088,29 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
         <div className="flex flex-wrap items-center justify-between gap-3 mt-6 pt-4 border-t border-slate-800/80 text-xs font-mono">
           <div className="flex flex-wrap items-center gap-2">
             <button
+              onClick={() => setCampaignVaultOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white font-bold shadow-md shadow-purple-950/50 transition cursor-pointer"
+              title="Abrir la Bóveda de Campañas guardadas para reanudar o gestionar tus sagas"
+            >
+              <FolderArchive className="w-3.5 h-3.5 text-purple-200" />
+              <span>📚 Mis Campañas ({savedCampaigns.length})</span>
+            </button>
+
+            <button
+              onClick={() => handleSaveCampaignToVault(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-700/60 font-bold transition cursor-pointer"
+              title="Guardar estado actual en la bóveda"
+            >
+              <Bookmark className="w-3.5 h-3.5 text-emerald-400" />
+              <span>💾 Guardar</span>
+            </button>
+
+            <button
               onClick={() => setCustomCampaignModalOpen(true)}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold shadow-md shadow-emerald-950/50 transition cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span>➕ Forjar Campaña Personalizada</span>
+              <span>➕ Forjar Campaña</span>
             </button>
 
             <select
