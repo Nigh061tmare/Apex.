@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "title": "test",
+    "version": "V26"
+  },
+  "deprecatedRecords": [
+    {
+      "recordId": "dep-001"
+    }
+  ],
+  "characters": {}
+}

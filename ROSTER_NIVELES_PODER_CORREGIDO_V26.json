@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "test": true
+  },
+  "deprecatedRecords": [
+    {
+      "id": 1
+    }
+  ],
+  "characters": {}
+}

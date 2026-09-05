@@ -22,10 +22,30 @@ const projectRoot = path.resolve(__dirname, '../../');
 const V26_FILE = path.join(projectRoot, 'src/data/ROSTER_NIVELES_PODER_CORREGIDO_V26.json');
 const CHARACTERS_FILE = path.join(projectRoot, 'src/data/characters.js');
 
+// Official TIER_ORDER (source of truth: src/lib/apexTierSystem.js)
+// Only these exact tier strings are recognized by the combat resolver.
+// Audit 2026-09-05: 16 illegal tiers existed (High 5-B, High 4-B, High 8-A,
+// High 7-B, High 4-A) and 33 chain descents were corrected; these guards prevent
+// regression against the strict standard.
+export const TIER_ORDER = [
+  '10-C', '10-B', '10-A', '9-C', '9-B', '9-A',
+  '8-C', 'High 8-C', '8-B', '8-A',
+  'Low 7-C', '7-C', 'High 7-C', 'Low 7-B', '7-B', '7-A', 'High 7-A',
+  '6-C', 'High 6-C', 'Low 6-B', '6-B', 'High 6-B', '6-A', 'High 6-A',
+  '5-C', 'Low 5-B', '5-B', '5-A', 'High 5-A',
+  'Low 4-C', '4-C', 'High 4-C', '4-B', '4-A',
+  '3-C', '3-B', '3-A', 'High 3-A',
+  'Low 2-C', '2-C', '2-B', '2-A',
+  'Low 1-C', '1-C', 'High 1-C', '1-B', 'High 1-B',
+  'Low 1-A', '1-A', 'High 1-A', '0'
+];
+const TIER_RANK = new Map(TIER_ORDER.map((t, i) => [t, i]));
+
 export const TIER_CANONICAL_REGEX = /^(High |Low )?\d{1,2}-[ABC]$/;
 
 export function isValidTierFormat(tierStr) {
-  return typeof tierStr === 'string' && TIER_CANONICAL_REGEX.test(tierStr);
+  // STRICT: must be one of the exact canonical tiers in TIER_ORDER
+  return typeof tierStr === 'string' && TIER_RANK.has(tierStr);
 }
 
 export function validateTierFormatString(tierStr) {
@@ -175,24 +195,159 @@ export function validateV26CanonicalRoster() {
     issues.push(`Found ${unalignedMismatchCount} tier mismatches between baseTier and forms[0].tier`);
   }
 
-  // Tier format validation for all active records
+  // Base Ki sync: baseKiNumeric must equal forms[0].kiNumeric (Single-Measure Rule).
+  // Audit 2026-09-05: 13 records had a broken single measure (9 cosmic records 1000x off,
+  // Gojo x2 (5200 vs 15000), Hakari (7697 vs 9500), Black Freezer Granolah (180T vs 183.75T)).
+  // All fixed; this guard prevents regression.
+  let baseKiMismatchCount = 0;
+  Object.values(activeRecords).forEach(c => {
+    const f0Ki = c.forms?.[0]?.kiNumeric;
+    const baseKi = c.baseKiNumeric;
+    if (baseKi != null && f0Ki != null && Math.abs(baseKi - f0Ki) > 0.5) {
+      baseKiMismatchCount++;
+      issues.push(`baseKi/forms[0] mismatch for ${c.id}: base=${baseKi}, forms[0]=${f0Ki}`);
+    }
+  });
+  checks['baseKi_sync_forms0'] = baseKiMismatchCount === 0;
+  if (baseKiMismatchCount > 0) {
+    issues.push(`Found ${baseKiMismatchCount} baseKi/forms[0] single-measure mismatches`);
+  }
+
+  // Tier format validation for all active records (STRICT TIER_ORDER, forms included)
   let invalidTierFormatCount = 0;
   Object.values(activeRecords).forEach(c => {
-    if (c.tier && !TIER_CANONICAL_REGEX.test(c.tier)) {
+    const baseTier = c.baseTier || c.tier;
+    if (baseTier && !TIER_RANK.has(baseTier)) {
       invalidTierFormatCount++;
-      issues.push(`Invalid tier format for ${c.id}: "${c.tier}"`);
+      issues.push(`Invalid tier format for ${c.id}: "${baseTier}"`);
     }
+    (c.forms || []).forEach((f, i) => {
+      if (f.tier && !TIER_RANK.has(f.tier)) {
+        invalidTierFormatCount++;
+        issues.push(`Invalid tier format for ${c.id} form[${i}]: "${f.tier}"`);
+      }
+    });
   });
   checks['tier_format_compliance'] = invalidTierFormatCount === 0;
 
   // Form count validation
+  // V25 baseline had 1311 forms. V26 adds 5 canonical JJK forms:
+  //   Jogo (Maximum: Meteor, Maximum: Ultra) +2
+  //   Mahoraga (Adaptación: Contra Jogo, Adaptación Total: Rueda, Adaptación Máxima vs Sukuna) +3
+  //   Sukuna Heian: contamination (Super Saiyan 1/2/3) REMOVED, back to 1 form => net +5
+  // Anti-Flat-Clone PASS (aprobado por el usuario 2026-09-05): 11 formas fusionadas/eliminadas
+  //   (duplicados literales + escalado de clones planos) => 1316 - 11 = 1305
   let totalForms = 0;
   Object.values(activeRecords).forEach(c => {
     if (c.forms) totalForms += c.forms.length;
   });
-  checks['totalForms_1311'] = totalForms === 1311;
-  if (totalForms !== 1311) {
-    issues.push(`Total forms mismatch: expected 1311, found ${totalForms}`);
+  checks['totalForms_1305'] = totalForms === 1305;
+  if (totalForms !== 1305) {
+    issues.push(`Total forms mismatch: expected 1305, found ${totalForms}`);
+  }
+
+  // DB-form contamination guard: NO Super Saiyan / Kaio-ken / Oozaru forms allowed
+  // in non-Dragon Ball universes (Constitution Rule 1 & 4: zero cross-universe contamination)
+  const DB_FORM_PATTERNS = [
+    /super\s*saiyan|ssj[\s\d]*|saiyajin/i,
+    /kaio[\s-]?ken/i,
+    /oozaru|gran\s*simio|mono\s*gigante/i,
+    /zenkai/i,
+    /super\s*saiyan\s*(god|blue)|\bssg\b|\bssb\b|ssgss/i,
+    /ultra\s*instinct|instinto\s*perfecto/i,
+  ];
+  let dbFormContamination = [];
+  Object.values(activeRecords).forEach(c => {
+    const uni = c.universe || '';
+    if (uni.startsWith('DRAGON BALL')) return;
+    (c.forms || []).forEach(f => {
+      const nm = f.name || '';
+      if (DB_FORM_PATTERNS.some(p => p.test(nm))) {
+        dbFormContamination.push(`${c.id} -> "${nm}"`);
+      }
+    });
+  });
+  checks['no_db_form_contamination'] = dbFormContamination.length === 0;
+  if (dbFormContamination.length > 0) {
+    issues.push(`DB form contamination in non-DB universes (${dbFormContamination.length}): ${dbFormContamination.join(' | ')}`);
+  }
+
+  // Universe/ID alignment guard (Constitution Pillar 1: Zero Franchise Crosses).
+  // Audit 2026-09-05: 12 records were placed in the wrong universe (Yuta->CSM, Wolverine->DC,
+  // Zeno Zoldyck->JoJo, Zeus->Marvel, Yujiro->RoR, Zombieman->MHA, Kira->OPM, etc.).
+  // All fixed; this guard prevents regression via strong id hints.
+  const UNIVERSE_HINTS = [
+    { u: 'JUJUTSU KAISEN', p: /(jjk|jujutsu|sukuna|gojo|itadori|fushiguro|mahoraga|zenin|kugisaki|okkotsu|hakari|toji)-/i },
+    { u: 'CHAINSAW MAN', p: /(csm|chainsaw|denji|makima|pochita|yoshida-hirofumi)/i },
+    { u: 'HUNTER X HUNTER', p: /(hxh|zoldyck|killua|meruem|netero|hisoka|chrollo|kurapika)-/i },
+    { u: "JOJO'S BIZARRE ADVENTURE", p: /(jojo|kakyoin|jotaro|giorno|zeppeli|yoshikage)-/i },
+    { u: 'ONE PUNCH MAN', p: /(opm|saitama|genos|garou|zombieman|flashy-flash)/i },
+    { u: 'MY HERO ACADEMIA', p: /(mha|bakugo|shigaraki|todoroki|twice-)/i },
+    { u: 'BAKI THE GRAPPLER', p: /(-baki|hanma|yujiro|pickle|oliva|guevaru|sikorsky|kaioh)/i },
+    { u: 'SHUUMATSU NO VALKYRIE (RECORD OF RAGNAROK)', p: /(shuumatsu|valkyrie|ragnarok|zeus-|lu-?bu)/i },
+    { u: 'MARVEL COMICS', p: /(marvel|wolverine|iron-man|spider|hulk|adam-warlock|jean-grey|dr-doom|galactus|thanos)/i },
+    { u: 'DC COMICS', p: /(^dc-|-dc-|superman|batman|wonder-woman|darkseid|lex-luthor|joker|dr-manhattan|spectre|anti-monitor|zatanna)/i },
+    { u: 'INVINCIBLE', p: /(invincible|omni-man|battle-beast|universa)/i },
+    { u: 'THE BOYS', p: /(the-boys|homelander|butcher|neuman|soldier-boy)/i },
+  ];
+  let universeMismatch = [];
+  Object.values(activeRecords).forEach(c => {
+    const uni = c.universe || '';
+    if (uni.startsWith('DRAGON BALL')) return; // DB ids are varied; covered by no_db_form_contamination
+    if (uni.includes('APEX ORIGINAL') || uni.includes('HÍBRIDO')) return;
+    const cid = c.id || '';
+    for (const { u, p } of UNIVERSE_HINTS) {
+      if (p.test(cid)) {
+        const key = u.split(' ')[0];
+        if (!uni.toUpperCase().includes(key.toUpperCase())) {
+          universeMismatch.push(`${c.id} -> "${uni}" (hint: ${u})`);
+        }
+        break;
+      }
+    }
+  });
+  checks['universe_id_alignment'] = universeMismatch.length === 0;
+  if (universeMismatch.length > 0) {
+    issues.push(`Universe/ID misalignments (${universeMismatch.length}): ${universeMismatch.join(' | ')}`);
+  }
+
+  // Ascending order guard: forms must be sorted by kiNumeric ascending (Constitution Rule 2)
+  let outOfOrderChars = [];
+  Object.values(activeRecords).forEach(c => {
+    const forms = c.forms || [];
+    if (forms.length < 2) return;
+    let prev = -1;
+    for (const f of forms) {
+      const ki = getKi(f);
+      if (!ki || ki < prev) {
+        outOfOrderChars.push(`${c.id} (form "${f.name}", ki=${ki} after ${prev})`);
+        break;
+      }
+      prev = ki;
+    }
+  });
+  checks['forms_ascending_order'] = outOfOrderChars.length === 0;
+  if (outOfOrderChars.length > 0) {
+    issues.push(`Out-of-order forms (${outOfOrderChars.length}): ${outOfOrderChars.join(' | ')}`);
+  }
+
+  // Tier monotonicity guard: tier[i] must never be BELOW tier[i-1] within a chain
+  // (Constitution Golden Rule 2: kIs ascend AND tiers must scale correlatively).
+  let tierDropChars = [];
+  Object.values(activeRecords).forEach(c => {
+    const forms = c.forms || [];
+    for (let i = 1; i < forms.length; i++) {
+      const prevRank = TIER_RANK.get(forms[i - 1].tier);
+      const curRank = TIER_RANK.get(forms[i].tier);
+      if (prevRank == null || curRank == null) continue; // non-standard handled above
+      if (curRank < prevRank) {
+        tierDropChars.push(`${c.id} (form[${i}] "${forms[i].name}" ${forms[i].tier} < form[${i - 1}] ${forms[i - 1].tier})`);
+      }
+    }
+  });
+  checks['forms_tier_ascending'] = tierDropChars.length === 0;
+  if (tierDropChars.length > 0) {
+    issues.push(`Tier descents within chains (${tierDropChars.length}): ${tierDropChars.join(' | ')}`);
   }
 
 // Critical power scaling validations
@@ -259,7 +414,7 @@ async function validateCharactersTacticalIntegrity() {
     issues.push(`UI character count mismatch: expected at least 756, found ${uiCharCount}`);
   }
 
-  return { success: issues.length === 0, checks, issues };
+  return { success: issues.length === 0, checks, issues, characterCount: uiCharCount };
 }
 
 async function main() {

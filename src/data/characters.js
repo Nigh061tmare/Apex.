@@ -282619,6 +282619,21 @@ export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
     powerSchema: v26Char.powerSchema,
     powerCorrectionVersion: v26Char.powerCorrectionVersion || 'V26',
     lorePriorForm: v26Char.lorePriorForm || null,
+    // ── Sincronía de fuente única: numericStats siempre derivado del JSON V26 ──
+    // El resolver prioriza numericStats.apexKi sobre baseKiNumeric, de modo que
+    // congelar los valores tácticos antigua desincronizaría la simulación.
+    numericStats: (() => {
+      const oldNS = baseProfile.numericStats || {};
+      const baseKi = v26Char.baseKiNumeric ?? oldNS.apexKi ?? 1;
+      const oldApex = oldNS.apexKi && oldNS.apexKi > 0 ? oldNS.apexKi : baseKi;
+      const burstRatio = oldNS.burstKi && oldNS.burstKi > 0 ? oldNS.burstKi / oldApex : 1.35;
+      return {
+        ...oldNS,
+        apexKi: baseKi,
+        burstKi: Math.round(baseKi * burstRatio),
+        durabilityKi: baseKi,
+      };
+    })(),
     forms: mergedForms
   };
 });

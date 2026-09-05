@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-09-05",
+  "version": "V26",
+  "checks": {
+    "✅ JSON V26 válido y completo": true,
+    "✅ 756 personajes / 1305 formas": true,
+    "✅ 0 referencias 'scouter'": true,
+    "✅ 0 KI nulos": true,
+    "✅ 0 KI <= 0": true,
+    "✅ Orden Ki ascendente correcto": true,
+    "✅ Tier sync (baseTier = form[0].tier)": true,
+    "✅ Formato tier válido": true,
+    "✅ Power scaling Cell Games canónico": true,
+    "✅ Gohan SSJ2 (16B) > Cell Super Perfecto (15B)": true,
+    "✅ Gohan SSJ1 (10B) > Cell Perfecto (9B)": true,
+    "✅ Broly Z LSSJ (2.24T) > SSJ Tipo A (280B)": true,
+    "✅ Broly LSSJ multiplicador x400": true,
+    "✅ Goku Namek 5 formas restauradas": true,
+    "✅ Cell orden canónico + medida única (base 2B)": true,
+    "✅ Broly LSSJ > Cell Super Perfecto": true,
+    "✅ Gohan SSJ2 > Goku/Vegeta SSJ Cell": true,
+    "✅ 13 registros deprecados": true,
+    "✅ Censo total 769": true,
+    "✅ Validador V26 PASS": true,
+    "✅ UI character count PASS": true,
+    "✅ ZERO clones planos (solo 5 MANTENER justificados)": true,
+    "✅ ZERO contaminación DB en no-DB (Sukuna/jjk)": true
+  },
+  "all_pass": true
+}

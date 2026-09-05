@@ -1,0 +1,102 @@
+{
+  "krilin-db-clasico": {
+    "base_ki": 227,
+    "tier": "8-A",
+    "reason": "Daizenshuu: krillin_23tb = 227"
+  },
+  "yamcha-db-clasico": {
+    "base_ki": 249,
+    "tier": "8-B",
+    "reason": "Daizenshuu: yamcha_23tb = 249"
+  },
+  "tenshinhan-db-clasico": {
+    "base_ki": 250,
+    "tier": "7-B",
+    "reason": "Daizenshuu: tien_23tb = 250"
+  },
+  "chaos-dragon-ball-cl-sico-318": {
+    "base_ki": 130,
+    "tier": "5-C",
+    "reason": "Daizenshuu: chaotzu_22tb = 130"
+  },
+  "maestro-roshi-jackie-chun-dragon-ball-cl-sico-224": {
+    "base_ki": 300,
+    "tier": "5-C",
+    "reason": "Daizenshuu: roshi_max = 300"
+  },
+  "rey-piccolo-dragon-ball-cl-sico-497": {
+    "base_ki": 350,
+    "tier": "7-B",
+    "reason": "Daizenshuu: piccolo_daimao_young = 350"
+  },
+  "son-goku-ni-o-dragon-ball-cl-sico-987": {
+    "base_ki": 530,
+    "tier": "7-B",
+    "reason": "Daizenshuu: goku_rr = 530"
+  },
+  "krilin-saga-saiyan-namek": {
+    "base_ki": 1770,
+    "tier": "Low 5-B",
+    "reason": "Daizenshuu: krillin_saiyan = 1,770"
+  },
+  "tenshinhan-saga-saiyan": {
+    "base_ki": 250,
+    "tier": "5-B",
+    "reason": "Daizenshuu: tien_23tb = 250"
+  },
+  "son-gohan-ni-o-saga-saiyan-namek-830": {
+    "base_ki": 981,
+    "tier": "5-B",
+    "reason": "Daizenshuu: gohan_saiyan = 981"
+  },
+  "vegeta-saga-namek-saga-namek-783": {
+    "base_ki": 240000,
+    "tier": "5-A",
+    "reason": "Daizenshuu: vegeta_namek_base = 240,000"
+  },
+  "piccolo-saga-saiyan-namek-saga-saiyan-967": {
+    "base_ki": 1000000,
+    "tier": "5-A",
+    "reason": "Daizenshuu: piccolo_namek_base = 1,000,000"
+  },
+  "son-goku-saga-cell-saga-androides-459": {
+    "base_ki": 150000000,
+    "tier": "4-C",
+    "reason": "Daizenshuu: goku_cell_base = 150,000,000"
+  },
+  "vegeta-saga-cell-saga-androides-856": {
+    "base_ki": 180000000,
+    "tier": "4-C",
+    "reason": "Daizenshuu: vegeta_cell_base = 180,000,000"
+  },
+  "son-gohan-joven-saga-androides-cell-945": {
+    "base_ki": 15000000,
+    "tier": "4-B",
+    "reason": "Daizenshuu: gohan_cell_base = 15,000,000"
+  },
+  "cell-saga-androides-98": {
+    "base_ki": 9000000000,
+    "tier": "4-B",
+    "reason": "Daizenshuu: cell_perfect = 9,000,000,000"
+  },
+  "krilin-saga-cell": {
+    "base_ki": 75000000,
+    "tier": "4-C",
+    "reason": "Daizenshuu: krillin_cell = 75,000,000"
+  },
+  "tenshinhan-saga-cell": {
+    "base_ki": 90000000,
+    "tier": "4-C",
+    "reason": "Daizenshuu: tien_cell = 90,000,000"
+  },
+  "piccolo-saga-cell-buu-saga-androides-946": {
+    "base_ki": 1200000000,
+    "tier": "4-C",
+    "reason": "Daizenshuu: piccolo_cell = 1,200,000,000"
+  },
+  "vegeta-majin-ssj2-895": {
+    "base_ki": 70000000,
+    "tier": "4-C",
+    "reason": "Daizenshuu: vegeta_buu_base = 70,000,000"
+  }
+}

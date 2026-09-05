@@ -1,0 +1,57 @@
+# PROPUESTA DE CORRECCIÓN DE CLONES PLANOS — ROSTER V26 (verificada)
+
+> **Regla rectora**: el APEX KI es la UNICA medida. Formas que representan transformaciones
+> distintas DEBEN escalar; nombres que describen el MISMO estado se FUSIONAN.
+> Acciones: **ESCALAR** · **FUSIONAR** · **MANTENER (justificado)**.
+
+| # | Personaje | Acción | Detalle |
+|---|-----------|--------|---------|
+| 1 | Vegeta Saga Super Dragon Ball Super 454 (vegeta-saga-super-dragon-ball-super-454) | **ESCALAR** | SSJ/SSJ2/SSJ3/SSG/SSB/SSBE planchadas a 4.000.000.000. Recalculadas con multiplicador canónico sobre base 80.000.000 (SSJ x50, SSJ2 x100, SSJ3 x400, SSG x6400, SSB x7700, SSBE x77000). | [1] Super Saiyan: 4.00B→4.00B (xx 50) | [2] Super Saiyan 2: 4.00B→8.00B (xx 100) | [3] Super Saiyan 3 (Teórica): 4.00B→32.00B (xx 400) | [4] Super Saiyan God (Rojo): 4.00B→512.00B (xx 6400) | [5] Super Saiyan Blue: 4.00B→616.00B (xx 7700) | [6] Super Saiyan Blue Evolution (Evolución Azul): 4.00B→6.16T (xx 77000) |
+| 2 | Son Gohan Saga Super Dragon Ball Super 39 (son-gohan-saga-super-dragon-ball-super-39) | **ESCALAR** | SSJ2 estaba clonado al SSJ (2.850.000.000). SSJ2 = base 57.000.000 x100 = 5.700.000.000. | [2] Super Saiyan 2: 2.85B→5.70B (xx 100) |
+| 3 | Son Goku Saga Cell Saga Androides 459 (son-goku-saga-cell-saga-androides-459) | **ESCALAR** | SSJ Full Power (Cell Games) = SSJ dominado, ligeramente superior al SSJ1. FP = base 60.000.000 x55 = 3.300.000.000. | [2] Super Saiyan Full Power (Cell Games): 3.00B→3.30B (xx 55) |
+| 4 | Trunks Futuro Dbs Anime Rage (trunks-futuro-dbs-anime-rage) | **ESCALAR** | SSJ Rage/Ikari > SSJ1 y SSJ2. Rage = base 19.110.000.000 x120 = 2.293.200.000.000 (superior al SSJ2 x100 = 1.911.000.000.000). | [2] Super Saiyan Rage / SSJ Ikari (Aura Dual Divina): 955.50B→2.29T (xx 120) |
+| 5 | Trunks Futuro V3 Saga Buu Ssj2 (trunks-futuro-v3-saga-buu-ssj2) | **ESCALAR** | SSJ Perfeccionado (Full Power) > SSJ1 Básico. FP = base 15.225.000 x55 = 837.375.000. | [2] Super Saiyan Perfeccionado (Full Power / Mastered): 761.25M→837.38M (xx 55) |
+| 6 | Baby Vegeta Dragon Ball Gt 510 (baby-vegeta-dragon-ball-gt-510) | **ESCALAR** | Super Baby 2 > Super Baby 1. Baby 2 = base 24.360.000.000 x1.8 = 43.848.000.000 (por debajo del Ohzaru Dorado x10 = 243.600.000.000). | [2] Super Baby 2: 32.89B→43.85B (xx 1.8) |
+| 7 | Goku Black L Nea Temporal Futura 209 (goku-black-l-nea-temporal-futura-209) | **ESCALAR** | SSJ Rosé (ki divino) > SSJ Dorado. Rosé = base 98.175.000.000 x60 = 5.890.500.000.000. | [2] Super Saiyan Rosé (Ki Divino Malicioso): 4.91T→5.89T (xx 60) |
+| 8 | Freezer Saga Namek Saga Namek 167 (freezer-saga-namek-saga-namek-167) | **ESCALAR** | Forma Final 100% (hipertrofia) = 2x la Forma Final 50%. 100% = 530.000 x240 = 127.200.000. | [4] Freezer (Forma Final 100% / Hipertrofia Muscular): 63.60M→127.20M (xx 240) |
+| 9 | Lord Cooler Pel Culas Dbz Toei 792 (lord-cooler-pel-culas-dbz-toei-792) | **FUSIONAR** | Duplicado literal del mismo estado. Se fusiona en una sola entrada. → queda "Cooler (5ta Forma / Forma Final Extrema)" |
+| 10 | Son Goku U18 Dbm (son-goku-u18-dbm) | **FUSIONAR** | El "Normal Super Saiyan" de Goku U18 es su SSJ3 dominado. Se fusiona. → queda "Super Saiyan 3 (Control Energético Superior / Normal)" |
+| 11 | Vegeta U18 Dbm (vegeta-u18-dbm) | **FUSIONAR** | "Normal Super Saiyan" de Vegeta U18 = SSJ3 dominado. Se fusiona. → queda "Super Saiyan 3 (Vegeta U18 / Normal)" |
+| 12 | Son Goku Saga Gt Dragon Ball Gt 281 (son-goku-saga-gt-dragon-ball-gt-281) | **ESCALAR + FUSIONAR** | SSJ3 (GT) == SSJ3 (duplicado literal, se fusiona). SSJ4 Full Power > SSJ4 Primitiva: FP = base 588.000.000 x5000 = 2.940.000.000.000. | [7] Super Saiyan 4 (Full Power / Absorbido): 2.35T→2.94T (xx 5000) | FUSION: Super Saiyan 3 (GT) |
+| 13 | Cell Saga Androides 98 (cell-saga-androides-98) | **ESCALAR + FUSIONAR** | A) Medida única: baseKiNumeric estaba en 9.000.000.000 pero forms[0] es Cell Imperfecto 2.000.000.000 (progresión canónica Imperfecto→Semi→Perfecto→Super Perfecto). B) "Estado Base" (9.000.000.000, x1) y "Cell Perfecto" (9.000.000.000, x20) son el MISMO estado → se fusionan. C) Multiplicadores reasignados para describir la progresión real desde Imperfecto (x1, x2.5, x4.5, x7.5). Los ki aprobados se conservan: 2B, 5B, 9B, 15B. | [0] Cell Imperfecto: 2.00B→2.00B (xx 1) | [1] Cell Semi-Perfecto: 5.00B→5.00B (xx 2.5) | [3] Cell Perfecto: 9.00B→9.00B (xx 4.5) | [4] Cell Super Perfecto: 15.00B→15.00B (xx 7.5) | FUSION:  |
+| 14 | Captain Ginyu Saga Namek 524 (captain-ginyu-saga-namek-524) | **FUSIONAR** | Duplicado literal (con/sin cifra en el nombre). → queda "Cuerpo de Goku (Intercambiado / 23.000 Unidades)" |
+| 15 | Garlic Jr Saga Garlic Jr 47 (garlic-jr-saga-garlic-jr-47) | **FUSIONAR** | Duplicado literal. → queda "Forma Super Gigante" |
+| 16 | Soldados De Freezer Saga Namek 793 (soldados-de-freezer-saga-namek-793) | **FUSIONAR** | Duplicado literal. → queda "Recluta" |
+| 17 | Phoenix Man Opm Ma (phoenix-man-opm-ma) | **FUSIONAR** | "Modo Pollito (Roto)" = mismo estado post-regeneración sin poder propio. Se fusiona. → queda "Modo Pingüino Diamante" |
+| 18 | Kaio Sama Del Norte Saga Saiyan 446 (kaio-sama-del-norte-saga-saiyan-446) | **MANTENER** | Kaio-sama vivo vs con aureola: mismo poder (x1.35), variante narrativa del mismo estado. MANTENER. |
+| 19 | Pikkon Torneo Del Otro Mundo 912 (pikkon-torneo-del-otro-mundo-912) | **MANTENER** | Sin Pesas vs Sin Pesas (Velocidad Máxima): misma potencia física, variante de movilidad. MANTENER. |
+| 20 | Piccolo Dbs Superhero (piccolo-dbs-superhero) | **MANTENER** | Orange Piccolo vs Giant Orange Piccolo: la gigantificación NO multiplica el poder. Mismo ki correcto. MANTENER. |
+| 21 | Vegeta Saga Buu Saga Buu 213 (vegeta-saga-buu-saga-buu-213) | **MANTENER** | SSJ2 vs Majin Vegeta: la posesión de Babidi NO aumenta el poder (solo sadismo). Mismo ki canónicamente correcto. MANTENER. |
+| 22 | Cabba Dragon Ball Super 566 (cabba-dragon-ball-super-566) | **FUSIONAR** | "Super Saiyan" duplicado de "Super Saiyan 1". SSJ2 queda escalado aparte. → queda "Super Saiyan 1" |
+| 23 | Kale Dbs U6 (kale-dbs-u6) | **ESCALAR + FUSIONAR** | "SSJ Controlado (True)" es duplicado de la SSJ Perfecta (Controlada). SSJ Berserker > Controlada: Berserker = base 65.310.000.000 x100 = 6.531.000.000.000. | [3] Super Saiyan Berserker: 3.27T→6.53T (xx 100) | FUSION: Super Saiyan Perfecta (Controlada) |
+| 24 | Black Sperm Opm Ma (black-sperm-opm-ma) | **ESCALAR** | Platinum Sperm > Golden Sperm (pelea final, superioridad explícita). Platinum = 14.430 x2 = 28.860. | [2] Platinum Sperm: 14.43K→28.86K (xx 2.7) |
+| 25 | Biscuit Krueger Hxh Gi (biscuit-krueger-hxh-gi) | **ESCALAR** | Forma Verdadera > Forma Infante disfraz (disfraz deliberadamente débil). Verdadera = 2.573 x1.5 = 3.860. | [2] Forma Verdadera: 3.47K→3.86K (xx 1.5) |
+| 26 | Pucci Made In Heaven Jojo Pm001 (pucci-made-in-heaven-jojo-pm001) | **ESCALAR** | Made in Heaven (Velocidad Infinita) >> C-Moon. MiH = 600 x2.7 = 1.620. | [2] Made in Heaven (Velocidad Infinita): 810→1.62K (xx 2.7) |
+| 27 | Lord Boros Opm (lord-boros-opm) | **ESCALAR** | Meteoric Burst >> Forma Liberada. MB = 3.748.500 x10 = 37.485.000. | [2] Meteoric Burst (Estallido Meteórico): 5.06M→37.48M (xx 10) |
+| 28 | The Sentry (the-sentry) | **ESCALAR** | Sentry desatado >> suprimido. Desatado = 161.700.000.000.000 x2.7 = 436.590.000.000.000. | [2] Sentry (poder completo desatado): 218.29T→436.59T (xx 2.7) |
+| 29 | Overhaul Mha Shie (overhaul-mha-shie) | **ESCALAR** | Forma Monstruosa Final (Katsukame) > Fusión con Shin Nemoto. Final = 1.880 x1.5 = 2.820. | [2] Forma Monstruosa Final (Katsukame): 2.54K→2.82K (xx 1.5) |
+| 30 | Katsuki Bakugo Mha (katsuki-bakugo-mha) | **ESCALAR** | Full-Body Cluster (Despertar Final) > Despertar Cluster. Full-Body = 10.301 x1.6 = 16.482. | [2] Full-Body Cluster (Despertar Final): 13.91K→16.48K (xx 1.6) |
+| 31 | Ant Man Marvel 616 (ant-man-marvel-616) | **ESCALAR** | Giant-Man (Macro) > Ant-Man (Micro) en potencia de impacto. Giant = 150 x1.5 = 225. | [2] Modo Giant-Man (Macro): 202→225 (xx 1.5) |
+| 32 | Denji Csm 903 (denji-csm-903) | **ESCALAR** | Pochita Verdadero > Denji Híbrido. Pochita = 3.287 x1.5 = 4.931. | [2] Héroe del Infierno (Pochita Verdadero): 4.44K→4.93K (xx 1.5) |
+| 33 | Katana Man Csm P1 (katana-man-csm-p1) | **ESCALAR** | Forma Híbrido (Katana Devil) > Forma Humana. Híbrido = 3.119 x1.5 = 4.679. | [2] Forma Híbrido (Katana Devil): 4.21K→4.68K (xx 1.5) |
+| 34 | Garou Hero Hunter Opm (garou-hero-hunter-opm) | **ESCALAR** | Forma Semi-Monstruo (Espiral) > Cazador de Héroes humano. Semi-Monstruo = 2.741 x1.5 = 4.112. | [2] Forma Semi-Monstruo (Espiral): 3.70K→4.11K (xx 1.5) |
+| 35 | Kokushibo Kimetsu (kokushibo-kimetsu) | **ESCALAR** | Monstruo Desfigurado (superación de la muerte) > Espada Despertada + Regeneración. Monstruo = 6.195 x1.5 = 9.293. | [2] Monstruo Desfigurado (Superación de la Muerte): 8.36K→9.29K (xx 1.5) |
+| 36 | Muzan Kibutsuji Kny 901 (muzan-kibutsuji-kny-901) | **ESCALAR** | Formas de combate escalan: Disfraz 7.683 (x1.35), Combate Final 8.537 (x1.5), Bebé Gigante 9.390 (x1.65), Látigos 10.244 (x1.8). Base 5.691. | [2] Forma de Combate Final: 7.68K→8.54K (xx 1.5) | [3] Armadura de Bebé Gigante: 7.68K→9.39K (xx 1.65) | [4] Forma de Combate Final (Látigos de Espina): 7.68K→10.24K (xx 1.8) |
+| 37 | Yoriichi Tsugikuni Kny 902 (yoriichi-tsugikuni-kny-902) | **ESCALAR** | Escalado y REORDEN: Anciano (85) 4.634 (x1.25) < Pico Sengoku 5.004 (x1.35) < 13ª Forma 7.414 (x2). Base 3.707. Los nombres de las formas [1] y [2] se intercambian para mantener el orden ascendente. | [1] Yoriichi (Pico Sengoku): 5.00K→4.63K (xx 1.25) | [2] Yoriichi Anciano (85 Años): 5.00K→5.00K (xx 1.35) | [3] Decimotercera Forma Solar en Cadena: 5.00K→7.41K (xx 2) |
+| 38 | Hirudegarn Pel Culas Dbz Toei 805 (hirudegarn-pel-culas-dbz-toei-805) | **ESCALAR** | Bestia Alada (completa) > Forma Mitad. Bestia = 2.163.000.000 x1.5 = 3.244.500.000. | [2] Bestia Alada: 2.92B→3.24B (xx 1.5) |
+| 39 | Rey Cold Formas Dbm U8 (rey-cold-formas-dbm-u8) | **ESCALAR** | Sexta Forma Titánica > Forma Original. Titánica = 163.800.000 x25 = 4.095.000.000. | [3] Sexta Forma Titánica (Forma Final Múltiple): 3.28B→4.09B (xx 25) |
+| 40 | Gohan U16 Dbm Espectador (gohan-u16-dbm-espectador) | **ESCALAR** | Modo Furia (x62.5) estaba inflada al ki del Místico (80.000.000.000). Furia = 100.000.000 x62.5 = 6.250.000.000. Místico (x800 = 80.000.000.000) intacto. | [1] Modo Furia del Padre Protector (DBM Custom): 80.00B→6.25B (xx 62.5) |
+| 41 | Piccolo Inicio Saga Saiyan (piccolo-inicio-saga-saiyan) | **ESCALAR** | Makankosappo a Plena Carga (técnica para superar a Raditz) >> Sin Ropa Pesada. Makankosappo = 1.575 x5 = 7.875. | [2] Makankosappo a Plena Carga (1,480 Unidades): 2.13K→7.88K (xx 5) |
+| 42 | Vegeta Db After (vegeta-db-after) | **MANTENER** | SSJ+Kaio-ken x20: técnica temporal no-sostenible (anime DBS vs Bills). Su ki 588.000.000.000 = SSJ1 puro es deliberado: evitar inventar un stack no canónico y preservar el orden ascendente SSJ1<SSJ2<SSJ3. MANTENER. |
+
+---
+### Resumen
+- ESCALAR: 29 | FUSIONAR: 8 | MANTENER: 5 | Total propuestas: 42
+- Tras aplicar: total de formas 1316 → ~1310 (13-14 fusiones netas de ~15 parejas).
+- Cell: alineación de medida única (baseKiNumeric 9B → 2B = forms[0]) + fusión "Estado Base"/"Cell Perfecto".
+- Pendiente humano: aprobación caso por caso antes de tocar el JSON.

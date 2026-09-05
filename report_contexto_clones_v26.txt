@@ -1,0 +1,456 @@
+====================================================================================================
+Ant Man Marvel 616 (ant-man-marvel-616) | universe=MARVEL COMICS
+baseKiNumeric=150.0 | baseTier=9-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=       150.0 mult='$\\times 1$' tier=9-B      apex=False | Ant-Man / Giant-Man (Estado Base)
+  [1] ki=       202.0 mult='$\\times 1.35$' tier=9-B      apex=False | Modo Ant-Man (Micro)
+  [2] ki=       202.0 mult='$\\times 1.35$' tier=9-B      apex=False | Modo Giant-Man (Macro)
+
+  --> CLON en ki=202.0 (base form[0]=150.0): formas [1, 2]
+
+====================================================================================================
+Baby Vegeta Dragon Ball Gt 510 (baby-vegeta-dragon-ball-gt-510) | universe=DRAGON BALL GT
+baseKiNumeric=24360000000.0 | baseTier=3-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=24360000000.0 mult='$\\times 1$' tier=3-B      apex=False | Vegeta Poseído por Baby (Base)
+  [1] ki=32886000000.0 mult='$\\times 1.35$' tier=3-B      apex=False | Super Baby 1
+  [2] ki=32886000000.0 mult='$\\times 1.35$' tier=3-B      apex=False | Super Baby 2
+  [3] ki=243600000000.0 mult='$\\times 10$' tier=3-A      apex=False | Ohzaru Dorado Mutante
+
+  --> CLON en ki=32886000000.0 (base form[0]=24360000000.0): formas [1, 2]
+
+====================================================================================================
+Biscuit Krueger Hxh Gi (biscuit-krueger-hxh-gi) | universe=HUNTER X HUNTER
+baseKiNumeric=2573.0 | baseTier=7-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      2573.0 mult='$\\times 1$' tier=7-C      apex=False | Biscuit Krueger (Estado Base)
+  [1] ki=      3474.0 mult='$\\times 1.35$' tier=7-C      apex=False | Forma Infante (Disfraz)
+  [2] ki=      3474.0 mult='$\\times 1.35$' tier=7-C      apex=False | Forma Verdadera
+
+  --> CLON en ki=3474.0 (base form[0]=2573.0): formas [1, 2]
+
+====================================================================================================
+Black Sperm Opm Ma (black-sperm-opm-ma) | universe=ONE PUNCH MAN
+baseKiNumeric=10689.0 | baseTier=7-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=     10689.0 mult='$\\times 1$' tier=7-A      apex=False | Enjambre Black Sperm
+  [1] ki=     14430.0 mult='$\\times 1.35$' tier=7-A      apex=False | Golden Sperm
+  [2] ki=     14430.0 mult='$\\times 1.35$' tier=7-A      apex=False | Platinum Sperm
+
+  --> CLON en ki=14430.0 (base form[0]=10689.0): formas [1, 2]
+
+====================================================================================================
+Cabba Dragon Ball Super 566 (cabba-dragon-ball-super-566) | universe=DRAGON BALL SUPER
+baseKiNumeric=65940000000.0 | baseTier=3-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=65940000000.0 mult='$\\times 1$' tier=3-A      apex=False | Cabba (Estado Base)
+  [1] ki=3297000000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan 1
+  [2] ki=3297000000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan
+  [3] ki=6594000000000.0 mult='$\\times 100$' tier=Low 2-C  apex=False | Super Saiyan 2
+
+  --> CLON en ki=3297000000000.0 (base form[0]=65940000000.0): formas [1, 2]
+
+====================================================================================================
+Captain Ginyu Saga Namek 524 (captain-ginyu-saga-namek-524) | universe=DRAGON BALL Z
+baseKiNumeric=126000.0 | baseTier=5-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=    126000.0 mult='$\\times 1$' tier=5-B      apex=False | Estado Base
+  [1] ki=    170100.0 mult='$\\times 1.35$' tier=5-B      apex=False | Cuerpo de Goku (Intercambiado / 23.000 Unidades)
+  [2] ki=    170100.0 mult='$\\times 1.35$' tier=5-B      apex=False | Cuerpo de Goku (Intercambiado)
+  [3] ki=    226800.0 mult='$\\times 1.8$' tier=5-B      apex=False | Capitán Ginyu (Cuerpo Mutante Original / 120.000 Unidades)
+
+  --> CLON en ki=170100.0 (base form[0]=126000.0): formas [1, 2]
+
+====================================================================================================
+Cell Saga Androides 98 (cell-saga-androides-98) | universe=DRAGON BALL Z
+baseKiNumeric=9000000000.0 | baseTier=4-C | tier=4-C
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=2000000000.0 mult='$\\times 1.35$' tier=4-C      apex=False | Cell Imperfecto
+  [1] ki=5000000000.0 mult='$\\times 4$' tier=4-B      apex=False | Cell Semi-Perfecto
+  [2] ki=9000000000.0 mult='$\\times 1$' tier=4-B      apex=False | Estado Base
+  [3] ki=9000000000.0 mult='$\\times 20$' tier=4-B      apex=False | Cell Perfecto
+  [4] ki=15000000000.0 mult='$\\times 100$' tier=4-A      apex=False | Cell Super Perfecto
+
+  --> CLON en ki=9000000000.0 (base form[0]=2000000000.0): formas [2, 3]
+
+====================================================================================================
+Denji Csm 903 (denji-csm-903) | universe=CHAINSAW MAN
+baseKiNumeric=3287.0 | baseTier=7-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      3287.0 mult='$\\times 1$' tier=7-B      apex=False | Denji (Humano)
+  [1] ki=      4437.0 mult='$\\times 1.35$' tier=7-B      apex=False | Híbrido Motosierra
+  [2] ki=      4437.0 mult='$\\times 1.35$' tier=7-B      apex=False | Héroe del Infierno (Pochita Verdadero)
+
+  --> CLON en ki=4437.0 (base form[0]=3287.0): formas [1, 2]
+
+====================================================================================================
+Freezer Saga Namek Saga Namek 167 (freezer-saga-namek-saga-namek-167) | universe=DRAGON BALL Z
+baseKiNumeric=530000.0 | baseTier=5-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=    530000.0 mult='$\\times 1$' tier=5-A      apex=False | Freezer 1ª Forma (Supresión en Cápsula / 530.000 Unidades)
+  [1] ki=   1060000.0 mult='$\\times 2$' tier=5-A      apex=False | Freezer 2ª Forma (Gigante con Cuernos / Más de 1.000.000)
+  [2] ki=   2120000.0 mult='$\\times 4$' tier=High 5-A apex=False | Freezer 3ª Forma (Forma Xenomorfa / Ataque Rápido)
+  [3] ki=  63600000.0 mult='$\\times 120$' tier=Low 4-C  apex=False | Freezer Forma Final (Forma Verdadera / 50% de Poder)
+  [4] ki=  63600000.0 mult='$\\times 120$' tier=Low 4-C  apex=False | Freezer (Forma Final 100% / Hipertrofia Muscular)
+
+  --> CLON en ki=63600000.0 (base form[0]=530000.0): formas [3, 4]
+
+====================================================================================================
+Garlic Jr Saga Garlic Jr 47 (garlic-jr-saga-garlic-jr-47) | universe=DRAGON BALL Z — PELÍCULAS Y OVAS
+baseKiNumeric=348390.0 | baseTier=5-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=    348390.0 mult='$\\times 1$' tier=5-B      apex=False | Forma Base
+  [1] ki=    470327.0 mult='$\\times 1.35$' tier=5-B      apex=False | Forma Super Gigante
+  [2] ki=    470327.0 mult='$\\times 1.35$' tier=5-B      apex=False | Garlic Jr. (Forma Super Gigante)
+
+  --> CLON en ki=470327.0 (base form[0]=348390.0): formas [1, 2]
+
+====================================================================================================
+Garou Hero Hunter Opm (garou-hero-hunter-opm) | universe=ONE PUNCH MAN
+baseKiNumeric=2741.0 | baseTier=7-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      2741.0 mult='$\\times 1$' tier=7-C      apex=False | Garou (Humano / Cazador de Héroes) (Estado Base)
+  [1] ki=      3700.0 mult='$\\times 1.35$' tier=7-C      apex=False | Cazador de Héroes
+  [2] ki=      3700.0 mult='$\\times 1.35$' tier=7-C      apex=False | Forma Semi-Monstruo (Espiral)
+
+  --> CLON en ki=3700.0 (base form[0]=2741.0): formas [1, 2]
+
+====================================================================================================
+Gohan U16 Dbm Espectador (gohan-u16-dbm-espectador) | universe=DRAGON BALL MULTIVERSE (FAN-MANGA)
+baseKiNumeric=100000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki= 100000000.0 mult='$\\times 1$' tier=4-C      apex=False | Son Gohan (Universo 16 - Base)
+  [1] ki=80000000000.0 mult='$\\times 62.5$' tier=3-C      apex=False | Modo Furia del Padre Protector (DBM Custom)
+  [2] ki=80000000000.0 mult='$\\times 800$' tier=3-C      apex=False | Son Gohan (Universo 16 - Estado Místico)
+
+  --> CLON en ki=80000000000.0 (base form[0]=100000000.0): formas [1, 2]
+
+====================================================================================================
+Goku Black L Nea Temporal Futura 209 (goku-black-l-nea-temporal-futura-209) | universe=DRAGON BALL SUPER
+baseKiNumeric=98175000000.0 | baseTier=2-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=98175000000.0 mult='$\\times 1$' tier=2-C      apex=False | Goku Black (Estado Base / Alma de Kaioshin)
+  [1] ki=4908750000000.0 mult='$\\times 50$' tier=Low 2-C  apex=False | Super Saiyan (Dorado / Manga DBS)
+  [2] ki=4908750000000.0 mult='$\\times 50$' tier=Low 2-C  apex=False | Super Saiyan Rosé (Ki Divino Malicioso)
+
+  --> CLON en ki=4908750000000.0 (base form[0]=98175000000.0): formas [1, 2]
+
+====================================================================================================
+Hirudegarn Pel Culas Dbz Toei 805 (hirudegarn-pel-culas-dbz-toei-805) | universe=DRAGON BALL Z — PELÍCULAS Y OVAS
+baseKiNumeric=2163000000.0 | baseTier=4-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=2163000000.0 mult='$\\times 1$' tier=4-B      apex=False | Hirudegarn (Estado Base)
+  [1] ki=2920050000.0 mult='$\\times 1.35$' tier=4-B      apex=False | Forma Mitad
+  [2] ki=2920050000.0 mult='$\\times 1.35$' tier=4-B      apex=False | Bestia Alada
+
+  --> CLON en ki=2920050000.0 (base form[0]=2163000000.0): formas [1, 2]
+
+====================================================================================================
+Kaio Sama Del Norte Saga Saiyan 446 (kaio-sama-del-norte-saga-saiyan-446) | universe=DRAGON BALL Z
+baseKiNumeric=323400.0 | baseTier=5-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=    323400.0 mult='$\\times 1$' tier=5-B      apex=False | Estado Base
+  [1] ki=    436590.0 mult='$\\times 1.35$' tier=5-B      apex=False | Kaio-sama (Vivo / Observación Cósmica)
+  [2] ki=    436590.0 mult='$\\times 1.35$' tier=5-B      apex=False | Kaio-sama (Con Aureola / Tras la Explosión de Cell)
+
+  --> CLON en ki=436590.0 (base form[0]=323400.0): formas [1, 2]
+
+====================================================================================================
+Kale Dbs U6 (kale-dbs-u6) | universe=DRAGON BALL SUPER
+baseKiNumeric=65310000000.0 | baseTier=3-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=65310000000.0 mult='$\\times 1$' tier=3-A      apex=False | Kale (Estado Base)
+  [1] ki=3265500000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan Perfecta (Controlada)
+  [2] ki=3265500000000.0 mult='$\\times 50$' tier=High 3-A apex=False | SSJ Controlado (True)
+  [3] ki=3265500000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan Berserker
+  [4] ki=130620000000000.0 mult='$\\times 2000$' tier=2-C      apex=False | SSJ Berserker (Legendario Descontrolado)
+
+  --> CLON en ki=3265500000000.0 (base form[0]=65310000000.0): formas [1, 2, 3]
+
+====================================================================================================
+Katana Man Csm P1 (katana-man-csm-p1) | universe=CHAINSAW MAN
+baseKiNumeric=3119.0 | baseTier=8-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      3119.0 mult='$\\times 1$' tier=8-A      apex=False | Katana Man (Estado Base)
+  [1] ki=      4211.0 mult='$\\times 1.35$' tier=8-A      apex=False | Forma Humana (Yakuza)
+  [2] ki=      4211.0 mult='$\\times 1.35$' tier=8-A      apex=False | Forma Híbrido (Katana Devil)
+
+  --> CLON en ki=4211.0 (base form[0]=3119.0): formas [1, 2]
+
+====================================================================================================
+Katsuki Bakugo Mha (katsuki-bakugo-mha) | universe=MY HERO ACADEMIA
+baseKiNumeric=10301.0 | baseTier=7-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=     10301.0 mult='$\\times 1$' tier=7-A      apex=False | Estado Base (Traje de Héroe con Guantes Granada)
+  [1] ki=     13906.0 mult='$\\times 1.35$' tier=7-A      apex=False | Despertar Cluster (Explosión Total)
+  [2] ki=     13906.0 mult='$\\times 1.35$' tier=7-A      apex=False | Full-Body Cluster (Despertar Final)
+
+  --> CLON en ki=13906.0 (base form[0]=10301.0): formas [1, 2]
+
+====================================================================================================
+Kokushibo Kimetsu (kokushibo-kimetsu) | universe=DEMON SLAYER (KIMETSU NO YAIBA)
+baseKiNumeric=6195.0 | baseTier=7-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      6195.0 mult='$\\times 1$' tier=7-B      apex=False | Estado Base (Espada Nichirin Demoníaca Estándar)
+  [1] ki=      8363.0 mult='$\\times 1.35$' tier=7-B      apex=False | Espada Larga Despertada + Regeneración de Cabeza
+  [2] ki=      8363.0 mult='$\\times 1.35$' tier=7-B      apex=False | Monstruo Desfigurado (Superación de la Muerte)
+
+  --> CLON en ki=8363.0 (base form[0]=6195.0): formas [1, 2]
+
+====================================================================================================
+Lord Boros Opm (lord-boros-opm) | universe=ONE PUNCH MAN
+baseKiNumeric=3748500.0 | baseTier=5-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=   3748500.0 mult='$\\times 1$' tier=5-A      apex=False | Forma Contenida (Armadura Selladora)
+  [1] ki=   5060475.0 mult='$\\times 1.35$' tier=5-A      apex=False | Forma Liberada (Sin Armadura)
+  [2] ki=   5060475.0 mult='$\\times 1.35$' tier=5-A      apex=False | Meteoric Burst (Estallido Meteórico)
+
+  --> CLON en ki=5060475.0 (base form[0]=3748500.0): formas [1, 2]
+
+====================================================================================================
+Lord Cooler Pel Culas Dbz Toei 792 (lord-cooler-pel-culas-dbz-toei-792) | universe=DRAGON BALL Z — PELÍCULAS Y OVAS
+baseKiNumeric=278250000.0 | baseTier=4-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki= 278250000.0 mult='$\\times 1$' tier=4-B      apex=False | Cooler (Estado Base)
+  [1] ki=5565000000.0 mult='$\\times 20$' tier=3-A      apex=False | Cooler (5ta Forma)
+  [2] ki=5565000000.0 mult='$\\times 20$' tier=3-A      apex=False | Cooler (Forma Final Extrema / 5ta Forma)
+
+  --> CLON en ki=5565000000.0 (base form[0]=278250000.0): formas [1, 2]
+
+====================================================================================================
+Muzan Kibutsuji Kny 901 (muzan-kibutsuji-kny-901) | universe=DEMON SLAYER (KIMETSU NO YAIBA)
+baseKiNumeric=5691.0 | baseTier=7-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      5691.0 mult='$\\times 1$' tier=7-B      apex=False | Muzan Kibutsuji (Estado Base)
+  [1] ki=      7683.0 mult='$\\times 1.35$' tier=7-B      apex=False | Disfraz Humano
+  [2] ki=      7683.0 mult='$\\times 1.35$' tier=7-B      apex=False | Forma de Combate Final
+  [3] ki=      7683.0 mult='$\\times 1.35$' tier=7-B      apex=False | Armadura de Bebé Gigante
+  [4] ki=      7683.0 mult='$\\times 1.35$' tier=7-B      apex=False | Forma de Combate Final (Látigos de Espina)
+
+  --> CLON en ki=7683.0 (base form[0]=5691.0): formas [1, 2, 3, 4]
+
+====================================================================================================
+Overhaul Mha Shie (overhaul-mha-shie) | universe=MY HERO ACADEMIA
+baseKiNumeric=1880.0 | baseTier=8-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      1880.0 mult='$\\times 1$' tier=8-A      apex=False | Overhaul (Estado Base)
+  [1] ki=      2538.0 mult='$\\times 1.35$' tier=8-A      apex=False | Fusión con Shin Nemoto
+  [2] ki=      2538.0 mult='$\\times 1.35$' tier=8-A      apex=False | Forma Monstruosa Final (Katsukame)
+
+  --> CLON en ki=2538.0 (base form[0]=1880.0): formas [1, 2]
+
+====================================================================================================
+Phoenix Man Opm Ma (phoenix-man-opm-ma) | universe=ONE PUNCH MAN
+baseKiNumeric=7413.0 | baseTier=7-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      7413.0 mult='$\\times 1$' tier=7-A      apex=False | Phoenix Man (Estado Base)
+  [1] ki=     10008.0 mult='$\\times 1.35$' tier=7-A      apex=False | Modo Pingüino Diamante
+  [2] ki=     10008.0 mult='$\\times 1.35$' tier=7-A      apex=False | Modo Pollito (Roto)
+
+  --> CLON en ki=10008.0 (base form[0]=7413.0): formas [1, 2]
+
+====================================================================================================
+Piccolo Dbs Superhero (piccolo-dbs-superhero) | universe=DRAGON BALL SUPER
+baseKiNumeric=1400000000.0 | baseTier=4-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=1400000000.0 mult='$\\times 1$' tier=4-B      apex=False | Piccolo (Super Hero) (Estado Base)
+  [1] ki=1890000000.0 mult='$\\times 1.35$' tier=Low 2-C  apex=False | Potential Unleashed
+  [2] ki=14000000000000.0 mult='$\\times 10$' tier=2-C      apex=False | Orange Piccolo
+  [3] ki=14000000000000.0 mult='$\\times 10$' tier=2-C      apex=False | Giant Orange Piccolo
+
+  --> CLON en ki=14000000000000.0 (base form[0]=1400000000.0): formas [2, 3]
+
+====================================================================================================
+Piccolo Inicio Saga Saiyan (piccolo-inicio-saga-saiyan) | universe=DRAGON BALL Z
+baseKiNumeric=1575.0 | baseTier=6-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      1575.0 mult='$\\times 1$' tier=6-A      apex=False | Ropa Pesada (322 Unidades)
+  [1] ki=      2126.0 mult='$\\times 1.35$' tier=6-A      apex=False | Sin Ropa Pesada (408 Unidades / Plena Movilidad)
+  [2] ki=      2126.0 mult='$\\times 1.35$' tier=Low 5-B  apex=False | Makankosappo a Plena Carga (1,480 Unidades)
+
+  --> CLON en ki=2126.0 (base form[0]=1575.0): formas [1, 2]
+
+====================================================================================================
+Pikkon Torneo Del Otro Mundo 912 (pikkon-torneo-del-otro-mundo-912) | universe=DRAGON BALL Z — PELÍCULAS Y OVAS
+baseKiNumeric=1239000000.0 | baseTier=4-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=1239000000.0 mult='$\\times 1$' tier=4-B      apex=False | Estado Base (Con Ropa Pesada)
+  [1] ki=1672650000.0 mult='$\\times 1.35$' tier=4-B      apex=False | Sin Pesas
+  [2] ki=1672650000.0 mult='$\\times 1.35$' tier=4-B      apex=False | Sin Pesas (Velocidad Máxima)
+
+  --> CLON en ki=1672650000.0 (base form[0]=1239000000.0): formas [1, 2]
+
+====================================================================================================
+Pucci Made In Heaven Jojo Pm001 (pucci-made-in-heaven-jojo-pm001) | universe=JOJO'S BIZARRE ADVENTURE
+baseKiNumeric=600.0 | baseTier=8-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=       600.0 mult='$\\times 1$' tier=8-C      apex=False | Pucci (Whitesnake / Base)
+  [1] ki=       810.0 mult='$\\times 1.35$' tier=8-C      apex=False | C-Moon (Gravedad Reversa)
+  [2] ki=       810.0 mult='$\\times 1.35$' tier=8-C      apex=False | Made in Heaven (Velocidad Infinita)
+
+  --> CLON en ki=810.0 (base form[0]=600.0): formas [1, 2]
+
+====================================================================================================
+Rey Cold Formas Dbm U8 (rey-cold-formas-dbm-u8) | universe=DRAGON BALL MULTIVERSE (FAN-MANGA)
+baseKiNumeric=163800000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki= 163800000.0 mult='$\\times 1$' tier=4-C      apex=False | Rey Cold (Estado Base DBM / Universo 8)
+  [1] ki=1638000000.0 mult='$\\times 10$' tier=High 4-C apex=False | Quinta Forma (Forma Aumentada)
+  [2] ki=3276000000.0 mult='$\\times 20$' tier=4-B      apex=False | Forma Original (Forma Final de Cold)
+  [3] ki=3276000000.0 mult='$\\times 20$' tier=4-B      apex=False | Sexta Forma Titánica (Forma Final Múltiple)
+
+  --> CLON en ki=3276000000.0 (base form[0]=163800000.0): formas [2, 3]
+
+====================================================================================================
+Soldados De Freezer Saga Namek 793 (soldados-de-freezer-saga-namek-793) | universe=DRAGON BALL (MULTI-ERA)
+baseKiNumeric=4557.0 | baseTier=7-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      4557.0 mult='$\\times 1$' tier=7-B      apex=False | Estado Base (Recluta)
+  [1] ki=      6152.0 mult='$\\times 1.35$' tier=7-B      apex=False | Recluta
+  [2] ki=      6152.0 mult='$\\times 1.35$' tier=7-B      apex=False | Recluta Estándar
+
+  --> CLON en ki=6152.0 (base form[0]=4557.0): formas [1, 2]
+
+====================================================================================================
+Son Gohan Saga Super Dragon Ball Super 39 (son-gohan-saga-super-dragon-ball-super-39) | universe=DRAGON BALL SUPER
+baseKiNumeric=57000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=  57000000.0 mult='$\\times 1$' tier=4-C      apex=False | Estado Base (DBS - Entrenado con Piccolo)
+  [1] ki=2850000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan
+  [2] ki=2850000000.0 mult='$\\times 100$' tier=4-B      apex=False | Super Saiyan 2
+  [3] ki=77000000000.0 mult='$\\times 800$' tier=3-C      apex=False | Estado Definitivo (Ultimate Gohan)
+  [4] ki=77000000000000.0 mult='$\\times 1000000$' tier=2-B      apex=False | Modo Bestia (Gohan Beast)
+
+  --> CLON en ki=2850000000.0 (base form[0]=57000000.0): formas [1, 2]
+
+====================================================================================================
+Son Goku Saga Cell Saga Androides 459 (son-goku-saga-cell-saga-androides-459) | universe=DRAGON BALL Z
+baseKiNumeric=60000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=  60000000.0 mult='$\\times 1$' tier=4-C      apex=False | Son Goku (Estado Base Saga Cell)
+  [1] ki=3000000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan 1
+  [2] ki=3000000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan Full Power (Cell Games)
+
+  --> CLON en ki=3000000000.0 (base form[0]=60000000.0): formas [1, 2]
+
+====================================================================================================
+Son Goku Saga Gt Dragon Ball Gt 281 (son-goku-saga-gt-dragon-ball-gt-281) | universe=DRAGON BALL GT
+baseKiNumeric=588000000.0 | baseTier=3-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki= 588000000.0 mult='$\\times 1$' tier=3-A      apex=False | Goku GT (Estado Base)
+  [1] ki=29400000000.0 mult='$\\times 50$' tier=4-A      apex=False | Super Saiyan 1
+  [2] ki=58800000000.0 mult='$\\times 100$' tier=High 4-A apex=False | Super Saiyan 2
+  [3] ki=235200000000.0 mult='$\\times 400$' tier=3-C      apex=False | Super Saiyan 3 (GT)
+  [4] ki=235200000000.0 mult='$\\times 400$' tier=3-C      apex=False | Super Saiyan 3
+  [5] ki=294000000000.0 mult='$\\times 500$' tier=High 3-A apex=False | Ohzaru Dorado (Golden Great Ape)
+  [6] ki=2352000000000.0 mult='$\\times 4000$' tier=High 3-A apex=False | Super Saiyan 4 (Forma Primitiva)
+  [7] ki=2352000000000.0 mult='$\\times 4000$' tier=Low 2-C  apex=False | Super Saiyan 4 (Full Power / Absorbido)
+
+  --> CLON en ki=235200000000.0 (base form[0]=588000000.0): formas [3, 4]
+  --> CLON en ki=2352000000000.0 (base form[0]=588000000.0): formas [6, 7]
+
+====================================================================================================
+Son Goku U18 Dbm (son-goku-u18-dbm) | universe=DRAGON BALL MULTIVERSE (FAN-MANGA)
+baseKiNumeric=103000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki= 103000000.0 mult='$\\times 1$' tier=4-C      apex=False | Son Goku (Estado Base DBM / Maestro Veterano)
+  [1] ki= 206000000.0 mult='$\\times 2$' tier=4-B      apex=False | Kaio-ken
+  [2] ki=5150000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan 1
+  [3] ki=10300000000.0 mult='$\\times 100$' tier=4-A      apex=False | Super Saiyan 2
+  [4] ki=41200000000.0 mult='$\\times 400$' tier=3-C      apex=False | Super Saiyan 3 (Control Energético Superior)
+  [5] ki=41200000000.0 mult='$\\times 400$' tier=3-C      apex=False | Normal Super Saiyan (Goku U18)
+
+  --> CLON en ki=41200000000.0 (base form[0]=103000000.0): formas [4, 5]
+
+====================================================================================================
+The Sentry (the-sentry) | universe=MARVEL COMICS
+baseKiNumeric=161700000000000.0 | baseTier=2-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=161700000000000.0 mult='$\\times 1$' tier=2-C      apex=False | The Sentry (Robert Reynolds) (Estado Base)
+  [1] ki=218295000000000.0 mult='$\\times 1.35$' tier=2-C      apex=False | Sentry (memoria suprimida)
+  [2] ki=218295000000000.0 mult='$\\times 1.35$' tier=2-C      apex=False | Sentry (poder completo desatado)
+
+  --> CLON en ki=218295000000000.0 (base form[0]=161700000000000.0): formas [1, 2]
+
+====================================================================================================
+Trunks Futuro Dbs Anime Rage (trunks-futuro-dbs-anime-rage) | universe=DRAGON BALL SUPER
+baseKiNumeric=19110000000.0 | baseTier=3-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=19110000000.0 mult='$\\times 1$' tier=3-A      apex=False | Trunks del Futuro (Estado Base - Anime DBS)
+  [1] ki=955500000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan 1 (Anime DBS)
+  [2] ki=955500000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan Rage / SSJ Ikari (Aura Dual Divina)
+  [3] ki=1911000000000.0 mult='$\\times 100$' tier=Low 2-C  apex=False | Super Saiyan 2 (Anime DBS)
+
+  --> CLON en ki=955500000000.0 (base form[0]=19110000000.0): formas [1, 2]
+
+====================================================================================================
+Trunks Futuro V3 Saga Buu Ssj2 (trunks-futuro-v3-saga-buu-ssj2) | universe=DRAGON BALL Z
+baseKiNumeric=15225000.0 | baseTier=4-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=  15225000.0 mult='$\\times 1$' tier=4-B      apex=False | Trunks del Futuro (Estado Base - Pacificador del Futuro)
+  [1] ki= 761250000.0 mult='$\\times 50$' tier=4-A      apex=False | Super Saiyan 1 (Básico)
+  [2] ki= 761250000.0 mult='$\\times 50$' tier=4-A      apex=False | Super Saiyan Perfeccionado (Full Power / Mastered)
+  [3] ki=1522500000.0 mult='$\\times 100$' tier=3-C      apex=False | Super Saiyan 2 (Verdadero)
+
+  --> CLON en ki=761250000.0 (base form[0]=15225000.0): formas [1, 2]
+
+====================================================================================================
+Vegeta Db After (vegeta-db-after) | universe=DRAGON BALL (FAN-MANGAS & WHAT-IF)
+baseKiNumeric=11760000000.0 | baseTier=3-A | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=11760000000.0 mult='$\\times 1$' tier=3-A      apex=False | Vegeta (Estado Base DB After)
+  [1] ki=588000000000.0 mult='$\\times 50$' tier=High 3-A apex=False | Super Saiyan 1
+  [2] ki=588000000000.0 mult='$\\times 50$' tier=Low 2-C  apex=False | Super Saiyan + Kaio-ken x20
+  [3] ki=1176000000000.0 mult='$\\times 100$' tier=Low 2-C  apex=False | Príncipe de la Destrucción (SSJ2 Majin Potenciado)
+  [4] ki=4704000000000.0 mult='$\\times 400$' tier=Low 2-C  apex=False | Super Saiyan 3 (Dominado sin Desgaste)
+
+  --> CLON en ki=588000000000.0 (base form[0]=11760000000.0): formas [1, 2]
+
+====================================================================================================
+Vegeta Saga Buu Saga Buu 213 (vegeta-saga-buu-saga-buu-213) | universe=DRAGON BALL Z
+baseKiNumeric=70000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=  70000000.0 mult='$\\times 1$' tier=4-C      apex=False | Vegeta Base (Saga Buu)
+  [1] ki=3500000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan 1
+  [2] ki=7000000000.0 mult='$\\times 100$' tier=4-A      apex=False | Super Saiyan 2
+  [3] ki=7000000000.0 mult='$\\times 100$' tier=4-A      apex=False | Majin Vegeta
+
+  --> CLON en ki=7000000000.0 (base form[0]=70000000.0): formas [2, 3]
+
+====================================================================================================
+Vegeta Saga Super Dragon Ball Super 454 (vegeta-saga-super-dragon-ball-super-454) | universe=DRAGON BALL SUPER
+baseKiNumeric=80000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=  80000000.0 mult='$\\times 1$' tier=4-C      apex=False | Vegeta (Estado Base DBS)
+  [1] ki=4000000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan
+  [2] ki=4000000000.0 mult='$\\times 100$' tier=4-B      apex=False | Super Saiyan 2
+  [3] ki=4000000000.0 mult='$\\times 400$' tier=4-B      apex=False | Super Saiyan 3 (Teórica)
+  [4] ki=4000000000.0 mult='$\\times 6400$' tier=4-B      apex=False | Super Saiyan God (Rojo)
+  [5] ki=4000000000.0 mult='$\\times 7700$' tier=4-B      apex=False | Super Saiyan Blue
+  [6] ki=4000000000.0 mult='$\\times 77000$' tier=4-B      apex=False | Super Saiyan Blue Evolution (Evolución Azul)
+  [7] ki=8000000000000.0 mult='$\\times 100000$' tier=2-B      apex=False | Ultra Ego (Mega Instinto / Hakaishin)
+
+  --> CLON en ki=4000000000.0 (base form[0]=80000000.0): formas [1, 2, 3, 4, 5, 6]
+
+====================================================================================================
+Vegeta U18 Dbm (vegeta-u18-dbm) | universe=DRAGON BALL MULTIVERSE (FAN-MANGA)
+baseKiNumeric=100000000.0 | baseTier=4-C | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki= 100000000.0 mult='$\\times 1$' tier=4-C      apex=False | Vegeta (Estado Base DBM / Príncipe Veterano)
+  [1] ki=5000000000.0 mult='$\\times 50$' tier=4-B      apex=False | Super Saiyan 1
+  [2] ki=10000000000.0 mult='$\\times 100$' tier=4-A      apex=False | Super Saiyan 2
+  [3] ki=40000000000.0 mult='$\\times 400$' tier=3-C      apex=False | Super Saiyan 3 (Vegeta U18)
+  [4] ki=40000000000.0 mult='$\\times 400$' tier=3-C      apex=False | Normal Super Saiyan (Vegeta U18)
+
+  --> CLON en ki=40000000000.0 (base form[0]=100000000.0): formas [3, 4]
+
+====================================================================================================
+Yoriichi Tsugikuni Kny 902 (yoriichi-tsugikuni-kny-902) | universe=DEMON SLAYER (KIMETSU NO YAIBA)
+baseKiNumeric=3707.0 | baseTier=7-B | tier=None
+powerSchema={"tierStatus": "internally_aligned"}
+  [0] ki=      3707.0 mult='$\\times 1$' tier=7-B      apex=False | Yoriichi Tsugikuni (Estado Base)
+  [1] ki=      5004.0 mult='$\\times 1.35$' tier=7-B      apex=False | Yoriichi (Pico Sengoku)
+  [2] ki=      5004.0 mult='$\\times 1.35$' tier=7-B      apex=False | Yoriichi Anciano (85 Años)
+  [3] ki=      5004.0 mult='$\\times 1.35$' tier=7-B      apex=False | Decimotercera Forma Solar en Cadena
+
+  --> CLON en ki=5004.0 (base form[0]=3707.0): formas [1, 2, 3]

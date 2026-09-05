@@ -57,23 +57,7 @@ export default function CharacterCard({ character = {}, role = '', onInspect, on
     return otherBase === baseName || (baseName.includes(otherBase) && otherBase.length >= 4) || (otherBase.includes(baseName) && baseName.length >= 4);
   });
 
-  const [isScanningKi, setIsScanningKi] = useState(false);
   const [battleDamage, setBattleDamage] = useState(false);
-
-  // Scouter: use combatState.sourceKiDisplay (DB only) — no raw character access
-  const scouterDisplay = combatState.sourceKiDisplay;
-  const scouterIsOverload = combatState.sourceKiCurrent != null && combatState.sourceKiCurrent >= 1e12;
-
-  const handleScouterBeep = (e) => {
-    e.stopPropagation();
-    setIsScanningKi(true);
-    if (scouterIsOverload) {
-      SoundFX.playScouterExplosion();
-    } else {
-      SoundFX.playScouterBeep(9);
-    }
-    setTimeout(() => setIsScanningKi(false), 600);
-  };
 
   const cleanTier = (combatState.tierExact || character.tier || '').replace('Tier ', '').trim();
   const isCosmic = ['Low 1-C', '1-C', 'High 1-C', '1-B', 'High 1-B', 'Low 1-A', '1-A', 'High 1-A', '0'].includes(cleanTier);
@@ -264,28 +248,11 @@ export default function CharacterCard({ character = {}, role = '', onInspect, on
             {/* Universal APEX-Ki Badge */}
             <span
               className="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-500/50 text-indigo-200 text-[11px] font-mono font-bold flex items-center gap-1 shadow-sm"
-              title="Lectura Scouter APEX"
+              title="Lectura APEX Ki"
             >
               <Zap className="w-3 h-3 text-indigo-400" />
-              <span aria-label="Lectura Scouter APEX">{combatState.apexKiDisplay}</span>
+              <span aria-label="Lectura APEX Ki">{combatState.apexKiDisplay}</span>
             </span>
-
-            {/* Scouter Ki Badge (Dragon Ball only) */}
-            {combatState.sourceKiDisplay && (
-              <button
-                type="button"
-                onClick={handleScouterBeep}
-                title="Ki Canónico Dragon Ball"
-                className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold flex items-center gap-1 cursor-pointer transition select-none shadow-sm ${
-                  isScanningKi
-                    ? 'bg-emerald-400 text-black shadow-[0_0_15px_rgba(52,211,153,0.9)] scale-105 ring-2 ring-emerald-300 animate-pulse'
-                    : 'bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-300'
-                }`}
-              >
-                <span className="text-[10px]">📖</span>
-                <span>{isScanningKi ? 'ESCANEO...' : combatState.sourceKiDisplay}</span>
-              </button>
-            )}
 
             {/* Range */}
             {character.range && (

@@ -1,0 +1,1782 @@
+a-train                                       
+    OLD: A Train
+    NEW: A-Train
+adam-shuumatsu-no-valkyrie                    
+    OLD: Adam Shuumatsu No Valkyrie
+    NEW: Adam
+adam-warlock-marvel-616                       
+    OLD: Adam Warlock Marvel
+    NEW: Adam Warlock
+adult-gon-hxh                                 
+    OLD: Adult Gon Hunter x Hunter
+    NEW: Adult Gon
+agent-venom-marvel-616                        
+    OLD: Agent Venom Marvel
+    NEW: Agent Venom
+akaza-kimetsu                                 
+    OLD: Akaza Kimetsu
+    NEW: Akaza
+all-might-prime-mha                           
+    OLD: All Might Prime Mha
+    NEW: All Might Prime
+amai-mask-opm-ma                              
+    OLD: Amai Mask Opm Ma
+    NEW: Amai Mask
+anciano-kaio-shin-saga-buu-404                
+    OLD: Anciano Kaio Shin Saga Buu
+    NEW: Anciano Kaio Shin
+anciano-neva-daima                            
+    OLD: Anciano Neva Daima
+    NEW: Anciano Neva
+android-16-u12-dbm                            
+    OLD: Android 16 U12 Dragon Ball Multiverse
+    NEW: Android 16
+android-18-dbs-top                            
+    OLD: Android 18 Dragon Ball Super Top
+    NEW: Android 18
+androide-13-base-pel-culas-dbz-toei-646       
+    OLD: Androide 13 Base Pel Culas Dragon Ball Z Toei
+    NEW: Androide 13 Base
+androide-14-pel-culas-dbz-toei-392            
+    OLD: Androide 14 Pel Culas Dragon Ball Z Toei
+    NEW: Androide 14
+androide-15-pel-culas-dbz-toei-547            
+    OLD: Androide 15 Pel Culas Dragon Ball Z Toei
+    NEW: Androide 15
+androide-16-saga-androides-313                
+    OLD: Androide 16 Saga Androides
+    NEW: Androide 16
+androide-17-futuro-l-nea-temporal-futura-398  
+    OLD: Androide 17 Futuro Línea Temporal Futura
+    NEW: Androide 17 Futuro
+androide-17-saga-androides-489                
+    OLD: Androide 17 Saga Androides
+    NEW: Androide 17 (Saga Androides)
+androide-17-u14-individual                    
+    OLD: Androide 17 U14 Individual
+    NEW: Androide 17 (U14)
+androide-18-futuro-l-nea-temporal-futura-419  
+    OLD: Androide 18 Futuro Línea Temporal Futura
+    NEW: Androide 18 Futuro
+androide-18-saga-androides-476                
+    OLD: Androide 18 Saga Androides
+    NEW: Androide 18 (Saga Androides)
+androide-18-u14-individual                    
+    OLD: Androide 18 U14 Individual
+    NEW: Androide 18 (U14)
+androide-19-saga-androides-393                
+    OLD: Androide 19 Saga Androides
+    NEW: Androide 19
+androide-20-saga-androides-799                
+    OLD: Androide 20 Saga Androides
+    NEW: Androide 20
+androide-8-dragon-ball-cl-sico-704            
+    OLD: Androide 8 Dragon Ball Clásico
+    NEW: Androide 8
+androides-17-18-u14-dbm                       
+    OLD: Androides 17 18 U14 Dragon Ball Multiverse
+    NEW: Androides 17 18
+angel-devil-csm-p1                            
+    OLD: Angel Devil Chainsaw Man P1
+    NEW: Angel Devil
+angel-hana-jjk-culling                        
+    OLD: Angel Hana Jujutsu Kaisen Culling
+    NEW: Angel Hana
+anilaza-dragon-ball-super-645                 
+    OLD: Anilaza Dragon Ball Super
+    NEW: Anilaza
+ant-man-marvel-616                            
+    OLD: Ant Man Marvel
+    NEW: Ant Man
+aoi-kanzaki-kny                               
+    OLD: Aoi Kanzaki Kimetsu no Yaiba
+    NEW: Aoi Kanzaki
+apollo-ror-r9                                 
+    OLD: Apollo Ror R9
+    NEW: Apollo
+aquaman-dc-rebirth                            
+    OLD: Aquaman DC Rebirth
+    NEW: Aquaman
+arale-norimaki-dbm                            
+    OLD: Arale Norimaki Dragon Ball Multiverse
+    NEW: Arale Norimaki
+asa-mitaka-csm                                
+    OLD: Asa Mitaka Chainsaw Man
+    NEW: Asa Mitaka
+atomic-samurai-opm-ma                         
+    OLD: Atomic Samurai Opm Ma
+    NEW: Atomic Samurai
+babidi-saga-buu-330                           
+    OLD: Babidi Saga Buu
+    NEW: Babidi
+baby-dragon-ball-gt-758                       
+    OLD: Baby Dragon Ball Gt
+    NEW: Baby
+baby-vegeta-dragon-ball-gt-510                
+    OLD: Baby Vegeta Dragon Ball Gt
+    NEW: Baby Vegeta
+bacterian-dragon-ball-cl-sico-986             
+    OLD: Bacterian Dragon Ball Clásico
+    NEW: Bacterian
+baki-hanma-baki                               
+    OLD: Baki Hanma Baki
+    NEW: Baki Hanma
+bane-dc-rebirth                               
+    OLD: Bane DC Rebirth
+    NEW: Bane
+bang-silver-fang-opm                          
+    OLD: Bang Silver Fang Opm
+    NEW: Bang Silver Fang
+bardock-dragon-ball-super-194                 
+    OLD: Bardock Dragon Ball Super
+    NEW: Bardock (DBS)
+bardock-u10-dbm                               
+    OLD: Bardock U10 Dragon Ball Multiverse
+    NEW: Bardock (U10)
+bardock-vidente-dbm-u3                        
+    OLD: Bardock Vidente Dragon Ball Multiverse U3
+    NEW: Bardock Vidente
+barem-bridge-csm-p2                           
+    OLD: Barem Bridge Chainsaw Man P2
+    NEW: Barem Bridge
+basil-dragon-ball-super-757                   
+    OLD: Basil Dragon Ball Super
+    NEW: Basil
+batman-dc-910                                 
+    OLD: Batman Dc
+    NEW: Batman
+beam-csm-p1                                   
+    OLD: Beam Chainsaw Man P1
+    NEW: Beam
+beelzebub-dbm-u2                              
+    OLD: Beelzebub Dragon Ball Multiverse U2
+    NEW: Beelzebub (Dragon Ball Multiverse)
+beelzebub-shuumatsu                           
+    OLD: Beelzebub Shuumatsu
+    NEW: Beelzebub (Shuumatsu no Valkyrie)
+beerus-dragon-ball-super-16                   
+    OLD: Beerus Dragon Ball Super
+    NEW: Beerus
+bergamo-dragon-ball-super-963                 
+    OLD: Bergamo Dragon Ball Super
+    NEW: Bergamo
+beyond-netero-hxh-dc                          
+    OLD: Beyond Netero Hunter x Hunter Dc
+    NEW: Beyond Netero
+bido-pel-culas-dbz-toei-296                   
+    OLD: Bido Pel Culas Dragon Ball Z Toei
+    NEW: Bido
+billy-butcher-the-boys-914                    
+    OLD: Billy Butcher The Boys
+    NEW: Billy Butcher
+bio-broly-pel-culas-dbz-toei-858              
+    OLD: Bio Broly Pel Culas Dragon Ball Z Toei
+    NEW: Bio Broly
+biscuit-oliva-baki-max                        
+    OLD: Biscuit Oliva Baki Max
+    NEW: Biscuit Oliva
+black-adam-dc-rebirth                         
+    OLD: Black Adam DC Rebirth
+    NEW: Black Adam
+black-panther-marvel-616                      
+    OLD: Black Panther Marvel
+    NEW: Black Panther
+black-sperm-opm-ma                            
+    OLD: Black Sperm Opm Ma
+    NEW: Black Sperm
+black-widow-marvel-616                        
+    OLD: Black Widow Marvel
+    NEW: Black Widow
+blast-opm                                     
+    OLD: Blast Opm
+    NEW: Blast
+bojack-dbm                                    
+    OLD: Bojack Dragon Ball Multiverse
+    NEW: Bojack (Dragon Ball Multiverse)
+bojack-pel-culas-dbz-toei-695                 
+    OLD: Bojack Pel Culas Dragon Ball Z Toei
+    NEW: Bojack (Película DBZ)
+bonolenov-ndongo-hxh-yr                       
+    OLD: Bonolenov Ndongo Hunter x Hunter Yr
+    NEW: Bonolenov Ndongo
+botamo-dragon-ball-super-999                  
+    OLD: Botamo Dragon Ball Super
+    NEW: Botamo
+broly-dbs-dragon-ball-super-172               
+    OLD: Broly Dragon Ball Super Dragon Ball Super
+    NEW: Broly (DBS)
+broly-dbz-pel-culas-dbz-toei-822              
+    OLD: Broly Dragon Ball Z Pel Culas Dragon Ball Z Toei
+    NEW: Broly (Película DBZ)
+bruno-bucciarati-jojo-va                      
+    OLD: Bruno Bucciarati Jojo Va
+    NEW: Bruno Bucciarati
+buddha-shuumatsu                              
+    OLD: Buddha Shuumatsu
+    NEW: Buddha
+bujin-pel-culas-dbz-toei-994                  
+    OLD: Bujin Pel Culas Dragon Ball Z Toei
+    NEW: Bujin
+bulletproof-invincible                        
+    OLD: Bulletproof Invincible
+    NEW: Bulletproof
+burter-saga-namek-641                         
+    OLD: Burter Saga Namek
+    NEW: Burter
+cabba-dragon-ball-super-566                   
+    OLD: Cabba Dragon Ball Super
+    NEW: Cabba
+caesar-zeppeli-jojo-bt                        
+    OLD: Caesar Zeppeli Jojo Bt
+    NEW: Caesar Zeppeli
+captain-cold-dc-rebirth                       
+    OLD: Captain Cold DC Rebirth
+    NEW: Captain Cold
+captain-ginyu-saga-namek-524                  
+    OLD: Captain Ginyu Saga Namek
+    NEW: Captain Ginyu
+caracoru-u10-individual                       
+    OLD: Caracoru U10 Individual
+    NEW: Caracoru
+cargot-u10-individual                         
+    OLD: Cargot U10 Individual
+    NEW: Cargot
+carmine-dbs-superhero                         
+    OLD: Carmine Dragon Ball Super Superhero
+    NEW: Carmine
+carnage-marvel-616                            
+    OLD: Carnage Marvel
+    NEW: Carnage
+caulifla-dragon-ball-super-537                
+    OLD: Caulifla Dragon Ball Super
+    NEW: Caulifla
+caway-dbs-top                                 
+    OLD: Caway Dragon Ball Super Top
+    NEW: Caway
+cell-dbm-u17                                  
+    OLD: Cell Dragon Ball Multiverse U17
+    NEW: Cell (Dragon Ball Multiverse U17)
+cell-hiper-perfecto-new-hope                  
+    OLD: Cell Hiper Perfecto New Hope
+    NEW: Cell Hiper Perfecto
+cell-jr-saga-androides-134                    
+    OLD: Cell Jr Saga Androides
+    NEW: Cell Jr (Saga Androides)
+cell-jr-u17-dbm                               
+    OLD: Cell Jr U17 Dragon Ball Multiverse
+    NEW: Cell Jr (U17)
+cell-max-dragon-ball-super-993                
+    OLD: Cell Max Dragon Ball Super
+    NEW: Cell Max
+cell-saga-androides-98                        
+    OLD: Cell Saga Androides
+    NEW: Cell (Saga Androides)
+champa-dragon-ball-super-179                  
+    OLD: Champa Dragon Ball Super
+    NEW: Champa
+chaos-dragon-ball-cl-sico-318                 
+    OLD: Chaos Dragon Ball Clásico
+    NEW: Chaos
+charles-bernard-jjk-culling                   
+    OLD: Charles Bernard Jujutsu Kaisen Culling
+    NEW: Charles Bernard
+child-emperor-opm-ma                          
+    OLD: Child Emperor Opm Ma
+    NEW: Child Emperor
+choso-jjk-shibuya                             
+    OLD: Choso Jujutsu Kaisen Shibuya
+    NEW: Choso
+chrollo-lucilfer-hxh                          
+    OLD: Chrollo Lucilfer Hunter x Hunter
+    NEW: Chrollo Lucilfer
+comandante-red-dragon-ball-cl-sico-526        
+    OLD: Comandante Red Dragon Ball Clásico
+    NEW: Comandante Red
+cooler-u8-dbm                                 
+    OLD: Cooler U8 Dragon Ball Multiverse
+    NEW: Cooler
+coronel-murasaki-dragon-ball-cl-sico-136      
+    OLD: Coronel Murasaki Dragon Ball Clásico
+    NEW: Coronel Murasaki
+coronel-silver-dragon-ball-cl-sico-336        
+    OLD: Coronel Silver Dragon Ball Clásico
+    NEW: Coronel Silver
+cui-saga-namek-132                            
+    OLD: Cui Saga Namek
+    NEW: Cui
+cyborg-dc-rebirth                             
+    OLD: Cyborg DC Rebirth
+    NEW: Cyborg
+cymbal-dragon-ball-cl-sico-617                
+    OLD: Cymbal Dragon Ball Clásico
+    NEW: Cymbal
+dabi-mha                                      
+    OLD: Dabi Mha
+    NEW: Dabi (Pre-Guerra)
+dabra-u11-dbm                                 
+    OLD: Dabra U11 Dragon Ball Multiverse
+    NEW: Dabra
+dabura-saga-buu-107                           
+    OLD: Dabura Saga Buu
+    NEW: Dabura
+dagon-jjk-shibuya                             
+    OLD: Dagon Jujutsu Kaisen Shibuya
+    NEW: Dagon
+daredevil-marvel-616                          
+    OLD: Daredevil Marvel
+    NEW: Daredevil
+darkness-devil-csm-p1                         
+    OLD: Darkness Devil Chainsaw Man P1
+    NEW: Darkness Devil
+darkseid-dc-rebirth                           
+    OLD: Darkseid DC Rebirth
+    NEW: Darkseid
+deadpool-marvel-616                           
+    OLD: Deadpool Marvel
+    NEW: Deadpool
+deathstroke-dc-rebirth                        
+    OLD: Deathstroke DC Rebirth
+    NEW: Deathstroke
+dende-saga-namek-100                          
+    OLD: Dende Saga Namek
+    NEW: Dende
+denji-csm-903                                 
+    OLD: Denji Chainsaw Man
+    NEW: Denji
+diavolo-jojo-va                               
+    OLD: Diavolo Jojo Va
+    NEW: Diavolo
+diego-brando-jojo-sbr                         
+    OLD: Diego Brando Jojo Sbr
+    NEW: Diego Brando
+doctor-doom-marvel-616                        
+    OLD: Doctor Doom Marvel
+    NEW: Doctor Doom
+doctor-fate-dc-rebirth                        
+    OLD: Doctor Fate DC Rebirth
+    NEW: Doctor Fate
+doctor-octopus-marvel-616                     
+    OLD: Doctor Octopus Marvel
+    NEW: Doctor Octopus
+dodoria-saga-namek-528                        
+    OLD: Dodoria Saga Namek
+    NEW: Dodoria
+doma-kimetsu                                  
+    OLD: Doma Kimetsu
+    NEW: Doma
+dorian-baki-drc                               
+    OLD: Dorian Baki Drc
+    NEW: Dorian
+doyle-baki-drc                                
+    OLD: Doyle Baki Drc
+    NEW: Doyle
+dr-hedo-dbs-superhero                         
+    OLD: Dr Hedo Dragon Ball Super Superhero
+    NEW: Dr Hedo
+dr-lychee-pel-culas-dbz-toei-354              
+    OLD: Dr Lychee Pel Culas Dragon Ball Z Toei
+    NEW: Dr Lychee
+dr-myuu-dbgt                                  
+    OLD: Dr Myuu Dbgt
+    NEW: Dr Myuu
+dr-raichi-dbm-u3                              
+    OLD: Dr Raichi Dragon Ball Multiverse U3
+    NEW: Dr Raichi
+dr-wheelo-pel-culas-dbz-toei-823              
+    OLD: Dr Wheelo Pel Culas Dragon Ball Z Toei
+    NEW: Dr Wheelo
+drive-knight-opm-ma                           
+    OLD: Drive Knight Opm Ma
+    NEW: Drive Knight
+drum-dragon-ball-cl-sico-175                  
+    OLD: Drum Dragon Ball Clásico
+    NEW: Drum
+dupli-kate-invincible                         
+    OLD: Dupli Kate Invincible
+    NEW: Dupli Kate
+dyspo-dragon-ball-super-188                   
+    OLD: Dyspo Dragon Ball Super
+    NEW: Dyspo
+eis-shenron-dragon-ball-gt-308                
+    OLD: Eis Shenron Dragon Ball Gt
+    NEW: Eis Shenron
+elder-centipede-opm-ma                        
+    OLD: Elder Centipede Opm Ma
+    NEW: Elder Centipede
+elec-dbs-granolah                             
+    OLD: Elec Dragon Ball Super Granolah
+    NEW: Elec
+eleim-ultra-dbm-u19                           
+    OLD: Eleim Ultra Dragon Ball Multiverse U19
+    NEW: Eleim Ultra
+elektra-marvel-616                            
+    OLD: Elektra Marvel
+    NEW: Elektra
+endeavor-mha                                  
+    OLD: Endeavor Mha
+    NEW: Endeavor
+enma-daioh-saga-saiyan-579                    
+    OLD: Enma Daioh Saga Saiyan
+    NEW: Enma Daioh
+enmu-kny-mt                                   
+    OLD: Enmu Kimetsu no Yaiba Mt
+    NEW: Enmu
+eobard-thawne-dc-rebirth                      
+    OLD: Eobard Thawne DC Rebirth
+    NEW: Eobard Thawne
+esidisi-jojo-bt                               
+    OLD: Esidisi Jojo Bt
+    NEW: Esidisi
+etrigan-dc-rebirth                            
+    OLD: Etrigan DC Rebirth
+    NEW: Etrigan
+evil-natural-water-opm-ma                     
+    OLD: Evil Natural Water Opm Ma
+    NEW: Evil Natural Water
+falling-devil-csm-p2                          
+    OLD: Falling Devil Chainsaw Man P2
+    NEW: Falling Devil
+fami-csm-p2                                   
+    OLD: Fami Chainsaw Man P2
+    NEW: Fami
+fat-gum-mha-shie                              
+    OLD: Fat Gum Mha Shie
+    NEW: Fat Gum
+feitan-portor-hxh-ca                          
+    OLD: Feitan Portor Hunter x Hunter Ca
+    NEW: Feitan Portor
+flashy-flash-opm-ma                           
+    OLD: Flashy Flash Opm Ma
+    NEW: Flashy Flash
+flect-turn-mha-whm                            
+    OLD: Flect Turn Mha Whm
+    NEW: Flect Turn
+franklin-bordeau-hxh-yr                       
+    OLD: Franklin Bordeau Hunter x Hunter Yr
+    NEW: Franklin Bordeau
+freezer-dbs-broly-movie                       
+    OLD: Freezer Dragon Ball Super Broly Movie
+    NEW: Freezer (Broly Movie)
+freezer-envejecido-u8-dbm                     
+    OLD: Freezer Envejecido U8 Dragon Ball Multiverse
+    NEW: Freezer Envejecido
+freezer-saga-namek-saga-namek-167             
+    OLD: Freezer Saga Namek Saga Namek
+    NEW: Freezer (Saga Namek)
+freezer-torneo-del-poder-dbs                  
+    OLD: Freezer Torneo Del Poder Dragon Ball Super
+    NEW: Freezer (Torneo del Poder)
+frost-dragon-ball-super-662                   
+    OLD: Frost Dragon Ball Super
+    NEW: Frost
+fubuki-opm-ha                                 
+    OLD: Fubuki Opm Ha
+    NEW: Fubuki
+fuhrer-ugly-opm-ma                            
+    OLD: Fuhrer Ugly Opm Ma
+    NEW: Fuhrer Ugly
+fumihiko-takaba-jjk-culling                   
+    OLD: Fumihiko Takaba Jujutsu Kaisen Culling
+    NEW: Fumihiko Takaba
+funny-valentine-jojo-sbr                      
+    OLD: Funny Valentine Jojo Sbr
+    NEW: Funny Valentine
+future-devil-csm-p1                           
+    OLD: Future Devil Chainsaw Man P1
+    NEW: Future Devil
+future-trunks-u12-dbm                         
+    OLD: Future Trunks U12 Dragon Ball Multiverse
+    NEW: Future Trunks
+gaia-baki-max                                 
+    OLD: Gaia Baki Max
+    NEW: Gaia
+gamma-1-dragon-ball-super-885                 
+    OLD: Gamma 1 Dragon Ball Super
+    NEW: Gamma 1
+gamma-2-dragon-ball-super-446                 
+    OLD: Gamma 2 Dragon Ball Super
+    NEW: Gamma 2
+gang-orca-mha-pl                              
+    OLD: Gang Orca Mha Pl
+    NEW: Gang Orca
+ganos-dbs-top                                 
+    OLD: Ganos Dragon Ball Super Top
+    NEW: Ganos
+garlic-jr-saga-garlic-jr-47                   
+    OLD: Garlic Jr Saga Garlic Jr
+    NEW: Garlic Jr
+garou-cosmico-opm                             
+    OLD: Garou Cosmico Opm
+    NEW: Garou Cosmico
+garou-hero-hunter-opm                         
+    OLD: Garou Hero Hunter Opm
+    NEW: Garou (Hero Hunter)
+gas-dragon-ball-super-973                     
+    OLD: Gas Dragon Ball Super
+    NEW: Gas
+gast-carcolh-dbm-u7                           
+    OLD: Gast Carcolh Dragon Ball Multiverse U7
+    NEW: Gast Carcolh
+general-blue-dragon-ball-cl-sico-650          
+    OLD: General Blue Dragon Ball Clásico
+    NEW: General Blue
+general-lude-dbgt                             
+    OLD: General Lude Dbgt
+    NEW: General Lude
+genos-opm                                     
+    OLD: Genos Opm
+    NEW: Genos
+gentle-criminal-mha-ua                        
+    OLD: Gentle Criminal Mha Ua
+    NEW: Gentle Criminal
+genya-shinazugawa-kny-sv                      
+    OLD: Genya Shinazugawa Kimetsu no Yaiba Sv
+    NEW: Genya Shinazugawa
+ghost-rider-marvel-616                        
+    OLD: Ghost Rider Marvel
+    NEW: Ghost Rider
+ginyu-como-rey-cold-u8-dbm                    
+    OLD: Ginyu Como Rey Cold U8 Dragon Ball Multiverse
+    NEW: Ginyu Como Rey Cold
+giorno-giovanna-ger-jojo-gg001                
+    OLD: Giorno Giovanna Ger Jojo Gg001
+    NEW: Giorno Giovanna (GER)
+giorno-giovanna-jojo-va                       
+    OLD: Giorno Giovanna Jojo Va
+    NEW: Giorno Giovanna (Vento Aureo)
+giran-dragon-ball-cl-sico-697                 
+    OLD: Giran Dragon Ball Clásico
+    NEW: Giran
+giyu-tomioka-kny-ic                           
+    OLD: Giyu Tomioka Kimetsu no Yaiba Ic
+    NEW: Giyu Tomioka
+glorio-daima-reino-demonio                    
+    OLD: Glorio Daima Reino Demonio
+    NEW: Glorio
+gogeta-blue-dragon-ball-super-456             
+    OLD: Gogeta Blue Dragon Ball Super
+    NEW: Gogeta Blue
+gogeta-dragon-ball-gt-258                     
+    OLD: Gogeta Dragon Ball Gt
+    NEW: Gogeta (GT)
+gogeta-pel-culas-dbz-toei-800                 
+    OLD: Gogeta Pel Culas Dragon Ball Z Toei
+    NEW: Gogeta (Película DBZ)
+gohan-del-futuro-l-nea-temporal-futura-43     
+    OLD: Gohan Del Futuro Línea Temporal Futura
+    NEW: Gohan Del Futuro
+gojo-satoru-jjk-peak-gs001                    
+    OLD: Gojo Satoru Jujutsu Kaisen Peak Gs001
+    NEW: Gojo Satoru
+goku-black-l-nea-temporal-futura-209          
+    OLD: Goku Black Línea Temporal Futura
+    NEW: Goku Black
+goku-ssj3-buu-saga-893                        
+    OLD: Goku Ssj3 Buu Saga
+    NEW: Goku
+gorilla-grodd-dc-rebirth                      
+    OLD: Gorilla Grodd DC Rebirth
+    NEW: Gorilla Grodd
+goten-new-hope-cell-saga                      
+    OLD: Goten New Hope Cell Saga
+    NEW: Goten New Hope Cell
+goten-saga-buu-694                            
+    OLD: Goten Saga Buu
+    NEW: Goten
+goten-trunks-ninos-u16-dbm                    
+    OLD: Goten Trunks Ninos U16 Dragon Ball Multiverse
+    NEW: Goten Trunks Niños
+gotenks-adulto-dbm-u18                        
+    OLD: Gotenks Adulto Dragon Ball Multiverse U18
+    NEW: Gotenks Adulto
+gotenks-base-saga-buu-858                     
+    OLD: Gotenks Base Saga Buu
+    NEW: Gotenks Base
+gouketsu-opm-ma                               
+    OLD: Gouketsu Opm Ma
+    NEW: Gouketsu
+gran-patriarca-guru-saga-namek-183            
+    OLD: Gran Patriarca Guru Saga Namek
+    NEW: Gran Patriarca Guru
+granjero-con-escopeta-dragon-ball-cl-sico-331 
+    OLD: Granjero Con Escopeta Dragon Ball Clásico
+    NEW: Granjero Con Escopeta
+granolah-peak-dbs-manga-gr001                 
+    OLD: Granolah Peak Dragon Ball Super Manga Gr001
+    NEW: Granolah (Peak)
+green-goblin-marvel-616                       
+    OLD: Green Goblin Marvel
+    NEW: Green Goblin
+guerreros-namek-saga-namek-520                
+    OLD: Guerreros Namek Saga Namek
+    NEW: Guerreros Namek
+guido-mista-jojo-va                           
+    OLD: Guido Mista Jojo Va
+    NEW: Guido Mista
+guldo-saga-namek-583                          
+    OLD: Guldo Saga Namek
+    NEW: Guldo
+gyokko-kny-sv                                 
+    OLD: Gyokko Kimetsu no Yaiba Sv
+    NEW: Gyokko
+gyro-zeppeli-jojo-sbr                         
+    OLD: Gyro Zeppeli Jojo Sbr
+    NEW: Gyro Zeppeli
+gyutaro-daki-kny-ed                           
+    OLD: Gyutaro Daki Kimetsu no Yaiba Ed
+    NEW: Gyutaro Daki
+hades-shuumatsu                               
+    OLD: Hades Shuumatsu
+    NEW: Hades
+hajime-kashimo-jjk                            
+    OLD: Hajime Kashimo Jujutsu Kaisen
+    NEW: Hajime Kashimo
+hajun-ror-r6                                  
+    OLD: Hajun Ror R6
+    NEW: Hajun
+hanami-jjk-shibuya                            
+    OLD: Hanami Jujutsu Kaisen Shibuya
+    NEW: Hanami
+hantengu-kny-sv                               
+    OLD: Hantengu Kimetsu no Yaiba Sv
+    NEW: Hantengu
+hatchiyack-pel-culas-dbz-toei-383             
+    OLD: Hatchiyack Pel Culas Dragon Ball Z Toei
+    NEW: Hatchiyack
+hawkeye-marvel-616                            
+    OLD: Hawkeye Marvel
+    NEW: Hawkeye
+hawks-mha                                     
+    OLD: Hawks Mha
+    NEW: Hawks (Pre-Guerra)
+heracles-ror-r4                               
+    OLD: Heracles Ror R4
+    NEW: Heracles
+hiromi-higuruma-jjk-culling                   
+    OLD: Hiromi Higuruma Jujutsu Kaisen Culling
+    NEW: Hiromi Higuruma
+hirudegarn-pel-culas-dbz-toei-805             
+    OLD: Hirudegarn Pel Culas Dragon Ball Z Toei
+    NEW: Hirudegarn
+hit-dragon-ball-super-450                     
+    OLD: Hit Dragon Ball Super
+    NEW: Hit
+hol-horse-jojo-sc                             
+    OLD: Hol Horse Jojo Sc
+    NEW: Hol Horse
+homelander-the-boys-913                       
+    OLD: Homelander The Boys
+    NEW: Homelander
+homeless-emperor-opm-ma                       
+    OLD: Homeless Emperor Opm Ma
+    NEW: Homeless Emperor
+iggy-jojo-sc                                  
+    OLD: Iggy Jojo Sc
+    NEW: Iggy
+ikl-u15-dbm                                   
+    OLD: Ikl U15 Dragon Ball Multiverse
+    NEW: Ikl
+illumi-zoldyck-individual                     
+    OLD: Illumi Zoldyck Individual
+    NEW: Illumi Zoldyck
+iron-man-marvel-908                           
+    OLD: Iron Man Marvel
+    NEW: Iron Man
+izuku-midoriya-deku-mha                       
+    OLD: Izuku Midoriya Deku Mha
+    NEW: Izuku Midoriya Deku
+jack-hanma-baki                               
+    OLD: Jack Hanma Baki
+    NEW: Jack Hanma
+jack-the-ripper-ror                           
+    OLD: Jack The Ripper Ror
+    NEW: Jack The Ripper
+jaco-dbs-superhero                            
+    OLD: Jaco Dragon Ball Super Superhero
+    NEW: Jaco
+janemba-gordo-pel-culas-dbz-toei-542          
+    OLD: Janemba Gordo Pel Culas Dragon Ball Z Toei
+    NEW: Janemba Gordo
+jeice-saga-namek-726                          
+    OLD: Jeice Saga Namek
+    NEW: Jeice
+jigoro-kuwajima-kny-lore                      
+    OLD: Jigoro Kuwajima Kimetsu no Yaiba Lore
+    NEW: Jigoro Kuwajima
+jimizu-dbs-top                                
+    OLD: Jimizu Dragon Ball Super Top
+    NEW: Jimizu
+jiren-dragon-ball-super-983                   
+    OLD: Jiren Dragon Ball Super
+    NEW: Jiren
+jogo-jjk-shibuya                              
+    OLD: Jogo Jujutsu Kaisen Shibuya
+    NEW: Jogo
+jolyne-cujoh-jojo-so                          
+    OLD: Jolyne Cujoh Jojo So
+    NEW: Jolyne Cujoh
+jonathan-joestar-jojo-pb                      
+    OLD: Jonathan Joestar Jojo Pb
+    NEW: Jonathan Joestar
+jun-guevaru-baki                              
+    OLD: Jun Guevaru Baki
+    NEW: Jun Guevaru
+kagaya-ubuyashiki-kny-lore                    
+    OLD: Kagaya Ubuyashiki Kimetsu no Yaiba Lore
+    NEW: Kagaya Ubuyashiki
+kaigaku-kny-ic                                
+    OLD: Kaigaku Kimetsu no Yaiba Ic
+    NEW: Kaigaku
+kaio-sama-del-norte-saga-saiyan-446           
+    OLD: Kaio Sama Del Norte Saga Saiyan
+    NEW: Kaio Sama Del Norte
+kakarotto-dbm-u13                             
+    OLD: Kakarotto Dragon Ball Multiverse U13
+    NEW: Kakarotto
+kaku-kaioh-baki                               
+    OLD: Kaku Kaioh Baki
+    NEW: Kaku Kaioh
+kakunsa-dbs-top                               
+    OLD: Kakunsa Dragon Ball Super Top
+    NEW: Kakunsa
+kale-dbs-u6                                   
+    OLD: Kale Dragon Ball Super U6
+    NEW: Kale
+kami-sama-dragon-ball-cl-sico-772             
+    OLD: Kami Sama Dragon Ball Clásico
+    NEW: Kami Sama
+kanae-kocho-kny-lore                          
+    OLD: Kanae Kocho Kimetsu no Yaiba Lore
+    NEW: Kanae Kocho
+kanao-tsuyuri-kny-ic                          
+    OLD: Kanao Tsuyuri Kimetsu no Yaiba Ic
+    NEW: Kanao Tsuyuri
+kars-jojo-bt                                  
+    OLD: Kars Jojo Bt
+    NEW: Kars
+kat-u6-individual                             
+    OLD: Kat U6 Individual
+    NEW: Kat
+katana-man-csm-p1                             
+    OLD: Katana Man Chainsaw Man P1
+    NEW: Katana Man
+katopesla-dbs-top                             
+    OLD: Katopesla Dragon Ball Super Top
+    NEW: Katopesla
+katsuki-bakugo-mha                            
+    OLD: Katsuki Bakugo Mha
+    NEW: Katsuki Bakugo
+katsumi-orochi-baki-pickle                    
+    OLD: Katsumi Orochi Baki Pickle
+    NEW: Katsumi Orochi
+kefla-dragon-ball-super-104                   
+    OLD: Kefla Dragon Ball Super
+    NEW: Kefla
+kenjaku-jjk                                   
+    OLD: Kenjaku Jujutsu Kaisen
+    NEW: Kenjaku
+kibito-saga-buu-184                           
+    OLD: Kibito Saga Buu
+    NEW: Kibito
+kid-buu-saga-buu-907                          
+    OLD: Kid Buu Saga Buu
+    NEW: Kid
+killua-zoldyck-hxh                            
+    OLD: Killua Zoldyck Hunter x Hunter
+    NEW: Killua Zoldyck
+kimiko-miyashiro-the-boys                     
+    OLD: Kimiko Miyashiro The Boys
+    NEW: Kimiko Miyashiro
+king-opm                                      
+    OLD: King Opm
+    NEW: King
+king-piccolo-u3-dbm                           
+    OLD: King Piccolo U3 Dragon Ball Multiverse
+    NEW: King Piccolo
+king-vegeta-u10-dbm                           
+    OLD: King Vegeta U10 Dragon Ball Multiverse
+    NEW: King Vegeta
+kite-hxh-ca                                   
+    OLD: Kite Hunter x Hunter Ca
+    NEW: Kite
+knuckle-bine-hxh-ca                           
+    OLD: Knuckle Bine Hunter x Hunter Ca
+    NEW: Knuckle Bine
+kobeni-csm-p1                                 
+    OLD: Kobeni Chainsaw Man P1
+    NEW: Kobeni
+kogu-pel-culas-dbz-toei-693                   
+    OLD: Kogu Pel Culas Dragon Ball Z Toei
+    NEW: Kogu
+koichi-hirose-jojo-diu                        
+    OLD: Koichi Hirose Jojo Diu
+    NEW: Koichi Hirose
+koichiarator-dbs-top                          
+    OLD: Koichiarator Dragon Ball Super Top
+    NEW: Koichiarator
+kojiro-sasaki-shuumatsu                       
+    OLD: Kojiro Sasaki Shuumatsu
+    NEW: Kojiro Sasaki
+kokushibo-kimetsu                             
+    OLD: Kokushibo Kimetsu
+    NEW: Kokushibo
+komugi-hxh-ca                                 
+    OLD: Komugi Hunter x Hunter Ca
+    NEW: Komugi
+kortopi-hxh-yr                                
+    OLD: Kortopi Hunter x Hunter Yr
+    NEW: Kortopi
+krilin-db-clasico                             
+    OLD: Krilin Db Clasico
+    NEW: Krilin (Niño / Clásico)
+krilin-dragon-ball-cl-sico-802                
+    OLD: Krilin Dragon Ball Clásico
+    NEW: Krilin (Saga Super)
+krilin-saga-cell                              
+    OLD: Krilin Saga Cell
+    NEW: Krilin (Saga Cell)
+krillin-new-hope                              
+    OLD: Krillin New Hope
+    NEW: Krillin
+kulilin-turtle-hermit-u9                      
+    OLD: Kulilin Turtle Hermit U9
+    NEW: Krilin (Turtle Hermit U9)
+kurapika-hxh                                  
+    OLD: Kurapika Hunter x Hunter
+    NEW: Kurapika
+kurogiri-mha-loa                              
+    OLD: Kurogiri Mha Loa
+    NEW: Kurogiri
+kusakabe-jjk-shinjuku                         
+    OLD: Kusakabe Jujutsu Kaisen Shinjuku
+    NEW: Kusakabe
+kyojuro-rengoku-kimetsu                       
+    OLD: Kyojuro Rengoku Kimetsu
+    NEW: Kyojuro Rengoku
+la-brava-mha-ua                               
+    OLD: La Brava Mha Ua
+    NEW: La Brava
+lady-nagant-mha-tartarus                      
+    OLD: Lady Nagant Mha Tartarus
+    NEW: Lady Nagant
+larue-jjk-shinjuku                            
+    OLD: Larue Jujutsu Kaisen Shinjuku
+    NEW: Larue
+lavender-dragon-ball-super-460                
+    OLD: Lavender Dragon Ball Super
+    NEW: Lavender
+ledgic-dbgt                                   
+    OLD: Ledgic Dbgt
+    NEW: Ledgic
+leonidas-ror-r9                               
+    OLD: Leonidas Ror R9
+    NEW: Leonidas
+leorio-hxh-election                           
+    OLD: Leorio Hunter x Hunter Election
+    NEW: Leorio
+lobo-dc-rebirth                               
+    OLD: Lobo DC Rebirth
+    NEW: Lobo
+loki-ror-ragnarok                             
+    OLD: Loki Ror Ragnarok
+    NEW: Loki
+lord-boros-opm                                
+    OLD: Lord Boros Opm
+    NEW: Lord Boros
+lord-cooler-pel-culas-dbz-toei-792            
+    OLD: Lord Cooler Pel Culas Dragon Ball Z Toei
+    NEW: Lord Cooler
+lord-slug-pel-culas-dbz-toei-952              
+    OLD: Lord Slug Pel Culas Dragon Ball Z Toei
+    NEW: Lord Slug
+lu-bu-fengxian-ror                            
+    OLD: Lu Bu Fengxian Ror
+    NEW: Lu Bu Fengxian
+lucan-invincible                              
+    OLD: Lucan Invincible
+    NEW: Lucan
+luke-cage-marvel-616                          
+    OLD: Luke Cage Marvel
+    NEW: Luke Cage
+lumaca-u10-individual                         
+    OLD: Lumaca U10 Individual
+    NEW: Lumaca
+machi-komacine-hxh-yr                         
+    OLD: Machi Komacine Hunter x Hunter Yr
+    NEW: Machi Komacine
+maestro-roshi-jackie-chun-dragon-ball-cl-sico-
+    OLD: Maestro Roshi Jackie Chun Dragon Ball Clásico
+    NEW: Maestro Roshi Jackie Chun
+magenta-dbs-superhero                         
+    OLD: Magenta Dragon Ball Super Superhero
+    NEW: Magenta
+magetta-dragon-ball-super-287                 
+    OLD: Magetta Dragon Ball Super
+    NEW: Magetta
+mahissu-u10-individual                        
+    OLD: Mahissu U10 Individual
+    NEW: Mahissu
+mahoraga-jjk-shibuya                          
+    OLD: Mahoraga Jujutsu Kaisen Shibuya
+    NEW: Mahoraga
+mai-l-nea-temporal-futura-446                 
+    OLD: Mai Línea Temporal Futura
+    NEW: Mai
+mai-pilaf-individual                          
+    OLD: Mai Pilaf Individual
+    NEW: Mai Pilaf
+mai-zenin-jjk-kyoto                           
+    OLD: Mai Zenin Jujutsu Kaisen Kyoto
+    NEW: Mai Zenin
+maji-kayo-dbs-top                             
+    OLD: Maji Kayo Dragon Ball Super Top
+    NEW: Maji Kayo
+majin-buu-estandar-u11-dbm                    
+    OLD: Majin Buu Estandar U11 Dragon Ball Multiverse
+    NEW: Majin Buu Estandar
+majin-buu-gordo-saga-buu-604                  
+    OLD: Majin Buu Gordo Saga Buu
+    NEW: Majin Buu Gordo
+majin-duu-daima                               
+    OLD: Majin Duu Daima
+    NEW: Majin Duu
+majin-kuu-daima                               
+    OLD: Majin Kuu Daima
+    NEW: Majin Kuu
+majuub-dragon-ball-gt-859                     
+    OLD: Majuub Dragon Ball Gt
+    NEW: Majuub
+maki-dbs-granolah                             
+    OLD: Maki Dragon Ball Super Granolah
+    NEW: Maki
+maki-zenin-jjk-culling                        
+    OLD: Maki Zenin Jujutsu Kaisen Culling
+    NEW: Maki Zenin
+makima-csm-904                                
+    OLD: Makima Chainsaw Man
+    NEW: Makima
+mark-grayson-clasico                          
+    OLD: Mark Grayson Clasico
+    NEW: Mark Grayson
+martian-manhunter-dc-rebirth                  
+    OLD: Martian Manhunter DC Rebirth
+    NEW: Martian Manhunter
+mary-sue-parody-sue-dbm-u2                    
+    OLD: Mary Sue Parody Sue Dragon Ball Multiverse U2
+    NEW: Mary Sue Parody Sue
+mayor-metallitron-dragon-ball-cl-sico-265     
+    OLD: Mayor Metallitron Dragon Ball Clásico
+    NEW: Mayor Metallitron
+mecha-freezer-saga-androides-514              
+    OLD: Mecha Freezer Saga Androides
+    NEW: Mecha Freezer
+mechamaru-jjk-shibuya                         
+    OLD: Mechamaru Jujutsu Kaisen Shibuya
+    NEW: Mechamaru
+mei-mei-jjk-shibuya                           
+    OLD: Mei Mei Jujutsu Kaisen Shibuya
+    NEW: Mei Mei
+melody-hxh-yc                                 
+    OLD: Melody Hunter x Hunter Yc
+    NEW: Melody
+meruem-hxh-911                                
+    OLD: Meruem Hunter x Hunter
+    NEW: Meruem
+merus-dbs-moro                                
+    OLD: Merus Dragon Ball Super Moro
+    NEW: Merus
+meta-cooler-pel-culas-dbz-toei-714            
+    OLD: Meta Cooler Pel Culas Dragon Ball Z Toei
+    NEW: Meta Cooler
+metal-bat-opm-ma                              
+    OLD: Metal Bat Opm Ma
+    NEW: Metal Bat
+metal-knight-opm-ha                           
+    OLD: Metal Knight Opm Ha
+    NEW: Metal Knight
+miguel-jjk-shinjuku                           
+    OLD: Miguel Jujutsu Kaisen Shinjuku
+    NEW: Miguel
+mirio-togata-mha-shie                         
+    OLD: Mirio Togata Mha Shie
+    NEW: Mirio Togata
+mitsuri-kanroji-kny-sv                        
+    OLD: Mitsuri Kanroji Kimetsu no Yaiba Sv
+    NEW: Mitsuri Kanroji
+momo-nishimiya-jjk-kyoto                      
+    OLD: Momo Nishimiya Jujutsu Kaisen Kyoto
+    NEW: Momo Nishimiya
+monaka-dragon-ball-super-955                  
+    OLD: Monaka Dragon Ball Super
+    NEW: Monaka
+monster-girl-invincible                       
+    OLD: Monster Girl Invincible
+    NEW: Monster Girl
+moon-knight-marvel-616                        
+    OLD: Moon Knight Marvel
+    NEW: Moon Knight
+morel-mackernasey-hxh-ca                      
+    OLD: Morel Mackernasey Hunter x Hunter Ca
+    NEW: Morel Mackernasey
+moro-dragon-ball-super-496                    
+    OLD: Moro Dragon Ball Super
+    NEW: Moro
+motobe-izou-baki                              
+    OLD: Motobe Izou Baki
+    NEW: Motobe Izou
+mr-popo-dragon-ball-cl-sico-370               
+    OLD: Mr Popo Dragon Ball Clásico
+    NEW: Mr Popo
+mr-satan-saga-androides-140                   
+    OLD: Mr Satan Saga Androides
+    NEW: Mr Satan
+muhammad-ali-jr-baki                          
+    OLD: Muhammad Ali Jr Baki
+    NEW: Muhammad Ali Jr
+muhammad-avdol-jojo-sc                        
+    OLD: Muhammad Avdol Jojo Sc
+    NEW: Muhammad Avdol
+muichiro-tokito-kny-sv                        
+    OLD: Muichiro Tokito Kimetsu no Yaiba Sv
+    NEW: Muichiro Tokito
+musashi-miyamoto-baki                         
+    OLD: Musashi Miyamoto Baki
+    NEW: Musashi Miyamoto
+muscular-mha-forest                           
+    OLD: Muscular Mha Forest
+    NEW: Muscular
+mustard-saga-garlic-jr-331                    
+    OLD: Mustard Saga Garlic Jr
+    NEW: Mustard
+muzan-kibutsuji-kny-901                       
+    OLD: Muzan Kibutsuji Kimetsu no Yaiba
+    NEW: Muzan Kibutsuji
+nail-saga-namek-672                           
+    OLD: Nail Saga Namek
+    NEW: Nail (Saga Namek)
+nail-u10-dbm                                  
+    OLD: Nail U10 Dragon Ball Multiverse
+    NEW: Nail (U10)
+nakime-kny-ic                                 
+    OLD: Nakime Kimetsu no Yaiba Ic
+    NEW: Nakime
+nam-dragon-ball-cl-sico-33                    
+    OLD: Nam Dragon Ball Clásico
+    NEW: Nam
+naobito-zenin-jjk-shibuya                     
+    OLD: Naobito Zenin Jujutsu Kaisen Shibuya
+    NEW: Naobito Zenin
+naoya-zenin-curse-jjk-culling                 
+    OLD: Naoya Zenin Curse Jujutsu Kaisen Culling
+    NEW: Naoya Zenin Curse
+naoya-zenin-human-jjk                         
+    OLD: Naoya Zenin Human Jujutsu Kaisen
+    NEW: Naoya Zenin Human
+nappa-saga-saiyan-462                         
+    OLD: Nappa Saga Saiyan
+    NEW: Nappa (Saga Saiyan)
+nappa-u13-dbm                                 
+    OLD: Nappa U13 Dragon Ball Multiverse
+    NEW: Nappa (U13)
+narancia-ghirga-jojo-va                       
+    OLD: Narancia Ghirga Jojo Va
+    NEW: Narancia Ghirga
+nayuta-csm-p2                                 
+    OLD: Nayuta Chainsaw Man P2
+    NEW: Nayuta
+neferpitou-hxh-ca                             
+    OLD: Neferpitou Hunter x Hunter Ca
+    NEW: Neferpitou
+netero-hxh-912                                
+    OLD: Netero Hunter x Hunter
+    NEW: Netero
+nightwing-dc-rebirth                          
+    OLD: Nightwing DC Rebirth
+    NEW: Nightwing
+nikola-tesla-shuumatsu                        
+    OLD: Nikola Tesla Shuumatsu
+    NEW: Nikola Tesla
+nine-mha-heroes-rising                        
+    OLD: Nine Mha Heroes Rising
+    NEW: Nine
+nobunaga-hazama-hxh-yr                        
+    OLD: Nobunaga Hazama Hunter x Hunter Yr
+    NEW: Nobunaga Hazama
+noriaki-kakyoin-jojo-sc                       
+    OLD: Noriaki Kakyoin Jojo Sc
+    NEW: Noriaki Kakyoin
+nuova-shenron-dragon-ball-gt-786              
+    OLD: Nuova Shenron Dragon Ball Gt
+    NEW: Nuova Shenron
+nyan-opm-ma                                   
+    OLD: Nyan Opm Ma
+    NEW: Nyan
+obanai-iguro-kny-ic                           
+    OLD: Obanai Iguro Kimetsu no Yaiba Ic
+    NEW: Obanai Iguro
+obni-dbs-top                                  
+    OLD: Obni Dragon Ball Super Top
+    NEW: Obni
+odin-ror-ragnarok                             
+    OLD: Odin Ror Ragnarok
+    NEW: Odin
+oil-dbs-granolah                              
+    OLD: Oil Dragon Ball Super Granolah
+    NEW: Oil
+okita-souji-ror-r10                           
+    OLD: Okita Souji Ror R10
+    NEW: Okita Souji
+okuyasu-nijimura-jojo-diu                     
+    OLD: Okuyasu Nijimura Jojo Diu
+    NEW: Okuyasu Nijimura
+omega-shenron-dragon-ball-gt-904              
+    OLD: Omega Shenron Dragon Ball Gt
+    NEW: Omega Shenron
+omni-man-invincible-905                       
+    OLD: Omni Man Invincible
+    NEW: Omni Man
+overhaul-mha-shie                             
+    OLD: Overhaul Mha Shie
+    NEW: Overhaul
+pakunoda-hxh-yr                               
+    OLD: Pakunoda Hunter x Hunter Yr
+    NEW: Pakunoda
+palm-siberia-hxh-ca                           
+    OLD: Palm Siberia Hunter x Hunter Ca
+    NEW: Palm Siberia
+pan-saga-buu-780                              
+    OLD: Pan Saga Buu
+    NEW: Pan (Saga Buu)
+pan-ssj-dbm-u16                               
+    OLD: Pan Ssj Dragon Ball Multiverse U16
+    NEW: Pan (SSJ U16)
+paragus-pel-culas-dbz-toei-728                
+    OLD: Paragus Pel Culas Dragon Ball Z Toei
+    NEW: Paragus
+pariston-hill-hxh-election                    
+    OLD: Pariston Hill Hunter x Hunter Election
+    NEW: Pariston Hill
+phinks-magcub-hxh-yr                          
+    OLD: Phinks Magcub Hunter x Hunter Yr
+    NEW: Phinks Magcub
+phoenix-man-opm-ma                            
+    OLD: Phoenix Man Opm Ma
+    NEW: Phoenix Man
+piccolo-dbs-superhero                         
+    OLD: Piccolo Dragon Ball Super Superhero
+    NEW: Piccolo (Super Hero)
+piccolo-dragon-ball-daima-343                 
+    OLD: Piccolo Dragon Ball Daima
+    NEW: Piccolo (Daima)
+piccolo-inicio-saga-saiyan                    
+    OLD: Piccolo Inicio Saga Saiyan
+    NEW: Piccolo Inicio
+piccolo-new-hope                              
+    OLD: Piccolo New Hope
+    NEW: Piccolo (New Hope)
+piccolo-saga-cell-buu-saga-androides-946      
+    OLD: Piccolo Saga Cell Buu Saga Androides
+    NEW: Piccolo Saga Cell Buu
+piccolo-saga-saiyan                           
+    OLD: Piccolo Saga Saiyan
+    NEW: Piccolo (Saga Saiyan)
+piccolo-saga-saiyan-namek-saga-saiyan-967     
+    OLD: Piccolo Saga Saiyan Namek Saga Saiyan
+    NEW: Piccolo (Saga Namek)
+piccolo-saga-super-dragon-ball-super-228      
+    OLD: Piccolo Saga Super Dragon Ball Super
+    NEW: Piccolo (Saga Super)
+pickle-baki                                   
+    OLD: Pickle Baki
+    NEW: Pickle
+pig-god-opm-ma                                
+    OLD: Pig God Opm Ma
+    NEW: Pig God
+pirina-dbs-top                                
+    OLD: Pirina Dragon Ball Super Top
+    NEW: Pirina
+polnareff-jojo-sc                             
+    OLD: Polnareff Jojo Sc
+    NEW: Polnareff
+poseidon-shuumatsu                            
+    OLD: Poseidon Shuumatsu
+    NEW: Poseidon
+princesa-panzy-daima                          
+    OLD: Princesa Panzy Daima
+    NEW: Princesa Panzy
+psykos-opm-ma                                 
+    OLD: Psykos Opm Ma
+    NEW: Psykos
+pucci-made-in-heaven-jojo-pm001               
+    OLD: Pucci Made In Heaven Jojo Pm001
+    NEW: Pucci Made In Heaven
+punisher-marvel-616                           
+    OLD: Punisher Marvel
+    NEW: Punisher
+puri-puri-prisoner-opm-ma                     
+    OLD: Puri Puri Prisoner Opm Ma
+    NEW: Puri Puri Prisoner
+qin-shi-huang-shuumatsu                       
+    OLD: Qin Shi Huang Shuumatsu
+    NEW: Qin Shi Huang
+quanxi-csm-p1                                 
+    OLD: Quanxi Chainsaw Man P1
+    NEW: Quanxi
+raditz-mistico-dbm-u13                        
+    OLD: Raditz Mistico Dragon Ball Multiverse U13
+    NEW: Raditz Mistico
+raditz-saga-saiyan-640                        
+    OLD: Raditz Saga Saiyan
+    NEW: Raditz
+raiden-tameemon-ror-r5                        
+    OLD: Raiden Tameemon Ror R5
+    NEW: Raiden Tameemon
+ranfan-dragon-ball-cl-sico-172                
+    OLD: Ranfan Dragon Ball Clásico
+    NEW: Ranfan
+rappa-mha-shie                                
+    OLD: Rappa Mha Shie
+    NEW: Rappa
+raven-dc-rebirth                              
+    OLD: Raven DC Rebirth
+    NEW: Raven
+re-destro-mha-mla                             
+    OLD: Re Destro Mha Mla
+    NEW: Re Destro
+recoome-saga-namek-951                        
+    OLD: Recoome Saga Namek
+    NEW: Recoome
+red-hood-dc-rebirth                           
+    OLD: Red Hood DC Rebirth
+    NEW: Red Hood
+rex-splode-invincible                         
+    OLD: Rex Splode Invincible
+    NEW: Rex Splode
+rey-cold-formas-dbm-u8                        
+    OLD: Rey Cold Formas Dragon Ball Multiverse U8
+    NEW: Rey Cold Formas
+rey-cold-saga-androides-751                   
+    OLD: Rey Cold Saga Androides
+    NEW: Rey Cold
+rey-gomah-daima                               
+    OLD: Rey Gomah Daima
+    NEW: Rey Gomah
+rey-piccolo-dragon-ball-cl-sico-497           
+    OLD: Rey Piccolo Dragon Ball Clásico
+    NEW: Rey Piccolo
+rey-vegeta-clasico                            
+    OLD: Rey Vegeta Clasico
+    NEW: Rey Vegeta
+ribrianne-dragon-ball-super-396               
+    OLD: Ribrianne Dragon Ball Super
+    NEW: Ribrianne
+risotto-nero-jojo-va                          
+    OLD: Risotto Nero Jojo Va
+    NEW: Risotto Nero
+robot-rudy-invincible                         
+    OLD: Robot Rudy Invincible
+    NEW: Robot Rudy
+rohan-kishibe-jojo-diu                        
+    OLD: Rohan Kishibe Jojo Diu
+    NEW: Rohan Kishibe
+romanesco-u10-individual                      
+    OLD: Romanesco U10 Individual
+    NEW: Romanesco
+rozie-dbs-top                                 
+    OLD: Rozie Dragon Ball Super Top
+    NEW: Rozie
+rui-kny-mn                                    
+    OLD: Rui Kimetsu no Yaiba Mn
+    NEW: Rui
+ryan-butcher-the-boys                         
+    OLD: Ryan Butcher The Boys
+    NEW: Ryan Butcher
+ryu-ishigori-jjk-culling                      
+    OLD: Ryu Ishigori Jujutsu Kaisen Culling
+    NEW: Ryu Ishigori
+saganbo-dbs-moro                              
+    OLD: Saganbo Dragon Ball Super Moro
+    NEW: Saganbo
+saibaman-saga-saiyan-791                      
+    OLD: Saibaman Saga Saiyan
+    NEW: Saibaman
+saitama-opm                                   
+    OLD: Saitama Opm
+    NEW: Saitama
+sakonji-urokodaki-kny-train                   
+    OLD: Sakonji Urokodaki Kimetsu no Yaiba Train
+    NEW: Sakonji Urokodaki
+salt-saga-garlic-jr-435                       
+    OLD: Salt Saga Garlic Jr
+    NEW: Salt
+sanemi-shinazugawa-kny-ic                     
+    OLD: Sanemi Shinazugawa Kimetsu no Yaiba Ic
+    NEW: Sanemi Shinazugawa
+santa-claus-csm-p1                            
+    OLD: Santa Claus Chainsaw Man P1
+    NEW: Santa Claus
+saonel-dbs-top                                
+    OLD: Saonel Dragon Ball Super Top
+    NEW: Saonel
+satoru-gojo-jjk                               
+    OLD: Satoru Gojo Jujutsu Kaisen
+    NEW: Satoru Gojo
+scarecrow-dc-rebirth                          
+    OLD: Scarecrow DC Rebirth
+    NEW: Scarecrow
+seven-three-dbs-moro                          
+    OLD: Seven Three Dragon Ball Super Moro
+    NEW: Seven Three
+shaiapouf-hxh-ca                              
+    OLD: Shaiapouf Hunter x Hunter Ca
+    NEW: Shaiapouf
+shalnark-hxh-yr                               
+    OLD: Shalnark Hunter x Hunter Yr
+    NEW: Shalnark
+shang-chi-marvel-616                          
+    OLD: Shang Chi Marvel
+    NEW: Shang Chi
+shibukawa-gouki-baki-max                      
+    OLD: Shibukawa Gouki Baki Max
+    NEW: Shibukawa Gouki
+shigaraki-tomura-mha                          
+    OLD: Shigaraki Tomura Mha
+    NEW: Shigaraki Tomura
+shin-kaio-shin-del-este-saga-buu-0            
+    OLD: Shin Kaio Shin Del Este Saga Buu
+    NEW: Shin Kaio Shin Del Este
+shinogi-kosho-baki-mt                         
+    OLD: Shinogi Kosho Baki Mt
+    NEW: Shinogi Kosho
+shinogi-kureha-baki-mt                        
+    OLD: Shinogi Kureha Baki Mt
+    NEW: Shinogi Kureha
+shisami-fnf-dbs                               
+    OLD: Shisami Fnf Dragon Ball Super
+    NEW: Shisami
+shiva-shuumatsu                               
+    OLD: Shiva Shuumatsu
+    NEW: Shiva
+shizuku-murasaki-hxh-yr                       
+    OLD: Shizuku Murasaki Hunter x Hunter Yr
+    NEW: Shizuku Murasaki
+shoot-mcmahon-hxh-ca                          
+    OLD: Shoot Mcmahon Hunter x Hunter Ca
+    NEW: Shoot Mcmahon
+shoto-todoroki-mha                            
+    OLD: Shoto Todoroki Mha
+    NEW: Shoto Todoroki
+shu-pilaf-individual                          
+    OLD: Shu Pilaf Individual
+    NEW: Shu Pilaf
+siegfried-ror-ragnarok                        
+    OLD: Siegfried Ror Ragnarok
+    NEW: Siegfried
+sikorsky-baki-drc                             
+    OLD: Sikorsky Baki Drc
+    NEW: Sikorsky
+silva-zoldyck-individual                      
+    OLD: Silva Zoldyck Individual
+    NEW: Silva Zoldyck
+sir-nighteye-mha-shie                         
+    OLD: Sir Nighteye Mha Shie
+    NEW: Sir Nighteye
+soldados-de-freezer-saga-namek-793            
+    OLD: Soldados De Freezer Saga Namek
+    NEW: Soldados De Freezer
+son-bra-dbm-u16                               
+    OLD: Son Bra Dragon Ball Multiverse U16
+    NEW: Son Bra (U16)
+son-gohan-dbs-superhero                       
+    OLD: Son Gohan Dragon Ball Super Superhero
+    NEW: Son Gohan (Super Hero)
+son-gohan-saga-super-dragon-ball-super-39     
+    OLD: Son Gohan Saga Super Dragon Ball Super
+    NEW: Son Gohan (Saga Super)
+son-goku-adulto-daima                         
+    OLD: Son Goku Adulto Daima
+    NEW: Son Goku Adulto (Daima)
+son-goku-llegada-dbz-saga-saiyan-169          
+    OLD: Son Goku Llegada Dragon Ball Z Saga Saiyan
+    NEW: Son Goku (Llegada DBZ / Saga Saiyan)
+son-goku-ni-o-dragon-ball-cl-sico-987         
+    OLD: Son Goku Niño Dragon Ball Clásico
+    NEW: Son Goku Niño
+son-goku-saga-buu-saga-buu-646                
+    OLD: Son Goku Saga Buu Saga Buu
+    NEW: Son Goku (Saga Buu)
+son-goku-saga-cell-saga-androides-459         
+    OLD: Son Goku Saga Cell Saga Androides
+    NEW: Son Goku (Saga Cell)
+son-goku-saga-gt-dragon-ball-gt-281           
+    OLD: Son Goku Saga GT Dragon Ball Gt
+    NEW: Son Goku (Saga GT)
+son-goku-saga-namek-saga-namek-176            
+    OLD: Son Goku Saga Namek Saga Namek
+    NEW: Son Goku (Saga Namek)
+son-goku-saga-super-dragon-ball-super-732     
+    OLD: Son Goku Saga Super Dragon Ball Super
+    NEW: Son Goku (Saga Super)
+son-goku-u18-dbm                              
+    OLD: Son Goku U18 Dragon Ball Multiverse
+    NEW: Son Goku (U18)
+sonic-opm-ma                                  
+    OLD: Sonic Opm Ma
+    NEW: Sonic
+space-racer-invincible                        
+    OLD: Space Racer Invincible
+    NEW: Space Racer
+spec-baki-drc                                 
+    OLD: Spec Baki Drc
+    NEW: Spec
+spice-saga-garlic-jr-70                       
+    OLD: Spice Saga Garlic Jr
+    NEW: Spice
+spopovich-saga-buu-676                        
+    OLD: Spopovich Saga Buu
+    NEW: Spopovich
+stain-mha-hosu                                
+    OLD: Stain Mha Hosu
+    NEW: Stain
+starro-dc-rebirth                             
+    OLD: Starro DC Rebirth
+    NEW: Starro
+stormfront-the-boys                           
+    OLD: Stormfront The Boys
+    NEW: Stormfront
+suguru-geto-jjk0                              
+    OLD: Suguru Geto Jujutsu Kaisen0
+    NEW: Suguru Geto
+suiryu-opm-tournament                         
+    OLD: Suiryu Opm Tournament
+    NEW: Suiryu
+sukuna-ryomen-jjk-20sellos-s001               
+    OLD: Sukuna Ryomen Jujutsu Kaisen 20Sellos S001
+    NEW: Sukuna Ryomen
+sukune-baki-dou                               
+    OLD: Sukune Baki Dou
+    NEW: Sukune
+sun-wukong-dbm-u2                             
+    OLD: Sun Wukong Dragon Ball Multiverse U2
+    NEW: Sun Wukong
+super-17-dragon-ball-gt-73                    
+    OLD: Super 17 Dragon Ball Gt
+    NEW: Super 17
+super-buu-saga-buu-69                         
+    OLD: Super Buu Saga Buu
+    NEW: Super Buu
+superalloy-darkshine-opm-ma                   
+    OLD: Superalloy Darkshine Opm Ma
+    NEW: Superalloy Darkshine
+superman-dc-909                               
+    OLD: Superman Dc
+    NEW: Superman
+susanoo-no-mikoto-ror-r10                     
+    OLD: Susanoo No Mikoto Ror R10
+    NEW: Susanoo No Mikoto
+swamp-thing-dc-rebirth                        
+    OLD: Swamp Thing DC Rebirth
+    NEW: Swamp Thing
+syd-u6-individual                             
+    OLD: Syd U6 Individual
+    NEW: Syd
+syn-shenron-dbgt                              
+    OLD: Syn Shenron Dbgt
+    NEW: Syn Shenron
+tagoma-fnf-dbs                                
+    OLD: Tagoma Fnf Dragon Ball Super
+    NEW: Tagoma
+takako-uro-jjk-culling                        
+    OLD: Takako Uro Jujutsu Kaisen Culling
+    NEW: Takako Uro
+tamagami-1-espada-daima                       
+    OLD: Tamagami 1 Espada Daima
+    NEW: Tamagami 1
+tamagami-2-escudo-daima                       
+    OLD: Tamagami 2 Escudo Daima
+    NEW: Tamagami 2
+tamagami-3-supremo-daima                      
+    OLD: Tamagami 3 Supremo Daima
+    NEW: Tamagami 3
+tamagami-n-mero-1-dragon-ball-daima-763       
+    OLD: Tamagami Número 1 Dragon Ball Daima
+    NEW: Tamagami Número 1
+tamaki-amajiki-mha-shie                       
+    OLD: Tamaki Amajiki Mha Shie
+    NEW: Tamaki Amajiki
+tambourine-dragon-ball-cl-sico-273            
+    OLD: Tambourine Dragon Ball Clásico
+    NEW: Tambourine
+tanktop-master-opm-ha                         
+    OLD: Tanktop Master Opm Ha
+    NEW: Tanktop Master
+tao-pai-pai-dragon-ball-cl-sico-369           
+    OLD: Tao Pai Pai Dragon Ball Clásico
+    NEW: Tao Pai Pai
+tapion-pel-culas-dbz-toei-767                 
+    OLD: Tapion Pel Culas Dragon Ball Z Toei
+    NEW: Tapion
+tatsumaki-opm                                 
+    OLD: Tatsumaki Opm
+    NEW: Tatsumaki
+tech-jacket-invincible                        
+    OLD: Tech Jacket Invincible
+    NEW: Tech Jacket
+tech-knight-the-boys                          
+    OLD: Tech Knight The Boys
+    NEW: Tech Knight
+ten-shin-han-dragon-ball-cl-sico-812          
+    OLD: Ten Shin Han Dragon Ball Clásico
+    NEW: Ten Shin Han
+tengen-uzui-kny-ed                            
+    OLD: Tengen Uzui Kimetsu no Yaiba Ed
+    NEW: Tengen Uzui
+tenshinhan-db-clasico                         
+    OLD: Tenshinhan Db Clasico
+    NEW: Tenshinhan (Clásico)
+tenshinhan-new-hope                           
+    OLD: Tenshinhan New Hope
+    NEW: Tenshinhan (New Hope)
+tenshinhan-saga-cell                          
+    OLD: Tenshinhan Saga Cell
+    NEW: Tenshinhan (Saga Cell)
+tenshinhan-saga-saiyan                        
+    OLD: Tenshinhan Saga Saiyan
+    NEW: Tenshinhan (Saga Saiyan)
+tenshinhan-u9-dbm                             
+    OLD: Tenshinhan U9 Dragon Ball Multiverse
+    NEW: Tenshinhan (U9)
+the-deep-the-boys                             
+    OLD: The Deep The Boys
+    NEW: The Deep
+thor-marvel-907                               
+    OLD: Thor Marvel
+    NEW: Thor
+tidar-u19-individual                          
+    OLD: Tidar U19 Individual
+    NEW: Tidar
+tidar-xeniloum-u19-dbm                        
+    OLD: Tidar Xeniloum U19 Dragon Ball Multiverse
+    NEW: Tidar Xeniloum
+todo-aoi-jjk-shibuya                          
+    OLD: Todo Aoi Jujutsu Kaisen Shibuya
+    NEW: Todo Aoi
+toji-fushiguro-jjk                            
+    OLD: Toji Fushiguro Jujutsu Kaisen
+    NEW: Toji Fushiguro
+tooru-jojo-jjl                                
+    OLD: Tooru Jojo Jjl
+    NEW: Tooru
+toppo-dragon-ball-super-140                   
+    OLD: Toppo Dragon Ball Super
+    NEW: Toppo
+tori-bot-dbm-u2                               
+    OLD: Tori Bot Dragon Ball Multiverse U2
+    NEW: Tori Bot
+translucent-the-boys-s1                       
+    OLD: Translucent The Boys S1
+    NEW: Translucent
+trish-una-jojo-va                             
+    OLD: Trish Una Jojo Va
+    NEW: Trish Una
+trunks-futuro-dbs-anime-rage                  
+    OLD: Trunks Futuro Dragon Ball Super Anime Rage
+    NEW: Trunks del Futuro (Rage / Anime DBS)
+trunks-futuro-v1-espada-ssj-basico            
+    OLD: Trunks Futuro V1 Espada Ssj Basico
+    NEW: Trunks Futuro V1 Espada SSJ Basico
+trunks-futuro-v3-saga-buu-ssj2                
+    OLD: Trunks Futuro V3 Saga Buu Ssj2
+    NEW: Trunks del Futuro (SSJ2 / Saga Buu)
+trunks-ni-o-saga-buu-209                      
+    OLD: Trunks Niño Saga Buu
+    NEW: Trunks Niño
+turles-dbz-toei                               
+    OLD: Turles Dragon Ball Z Toei
+    NEW: Turles
+twice-mha-mla                                 
+    OLD: Twice Mha Mla
+    NEW: Twice
+ultron-marvel-616                             
+    OLD: Ultron Marvel
+    NEW: Ultron
+universa-invincible                           
+    OLD: Universa Invincible
+    NEW: Universa
+uraume-jjk-shibuya                            
+    OLD: Uraume Jujutsu Kaisen Shibuya
+    NEW: Uraume
+uub-dbm                                       
+    OLD: Uub Dragon Ball Multiverse
+    NEW: Uub (Dragon Ball Multiverse)
+uub-saga-buu-276                              
+    OLD: Uub Saga Buu
+    NEW: Uub (Saga Buu)
+vados-dragon-ball-super-918                   
+    OLD: Vados Dragon Ball Super
+    NEW: Vados
+vanilla-ice-jojo-sc                           
+    OLD: Vanilla Ice Jojo Sc
+    NEW: Vanilla Ice
+vegeta-adulto-daima                           
+    OLD: Vegeta Adulto Daima
+    NEW: Vegeta Adulto (Daima)
+vegeta-llegada-a-la-tierra-saga-saiyan-504    
+    OLD: Vegeta Llegada A La Tierra Saga Saiyan
+    NEW: Vegeta Llegada A La Tierra
+vegeta-majin-ssj2-895                         
+    OLD: Vegeta Majin Ssj2
+    NEW: Vegeta Majin
+vegeta-mini-daima                             
+    OLD: Vegeta Mini Daima
+    NEW: Vegeta Mini (Daima)
+vegeta-rey-universo18-dbm                     
+    OLD: Vegeta Rey Universo18 Dragon Ball Multiverse
+    NEW: Vegeta Rey Universo18
+vegeta-saga-buu-saga-buu-213                  
+    OLD: Vegeta Saga Buu Saga Buu
+    NEW: Vegeta (Saga Buu)
+vegeta-saga-cell-saga-androides-856           
+    OLD: Vegeta Saga Cell Saga Androides
+    NEW: Vegeta (Saga Cell)
+vegeta-saga-gt-dragon-ball-gt-851             
+    OLD: Vegeta Saga GT Dragon Ball Gt
+    NEW: Vegeta (Saga GT)
+vegeta-saga-namek-saga-namek-783              
+    OLD: Vegeta Saga Namek Saga Namek
+    NEW: Vegeta (Saga Namek)
+vegeta-saga-super-dragon-ball-super-454       
+    OLD: Vegeta Saga Super Dragon Ball Super
+    NEW: Vegeta (Saga Super)
+vegeta-u13-dbm                                
+    OLD: Vegeta U13 Dragon Ball Multiverse
+    NEW: Vegeta (U13)
+vegeta-u18-dbm                                
+    OLD: Vegeta U18 Dragon Ball Multiverse
+    NEW: Vegeta (U18)
+vegetto-base-saga-buu-120                     
+    OLD: Vegetto Base Saga Buu
+    NEW: Vegetto Base
+vegetto-blue-dragon-ball-super-79             
+    OLD: Vegetto Blue Dragon Ball Super
+    NEW: Vegetto Blue
+vegetto-dbm-u16                               
+    OLD: Vegetto Dragon Ball Multiverse U16
+    NEW: Vegetto
+venom-marvel-616                              
+    OLD: Venom Marvel
+    NEW: Venom
+victoria-neuman-the-boys                      
+    OLD: Victoria Neuman The Boys
+    NEW: Victoria Neuman
+videl-saga-buu-6                              
+    OLD: Videl Saga Buu
+    NEW: Videl (Saga Buu)
+videl-u9-dbm                                  
+    OLD: Videl U9 Dragon Ball Multiverse
+    NEW: Videl (U9)
+vinegar-saga-garlic-jr-502                    
+    OLD: Vinegar Saga Garlic Jr
+    NEW: Vinegar
+violence-fiend-csm-p1                         
+    OLD: Violence Fiend Chainsaw Man P1
+    NEW: Violence Fiend
+vision-marvel-616                             
+    OLD: Vision Marvel
+    NEW: Vision
+wamuu-jojo-bt                                 
+    OLD: Wamuu Jojo Bt
+    NEW: Wamuu
+watchdog-man-opm-ma                           
+    OLD: Watchdog Man Opm Ma
+    NEW: Watchdog Man
+weather-report-jojo-so                        
+    OLD: Weather Report Jojo So
+    NEW: Weather Report
+whis-dragon-ball-super-824                    
+    OLD: Whis Dragon Ball Super
+    NEW: Whis
+will-a-zeppeli-jojo-pb                        
+    OLD: Will A Zeppeli Jojo Pb
+    NEW: Will A Zeppeli
+wolverine-marvel-616                          
+    OLD: Wolverine Marvel
+    NEW: Wolverine
+xeniloum-u19-individual                       
+    OLD: Xeniloum U19 Individual
+    NEW: Xeniloum
+xxi-hechicero-dbm-u5                          
+    OLD: Xxi Hechicero Dragon Ball Multiverse U5
+    NEW: Xxi Hechicero
+yajirobe-dragon-ball-cl-sico-111              
+    OLD: Yajirobe Dragon Ball Clásico
+    NEW: Yajirobe
+yamcha-db-clasico                             
+    OLD: Yamcha Db Clasico
+    NEW: Yamcha (Bandido / Clásico)
+yamcha-dragon-ball-cl-sico-865                
+    OLD: Yamcha Dragon Ball Clásico
+    NEW: Yamcha (Saga Androides)
+yamcha-saga-saiyan                            
+    OLD: Yamcha Saga Saiyan
+    NEW: Yamcha (Saga Saiyan)
+yamcha-u9-dbm                                 
+    OLD: Yamcha U9 Dragon Ball Multiverse
+    NEW: Yamcha (U9)
+yamu-saga-buu-59                              
+    OLD: Yamu Saga Buu
+    NEW: Yamu
+yanagi-baki-drc                               
+    OLD: Yanagi Baki Drc
+    NEW: Yanagi
+yoriichi-tsugikuni-kny-902                    
+    OLD: Yoriichi Tsugikuni Kimetsu no Yaiba
+    NEW: Yoriichi Tsugikuni
+yoshida-hirofumi-csm-p2                       
+    OLD: Yoshida Hirofumi Chainsaw Man P2
+    NEW: Yoshida Hirofumi
+yoshikage-kira-jojo-diu                       
+    OLD: Yoshikage Kira Jojo Diu
+    NEW: Yoshikage Kira
+youpi-hxh-ca                                  
+    OLD: Youpi Hunter x Hunter Ca
+    NEW: Youpi
+yuji-itadori-jjk-shinjuku                     
+    OLD: Yuji Itadori Jujutsu Kaisen Shinjuku
+    NEW: Yuji Itadori
+yujiro-hanma-baki                             
+    OLD: Yujiro Hanma Baki
+    NEW: Yujiro Hanma
+yuki-tsukumo-jjk                              
+    OLD: Yuki Tsukumo Jujutsu Kaisen
+    NEW: Yuki Tsukumo
+yuta-okkotsu-jjk-peak-yo001                   
+    OLD: Yuta Okkotsu Jujutsu Kaisen Peak Yo001
+    NEW: Yuta Okkotsu
+zamasu-l-nea-temporal-futura-736              
+    OLD: Zamasu Línea Temporal Futura
+    NEW: Zamasu
+zangya-pel-culas-dbz-toei-447                 
+    OLD: Zangya Pel Culas Dragon Ball Z Toei
+    NEW: Zangya
+zarbon-saga-namek-939                         
+    OLD: Zarbon Saga Namek
+    NEW: Zarbon
+zatanna-dc-pcf                                
+    OLD: Zatanna DC Pcf
+    NEW: Zatanna
+zen-buu-dbm-u4                                
+    OLD: Zen Buu Dragon Ball Multiverse U4
+    NEW: Zen Buu
+zeno-zoldyck-hxh-ca                           
+    OLD: Zeno Zoldyck Hunter x Hunter Ca
+    NEW: Zeno Zoldyck
+zerofuku-ror-r6                               
+    OLD: Zerofuku Ror R6
+    NEW: Zerofuku
+zeus-shuumatsu-no-valkyrie                    
+    OLD: Zeus Shuumatsu No Valkyrie
+    NEW: Zeus
+zombieman-opm-ma                              
+    OLD: Zombieman Opm Ma
+    NEW: Zombieman

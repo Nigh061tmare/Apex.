@@ -4,7 +4,7 @@ import {
   FolderPlus, Grid, List, Check, Trash2, Edit3, Shield, Zap, Search, RefreshCw
 } from 'lucide-react';
 import { SoundFX } from '../services/soundFx';
-import { calculateScouterReading } from '../services/scouterEngine';
+import { resolveCombatState } from '../lib/combatStateResolver';
 
 export default function RosterManagerModal({ 
   isOpen, 
@@ -91,8 +91,8 @@ export default function RosterManagerModal({
   const sortByPowerLevel = (descending = true) => {
     SoundFX.playScouterBeep(5);
     const sorted = [...characters].sort((a, b) => {
-      const va = calculateScouterReading(a).rawValue;
-      const vb = calculateScouterReading(b).rawValue;
+      const va = resolveCombatState(a, 'base').powerKey || 0;
+      const vb = resolveCombatState(b, 'base').powerKey || 0;
       return descending ? vb - va : va - vb;
     });
     onUpdateRoster(sorted);
@@ -207,10 +207,10 @@ export default function RosterManagerModal({
 
             <button
               onClick={() => sortByPowerLevel(true)}
-              className="px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/60 text-emerald-300 text-[10px] font-bold transition cursor-pointer flex items-center gap-1 shadow-sm"
-              title="Ordenar según Nivel de Poder / Ki a lo Dragon Ball (Scouter)"
+              className="px-2.5 py-1.5 rounded-lg bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/60 text-indigo-300 text-[10px] font-bold transition cursor-pointer flex items-center gap-1 shadow-sm"
+              title="Ordenar según Nivel de Poder / APEX-Ki"
             >
-              📟 Por Nivel de Poder (Ki ↓)
+              ⚡ Por Nivel de Poder (APEX-Ki ↓)
             </button>
 
             <button
@@ -326,7 +326,7 @@ export default function RosterManagerModal({
                           <span>•</span>
                           <span className="text-amber-300 font-bold">{char.tier || 'Tier 7-B'}</span>
                           <span>•</span>
-                          <span className="text-emerald-400 font-bold">📟 {calculateScouterReading(char).formatted}</span>
+                          <span className="text-indigo-400 font-bold">⚡ {resolveCombatState(char, 'base').apexKiDisplay}</span>
                         </div>
                       </div>
                     </div>
@@ -445,8 +445,8 @@ export default function RosterManagerModal({
                                     {char.tier || 'Tier 7-B'}
                                   </span>
                                   <span className="text-slate-500">•</span>
-                                  <span className="text-emerald-400 font-bold">
-                                    📟 {calculateScouterReading(char).formatted}
+                                  <span className="text-indigo-400 font-bold">
+                                    ⚡ {resolveCombatState(char, 'base').apexKiDisplay}
                                   </span>
                                 </div>
                               </div>

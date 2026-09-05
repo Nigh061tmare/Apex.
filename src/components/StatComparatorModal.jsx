@@ -6,7 +6,7 @@ import {
 import { getFranchiseCategoriesList } from '../services/franchiseHelper';
 import { calculateFormScaledStats, POWERSCALING_TIERING_SYSTEM, SPEED_SCALE_SYSTEM } from '../data/powerscalingCodex';
 import { SoundFX } from '../services/soundFx';
-import { calculateScouterReading, getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
+import { getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
 import { resolveCombatState } from '../lib/combatStateResolver';
 import { getBodilyForms } from '../lib/externalEntityFramework';
 
@@ -456,8 +456,7 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
   const breakdownA = useMemo(() => getPowerLevelFormulaBreakdown(characterA, formAId), [characterA, formAId]);
   const breakdownB = useMemo(() => getPowerLevelFormulaBreakdown(characterB, formBId), [characterB, formBId]);
 
-  const scouterA = useMemo(() => calculateScouterReading(characterA, formAId), [characterA, formAId]);
-  const scouterB = useMemo(() => calculateScouterReading(characterB, formBId), [characterB, formBId]);
+
 
   const handleScan = () => {
     setIsScanning(true);
@@ -503,7 +502,7 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
               {isScanning && <span className="text-red-400 text-[10px] animate-ping font-mono">ESCANEO ACTIVO...</span>}
             </h4>
             <p className="text-[10px] text-slate-400">
-              Escala Universal Dual: APEX-Ki Monotónico (Cross-Verse) + Scouter Ki Canónico Oficial (Dragon Ball)
+              Escala Universal: APEX-Ki Monotónico (Cross-Verse)
             </p>
           </div>
         </div>
@@ -511,10 +510,10 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
         <button
           type="button"
           onClick={handleScan}
-          className="px-3 py-1.5 rounded-xl bg-emerald-600/30 hover:bg-emerald-500/40 border border-emerald-400 text-emerald-200 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-[0_0_12px_rgba(16,185,129,0.3)] self-start sm:self-auto select-none"
+          className="px-3 py-1.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-500/40 border border-indigo-400 text-indigo-200 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-[0_0_12px_rgba(99,102,241,0.3)] self-start sm:self-auto select-none"
         >
-          <Zap className="w-3.5 h-3.5 text-emerald-300 animate-pulse" />
-          <span>Escanear Ki (Sonido Scouter)</span>
+          <Zap className="w-3.5 h-3.5 text-indigo-300 animate-pulse" />
+          <span>Escanear APEX-Ki</span>
         </button>
       </div>
 
@@ -546,15 +545,7 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
             <span className="text-[8px] px-1 rounded bg-indigo-900/60 text-indigo-200 font-bold">CROSS-VERSE</span>
           </div>
 
-          {/* Scouter Ki Canónico (si aplica) */}
-          {(combatStateA.sourceKiDisplay || scouterA.formatted) && (
-            <div className="p-1.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-[9.5px]">
-              <span className="text-emerald-400 font-bold">📟 Scouter Ki:</span>
-              <span className="text-emerald-300 font-bold font-cinzel">
-                {combatStateA.sourceKiDisplay || scouterA.formatted}
-              </span>
-            </div>
-          )}
+
 
           {/* Physical vs Hax Tiers */}
           <div className="grid grid-cols-2 gap-1.5 text-[9px]">
@@ -596,15 +587,7 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
             <span className="text-[8px] px-1 rounded bg-indigo-900/60 text-indigo-200 font-bold">CROSS-VERSE</span>
           </div>
 
-          {/* Scouter Ki Canónico (si aplica) */}
-          {(combatStateB.sourceKiDisplay || scouterB.formatted) && (
-            <div className="p-1.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-[9.5px]">
-              <span className="text-emerald-400 font-bold">📟 Scouter Ki:</span>
-              <span className="text-emerald-300 font-bold font-cinzel">
-                {combatStateB.sourceKiDisplay || scouterB.formatted}
-              </span>
-            </div>
-          )}
+
 
           {/* Physical vs Hax Tiers */}
           <div className="grid grid-cols-2 gap-1.5 text-[9px]">
@@ -680,7 +663,7 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
                       <p className="text-[9px] text-slate-400">• Modificador Durabilidad: {bA.durabilityLabel}</p>
                       <p className="text-[9px] text-slate-400">• Modificador Hax/IQ: {bA.haxBiqLabel}</p>
                       <p className="text-[9px] text-slate-400">• Multiplicador Forma: {bA.formLabel}</p>
-                      <p className="text-[9.5px] text-amber-300 font-bold pt-0.5">📟 Similar Canónico: {bA.closestDbComparison}</p>
+                      <p className="text-[9.5px] text-amber-300 font-bold pt-0.5">🏷️ Similar Canónico: {bA.closestDbComparison}</p>
                     </div>
                   )}
 
@@ -692,7 +675,7 @@ function ScouterBattleHUD({ characterA, formAId, characterB, formBId }) {
                       <p className="text-[9px] text-slate-400">• Modificador Durabilidad: {bB.durabilityLabel}</p>
                       <p className="text-[9px] text-slate-400">• Modificador Hax/IQ: {bB.haxBiqLabel}</p>
                       <p className="text-[9px] text-slate-400">• Multiplicador Forma: {bB.formLabel}</p>
-                      <p className="text-[9.5px] text-amber-300 font-bold pt-0.5">📟 Similar Canónico: {bB.closestDbComparison}</p>
+                      <p className="text-[9.5px] text-amber-300 font-bold pt-0.5">🏷️ Similar Canónico: {bB.closestDbComparison}</p>
                     </div>
                   )}
                 </div>
@@ -1206,18 +1189,18 @@ export default function StatComparatorModal({
               </div>
             </div>
 
-            {/* Scouter Raid Summary */}
-            <div className="p-3 bg-emerald-950/30 border border-emerald-800/50 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs">
+            {/* APEX-Ki Raid Summary */}
+            <div className="p-3 bg-indigo-950/30 border border-indigo-800/50 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-emerald-400 font-bold">📟 Ki del Boss ({raidBoss.name}):</span>
+                <span className="text-indigo-300 font-bold">⚡ APEX-Ki Boss ({raidBoss.name}):</span>
                 <span className="font-bold text-red-400 font-cinzel">
-                  {calculateScouterReading(raidBoss, selectedFormAId).formatted}
+                  {resolveCombatState(raidBoss, selectedFormAId).apexKiDisplay}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-emerald-400 font-bold">⚡ Asaltantes ({raidSquad.length}):</span>
+                <span className="text-indigo-300 font-bold">⚡ Asaltantes ({raidSquad.length}):</span>
                 <span className="font-bold text-blue-300 truncate max-w-[280px]">
-                  {raidSquad.map(s => `${s.name.split(' ')[0]} (${calculateScouterReading(s, teamBForms[s.id] || s.forms?.[0]?.id || 'base').formatted})`).join(', ')}
+                  {raidSquad.map(s => `${s.name.split(' ')[0]} (${resolveCombatState(s, teamBForms[s.id] || s.forms?.[0]?.id || 'base').apexKiDisplay})`).join(', ')}
                 </span>
               </div>
             </div>
@@ -1400,7 +1383,7 @@ export default function StatComparatorModal({
                           )}
                         </h4>
                         <p className="text-[10px] text-slate-400">
-                          {c.universe} · {c.effTier} · <span className="text-emerald-400 font-bold">📟 {calculateScouterReading(c, fId).formatted}</span>
+                          {c.universe} · {c.effTier} · <span className="text-indigo-300 font-bold">⚡ {resolveCombatState(c, fId).apexKiDisplay}</span>
                         </p>
                       </div>
                     </div>

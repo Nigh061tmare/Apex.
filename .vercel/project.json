@@ -1,1 +1,16 @@
-{"projectId":"prj_4LHTtOAxU4zTKFvcl6SXpgzzalTb","orgId":"team_ApycVdRBGp6r1i6jMz5YJlFB","projectName":"apex-engine"}
+{
+  "projectId": "prj_4LHTtOAxU4zTKFvcl6SXpgzzalTb",
+  "orgId": "team_ApycVdRBGp6r1i6jMz5YJlFB",
+  "projectName": "apex-engine",
+  "settings": {
+    "createdAt": 1788040016500,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

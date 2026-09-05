@@ -10,7 +10,7 @@ import { isCharacterInNeedsReview, getNeedsReviewWarningText } from '../services
 import { translateCharacterSheet } from '../services/translatorService';
 import { UNIVERSE_PRESETS } from '../services/franchiseHelper';
 import { SoundFX } from '../services/soundFx';
-import { calculateScouterReading, getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
+import { getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
 import { resolveCombatState } from '../lib/combatStateResolver';
 import { getBodilyForms, getExternalEntities, getExternalEntityUiModel } from '../lib/externalEntityFramework';
 import { TIER_ORDER, SCOUTER_ENERGY_ANCHORS } from '../lib/apexTierSystem';
@@ -988,69 +988,28 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                 </div>
               </div>
 
-              {/* Scouter Ki Reading Module */}
+              {/* APEX-Ki Reading Module */}
               {(() => {
-                const scouter = calculateScouterReading(formData);
                 const breakdown = getPowerLevelFormulaBreakdown(formData);
-                const handleScouterBeep = () => {
-                  setIsScanningKi(true);
-                  if (scouter.isOverload) {
-                    SoundFX.playScouterExplosion();
-                  } else {
-                    SoundFX.playScouterBeep(9);
-                  }
-                  setTimeout(() => setIsScanningKi(false), 600);
-                };
                 const combatState = resolveCombatState(formData, 'base');
                 return (
                   <div className="p-3.5 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-xl space-y-3 shadow-sm font-mono">
-                    {/* Dual Telemetry Badges */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* 1. APEX-Ki Universal */}
-                      <div className="p-2.5 rounded-lg bg-indigo-950/40 border border-indigo-500/40 flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <Zap className="w-4 h-4 text-indigo-400 animate-pulse shrink-0" />
-                          <div>
-                            <span className="text-[9px] text-indigo-300 font-bold block uppercase tracking-wider">
-                              APEX-Ki Universal:
-                            </span>
-                            <span className="text-sm sm:text-base font-black text-white font-cinzel">
-                              {combatState.apexKiDisplay || '—'}
-                            </span>
-                          </div>
+                    {/* APEX-Ki Universal Telemetry Badge */}
+                    <div className="p-2.5 rounded-lg bg-indigo-950/40 border border-indigo-500/40 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-indigo-400 animate-pulse shrink-0" />
+                        <div>
+                          <span className="text-[9px] text-indigo-300 font-bold block uppercase tracking-wider">
+                            APEX-Ki Universal:
+                          </span>
+                          <span className="text-sm sm:text-base font-black text-white font-cinzel">
+                            {combatState.apexKiDisplay || '—'}
+                          </span>
                         </div>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-900/60 border border-indigo-400/40 text-indigo-200 font-bold">
-                          Cross-Verse
-                        </span>
                       </div>
-
-                      {/* 2. Scouter Ki Oficial (DB / Equivalente) */}
-                      <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/40 flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base animate-pulse shrink-0">📟</span>
-                          <div>
-                            <span className="text-[9px] text-emerald-400 font-bold block uppercase tracking-wider">
-                              Scouter Ki (Toriyama):
-                            </span>
-                            <span className={`text-sm sm:text-base font-black font-cinzel ${scouter.color}`}>
-                              {isScanningKi ? 'ESCANEO...' : scouter.formatted}
-                            </span>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={handleScouterBeep}
-                          className={`px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1 transition cursor-pointer shadow-sm shrink-0 select-none ${
-                            isScanningKi
-                              ? 'bg-emerald-400 text-black animate-pulse ring-2 ring-emerald-300'
-                              : 'bg-emerald-800/40 hover:bg-emerald-700/50 border border-emerald-500/40 text-emerald-200'
-                          }`}
-                          title="Escanear Ki"
-                        >
-                          <Zap className="w-2.5 h-2.5 text-emerald-300" />
-                          <span>Sonido</span>
-                        </button>
-                      </div>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-900/60 border border-indigo-400/40 text-indigo-200 font-bold">
+                        Cross-Verse
+                      </span>
                     </div>
 
                     {/* Secondary Metrics: Physical Tier, Hax Tier, Stamina Pool */}
