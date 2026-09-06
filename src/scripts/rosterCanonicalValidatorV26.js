@@ -14,7 +14,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../../');
@@ -85,10 +85,10 @@ export function validateV26CanonicalRoster() {
   const deprecatedRecords = v26.deprecatedRecords || [];
 
   // Minimum validations:
-  // 1. activeCount === 756
-  checks['activeCount_756'] = Object.keys(activeRecords).length === 756;
-  if (Object.keys(activeRecords).length !== 756) {
-    issues.push(`activeCount mismatch: expected 756, found ${Object.keys(activeRecords).length}`);
+  // 1. activeCount === 770 (Fase final 2026-09-06: +6 fichas, -Granolah dup)
+  checks['activeCount_770'] = Object.keys(activeRecords).length === 770;
+  if (Object.keys(activeRecords).length !== 770) {
+    issues.push(`activeCount mismatch: expected 770, found ${Object.keys(activeRecords).length}`);
   }
 
   // 2. deprecatedCount === 13
@@ -97,11 +97,11 @@ export function validateV26CanonicalRoster() {
     issues.push(`deprecatedCount mismatch: expected 13, found ${deprecatedRecords.length}`);
   }
 
-  // 3. activeCount + deprecatedCount === 769
+  // 3. activeCount + deprecatedCount === 783
   const totalCensus = Object.keys(activeRecords).length + deprecatedRecords.length;
-  checks['totalCensus_769'] = totalCensus === 769;
-  if (totalCensus !== 769) {
-    issues.push(`totalCensus mismatch: expected 769, found ${totalCensus}`);
+  checks['totalCensus_783'] = totalCensus === 783;
+  if (totalCensus !== 783) {
+    issues.push(`totalCensus mismatch: expected 783, found ${totalCensus}`);
   }
 
   // 4. Unique active IDs
@@ -237,13 +237,18 @@ export function validateV26CanonicalRoster() {
   //   Sukuna Heian: contamination (Super Saiyan 1/2/3) REMOVED, back to 1 form => net +5
   // Anti-Flat-Clone PASS (aprobado por el usuario 2026-09-05): 11 formas fusionadas/eliminadas
   //   (duplicados literales + escalado de clones planos) => 1316 - 11 = 1305
+  // 2026-09-06: Gohan Futuro Brokoly corregido a escala Goku Saga Buu (SSJ1/2/3) +2 formas => 1307
+  // 2026-09-06 R1: Revision Bloque 0 Clasico segun referencia maestra (+9 formas canonicas) => 1316
+  // 2026-09-06 R2: Sagas Z corregidas + 2 fichas nuevas (Trunks Adol 13, SSG Ritual) => 1318
+  // 2026-09-06 R3: Saga Buu corregida + 2 fichas nuevas (Buutenks, Gohan Universidad) => 1325
+// 2026-09-06 Fan-mangas: +SSJ1 Bardock (+1), +SSJ3 Raditz (+1) => 1342 + 2 = 1344
   let totalForms = 0;
   Object.values(activeRecords).forEach(c => {
     if (c.forms) totalForms += c.forms.length;
   });
-  checks['totalForms_1305'] = totalForms === 1305;
-  if (totalForms !== 1305) {
-    issues.push(`Total forms mismatch: expected 1305, found ${totalForms}`);
+  checks['totalForms_1344'] = totalForms === 1344;
+  if (totalForms !== 1344) {
+    issues.push(`Total forms mismatch: expected 1344, found ${totalForms}`);
   }
 
   // DB-form contamination guard: NO Super Saiyan / Kaio-ken / Oozaru forms allowed
@@ -402,16 +407,22 @@ async function validateCharactersTacticalIntegrity() {
     return { success: false, checks: {}, issues: ['characters.js not found'] };
   }
 
-  const content = fs.readFileSync(CHARACTERS_FILE, 'utf8');
   const issues = [];
   const checks = {};
 
-  // Check character count in UI - handle multi-line id fields with "id": pattern
-  const charMatches = content.match(/"id"\s*:\s*[\r\n]*\s*["'][^"']+["']/g);
-  const uiCharCount = charMatches ? charMatches.length : 0;
-  checks['uiCharCount_756'] = uiCharCount >= 756; // >= because includes form IDs
-  if (uiCharCount < 756) {
-    issues.push(`UI character count mismatch: expected at least 756, found ${uiCharCount}`);
+  // Cuenta real de combatientes: importa el módulo (carga el JSON V26 + los
+  // perfiles tácticos en tacticalProfiles.json) en lugar de contar "id" por regex.
+  let uiCharCount = 0;
+  try {
+    const mod = await import(pathToFileURL(CHARACTERS_FILE).href + `?v=${Date.now()}`);
+    uiCharCount = (mod.INITIAL_CHARACTERS || []).length;
+  } catch (e) {
+    issues.push(`No se pudo importar characters.js: ${e.message}`);
+  }
+
+  checks['uiCharCount_770'] = uiCharCount >= 770;
+  if (uiCharCount < 770) {
+    issues.push(`UI character count mismatch: expected at least 770, found ${uiCharCount}`);
   }
 
   return { success: issues.length === 0, checks, issues, characterCount: uiCharCount };
@@ -430,16 +441,16 @@ async function main() {
   try {
     const v26Res = validateV26CanonicalRoster();
     console.log('--- VALIDACIÓN CANÓNICA DE V26 ---');
-    console.log(`✅ Combatientes Activos: ${v26Res.activeCount} / 756`);
+    console.log(`✅ Combatientes Activos: ${v26Res.activeCount} / 770`);
     console.log(`✅ Registros Deprecados / Históricos: ${v26Res.deprecatedCount} / 13`);
-    console.log(`✅ Censo Total: ${v26Res.totalCensus} / 769`);
+    console.log(`✅ Censo Total: ${v26Res.totalCensus} / 783`);
     for (const [chk, val] of Object.entries(v26Res.checks)) {
       console.log(`  - ${chk}: ${val ? '✅ PASS' : '❌ FAIL'}`);
     }
 
     const charRes = await validateCharactersTacticalIntegrity();
     console.log('\n--- VALIDACIÓN DE INTEGRIDAD TÁCTICA (characters.js) ---');
-    console.log(`✅ Combatientes en UI: ${charRes.characterCount} / 756`);
+    console.log(`✅ Combatientes en UI: ${charRes.characterCount} / 770`);
     for (const [chk, val] of Object.entries(charRes.checks)) {
       console.log(`  - ${chk}: ${val ? '✅ PASS' : '❌ FAIL'}`);
     }

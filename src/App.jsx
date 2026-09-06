@@ -29,16 +29,23 @@ const AiSmartMatchmakerModal = lazy(() => import('./components/AiSmartMatchmaker
 const AuthModal = lazy(() => import('./components/AuthModal'));
 const BeamStruggleModal = lazy(() => import('./components/BeamStruggleModal'));
 const FusionModal = lazy(() => import('./components/FusionModal'));
+const RecordsModal = lazy(() => import('./components/RecordsModal'));
 import { CloudSync } from './services/cloudSyncService';
-import { INITIAL_CHARACTERS } from './data/characters';
+import { loadRoster } from './data/rosterLoader';
+import { getDailyMatchup, buildShareableUrl, parseShareableUrl } from './lib/dailyMatchup';
 import { SCENARIOS } from './data/scenarios';
 import { SimulationEngine } from './services/simulationEngine';
 import { createInitialCombatState } from './data/combatState';
 import { SoundFX } from './services/soundFx';
 import { getTranslation } from './services/i18n';
-import { Sparkles, Key, Settings, BookOpen, Swords, X, GitBranch, Scale, Globe, Shuffle, Wand2 } from 'lucide-react';
+import { Sparkles, Key, Settings, BookOpen, Swords, X, GitBranch, Scale, Globe, Shuffle, Wand2, Trophy } from 'lucide-react';
 
 const STORAGE_KEY_CHARACTERS = 'apex_custom_characters';
+
+// Roster canónico (cargado de forma diferida vía loadRoster para no bloquear
+// el chunk inicial con ~10 MB de perfiles tácticos). Todas las lecturas usan
+// esta variable a nivel de módulo, poblada justo después del primer paint.
+let INITIAL_CHARACTERS = [];
 
 const DEFAULT_AI_CONFIG = {
   characterEngine: {
@@ -55,33 +62,108 @@ const DEFAULT_AI_CONFIG = {
   }
 };
 
-const ROSTER_VERSION = 'v25.0_CANONICAL_756_ACTIVE';
+const ROSTER_VERSION = 'v26.0_CANONICAL_770_ACTIVE';
 
 export default function App() {
-  // Load characters from memory and custom additions from localStorage without exceeding quota
+  // Load characters: el roster canónico se inyecta tras el primer paint vía
+  // loadRoster(); aquí solo se restauran las fichas personalizadas guardadas.
   const [characters, setCharacters] = useState(() => {
     try {
       localStorage.setItem('apex_roster_version', ROSTER_VERSION);
       const saved = localStorage.getItem(STORAGE_KEY_CHARACTERS);
-      const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
-      let customOnly = [];
+      const customOnly = [];
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
-            // Keep strictly custom fighters to preserve 5MB quota
-            customOnly = parsed.filter(c => !builtinIds.has(c.id) && (c.id?.startsWith('custom-') || c.isCustom));
-            // Sanitize storage to free up ~4.8MB immediately
-            localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(customOnly));
+            // Conserva solo fichas estrictamente custom para respetar la cuota de 5MB
+            customOnly.push(...parsed.filter(c => (c.id?.startsWith('custom-') || c.isCustom)));
           }
         } catch (e) {}
       }
-      return [...INITIAL_CHARACTERS, ...customOnly];
+      return customOnly;
     } catch (e) {
       console.error('Error cargando personajes:', e);
-      return INITIAL_CHARACTERS;
+      return [];
     }
   });
+
+  const [rosterReady, setRosterReady] = useState(false);
+
+  // Carga diferida del roster canónico (chunk separado ~9MB)
+  useEffect(() => {
+    let active = true;
+    loadRoster().then(({ list }) => {
+      if (!active) return;
+      INITIAL_CHARACTERS = list;
+      setCharacters(prev => {
+        const customOnly = prev.filter(c => c.id?.startsWith('custom-') || c.isCustom);
+        return [...list, ...customOnly];
+      });
+      setRosterReady(true);
+    }).catch(err => {
+      console.error('Error fatal cargando el roster canónico APEX:', err);
+      if (active) setRosterReady(true); // Evita pantalla infinita aunque falle
+    });
+    return () => { active = false; };
+  }, []);
+
+  // Rellena selecciones por defecto en cuanto el roster está disponible
+  useEffect(() => {
+    if (!rosterReady || INITIAL_CHARACTERS.length === 0) return;
+    const list = INITIAL_CHARACTERS;
+
+    // 1. Si llegamos por un enlace compartido (?charA=id&charB=id&mode=x) se respeta
+    const shared = parseShareableUrl();
+    if (shared) {
+      const foundA = shared.charA ? list.find(c => c.id === shared.charA) : null;
+      const foundB = shared.charB ? list.find(c => c.id === shared.charB) : null;
+      if (foundA || foundB) {
+        if (foundA) setCharA(foundA);
+        if (foundB) setCharB(foundB);
+        if (shared.mode && ['1v1', 'teams', 'raid', 'battle_royale'].includes(shared.mode)) setMatchMode(shared.mode);
+        // Limpia la URL para que recargas no queden ancladas al enlace
+        try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
+        return;
+      }
+    }
+
+    // 2. Por defecto: primeros luchadores canónicos
+    setCharA(prev => (prev && prev.id ? prev : (list[0] || null)));
+    setCharB(prev => (prev && prev.id ? prev : (list[1] || list[0] || null)));
+    setTeamA(prev => (Array.isArray(prev) && prev.length > 0 ? prev : [list[0], list[1]].filter(Boolean)));
+    setTeamB(prev => (Array.isArray(prev) && prev.length > 0 ? prev : [list[2], list[3]].filter(Boolean)));
+    setBattleRoyale(prev => (Array.isArray(prev) && prev.length > 0 ? prev : list.slice(0, 4)));
+    setMultiTeams(prev => (Array.isArray(prev) && prev.length >= 2
+      ? prev
+      : [
+          { id: 'alfa', name: 'Equipo Alfa', color: 'red', members: [list[0], list[1]].filter(Boolean) },
+          { id: 'beta', name: 'Equipo Beta', color: 'blue', members: [list[2], list[3]].filter(Boolean) }
+        ]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rosterReady]);
+
+  // Combate del Día: enfrentamiento determinista por fecha (retención social)
+  const dailyMatchup = rosterReady && characters.length >= 2 ? getDailyMatchup(characters) : null;
+
+  const handleApplyDailyMatchup = () => {
+    if (!dailyMatchup) return;
+    setMatchMode('1v1');
+    setCharA(dailyMatchup.charA);
+    setCharB(dailyMatchup.charB);
+    setActiveTab('arena');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCopyMatchupLink = async () => {
+    const url = buildShareableUrl(charA, charB, matchMode);
+    try {
+      await navigator.clipboard.writeText(url);
+      alert(`🔗 Enlace de combate copiado al portapapeles:\n${url}`);
+    } catch (e) {
+      window.prompt('Copia este enlace para compartir tu combate:', url);
+    }
+  };
 
   // Auto-upgrade if INITIAL_CHARACTERS has been expanded
   useEffect(() => {
@@ -385,6 +467,7 @@ export default function App() {
   const [tierListOpen, setTierListOpen] = useState(false);
   const [isAiMatchmakerOpen, setIsAiMatchmakerOpen] = useState(false);
   const [isFusionOpen, setIsFusionOpen] = useState(false);
+  const [recordsOpen, setRecordsOpen] = useState(false);
   const [vaultStatus, setVaultStatus] = useState({ connected: false });
 
   const [lang, setLang] = useState(() => {
@@ -701,17 +784,18 @@ export default function App() {
         setCharA(null);
       }
     } else if (targetMode === 'raid' || targetMode === '1vN') {
+      // En modo RAID el jefe ocupa el slot A (charA) y la escuadra asaltante el slot B (teamB)
       setMatchMode('raid');
       if (targetSquad === 'boss') {
-        setRaidBoss(resolvedFighters[0] || null);
-        setRaidSquad([]);
+        setCharA(resolvedFighters[0] || null);
+        setTeamB([]);
       } else {
-        setRaidSquad(resolvedFighters);
-        setRaidBoss(null);
+        setTeamB(resolvedFighters);
+        setCharA(prev => prev || null);
       }
     } else if (targetMode === 'battle_royale' || targetMode === 'ffa') {
       setMatchMode('battle_royale');
-      setBattleRoyaleFighters(resolvedFighters);
+      setBattleRoyale(resolvedFighters);
     } else {
       // Por defecto modo equipos
       setMatchMode('team');
@@ -877,9 +961,34 @@ export default function App() {
     }
     const updated = characters.filter(c => c.id !== charId);
     setCharacters(updated);
-    if (charA.id === charId) setCharA(updated[0]);
-    if (charB.id === charId) setCharB(updated[1]);
+    if (charA?.id === charId) setCharA(updated[0]);
+    if (charB?.id === charId) setCharB(updated[1]);
   };
+
+  // Pantalla de carga: el roster canónico se descarga en un chunk diferido (~9MB),
+  // por lo que mostramos un splash elegante mientras se hidrata la app.
+  if (!rosterReady) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#06080d] text-slate-100 select-none">
+        <div className="relative w-24 h-24 mb-6">
+          <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping" />
+          <div className="absolute inset-3 rounded-full border-2 border-amber-400/50 animate-spin border-t-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-3xl">⚡</span>
+          </div>
+        </div>
+        <h1 className="text-2xl font-black tracking-tight bg-gradient-to-r from-red-500 via-amber-400 to-purple-500 bg-clip-text text-transparent">
+          APEX ENGINE
+        </h1>
+        <p className="mt-2 text-xs font-mono text-slate-500">
+          Cargando roster canónico V26 · 770 combatientes · {ROSTER_VERSION}
+        </p>
+        <div className="mt-4 w-48 h-1 rounded-full bg-slate-800 overflow-hidden">
+          <div className="h-full w-1/3 rounded-full bg-gradient-to-r from-red-500 to-amber-400 animate-[shimmer_1.2s_ease-in-out_infinite]" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#06080d] text-slate-100">
@@ -1044,6 +1153,37 @@ export default function App() {
               <span>{getTranslation(lang, 'randomMatch')}</span>
             </button>
             <button
+              onClick={handleApplyDailyMatchup}
+              disabled={!dailyMatchup}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-600/30 via-teal-600/30 to-emerald-600/30 hover:from-emerald-600/50 hover:to-teal-600/50 text-emerald-300 border border-emerald-500/50 font-bold transition cursor-pointer shadow-md shadow-emerald-950/40 disabled:opacity-40 disabled:cursor-not-allowed"
+              title={`Combate del Día (${dailyMatchup?.dateLabel || 'hoy'}) — enfrentamiento diario para toda la comunidad`}
+            >
+              <span className="text-sm">⚔️</span>
+              <span>Combate del Día</span>
+              {dailyMatchup && (
+                <span className="hidden md:inline text-[9px] text-emerald-400/80 ml-1">
+                  {dailyMatchup.charA?.name?.split(' ').slice(0, 2).join(' ')} vs {dailyMatchup.charB?.name?.split(' ').slice(0, 2).join(' ')}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={handleCopyMatchupLink}
+              disabled={!charA?.id}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 transition cursor-pointer border border-slate-800 disabled:opacity-40 disabled:cursor-not-allowed"
+              title="Copiar enlace compartible de este combate (quien lo abra verá el mismo enfrentamiento)"
+            >
+              <span className="text-sm">🔗</span>
+              <span className="hidden lg:inline">Copiar Enlace</span>
+            </button>
+            <button
+              onClick={() => setRecordsOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 transition cursor-pointer border border-slate-800"
+              title="Sala de Récords: top vencedores de tu historial local de combates"
+            >
+              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden lg:inline">Récords</span>
+            </button>
+            <button
               onClick={() => setShowComparator(true)}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 transition cursor-pointer border border-slate-800"
             >
@@ -1060,17 +1200,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Random Matchmaker Modal */}
-        <RandomMatchmakerModal
-          isOpen={isRandomizerOpen}
-          onClose={() => setRandomizerOpen(false)}
-          onMatchReady={handleRandomMatchReady}
-          onAIGenerate={() => {
-            setRandomizerOpen(false);
-            setInspectModal({ isOpen: true, character: null, isEditing: true });
-          }}
-          lang={lang}
-        />
 
         {/* Tab 1: Arena & Simulación */}
         {(activeTab === 'arena' || activeTab === 'all') && (
@@ -1211,7 +1340,7 @@ export default function App() {
 
         {/* Engine Baseline Status Indicator */}
         <footer className="pt-6 pb-2 text-center text-xs text-slate-500 font-mono tracking-wide select-none">
-          <span>APEX Engine V25 · 756 activos · 13 archivados</span>
+          <span>APEX Engine V26 · 770 activos · 13 archivados · Roster canónico inmutable</span>
         </footer>
 
       </main>
@@ -1230,6 +1359,18 @@ export default function App() {
       )}
 
       <Suspense fallback={null}>
+        <RandomMatchmakerModal
+          isOpen={isRandomizerOpen}
+          onClose={() => setRandomizerOpen(false)}
+          onMatchReady={handleRandomMatchReady}
+          onAIGenerate={() => {
+            setRandomizerOpen(false);
+            setInspectModal({ isOpen: true, character: null, isEditing: true });
+          }}
+          allCharacters={characters}
+          lang={lang}
+        />
+
         <VaultBrowserModal
           isOpen={vaultModalOpen}
         onClose={() => setVaultModalOpen(false)}
@@ -1410,6 +1551,14 @@ export default function App() {
           setCharA(newFused);
           setActiveTab('arena');
         }}
+      />
+
+      {/* Sala de Récords Modal */}
+      <RecordsModal
+        isOpen={recordsOpen}
+        onClose={() => setRecordsOpen(false)}
+        onPlayDaily={handleApplyDailyMatchup}
+        dailyMatchup={dailyMatchup}
       />
       </Suspense>
       {rewardToast && (

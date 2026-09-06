@@ -1,17 +1,21 @@
 {
+  "id": "apex-engine",
   "short_name": "APEX Engine",
   "name": "APEX Multiverse Powerscaling & Battle Simulator",
-  "description": "Simulador definitivo de Powerscaling, Combates Multiversales y What-Ifs con 440+ personajes.",
+  "description": "Simulador definitivo de Powerscaling, Combates Multiversales y What-Ifs con 770+ personajes canónicos de 16 franquicias.",
   "icons": [
     {
       "src": "/shield.svg",
       "type": "image/svg+xml",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
+  "scope": "/",
   "background_color": "#06080d",
   "theme_color": "#06080d",
   "display": "standalone",
-  "orientation": "any"
+  "orientation": "any",
+  "categories": ["games", "entertainment", "utilities"]
 }

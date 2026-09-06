@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Shuffle, Zap, Sparkles, X, Globe, Swords, Target, Crosshair, Users, Crown, Flame, Shield } from 'lucide-react';
-import { INITIAL_CHARACTERS } from '../data/characters';
+import { getRosterSync } from '../data/rosterLoader';
 import { SCENARIOS } from '../data/scenarios';
 import { getTranslation } from '../services/i18n';
 
@@ -28,7 +28,7 @@ const getFranchise = (u) => {
   return s;
 };
 
-export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, onAIGenerate, lang = 'es' }) {
+export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, onAIGenerate, allCharacters, lang = 'es' }) {
   const [randomMode, setRandomMode] = useState('1v1'); // 1v1, 1vN, teams, br
   const [raidSize, setRaidSize] = useState(3); // 2, 3, 4, 5
   const [teamSize, setTeamSize] = useState(3); // 2, 3, 4, 5
@@ -39,6 +39,7 @@ export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, o
   if (!isOpen) return null;
 
   const t = (k) => getTranslation(lang, k);
+  const sourceChars = allCharacters && allCharacters.length > 0 ? allCharacters : getRosterSync();
 
   const getTierValue = (t) => {
     if (!t) return 40;
@@ -53,14 +54,14 @@ export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, o
   };
 
   const handleRandomize = () => {
-    let pool = [...INITIAL_CHARACTERS];
+    let pool = [...sourceChars];
 
     // 1. Filtrar pool según el universo elegido
     if (universeFilter !== 'any' && universeFilter !== 'same' && universeFilter !== 'cross') {
       pool = pool.filter(c => getFranchise(c.universe) === universeFilter);
     }
 
-    if (pool.length < 2) pool = [...INITIAL_CHARACTERS];
+    if (pool.length < 2) pool = [...sourceChars];
 
     // 2. Ejecutar según modo
     if (randomMode === '1v1') {

@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Sparkles, Zap, Shield, Flame, Atom, Save, ArrowRight, RefreshCw, Check, Swords, BookOpen } from 'lucide-react';
 import SearchableCharacterSelector from './SearchableCharacterSelector.jsx';
 import { FUSION_METHODS, fuseCharacters } from '../lib/apexFusionEngine.js';
+import { formatApexKi } from '../lib/apexTierSystem.js';
 import { SoundFX } from '../services/soundFx.js';
 
 export default function FusionModal({ isOpen, onClose, allCharacters = [], onSaveFusion, onDeployToFighter1 }) {
-  if (!isOpen) return null;
-
+  // IMPORTANTE: todos los hooks van ANTES de cualquier return condicional.
+  // Antes este modal devolvía null con isOpen=false y luego montaba hooks al
+  // abrirlo → React lanzaba "Rendered more hooks than during the previous render"
+  // y la app caía a la pantalla de error. Ese era el fallo de "Fusiones no va".
   const [charAId, setCharAId] = useState(allCharacters[0]?.id || '');
   const [charBId, setCharBId] = useState(allCharacters[1]?.id || '');
   const [methodId, setMethodId] = useState('potara');
   const [areRivals, setAreRivals] = useState(false);
   const [isFusing, setIsFusing] = useState(false);
   const [fusedResult, setFusedResult] = useState(null);
+
+  // Limpia el resultado previo cuando cambian los inputs (evita previsualización obsoleta)
+  useEffect(() => {
+    setFusedResult(null);
+  }, [charAId, charBId, methodId, areRivals]);
 
   const charA = allCharacters.find(c => c.id === charAId) || allCharacters[0];
   const charB = allCharacters.find(c => c.id === charBId) || allCharacters[1];
@@ -42,6 +50,34 @@ export default function FusionModal({ isOpen, onClose, allCharacters = [], onSav
     SoundFX?.playLevelUp?.();
     onClose();
   };
+
+  // Fusión aleatoria: elige dos luchadores al azar y ejecuta la sinergia
+  const handleRandomFusion = () => {
+    const list = Array.isArray(allCharacters) ? allCharacters : [];
+    if (list.length < 2) return;
+    const iA = Math.floor(Math.random() * list.length);
+    let iB = Math.floor(Math.random() * (list.length - 1));
+    if (iB >= iA) iB += 1;
+    setCharAId(list[iA]?.id || '');
+    setCharBId(list[iB]?.id || '');
+    setIsFusing(true);
+    SoundFX?.playPowerUp?.();
+    setTimeout(() => {
+      try {
+        const result = fuseCharacters(list[iA], list[iB], methodId, areRivals);
+        setFusedResult(result);
+        SoundFX?.playSuperAttack?.();
+      } catch (err) {
+        console.error('Error durante fusión aleatoria:', err);
+      } finally {
+        setIsFusing(false);
+      }
+    }, 600);
+  };
+
+  const sameCharacter = charA?.id && charB?.id && charA.id === charB.id;
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
@@ -81,7 +117,7 @@ export default function FusionModal({ isOpen, onClose, allCharacters = [], onSav
               <SearchableCharacterSelector
                 characters={allCharacters}
                 value={charAId}
-                onChange={setCharAId}
+                onChange={(c) => setCharAId(c?.id || '')}
                 color="red"
               />
               {charA && (
@@ -102,7 +138,7 @@ export default function FusionModal({ isOpen, onClose, allCharacters = [], onSav
               <SearchableCharacterSelector
                 characters={allCharacters}
                 value={charBId}
-                onChange={setCharBId}
+                onChange={(c) => setCharBId(c?.id || '')}
                 color="blue"
               />
               {charB && (
@@ -166,28 +202,44 @@ export default function FusionModal({ isOpen, onClose, allCharacters = [], onSav
           </div>
 
           {/* Fusion Trigger Button */}
-          <div className="flex justify-center">
-            <button
-              onClick={handlePerformFusion}
-              disabled={isFusing || !charA || !charB}
-              className={`px-8 py-3 rounded-xl font-bold font-mono tracking-wider transition-all flex items-center gap-3 text-sm shadow-xl ${
-                isFusing
-                  ? 'bg-amber-600/50 text-amber-200 cursor-wait'
-                  : 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 hover:brightness-110 hover:scale-105 active:scale-95 shadow-amber-500/20'
-              }`}
-            >
-              {isFusing ? (
-                <>
-                  <RefreshCw className="w-5 h-5 animate-spin text-slate-950" />
-                  Sincronizando Entidades Multiversales...
-                </>
-              ) : (
-                <>
-                  <Atom className="w-5 h-5" />
-                  ¡INICIAR SINERGIA DE FUSIÓN!
-                </>
-              )}
-            </button>
+          <div className="flex flex-col items-center gap-2.5">
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={handlePerformFusion}
+                disabled={isFusing || !charA || !charB || sameCharacter}
+                className={`px-8 py-3 rounded-xl font-bold font-mono tracking-wider transition-all flex items-center gap-3 text-sm shadow-xl ${
+                  isFusing
+                    ? 'bg-amber-600/50 text-amber-200 cursor-wait'
+                    : 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 text-slate-950 hover:brightness-110 hover:scale-105 active:scale-95 shadow-amber-500/20 disabled:opacity-40 disabled:cursor-not-allowed'
+                }`}
+              >
+                {isFusing ? (
+                  <>
+                    <RefreshCw className="w-5 h-5 animate-spin text-slate-950" />
+                    Sincronizando Entidades Multiversales...
+                  </>
+                ) : (
+                  <>
+                    <Atom className="w-5 h-5" />
+                    ¡INICIAR SINERGIA DE FUSIÓN!
+                  </>
+                )}
+              </button>
+              <button
+                onClick={handleRandomFusion}
+                disabled={isFusing || allCharacters.length < 2}
+                className="px-5 py-3 rounded-xl font-bold font-mono tracking-wider transition-all flex items-center gap-2 text-xs bg-gradient-to-r from-purple-600/40 to-fuchsia-600/40 text-purple-200 border border-purple-500/40 hover:brightness-125 hover:scale-105 active:scale-95 shadow-lg shadow-purple-950/40 disabled:opacity-40 disabled:cursor-not-allowed"
+                title="Elige dos luchadores al azar y fúndelos"
+              >
+                <Sparkles className="w-4 h-4" />
+                FUSIÓN AL AZAR
+              </button>
+            </div>
+            {sameCharacter && (
+              <p className="text-[11px] font-mono text-red-400">
+                ⚠️ No puedes fusionar a un luchador consigo mismo. Elige dos guerreros distintos.
+              </p>
+            )}
           </div>
 
           {/* Fused Character Card Preview */}
@@ -216,10 +268,26 @@ export default function FusionModal({ isOpen, onClose, allCharacters = [], onSav
                   <div className="text-right border-l border-slate-700 pl-3">
                     <span className="text-[10px] font-mono text-slate-400 block">KI TOTAL</span>
                     <span className="text-lg font-black text-yellow-300 font-mono">
-                      {Number(fusedResult.ki).toLocaleString('es-ES')}
+                      {formatApexKi(fusedResult.ki)}
                     </span>
                   </div>
                 </div>
+              </div>
+
+              {/* Desglose del cálculo de poder */}
+              <div className="flex flex-wrap items-center gap-2 text-[10px] font-mono text-slate-400 p-2.5 rounded-lg bg-slate-950/50 border border-slate-800">
+                <span className="px-2 py-0.5 rounded bg-red-900/40 border border-red-500/30 text-red-300">
+                  {fusedResult.fusionMeta?.parentA?.name?.split('(')[0].trim()}: {formatApexKi(fusedResult.fusionMeta?.parentA?.ki)}
+                </span>
+                <span className="text-slate-600">+</span>
+                <span className="px-2 py-0.5 rounded bg-blue-900/40 border border-blue-500/30 text-blue-300">
+                  {fusedResult.fusionMeta?.parentB?.name?.split('(')[0].trim()}: {formatApexKi(fusedResult.fusionMeta?.parentB?.ki)}
+                </span>
+                <span className="text-slate-600">→</span>
+                <span className="px-2 py-0.5 rounded bg-amber-900/40 border border-amber-500/40 text-amber-300 font-bold">
+                  {fusedResult.fusionMeta?.method}: {formatApexKi(fusedResult.ki)}
+                  {fusedResult.fusionMeta?.areRivals ? ' (+25% Rivalidad)' : ''}
+                </span>
               </div>
 
               {/* Arsenal Preview */}

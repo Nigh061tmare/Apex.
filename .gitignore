@@ -14,6 +14,14 @@ dist/
 src/backups_*
 repeated_bases_report.json
 
+# Backups de pasadas de auditoría (V26) — snapshots temporales
+src/data/characters_backup_*.js
+src/data/BACKUP_ROSTER_*.json
+src/data/REFERENCIA_LIMPIA_*.json
+src/data/tactical_gen_*.json
+src/data/tacticalProfilesBatch*.json
+src/data/*_temp.json
+
 # Logs
 *.log
 npm-debug.log*

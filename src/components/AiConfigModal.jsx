@@ -225,7 +225,7 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
         return {
           gemini: [''],
           openrouter: [''],
-          opencode: ['sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'],
+          opencode: [''],
           totalgpt: [''],
           perplexity: [''],
           deepseek: [''],
@@ -239,7 +239,7 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
     return {
       gemini: [''],
       openrouter: [''],
-      opencode: ['sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'],
+      opencode: [''],
       totalgpt: [config?.characterEngine?.apiKey || config?.apiKey || ''],
       perplexity: [''],
       deepseek: [''],
@@ -553,7 +553,7 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
 
       // D. OpenCode API Test
       if (cfg.engine === 'opencode') {
-        const effectiveKey = testedKey || 'sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1';
+        const effectiveKey = testedKey || '';
         let ocUrl = cfg.customBaseUrl?.trim() || 'https://opencode.ai/zen/go/v1';
         if (!ocUrl.endsWith('/chat/completions')) {
           ocUrl = ocUrl.replace(/\/+$/, '') + '/chat/completions';

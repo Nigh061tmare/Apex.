@@ -6,6 +6,7 @@ src/data/reports
 src/data/*.json
 !src/data/ROSTER_NIVELES_PODER_CORREGIDO_V26.json
 !src/data/ROSTER_NIVELES_PODER_CORREGIDO_V25.json
+!src/data/tacticalProfiles.json
 *.backup.*
 *.log
 *.py

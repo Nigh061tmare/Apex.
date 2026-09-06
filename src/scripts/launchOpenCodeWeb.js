@@ -6,6 +6,13 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
+process.on('uncaughtException', (err) => {
+  console.warn('[SUPERVISOR SHIELD] Error no capturado interceptado (proceso protegido):', err?.message || err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.warn('[SUPERVISOR SHIELD] Promesa rechazada interceptada (proceso protegido):', reason?.message || reason);
+});
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../../');
 
@@ -13,23 +20,27 @@ console.log('  🚀 INICIANDO OPENCODE WEB — APEX POWER SCALING');
 console.log('========================================================');
 console.log('Directorio del proyecto:', projectRoot);
 
-// ── Cargar .env automáticamente si existe ──────────────────────────────────
-const envPath = path.join(projectRoot, '.env');
-if (fs.existsSync(envPath)) {
-  const lines = fs.readFileSync(envPath, 'utf-8').split('\n');
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const eqIdx = trimmed.indexOf('=');
-    if (eqIdx === -1) continue;
-    const key = trimmed.slice(0, eqIdx).trim();
-    const val = trimmed.slice(eqIdx + 1).trim();
-    if (key && !process.env[key]) process.env[key] = val;
+// ── Cargar .env y .env.local automáticamente si existen ──────────────────────
+for (const f of ['.env', '.env.local']) {
+  const p = path.join(projectRoot, f);
+  if (fs.existsSync(p)) {
+    const lines = fs.readFileSync(p, 'utf-8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eqIdx = trimmed.indexOf('=');
+      if (eqIdx === -1) continue;
+      const key = trimmed.slice(0, eqIdx).trim();
+      const val = trimmed.slice(eqIdx + 1).trim();
+      if (key && !process.env[key]) process.env[key] = val;
+    }
   }
-  console.log('   ✅ Claves cargadas desde .env');
-} else {
-  console.warn('   ⚠️  No se encontró .env — usa variables de entorno del sistema');
 }
+console.log('   ✅ Claves cargadas desde .env y .env.local');
+if (process.env.OPENCODE_API_KEY) {
+  console.log('   ⚡ OpenCode Go Suscripción detectada y activa');
+}
+
 
 // ── Detección de Puertos Disponibles sin Sockets Zombies ──
 function isPortFree(port) {
@@ -83,6 +94,9 @@ async function bootstrap() {
 
   // ── PROXY INTELIGENTE CON CONMUTACIÓN AUTOMÁTICA DE CLAVES ──
   const proxyServer = http.createServer((clientReq, clientRes) => {
+    clientReq.on('error', (err) => console.warn('[PROXY CLIENT REQ WARN]', err.message));
+    clientRes.on('error', (err) => console.warn('[PROXY CLIENT RES WARN]', err.message));
+
     const requestBodyChunks = [];
     clientReq.on('data', chunk => requestBodyChunks.push(chunk));
 
@@ -104,9 +118,13 @@ async function bootstrap() {
       }
 
       function attemptRequest(keyIndex) {
+        if (clientRes.writableEnded) return;
+
         if (keyIndex >= KEYS.length) {
-          clientRes.writeHead(502, { 'Content-Type': 'application/json' });
-          clientRes.end(JSON.stringify({ error: 'Todas las claves API de OpenRouter han fallado o agotado cuota.' }));
+          try {
+            clientRes.writeHead(502, { 'Content-Type': 'application/json' });
+            clientRes.end(JSON.stringify({ error: 'Todas las claves API de OpenRouter han fallado o agotado cuota.' }));
+          } catch {}
           return;
         }
 
@@ -144,19 +162,29 @@ async function bootstrap() {
             return;
           }
 
-          clientRes.writeHead(proxyRes.statusCode, proxyRes.headers);
-          proxyRes.pipe(clientRes);
+          if (!clientRes.writableEnded) {
+            try {
+              clientRes.writeHead(proxyRes.statusCode, proxyRes.headers);
+              proxyRes.pipe(clientRes);
+            } catch (pipeErr) {
+              console.warn('[PROXY PIPE WARN]', pipeErr.message);
+            }
+          }
         });
 
         proxyReq.on('error', (err) => {
-          console.error('[OPENROUTER PROXY ERROR] Error: ' + err.message);
+          console.warn('[OPENROUTER PROXY ERROR] ' + err.message);
           if ((keyIndex + 1) < KEYS.length) {
             console.log('[OPENROUTER FALLBACK] Reintentando con Clave ' + (keyIndex + 2) + '...');
             activeKeyIndex = keyIndex + 1;
             attemptRequest(keyIndex + 1);
           } else {
-            clientRes.writeHead(502, { 'Content-Type': 'application/json' });
-            clientRes.end(JSON.stringify({ error: 'Error conectando con OpenRouter: ' + err.message }));
+            if (!clientRes.writableEnded) {
+              try {
+                clientRes.writeHead(502, { 'Content-Type': 'application/json' });
+                clientRes.end(JSON.stringify({ error: 'Error conectando con OpenRouter: ' + err.message }));
+              } catch {}
+            }
           }
         });
 
@@ -190,63 +218,86 @@ async function bootstrap() {
     console.log('   (Conmutación automática activa sin cortar la sesión)\n');
   });
 
+  process.env.UV_THREADPOOL_SIZE = '64';
+  process.env.NODE_OPTIONS = (process.env.NODE_OPTIONS || '') + ' --max-old-space-size=4096';
   process.env.OPENROUTER_BASE_URL = `http://127.0.0.1:${proxyPort}/api/v1`;
-  process.env.OPENAI_BASE_URL = `http://127.0.0.1:${proxyPort}/api/v1`;
+  delete process.env.OPENAI_BASE_URL;
+  process.env.OPENCODE_API_KEY = process.env.OPENCODE_API_KEY || process.env.OPENCODE_ZEN_API_KEY || '';
+  process.env.OPENCODE_ZEN_API_KEY = process.env.OPENCODE_API_KEY;
   process.env.OPENROUTER_API_KEY = KEYS[0] || '';
   process.env.OPENROUTER_BACKUP_API_KEY = KEYS[1] || '';
   process.env.GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
   process.env.GOOGLE_GENERATIVE_AI_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY || '';
   process.env.PATH = (process.env.APPDATA ? (process.env.APPDATA + '\\npm;') : '') + (process.env.PATH || '');
 
-  const isWin = process.platform === 'win32';
-  const cmd = isWin ? 'npx.cmd' : 'npx';
-  const args = ['opencode-ai', 'web', '--port', String(opencodePort), '--hostname', '0.0.0.0'];
 
-  const proc = spawn(cmd, args, {
-    cwd: projectRoot,
-    stdio: ['inherit', 'pipe', 'pipe'],
-    shell: true,
-    env: { ...process.env }
-  });
+  const opencodeExe = 'C:\\Users\\Jose Luis\\AppData\\Roaming\\npm\\node_modules\\opencode-ai\\bin\\opencode.exe';
+  const hasDirectExe = fs.existsSync(opencodeExe);
+  const cmd = hasDirectExe ? opencodeExe : (process.platform === 'win32' ? 'npx.cmd' : 'npx');
+  const baseArgs = ['web', '--port', String(opencodePort), '--hostname', '0.0.0.0'];
+  const args = hasDirectExe ? baseArgs : ['opencode-ai', ...baseArgs];
 
   let browserOpened = false;
+  const targetUrl = `http://127.0.0.1:${opencodePort}/`;
 
   function checkAndOpenBrowser() {
     if (browserOpened) return;
-    const req = http.get(`http://127.0.0.1:${opencodePort}/`, (res) => {
+    const req = http.get(`http://127.0.0.1:${opencodePort}/global/health`, (res) => {
       if (res.statusCode === 200 && !browserOpened) {
         browserOpened = true;
         console.log('\n=======================================================');
-        console.log('  ✅ ¡OPENCODE WEB ESTÁ ACTIVO Y VINCULADO AL PROYECTO!');
-        console.log(`  🌐 Abriendo navegador en: http://127.0.0.1:${opencodePort}/`);
+        console.log('  ✅ ¡OPENCODE WEB ESTÁ ACTIVO Y BLINDADO CONTRA CUELGUES!');
+        console.log(`  🌐 Abriendo navegador en: ${targetUrl}`);
         console.log('=======================================================\n');
-        exec(`start http://127.0.0.1:${opencodePort}/`);
+        exec(`start ${targetUrl}`);
       }
     });
     req.on('error', () => {
-      setTimeout(checkAndOpenBrowser, 800);
+      if (!browserOpened) setTimeout(checkAndOpenBrowser, 800);
     });
   }
 
-  setTimeout(checkAndOpenBrowser, 1000);
+  function startOpenCodeProcess() {
+    console.log(`[SUPERVISOR] Lanzando OpenCode (comando: ${cmd})...`);
+    const proc = spawn(cmd, args, {
+      cwd: projectRoot,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      shell: !hasDirectExe,
+      env: { ...process.env }
+    });
 
-  proc.stdout.on('data', (data) => {
-    const str = data.toString();
-    process.stdout.write(str);
-    if ((str.includes('Local access:') || str.includes('Web interface') || str.includes('Listening')) && !browserOpened) {
-      checkAndOpenBrowser();
-    }
-  });
+    proc.stdout.on('data', (data) => {
+      const str = data.toString();
+      process.stdout.write(str);
+      if ((str.includes('Local access:') || str.includes('Web interface') || str.includes('Listening')) && !browserOpened) {
+        checkAndOpenBrowser();
+      }
+    });
 
-  proc.stderr.on('data', (data) => {
-    process.stderr.write(data.toString());
-  });
+    proc.stderr.on('data', (data) => {
+      process.stderr.write(data.toString());
+    });
 
-  proc.on('exit', (code) => {
-    console.log('\nOpenCode se ha detenido con código: ' + code);
-    try { proxyServer.close(); } catch {}
-    process.exit(code || 0);
-  });
+    proc.on('exit', (code, signal) => {
+      console.log(`\n[SUPERVISOR] ⚠️ OpenCode se ha cerrado (código: ${code}, señal: ${signal}).`);
+      console.log('[SUPERVISOR] 🔄 Reiniciando automáticamente en 2 segundos para mantener el servicio siempre activo...');
+      setTimeout(startOpenCodeProcess, 2000);
+    });
+
+    proc.on('error', (err) => {
+      console.error('[SUPERVISOR] Error en proceso:', err);
+    });
+  }
+
+  startOpenCodeProcess();
+  setTimeout(checkAndOpenBrowser, 1200);
+
+  // Mantener el bucle de eventos de Node.js eternamente activo
+  setInterval(() => {}, 30000);
 }
 
-bootstrap().catch(console.error);
+bootstrap().catch((err) => {
+  console.error('[SUPERVISOR BOOTSTRAP ERROR]', err);
+  console.log('[SUPERVISOR] 🔄 Reintentando bootstrap en 3 segundos...');
+  setTimeout(bootstrap, 3000);
+});

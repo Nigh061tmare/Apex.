@@ -6,8 +6,48 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// CORS restringido: solo orígenes conocidos (producción Vercel + desarrollo local).
+// Cualquier web ajena queda bloqueada para que no consuma los motores IA pagados.
+const ALLOWED_ORIGINS = [
+  'https://apex-engine-six.vercel.app',
+  'https://apex-powerscaling-engine.vercel.app',
+  'https://apex-powerscaling.local'
+];
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin) return cb(null, true); // curl / server-to-server
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
+    return cb(new Error('Origen no autorizado por CORS'));
+  }
+}));
 app.use(express.json({ limit: '20mb' }));
+
+// Rate limiter en memoria (sin dependencias externas): protege los endpoints IA
+// de abuso externo. Limpia entradas viejas cada 5 minutos.
+const RATE_LIMIT = { windowMs: 60000, max: 60 };
+const rateBuckets = new Map();
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, bucket] of rateBuckets) {
+    if (bucket.resetAt < now) rateBuckets.delete(ip);
+  }
+}, 5 * 60 * 1000).unref?.();
+
+function aiRateLimit(req, res, next) {
+  const ip = req.ip || req.socket?.remoteAddress || 'unknown';
+  const now = Date.now();
+  let bucket = rateBuckets.get(ip);
+  if (!bucket || bucket.resetAt < now) {
+    bucket = { count: 0, resetAt: now + RATE_LIMIT.windowMs };
+    rateBuckets.set(ip, bucket);
+  }
+  bucket.count += 1;
+  if (bucket.count > RATE_LIMIT.max) {
+    return res.status(429).json({ error: 'Demasiadas solicitudes. Espera un momento antes de reintentar.' });
+  }
+  next();
+}
 
 const distPath = path.join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
@@ -331,7 +371,7 @@ function getEndpointConfig(engine, model, apiKey, customBaseUrl) {
         url: (customBaseUrl?.trim() || 'https://opencode.ai/zen/go/v1').replace(/\/$/, '') + '/chat/completions',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey || process.env.OPENCODE_API_KEY || 'sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'}`
+          'Authorization': `Bearer ${apiKey || process.env.OPENCODE_API_KEY || ''}`
         },
         model: (model || 'deepseek-v4-flash').replace(/^(opencode-go|opencode)\//i, '').replace(/:free$/i, '') || 'deepseek-v4-flash',
         type: 'openai_chat'
@@ -374,7 +414,7 @@ function getEndpointConfig(engine, model, apiKey, customBaseUrl) {
 }
 
 // Endpoint: Test connection / model sanity check
-app.post('/api/ai/test', async (req, res) => {
+app.post('/api/ai/test', aiRateLimit, async (req, res) => {
   try {
     const { engine, model, apiKey, customBaseUrl } = req.body;
     const cfg = getEndpointConfig(engine, model, apiKey, customBaseUrl);
@@ -425,7 +465,7 @@ app.post('/api/ai/test', async (req, res) => {
 // 3. AUTO-FILL CHARACTER DATA (JSON)
 // ==========================================
 
-app.post('/api/character/generate', async (req, res) => {
+app.post('/api/character/generate', aiRateLimit, async (req, res) => {
   try {
     const { name, engine, model, apiKey, customBaseUrl } = req.body;
     if (!name) return res.status(400).json({ error: 'Se requiere el nombre del personaje.' });
@@ -586,7 +626,15 @@ REGLAS DE SINERGIAS & PASIVAS (ESTRICTAS):
 
     const cleaned = jsonString.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
     const parsed = JSON.parse(cleaned);
-    res.json(parsed);
+    // Enriquecimiento post-generación (hook de poder canónico APEX)
+    try {
+      const { applyPowerHook } = await import('./src/scripts/applyPowerHook.js');
+      const enriched = applyPowerHook(parsed);
+      return res.json(enriched);
+    } catch (hookErr) {
+      console.warn('Could not run applyPowerHook on generated character:', hookErr.message);
+      return res.json(parsed);
+    }
 
   } catch (error) {
     console.error('Error generando personaje:', error);
@@ -598,7 +646,7 @@ REGLAS DE SINERGIAS & PASIVAS (ESTRICTAS):
 // 4. STREAMING COMBAT SIMULATION (SSE)
 // ==========================================
 
-app.post('/api/simulate', async (req, res) => {
+app.post('/api/simulate', aiRateLimit, async (req, res) => {
   try {
     const { prompt, engine, model, apiKey, customBaseUrl } = req.body;
     const cfg = getEndpointConfig(engine, model, apiKey, customBaseUrl);
@@ -784,99 +832,9 @@ app.post('/api/simulate', async (req, res) => {
 });
 
 // ==========================================
-// 4. CHARACTER AUTO-FILL AI GENERATOR
+// 4. SCENARIO AUTO-FILL AI GENERATOR
 // ==========================================
-app.post('/api/character/generate', async (req, res) => {
-  try {
-    const { name, universe, engine = 'totalgpt', model, apiKey, customBaseUrl } = req.body;
-    if (!name) return res.status(400).json({ error: 'Se requiere el nombre del personaje.' });
-
-    const prompt = `Genera la ficha técnica completa de VS Battles Wiki para el personaje "${name}" (${universe || 'Canon'}).
-DEBES responder únicamente con un JSON estrictamente válido (sin explicaciones adicionales ni etiquetas markdown) con este formato exacto:
-{
-  "name": "${name}",
-  "universe": "${universe || 'Universo Canon'}",
-  "tier": "Tier 7-B | Nivel Ciudad",
-  "ap": "Destrucción de Ciudad a Montaña con ataques directos",
-  "speed": { "combat": "Hipersónico Alto (Mach 25)", "reaction": "Hipersónico Masivo", "travel": "Supersónico+", "attack": "Mach 50+" },
-  "strength": { "striking": "Clase Ciudad", "lifting": "Clase 100" },
-  "durability": "Nivel Ciudad con regeneración acelerada",
-  "stamina": "Muy alta / Reservas sobrehumanas",
-  "battleIQ": "Genio Marcial / Maestro táctico con años de experiencia",
-  "psychology": "Combatiente analítico, no se confía y busca neutralizar amenazas con máxima eficiencia",
-  "haxTags": ["Regeneración", "Amplificación de Fuerza", "Percepción Extrasensorial"],
-  "feats": [
-    "Detuvo el impacto de un asteroide usando únicamente fuerza física",
-    "Esquivó ráfagas de energía que viajaban a velocidad hipersónica"
-  ],
-  "weaknesses": "Vulnerable a ataques que anulen su regeneración biológica",
-  "arsenal": {
-    "basicAttacks": "Golpes de impacto concentrado y ráfagas a gran velocidad",
-    "superAttacks": [
-      { "name": "Ataque Especial 1", "desc": "Descripción técnica del ataque", "cost": "30% Energía" },
-      { "name": "Ataque Especial 2", "desc": "Descripción del ataque secundario", "cost": "50% Energía" }
-    ],
-    "ultimateAttacks": [
-      { "name": "Finisher Definitivo", "desc": "Técnica suprema de destrucción masiva", "cost": "100% Energía" }
-    ],
-    "passives": [
-      { "name": "Pasiva de Combate", "desc": "Efecto continuo en batalla" }
-    ],
-    "actives": [
-      { "name": "Habilidad Activa", "desc": "Potenciador temporal" }
-    ]
-  },
-  "forms": [
-    { "id": "form-base", "name": "Forma Base", "stats": "Potencia Estándar x1", "multiplier": "1.0x" }
-  ]
-}`;
-
-    const cfg = getEndpointConfig(engine, model, apiKey, customBaseUrl);
-    let fullText = '';
-
-    if (cfg.type === 'gemini') {
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${cfg.model}:generateContent?key=${cfg.apiKey}`;
-      const response = await fetch(geminiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-      });
-      const data = await response.json();
-      fullText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    } else {
-      const response = await fetch(cfg.url, {
-        method: 'POST',
-        headers: cfg.headers,
-        body: JSON.stringify({
-          model: cfg.model,
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.5
-        })
-      });
-      const data = await response.json();
-      fullText = data.choices?.[0]?.message?.content || data.choices?.[0]?.text || '';
-    }
-
-    const cleanJson = fullText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-    const parsed = JSON.parse(cleanJson);
-    try {
-      const { applyPowerHook } = await import('./src/scripts/applyPowerHook.js');
-      const enriched = applyPowerHook(parsed);
-      return res.json(enriched);
-    } catch (hookErr) {
-      console.warn('Could not run applyPowerHook on generated character:', hookErr.message);
-      return res.json(parsed);
-    }
-  } catch (err) {
-    console.error('Character generate error:', err);
-    res.status(500).json({ error: 'Error al generar la ficha de personaje: ' + err.message });
-  }
-});
-
-// ==========================================
-// 5. SCENARIO AUTO-FILL AI GENERATOR
-// ==========================================
-app.post('/api/scenario/generate', async (req, res) => {
+app.post('/api/scenario/generate', aiRateLimit, async (req, res) => {
   try {
     const { name, universe, engine = 'totalgpt', model, apiKey, customBaseUrl } = req.body;
     const prompt = `Genera los detalles físicos y sensoriales completos para un escenario/arena de combate de VS Battles llamado "${name || 'Arena Cósmica'}" (${universe || 'Universo Ficción'}).
@@ -927,7 +885,7 @@ DEBES responder únicamente con un JSON estrictamente válido (sin etiquetas mar
 // ==========================================
 // 6. IMAGE GENERATOR (Reforge / SD WebUI / Pollinations)
 // ==========================================
-app.post('/api/image/generate', async (req, res) => {
+app.post('/api/image/generate', aiRateLimit, async (req, res) => {
   try {
     const { prompt, style = 'shonen', engine = 'pollinations', sdUrl = 'http://127.0.0.1:7860', width = 768, height = 768, negativePrompt } = req.body;
     if (!prompt) return res.status(400).json({ error: 'Se requiere un prompt para generar la imagen.' });
@@ -982,7 +940,7 @@ app.post('/api/image/generate', async (req, res) => {
 });
 
 // Generador de Cartel de Combate / Clash Wallpaper
-app.post('/api/image/battle', async (req, res) => {
+app.post('/api/image/battle', aiRateLimit, async (req, res) => {
   try {
     const { charAName, charBName, scenarioName, style = 'shonen', engine = 'pollinations', sdUrl } = req.body;
     const battlePrompt = `epic confrontation between ${charAName} and ${charBName} clashing in ${scenarioName || 'a destroyed cosmic arena'}, energy beam clash, shockwaves, shattered earth, high stakes battle`;
@@ -1001,7 +959,7 @@ app.post('/api/image/battle', async (req, res) => {
 });
 
 // Test de Conexión con Reforge / SD Local
-app.post('/api/image/test-reforge', async (req, res) => {
+app.post('/api/image/test-reforge', aiRateLimit, async (req, res) => {
   try {
     const { sdUrl = 'http://127.0.0.1:7860' } = req.body;
     const testUrl = `${sdUrl.replace(/\/$/, '')}/sdapi/v1/sd-models`;
@@ -1011,6 +969,84 @@ app.post('/api/image/test-reforge', async (req, res) => {
     res.json({ success: true, modelsCount: models.length || 0, message: `¡Conexión exitosa con Reforge/SD! (${models.length || 0} modelos detectados)` });
   } catch (err) {
     res.json({ success: false, message: `No se pudo conectar a ${req.body.sdUrl || 'http://127.0.0.1:7860'}. Asegúrate de tener Reforge abierto con el parámetro --api activado.` });
+  }
+});
+
+// ==========================================
+// 7. PUBLIC ROSTER API (consulta externa del canon V26)
+//    GET /api/roster            → resumen ligero de los 770 luchadores
+//    GET /api/roster?search=ki  → búsqueda por nombre/alias/id
+//    GET /api/roster/:id        → ficha completa de un personaje
+// ==========================================
+
+const ROSTER_JSON_PATH = path.join(__dirname, 'src', 'data', 'ROSTER_NIVELES_PODER_CORREGIDO_V26.json');
+const TACTICAL_JSON_PATH = path.join(__dirname, 'src', 'data', 'tacticalProfiles.json');
+
+let rosterCache = null;
+function getRosterData() {
+  if (rosterCache) return rosterCache;
+  const raw = JSON.parse(fs.readFileSync(ROSTER_JSON_PATH, 'utf8'));
+  const list = Array.isArray(raw.characters) ? raw.characters : Object.values(raw.characters || {});
+  let tacticalMap = {};
+  try {
+    const tac = JSON.parse(fs.readFileSync(TACTICAL_JSON_PATH, 'utf8'));
+    if (Array.isArray(tac)) {
+      tacticalMap = new Map(tac.filter(p => p && p.id).map(p => [p.id, p]));
+    }
+  } catch (e) { /* perfiles tácticos opcionales */ }
+  rosterCache = { list, tacticalMap, meta: raw.meta || {} };
+  return rosterCache;
+}
+
+function toSummary(c) {
+  return {
+    id: c.id,
+    name: c.name,
+    franchise: c.franchise || null,
+    universe: c.universe || null,
+    saga: c.saga || null,
+    baseTier: c.baseTier || null,
+    baseKiNumeric: c.baseKiNumeric ?? null,
+    baseKiFormatted: c.baseKiFormatted || null,
+    formsCount: (c.forms || []).length
+  };
+}
+
+app.get('/api/roster', (req, res) => {
+  try {
+    const { search } = req.query;
+    const { list } = getRosterData();
+    let out = list;
+    if (search && String(search).trim()) {
+      const q = String(search).trim().toLowerCase();
+      out = list.filter(c =>
+        (c.id || '').toLowerCase().includes(q) ||
+        (c.name || '').toLowerCase().includes(q) ||
+        (c.alias || '').toLowerCase().includes(q) ||
+        (c.franchise || '').toLowerCase().includes(q) ||
+        (c.universe || '').toLowerCase().includes(q)
+      );
+    }
+    res.json({
+      meta: { version: 'V26', total: list.length, filtered: out.length, source: 'ROSTER_NIVELES_PODER_CORREGIDO_V26.json' },
+      characters: out.map(toSummary)
+    });
+  } catch (err) {
+    console.error('Roster API error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/roster/:id', (req, res) => {
+  try {
+    const { list, tacticalMap } = getRosterData();
+    const found = list.find(c => c.id === req.params.id);
+    if (!found) return res.status(404).json({ error: `Personaje "${req.params.id}" no encontrado.` });
+    const tactical = tacticalMap?.get ? tacticalMap.get(found.id) : null;
+    res.json({ character: tactical ? { ...found, tacticalProfile: tactical } : found });
+  } catch (err) {
+    console.error('Roster detail API error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 

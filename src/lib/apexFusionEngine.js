@@ -102,11 +102,12 @@ export function calculateFusionKi(kiA = 0, kiB = 0, method = 'potara', areRivals
 }
 
 /**
- * Determina el Tier de la fusión a partir del Ki y de los Tiers de origen
+ * Determina el Tier de la fusión a partir del Ki y de los Tiers de origen.
+ * Devuelve el tier SIN prefijo "Tier " para mantener el estándar del roster.
  */
 export function deriveFusionTier(tierA = '7-B', tierB = '7-B', calculatedKi = 0) {
-  const cleanA = (tierA || '').replace('Tier ', '').trim();
-  const cleanB = (tierB || '').replace('Tier ', '').trim();
+  const cleanA = (tierA || '').replace('Tier ', '').split('|')[0].trim();
+  const cleanB = (tierB || '').replace('Tier ', '').split('|')[0].trim();
 
   const idxA = TIER_ORDER.indexOf(cleanA);
   const idxB = TIER_ORDER.indexOf(cleanB);
@@ -116,9 +117,11 @@ export function deriveFusionTier(tierA = '7-B', tierB = '7-B', calculatedKi = 0)
   let boost = 3;
   if (calculatedKi > 1e12) boost = 4;
   if (calculatedKi > 1e15) boost = 5;
+  if (calculatedKi > 1e20) boost = 6;
+  if (calculatedKi > 1e25) boost = 7;
 
   const targetIdx = Math.min(TIER_ORDER.length - 1, baseIdx + boost);
-  return `Tier ${TIER_ORDER[targetIdx]}`;
+  return TIER_ORDER[targetIdx];
 }
 
 /**
@@ -188,8 +191,27 @@ export function fuseCharacters(charA, charB, methodId = 'potara', areRivals = fa
   const method = FUSION_METHODS[methodId.toUpperCase()] || FUSION_METHODS.POTARA;
   const fusedName = generateFusedName(charA.name, charB.name, method.id);
 
-  const kiValA = charA.ki || charA.sourceKiCurrent || SCOUTER_ENERGY_ANCHORS[charA.tier?.replace('Tier ', '')] || 5000000;
-  const kiValB = charB.ki || charB.sourceKiCurrent || SCOUTER_ENERGY_ANCHORS[charB.tier?.replace('Tier ', '')] || 5000000;
+  // Extracción de Ki robusta para cualquier esquema de ficha (V26 / fusiones / customs)
+  const extractKi = (c) => {
+    const candidates = [
+      c.numericStats?.apexKi,
+      c.baseKiNumeric,
+      c.apexKi,
+      c.ki,
+      c.sourceKiCurrent,
+      c.sourceKi,
+      c.powerScaling?.apexKi
+    ];
+    for (const v of candidates) {
+      const n = Number(v);
+      if (Number.isFinite(n) && n > 0) return n;
+    }
+    const anchor = SCOUTER_ENERGY_ANCHORS[(c.tier || '').replace('Tier ', '').split('|')[0].trim()];
+    return Number(anchor) || 5000000;
+  };
+
+  const kiValA = extractKi(charA);
+  const kiValB = extractKi(charB);
 
   const resultKi = calculateFusionKi(kiValA, kiValB, method.id, areRivals);
   const resultTier = deriveFusionTier(charA.tier, charB.tier, resultKi);
@@ -210,8 +232,18 @@ export function fuseCharacters(charA, charB, methodId = 'potara', areRivals = fa
     universe: charA.universe === charB.universe ? charA.universe : `🌌 Nexo Multiversal (${charA.universe} × ${charB.universe})`,
     version: `Fusión Oficial APEX [${method.name}]`,
     tier: resultTier,
+    baseTier: resultTier,
     ki: resultKi,
     sourceKiCurrent: resultKi,
+    baseKiNumeric: resultKi,
+    baseKiFormatted: `${resultKi.toLocaleString('es-ES')}`,
+    // Integración con el resolver de combate APEX (fuente única de Ki)
+    numericStats: {
+      apexKi: resultKi,
+      burstKi: Math.round(resultKi * 1.35),
+      durabilityKi: resultKi,
+      scouterKi: resultKi
+    },
     ap: `Supera con creces el poder combinado de ${charA.name} y ${charB.name}, escalando a ${resultTier}.`,
     durability: `Cuerpo reforzado por la densidad del nexo energético. Resiste impactos directos de escala ${resultTier}.`,
     speed: {
@@ -242,23 +274,30 @@ export function fuseCharacters(charA, charB, methodId = 'potara', areRivals = fa
         id: 'base-fused',
         name: 'Forma Base Fused',
         multiplier: 1,
+        apexKiMultiplier: 1,
         tier: resultTier,
         ki: resultKi,
+        kiNumeric: resultKi,
+        apexKi: resultKi,
         description: 'Estado inicial tras completarse el enlace corporal y espiritual.'
       },
       {
         id: 'max-power-fused',
         name: 'Máximo Poder Desatado',
         multiplier: 2.5,
+        apexKiMultiplier: 2.5,
         tier: deriveFusionTier(resultTier, resultTier, resultKi * 2.5),
         ki: Math.round(resultKi * 2.5),
+        kiNumeric: Math.round(resultKi * 2.5),
+        apexKi: Math.round(resultKi * 2.5),
         description: 'Liberación total del aura y desbordamiento de energía acumulada.'
       }
     ],
     fusionMeta: {
       method: method.name,
-      parentA: { id: charA.id, name: charA.name, tier: charA.tier },
-      parentB: { id: charB.id, name: charB.name, tier: charB.tier },
+      parentA: { id: charA.id, name: charA.name, tier: charA.tier, ki: kiValA },
+      parentB: { id: charB.id, name: charB.name, tier: charB.tier, ki: kiValB },
+      resultKi,
       areRivals,
       generatedAt: new Date().toISOString()
     }

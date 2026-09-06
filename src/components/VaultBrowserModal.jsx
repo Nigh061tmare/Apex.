@@ -3,8 +3,7 @@ import { X, Folder, FileText, RefreshCw, CheckCircle, AlertCircle, Download, Upl
 import { SoundFX } from '../services/soundFx';
 
 export default function VaultBrowserModal({ isOpen, onClose, allCharacters = [], onImportCharacters }) {
-  if (!isOpen) return null;
-
+  // Hooks siempre antes del return condicional (regla de React)
   const [vaultFiles, setVaultFiles] = useState([]);
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -85,6 +84,8 @@ export default function VaultBrowserModal({ isOpen, onClose, allCharacters = [],
       setIsImporting(false);
     }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">

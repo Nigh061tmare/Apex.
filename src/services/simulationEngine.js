@@ -3,7 +3,6 @@ import { DYNAMIC_ARENAS, RAID_BOSSES_PROFILES, LEGENDARY_ARTIFACTS, ARENA_BALANC
 import { COMBAT_RESOLUTION_ORDER, UNIFIED_RESOURCE_POOLS, HAX_LAYERS_HIERARCHY, VERSE_EQUALIZATION_RULES, TIER_DIFFERENCE_RULES, PERSISTENT_COMBAT_STATUSES, COOLDOWN_TIERS, buildCombatLogSnapshot } from '../data/combatResolutionEngine';
 import { RAID_BOSS_TIERS, calculateSquadSynergy } from './synergyEngine';
 import { detectNarrativeBossMechanics } from '../data/tagMechanicsSystem';
-import { INITIAL_CHARACTERS } from '../data/characters';
 import { resolveCombatState } from '../lib/combatStateResolver';
 import { selectContextualExternalEntity, getBodilyForms, getExternalEntities } from '../lib/externalEntityFramework';
 import { createCombatSnapshot, validateCombatSnapshot, executeCombatSimulation, synthesizeNarrativeFromValidatedLog, ORACLE_EVENT_CONFIG } from './combatSimulationCore';
@@ -23,14 +22,11 @@ export function resolveMaxOutputTokens(modelName = '') {
 }
 
 
-export const BUILTIN_OPENROUTER_KEYS = [
-  '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',
-  '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'
-];
-
-export const BUILTIN_OPENCODE_KEYS = [
-  'sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'
-];
+// Las claves de proveedores NO se incrustan en el código (riesgo de fuga).
+// Se resuelven en tiempo de ejecución desde: config del usuario, localStorage
+// (apex_provider_api_keys / apex_ai_config) y variables de entorno del servidor.
+export const BUILTIN_OPENROUTER_KEYS = [];
+export const BUILTIN_OPENCODE_KEYS = [];
 
 export function resolveCandidateApiKeys(cfg, engine) {
   const keys = [];
@@ -242,6 +238,7 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 ### 📈 REGLA DE ORO 2: PROGRESIÓN ESTRICTA Y OBLIGATORIA DEL ÁRBOL DE TRANSFORMACIONES ('forms')
 - La IA DEBE escalar cronológica y lógicamente a través de las transformaciones oficiales y canónicas registradas en la ficha del personaje ('forms') (ejemplo: Base ➔ SSJ1 ➔ SSJ2 ➔ SSJ3, Forma 1 ➔ Forma Final ➔ 100%).
 - **PROHIBIDO TOTAL Y ABSOLUTAMENTE inventar multiplicadores no canónicos o suicidas como 'Kaiō-ken x10 sobre SSJ2 o SSJ3'**, INCLUSO SI SE ACTIVA UN CISNE NEGRO / BLACK SWAN / ORÁCULO. El Kaiō-ken solo se utiliza en sus estados canónicos permitidos (Base en DBZ, o SSB en DBS si la ficha lo contempla).
+- **GESTIÓN DE ESCALADO POR DEMANDA (STAMINA INTELIGENTE — OBLIGATORIO):** La IA debe elegir el estado de transformación ADECUADO a la amenaza real. No despilfarres el estado máximo (ej. SSJ4 Full Power) contra oponentes triviales, PERO TAMPOCO te auto-flageles con trucos de bajo nivel (SSJ3 + Kaio-ken combinado) cuando el personaje tiene formas superiores eficientes disponibles en su árbol. Si el personaje posee un árbol completo (Base ➔ SSJ1 ➔ SSJ2 ➔ SSJ3 ➔ SSJ4 ➔ SSJ4 Full Power), escala de forma PROGRESIVA y usa el estado superior cuando la demanda del rival lo exige. Queda PROHIBIDO quemar la stamina vital con técnicas de sacrificio o multiplicadores inventados que el árbol de formas ('forms') de la ficha no contempla, especialmente en la Fase 3 donde el desgaste ya es crítico.
 
 #### 📊 TABLA DE INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (CONSTANTE BIOLÓGICA — NO ANULABLE POR ORÁCULO)
 | Era | Forma activa | Kaiō-ken permitido | Motivo |
@@ -811,7 +808,7 @@ ${modifiers.customContext.trim()}
       miracle_form_canon: "¡RIESGO ACTIVO (DESPERTAR CANÓNICO / ESCALÓN LÓGICO DE SAGA - STRICT ERA ACCURACY)! En la Fase 3, en el instante de máxima crisis al borde del K.O., el luchador en desventaja rompe sus límites y asciende ÚNICAMENTE a la siguiente transformación o estado inmediato y coherente con su era histórica (ej. Goku Saga Cell en SSJ Full Power pasa a Super Saiyan 2 emulando a Gohan; NO salta a SSJ God ni Ultra Instinto; Luffy Gear 4 pasa a Gear 5; Naruto Modo Sabio pasa a Manto Kurama; Vegeta Namek pasa a SSJ1; etc.). La IA tiene ESTRICTAMENTE PROHIBIDO saltar eras o desbloquear formas divinas anacrónicas bajo esta opción.",
       miracle_form_transcendent: "¡RIESGO ACTIVO (DESPERTAR TRASCENDENTE / MULTIVERSAL WHAT-IF - FORMA MÁXIMA)! En la Fase 3, el luchador rompe todas las barreras temporales y asciende a la forma más divina, prohibida o suprema de su ficha o multiverso completo (ej. SSJ God / Blue / Ultra Instinto / Ultra Ego, Baryon Mode, Mugetsu, Gear 5, etc.), desatando un colosal salto de poder tipo Dragon Ball Heroes / What-If cósmico.",
       miracle_form_awakening: "¡RIESGO ACTIVO (DESPERTAR CANÓNICO / ESCALÓN LÓGICO DE SAGA)! En la Fase 3, asciende a su siguiente forma lógica inmediata.",
-      miracle_technique_awakening: "¡RIESGO ACTIVO (DESPERTAR DE SUPER TÉCNICA / FINISHER PROHIBIDO - ÚLTIMO ALIENTO)! En la Fase 3, en situación crítica y al borde de la derrota, el combatiente canaliza toda su energía vital restante en un ataque definitivo prohibido, técnica secreta suprema o juramento de sacrificio (ej. Mafūba, Shiki Fūjin, Mugetsu, Final Explosion, Ryūken a quemarropa, Juramento de Voto de Nen tipo Gon Adulto, Expansión de Dominio desesperada) desatando una ofensiva de máxima escala e impacto irreversible.",
+      miracle_technique_awakening: "¡RIESGO ACTIVO (DESPERTAR DE SUPER TÉCNICA / FINISHER PROHIBIDO - ÚLTIMO ALIENTO)! En la Fase 3, en situación crítica y al borde de la derrota, el combatiente canaliza toda su energía vital restante en un ataque definitivo prohibido, técnica secreta suprema o juramento de sacrificio (ej. Mafūba, Shiki Fūjin, Mugetsu, Final Explosion, Juramento de Voto de Nen tipo Gon Adulto, Expansión de Dominio desesperada) desatando una ofensiva de máxima escala e impacto irreversible.\n⚠️ EXCLUSIVIDAD DE TÉCNICA (OBLIGATORIO): El **Ryūken (Dragon Fist)** es TÉCNICA EXCLUSIVA de **Son Goku** (cualquier era o variante canónica: Goku Z, Goku GT, Goku Adulto Teórico, etc.). Queda ESTRICTAMENTE PROHIBIDO que cualquier otro personaje lo ejecute: los no-Goku deben usar su propia técnica final canónica de su arsenal (Final Flash para Vegeta, Mafūba para Roshi/Tenshinhan, etc.). Incluso para Son Goku, el Ryūken NO debe ser predecible ni repetitivo: úsalo solo si es el remate narrativo ideal, como máximo UNA vez por simulación, y si el contexto ya lo mostró o existen otras opciones igualmente icónicas (Kamehameha x10, Genkidama Universal, Spirit Sword), varía la elección.",
       miracle_awakening: "¡RIESGO ACTIVO (DESPERTAR CANÓNICO DE SAGA)! En la Fase 3, rompe sus límites y asciende a su siguiente forma inmediata.",
       third_party: "¡RIESGO ACTIVO (3RA FACCIÓN INVASORA / TITÁN CÓSMICO)! En la Fase 3, una tercera entidad desconocida, monstruo dimensional o rival imprevisto irrumpe violentamente en el campo de batalla, forzando un fuego cruzado imprevisto y reajuste táctico inmediato.",
       hax_failure: "¡RIESGO ACTIVO (ANULACIÓN CATASTRÓFICA DE HAX)! En la Fase 3, una sobrecarga de energía anula temporalmente todas las habilidades mágicas, dominios o hax conceptuales durante 30 segundos, obligando a un choque puramente a puño limpio y resistencia ósea.",
@@ -955,10 +952,10 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 1. **NOMENCLATURA CANÓNICA DE TÉCNICAS & ARSENAL (JAPONÉS / INGLÉS OFICIAL):**
    - Usa SIEMPRE los nombres oficiales y canónicos originales de cada técnica en Japonés (Rōmaji) o Inglés cuando sea su denominación más icónica y respetada en el canon.
    - Ejemplos obligatorios:
-     * Dragon Ball: Usar **Ryūken** (Dragon Fist), **Kamehameha x10**, **Super Genkidama Universal**, **Kaiō-ken**, **Final Flash**, **Big Bang Attack**, **Spirit Sword** / **Shinkōzan** (Espada de Ki Rosé), **Hakai**.
+     * Dragon Ball: Usar **Kamehameha x10**, **Super Genkidama Universal**, **Kaiō-ken**, **Final Flash**, **Big Bang Attack**, **Spirit Sword** / **Shinkōzan** (Espada de Ki Rosé), **Hakai**. ⚠️ El **Ryūken (Dragon Fist)** es EXCLUSIVO de Son Goku: solo puede ejecutarlo un combatiente que sea Son Goku (cualquier era o variante), únicamente como técnica final de máximo remate, y sin repetirlo en la misma simulación.
      * Bleach / Naruto / JJK: Usar **Getsuga Tenshō**, **Bankai**, **Rasengan**, **Chidori**, **Amaterasu**, **Shinra Tensei**, **Ryōiki Tenkai: Fukuma Mizushi** (Malevolent Shrine), **Murasaki** (Hollow Purple), **Dismantle** / **Cleave**.
      * MHA / Otros: **Detroit Smash**, **United States of Smash**, **Getsuga Jūjishō**, **Black Clover** spells en inglés/francés canon.
-   - NUNCA uses traducciones literales forzadas o torpes al español (PROHIBIDO "Onda Vital", "Bola Mortal", "Puño de Dragón"). Mantén el nombre canónico oficial en negrita: **Ryūken**, **Kamehameha x10**, etc.
+   - NUNCA uses traducciones literales forzadas o torpes al español (PROHIBIDO "Onda Vital", "Bola Mortal", "Puño de Dragón"). Mantén el nombre canónico oficial en negrita: **Ryūken**, **Kamehameha x10**, etc. El **Ryūken / Dragon Fist** queda reservado ÚNICAMENTE para Son Goku (cualquier era/variante) y jamás debe ser ejecutado por otros personajes ni de forma repetitiva.
 2. **SENSORIALIDAD CONCRETA OBLIGATORIA:** Nunca uses "ambiente tenso" — siempre describe el aire con anclaje olfativo (ozono quemado, azufre, piedra pulverizada, sabor metálico a sangre).
 3. **ESPECIFICIDAD ANATÓMICA ESTRICTA:** Describe localización del impacto, tipo de lesión, fracturas, tendones dañados y respuesta física inmediata. Queda estrictamente PROHIBIDO usar la palabra "devastador" o "devastadora".
 4. **POSICIONAMIENTO ESPACIAL DINÁMICO:** En cada movimiento relevante, especifica quién está dónde, a qué distancia y en qué postura.
@@ -969,6 +966,13 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
    - El combate debe desarrollarse y resolverse ÚNICA Y EXCLUSIVAMENTE con los combatientes vivos y activos de la alineación seleccionada.
 8. **COHERENCIA TÉCNICA Y DE SAGA ESTRICTA:**
    - Respeta el arsenal exacto de la era canónica del personaje (ej. Vegeta en la Saga de Cell NO conoce el Shunkanidō/Teletransporte; sus desplazamientos instantáneos son *Zanzoken / Blitz de Velocidad Relativista FTL* puro). NUNCA inventes técnicas de sagas futuras a menos que sea una variante explícita.
+9. **EXCLUSIVIDAD DE TÉCNICAS INSIGNIA (OBLIGATORIO):** Ciertas técnicas son patrimonio exclusivo de su usuario canónico. El **Ryūken (Dragon Fist)** pertenece SOLO a Son Goku (todas sus variantes) — jamás lo use otro personaje, y Goku solo debe ejecutarlo como remate final, como máximo una vez por simulación y sin patrón predecible. Respeta igualmente la exclusividad de otras técnicas insignia (Mafūba de Roshi/Tenshinhan, Final Flash de Vegeta, Hakai de los dioses de destrucción, etc.).
+
+### 🛡️ DIRECTIVA DE CIERRE INVOLUBLE (LEER SIEMPRE ANTES DE NARRAR — PRIORIDAD MÁXIMA):
+1. **SOLO ARSENAL REAL:** El combatiente puede usar ÚNICAMENTE las técnicas, formas y multiplicadores presentes en su ficha ('forms', 'arsenal', 'haxTags'). PROHIBIDO inventar técnicas, estados o multiplicadores que no estén en su ficha.
+2. **KAIŌ-KEN REAL:** El Kaiō-ken solo existe si la ficha del personaje lo incluye y SOLO en los estados permitidos por la tabla de incompatibilidades (Base en DBZ, SSB en DBS). NUNCA se usa 'Kaiō-ken ×100', 'Kaiō-ken sobre SSJ2/SSJ3' ni combinaciones suicidas inventadas. Si el personaje tiene formas superiores (SSJ4, SSJ4 Full Power, etc.), úsalas en lugar de auto-flagelarte con Kaio-ken.
+3. **ESCALADO POR DEMANDA:** Sube de forma progresiva y usa el estado adecuado a la amenaza. No despilfarres el estado máximo, pero tampoco evites usarlo cuando la pelea lo exige.
+4. **RYŪKEN = SOLO SON GOKU:** El Ryūken (Dragon Fist) es exclusivo de Son Goku y sus variantes. Como máximo UNA vez por simulación y solo como remate final dramático. Ningún otro personaje puede usarlo bajo ninguna circunstancia, ni siquiera en eventos Oráculo.
 
 IDENTIDAD Y ROL:
 Eres el APEX ENGINE 2.0 (OMNI-TITÁN Integrado), el simulador de combates más riguroso y visceral del mundo.
@@ -2093,7 +2097,7 @@ REGLAS DE REFINAMIENTO:
   findReferenceCharacters(targetName = '', targetUniverse = '', allCharacters = []) {
     const list = Array.isArray(allCharacters) && allCharacters.length > 0
       ? allCharacters
-      : (typeof INITIAL_CHARACTERS !== 'undefined' ? INITIAL_CHARACTERS : []);
+      : [];
     
     if (!list || list.length === 0) return [];
 

@@ -1,0 +1,32 @@
+name: APEX Validation
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Canonical Validator (V26 baseline)
+        run: node src/scripts/rosterCanonicalValidatorV26.js
+
+      - name: Build
+        run: npm run build
+
+      - name: Combat Engine Tests
+        run: node src/scripts/runComprehensiveTests.js
