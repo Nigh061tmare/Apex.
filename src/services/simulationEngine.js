@@ -1373,12 +1373,14 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
       // OpenCode Dedicated Multi-Key Streaming
       if (aiConfig?.engine === 'opencode') {
         const ocKeys = getCandidateKeys(aiConfig, 'opencode');
-        const ocModel = aiConfig.model || 'opencode-go/deepseek-v4-flash';
+        const rawModel = aiConfig.model || 'deepseek-v4-flash';
+        const cleanModel = rawModel.replace(/^(opencode-go|opencode)\//i, '').replace(/:free$/i, '') || 'deepseek-v4-flash';
+
         for (let kIdx = 0; kIdx < ocKeys.length; kIdx++) {
           const curKey = ocKeys[kIdx];
           if (!curKey) continue;
           try {
-            let ocUrl = aiConfig.customBaseUrl?.trim() || 'https://api.opencode.ai/v1';
+            let ocUrl = aiConfig.customBaseUrl?.trim() || 'https://opencode.ai/zen/go/v1';
             if (!ocUrl.endsWith('/chat/completions')) {
               ocUrl = ocUrl.replace(/\/+$/, '') + '/chat/completions';
             }
@@ -1390,10 +1392,10 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
                 'Authorization': `Bearer ${curKey}`
               },
               body: JSON.stringify({
-                model: ocModel,
+                model: cleanModel,
                 messages: [{ role: 'user', content: prompt }],
                 stream: true,
-                max_tokens: resolveMaxOutputTokens(ocModel)
+                max_tokens: resolveMaxOutputTokens(cleanModel)
               })
             });
 
@@ -1420,7 +1422,7 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
                   }
                   try {
                     const parsed = JSON.parse(dataStr);
-                    const delta = parsed.choices?.[0]?.delta?.content || '';
+                    const delta = parsed.choices?.[0]?.delta?.content || parsed.choices?.[0]?.delta?.reasoning_content || '';
                     if (delta) onToken(delta);
                   } catch (e) {}
                 }
@@ -1887,13 +1889,14 @@ ESTADO FINAL:
     // OpenCode Multi-Key Failover
     if (aiConfig?.engine === 'opencode' || engine === 'opencode') {
       const ocKeys = getCandidateKeys(effectiveCfg, 'opencode');
-      const ocModel = effectiveCfg.model || 'opencode-go/deepseek-v4-flash';
+      const rawModel = effectiveCfg.model || 'deepseek-v4-flash';
+      const cleanModel = rawModel.replace(/^(opencode-go|opencode)\//i, '').replace(/:free$/i, '') || 'deepseek-v4-flash';
 
       for (let kIdx = 0; kIdx < ocKeys.length; kIdx++) {
         const curKey = ocKeys[kIdx];
         if (!curKey) continue;
         try {
-          let ocUrl = effectiveCfg.customBaseUrl?.trim() || 'https://api.opencode.ai/v1';
+          let ocUrl = effectiveCfg.customBaseUrl?.trim() || 'https://opencode.ai/zen/go/v1';
           if (!ocUrl.endsWith('/chat/completions')) {
             ocUrl = ocUrl.replace(/\/+$/, '') + '/chat/completions';
           }
@@ -1905,14 +1908,14 @@ ESTADO FINAL:
               'Authorization': `Bearer ${curKey}`
             },
             body: JSON.stringify({
-              model: ocModel,
+              model: cleanModel,
               messages: [{ role: 'user', content: prompt }],
-              max_tokens: resolveMaxOutputTokens(ocModel)
+              max_tokens: resolveMaxOutputTokens(cleanModel)
             })
           });
           if (res.ok) {
             const data = await res.json();
-            const text = data?.choices?.[0]?.message?.content || '';
+            const text = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.message?.reasoning_content || '';
             if (text && text.trim()) return text;
           } else {
             console.warn(`[OpenCode Failover Query] Clave #${kIdx + 1} falló con HTTP ${res.status}.`);
