@@ -68,11 +68,23 @@ export const GUEST_PROFILES = [
     simModel: 'nvidia/nemotron-3-ultra-550b-a55b:free',
     badge: '550B MoE',
     border: 'border-cyan-500/60 bg-cyan-950/30 text-cyan-300'
+  },
+  {
+    id: 'opencode_flash',
+    title: '⚡ OpenCode DeepSeek V4 Flash (1M Ctx · DSpark)',
+    desc: 'OpenCode Go / Zen. Máxima velocidad de respuesta, 1M de contexto y DSpark para generación instantánea de fichas y combates.',
+    charModel: 'opencode-go/deepseek-v4-flash',
+    simModel: 'opencode-go/deepseek-v4-flash',
+    engine: 'opencode',
+    badge: '🚀 OPENCODE GO',
+    border: 'border-cyan-500/80 bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-slate-900 text-cyan-300 shadow-lg shadow-cyan-950/40'
   }
 ];
 
 export const FREE_MODELS_LIST = [
   { id: 'meta/muse-spark-1.3-contributor:free', name: '🔥 Meta Muse Spark 1.3 Free (1M Ctx · 131K Out · Auditoría Agéntica)' },
+  { id: 'opencode-go/deepseek-v4-flash', name: '⚡ OpenCode DeepSeek V4 Flash (1M Ctx · DSpark Ultra-Speed)' },
+  { id: 'opencode-go/deepseek-v4-pro', name: '🧠 OpenCode DeepSeek V4 Pro (Razonamiento Profundo & Hax Tiers)' },
   { id: 'google/gemini-2.0-flash-lite:free', name: '⚡ Gemini 2.0 Flash Lite (Ultrarrápido y Preciso)' },
   { id: 'poolside/laguna-s-2.1:free', name: '🏆 Poolside Laguna S 2.1 (118B MoE · Agente de Código & Lógica)' },
   { id: 'cohere/north-mini-code:free', name: '⚡ Cohere North Mini Code (256K Ctx · Fichas Técnicas JSON)' },
@@ -93,6 +105,16 @@ export const FREE_MODELS_LIST = [
 ];
 
 export const AI_PRESETS = {
+  opencode: [
+    { id: 'opencode-go/deepseek-v4-flash', name: '⚡ DeepSeek V4 Flash (1M Ctx · DSpark Ultra-Speed · Recomendado)' },
+    { id: 'opencode-go/deepseek-v4-pro', name: '🧠 DeepSeek V4 Pro (Razonamiento Profundo & Hax Tiers)' },
+    { id: 'opencode-go/kimi-k2.7-code', name: '💻 Kimi K2.7 Code (Top Fichas Técnicas & JSON)' },
+    { id: 'opencode-go/qwen3.8-max', name: '👑 Qwen 3.8 Max (Colosal 2.4T MoE · Conocimiento Extremo)' },
+    { id: 'opencode-go/minimax-m3', name: '🦁 MiniMax M3 (1.05M Ctx · Narrativa Literaria & What-If)' },
+    { id: 'opencode-go/glm-5.3-flash', name: '⚡ GLM 5.3 Flash (Latencia Instantánea <0.3s)' },
+    { id: 'opencode-go/gpt-5.6-luna', name: '💎 GPT-5.6 Luna (OpenAI Optimizado · Prosa Cinemática)' },
+    { id: 'opencode-go/grok-4.6', name: '🔥 Grok 4.6 (Frontera xAI · Análisis Crítico Sin Filtros)' }
+  ],
   totalgpt: [
     { id: 'Doctor-Shotgun-L3.3-70B-Magnum-v4-SE', name: 'Doctor-Shotgun L3.3 70B Magnum v4 (Recomendado Combates)' },
     { id: 'Qwen-Qwen3.6-35B-A3B', name: 'Qwen 3.6 35B A3B (Recomendado Fichas JSON)' },
@@ -153,6 +175,7 @@ export const AI_PRESETS = {
 };
 
 const PROVIDER_NAMES = {
+  opencode: 'OpenCode Go / Zen',
   totalgpt: 'TotalGPT / Infermatic',
   gemini: 'Google Gemini API',
   openrouter: 'OpenRouter API',
@@ -202,6 +225,7 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
         return {
           gemini: [''],
           openrouter: [''],
+          opencode: ['sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'],
           totalgpt: [''],
           perplexity: [''],
           deepseek: [''],
@@ -215,6 +239,7 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
     return {
       gemini: [''],
       openrouter: [''],
+      opencode: ['sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'],
       totalgpt: [config?.characterEngine?.apiKey || config?.apiKey || ''],
       perplexity: [''],
       deepseek: [''],
@@ -281,9 +306,10 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
       } catch (e) {}
     }
 
+    const targetEngine = profile.engine || 'openrouter';
     const guestCfg = {
-      characterEngine: { engine: 'openrouter', model: profile.charModel, apiKey: '', customBaseUrl: '' },
-      simulationEngine: { engine: 'openrouter', model: profile.simModel, apiKey: '', customBaseUrl: '' }
+      characterEngine: { engine: targetEngine, model: profile.charModel, apiKey: '', customBaseUrl: '' },
+      simulationEngine: { engine: targetEngine, model: profile.simModel, apiKey: '', customBaseUrl: '' }
     };
     setLocalConfig(guestCfg);
     onSaveConfig(guestCfg);
@@ -525,7 +551,36 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
         }
       }
 
-      // D. Fallback Success
+      // D. OpenCode API Test
+      if (cfg.engine === 'opencode') {
+        const effectiveKey = testedKey || 'sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1';
+        let ocUrl = cfg.customBaseUrl?.trim() || 'https://api.opencode.ai/v1';
+        if (!ocUrl.endsWith('/chat/completions')) {
+          ocUrl = ocUrl.replace(/\/+$/, '') + '/chat/completions';
+        }
+
+        const res = await fetch(ocUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${effectiveKey}`
+          },
+          body: JSON.stringify({
+            model: cfg.model || 'opencode-go/deepseek-v4-flash',
+            messages: [{ role: 'user', content: 'Ping' }],
+            max_tokens: 5
+          })
+        });
+        if (res.ok) {
+          setTestResult({ success: true, message: `¡Conexión exitosa con OpenCode Go / Zen (${cfg.model || 'DeepSeek V4 Flash'})!` });
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          setTestResult({ success: false, message: `Error OpenCode (${res.status}): ${errData.error?.message || errData.message || res.statusText}` });
+        }
+        return;
+      }
+
+      // E. Fallback Success
       setTestResult({ success: true, message: `Configuración verificada para ${cfg.engine.toUpperCase()} (${cfg.model}) con Clave #${activeKeyIndex + 1}.` });
 
     } catch (err) {
@@ -811,8 +866,8 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
               <label className="block text-slate-400 mb-1.5 font-bold">
                 Proveedor para {targetSlot === 'character' ? 'Slot 1 (Fichas)' : 'Slot 2 (Combate)'}:
               </label>
-              <div className="grid grid-cols-3 md:grid-cols-5 gap-1.5">
-                {['gemini', 'openrouter', 'totalgpt', 'perplexity', 'deepseek', 'groq', 'openai', 'ollama', 'custom'].map(pId => (
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+                {['gemini', 'openrouter', 'opencode', 'totalgpt', 'perplexity', 'deepseek', 'groq', 'openai', 'ollama', 'custom'].map(pId => (
                   <button
                     key={pId}
                     onClick={() => handleProviderChange(pId)}
@@ -974,15 +1029,15 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
               </div>
             )}
 
-            {/* Custom Base URL (TotalGPT / Custom / Ollama) */}
-            {(activeSlotConfig.engine === 'totalgpt' || activeSlotConfig.engine === 'custom' || activeSlotConfig.engine === 'ollama') && (
+            {/* Custom Base URL (OpenCode / TotalGPT / Custom / Ollama) */}
+            {(activeSlotConfig.engine === 'opencode' || activeSlotConfig.engine === 'totalgpt' || activeSlotConfig.engine === 'custom' || activeSlotConfig.engine === 'ollama') && (
               <div>
                 <label className="block text-slate-400 mb-1 font-bold text-[11px]">
-                  🌐 Base URL / Endpoint (Por defecto: {activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'https://...'}):
+                  🌐 Base URL / Endpoint (Por defecto: {activeSlotConfig.engine === 'opencode' ? 'https://api.opencode.ai/v1 (o local http://localhost:4096/v1)' : activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'https://...'}):
                 </label>
                 <input
                   type="text"
-                  placeholder={activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'https://api.tu-servidor.com/v1'}
+                  placeholder={activeSlotConfig.engine === 'opencode' ? 'https://api.opencode.ai/v1' : activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'https://api.tu-servidor.com/v1'}
                   value={activeSlotConfig.customBaseUrl || ''}
                   onChange={(e) => handleFieldChange('customBaseUrl', e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-amber-300 text-xs font-mono"

@@ -121,14 +121,18 @@ export default function Navbar({
   ];
 
   const getProviderBadge = (cfg) => {
-    const isGuest = (!cfg?.apiKey && cfg?.engine === 'openrouter') || (!cfg?.apiKey && !cfg?.customBaseUrl && cfg?.engine !== 'ollama');
+    const isGuest = (!cfg?.apiKey && cfg?.engine === 'openrouter') || (!cfg?.apiKey && !cfg?.customBaseUrl && cfg?.engine !== 'ollama' && cfg?.engine !== 'opencode');
     if (isGuest) {
       return { name: '🟢 Modo Invitado (Gratis)', color: 'text-emerald-300 border-emerald-500/50 bg-emerald-950/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]' };
     }
     switch (cfg?.engine) {
+      case 'opencode': return { name: 'OpenCode Go / Zen', color: 'text-cyan-400 border-cyan-500/40 bg-cyan-950/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]' };
       case 'totalgpt': return { name: 'TotalGPT / Infermatic', color: 'text-amber-400 border-amber-500/40 bg-amber-950/40' };
       case 'openrouter': return { name: 'OpenRouter Pro', color: 'text-purple-400 border-purple-500/40 bg-purple-950/40' };
       case 'gemini': return { name: 'Gemini Oficial', color: 'text-blue-400 border-blue-500/40 bg-blue-950/40' };
+      case 'perplexity': return { name: 'Perplexity AI', color: 'text-teal-400 border-teal-500/40 bg-teal-950/40' };
+      case 'deepseek': return { name: 'DeepSeek Oficial', color: 'text-sky-400 border-sky-500/40 bg-sky-950/40' };
+      case 'groq': return { name: 'Groq Ultra-Speed', color: 'text-orange-400 border-orange-500/40 bg-orange-950/40' };
       case 'openai': return { name: 'OpenAI GPT-4o', color: 'text-emerald-400 border-emerald-500/40 bg-emerald-950/40' };
       case 'custom': return { name: 'Custom API', color: 'text-amber-400 border-amber-500/40 bg-amber-950/40' };
       case 'ollama':

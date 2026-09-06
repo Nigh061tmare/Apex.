@@ -102,6 +102,52 @@ export const FREE_MODEL_CATALOG = {
     tags: ['audit', 'agentic', 'long-context', 'team-combos', 'synergies']
   },
 
+  // 4. OPENCODE GO / ZEN HIGH-PERFORMANCE SUITE
+  'opencode-go/deepseek-v4-flash': {
+    id: 'opencode-go/deepseek-v4-flash',
+    name: 'OpenCode DeepSeek V4 Flash',
+    provider: 'OpenCode',
+    category: 'simulation_math',
+    contextWindow: 1000000,
+    maxOutputTokens: 65536,
+    isFree: true,
+    description: '1M Contexto con aceleración DSpark. Rendimiento extremo en simulación y generación de fichas.',
+    tags: ['opencode', 'flash', 'dspark', 'speed', 'combat']
+  },
+  'opencode-go/deepseek-v4-pro': {
+    id: 'opencode-go/deepseek-v4-pro',
+    name: 'OpenCode DeepSeek V4 Pro',
+    provider: 'OpenCode',
+    category: 'reasoning_lore',
+    contextWindow: 1000000,
+    maxOutputTokens: 65536,
+    isFree: true,
+    description: 'Razonamiento profundo para deducción táctica de hax, cálculo de tiers y debilidades lógicas.',
+    tags: ['opencode', 'reasoning', 'hax', 'tiers', 'logic']
+  },
+  'opencode-go/kimi-k2.7-code': {
+    id: 'opencode-go/kimi-k2.7-code',
+    name: 'OpenCode Kimi K2.7 Code',
+    provider: 'OpenCode',
+    category: 'code_engineering',
+    contextWindow: 512000,
+    maxOutputTokens: 32768,
+    isFree: true,
+    description: 'Especialista en estructuración JSON, validación de esquemas y reglas de combate.',
+    tags: ['opencode', 'code', 'json', 'schema', 'rules']
+  },
+  'opencode-go/qwen3.8-max': {
+    id: 'opencode-go/qwen3.8-max',
+    name: 'OpenCode Qwen 3.8 Max',
+    provider: 'OpenCode',
+    category: 'long_context_reasoning',
+    contextWindow: 1000000,
+    maxOutputTokens: 65536,
+    isFree: true,
+    description: 'Colosal 2.4T MoE para análisis enciclopédico de lore, hazañas y versos cruzados.',
+    tags: ['opencode', 'qwen', 'encyclopedic', 'lore', 'massive']
+  },
+
   // 4. EMBEDDINGS Y BÚSQUEDA SEMÁNTICA
   'nvidia/nemotron-3-embed-1b': {
     id: 'nvidia/nemotron-3-embed-1b',

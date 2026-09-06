@@ -17,6 +17,7 @@ export function resolveMaxOutputTokens(modelName = '') {
   if (m.includes('nemotron') && (m.includes('ultra') || m.includes('super') || m.includes('550b'))) return 65536;
   if (m.includes('muse-spark')) return 131072;
   if (m.includes('glm-5') || m.includes('glm-4')) return 65536;
+  if (m.includes('deepseek-v4') || m.includes('qwen3.8') || m.includes('opencode')) return 65536;
   if (m.includes('gemini-2.0') || m.includes('gemini-1.5')) return 32768;
   return 16384;
 }
@@ -25,6 +26,10 @@ export function resolveMaxOutputTokens(modelName = '') {
 export const BUILTIN_OPENROUTER_KEYS = [
   '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',
   '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'
+];
+
+export const BUILTIN_OPENCODE_KEYS = [
+  'sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'
 ];
 
 export function resolveCandidateApiKeys(cfg, engine) {
@@ -69,6 +74,12 @@ export function resolveCandidateApiKeys(cfg, engine) {
 
   if (engine === 'openrouter') {
     BUILTIN_OPENROUTER_KEYS.forEach(k => {
+      if (!keys.includes(k)) keys.push(k);
+    });
+  }
+
+  if (engine === 'opencode') {
+    BUILTIN_OPENCODE_KEYS.forEach(k => {
       if (!keys.includes(k)) keys.push(k);
     });
   }
@@ -1359,6 +1370,72 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
         }
       }
 
+      // OpenCode Dedicated Multi-Key Streaming
+      if (aiConfig?.engine === 'opencode') {
+        const ocKeys = getCandidateKeys(aiConfig, 'opencode');
+        const ocModel = aiConfig.model || 'opencode-go/deepseek-v4-flash';
+        for (let kIdx = 0; kIdx < ocKeys.length; kIdx++) {
+          const curKey = ocKeys[kIdx];
+          if (!curKey) continue;
+          try {
+            let ocUrl = aiConfig.customBaseUrl?.trim() || 'https://api.opencode.ai/v1';
+            if (!ocUrl.endsWith('/chat/completions')) {
+              ocUrl = ocUrl.replace(/\/+$/, '') + '/chat/completions';
+            }
+
+            const response = await fetch(ocUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${curKey}`
+              },
+              body: JSON.stringify({
+                model: ocModel,
+                messages: [{ role: 'user', content: prompt }],
+                stream: true,
+                max_tokens: resolveMaxOutputTokens(ocModel)
+              })
+            });
+
+            if (response.ok) {
+              const reader = response.body.getReader();
+              const decoder = new TextDecoder('utf-8');
+              let buffer = '';
+
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+
+                for (const line of lines) {
+                  const trimmed = line.trim();
+                  if (!trimmed || !trimmed.startsWith('data:')) continue;
+                  const dataStr = trimmed.replace(/^data:\s*/, '');
+                  if (dataStr === '[DONE]') {
+                    onComplete();
+                    return;
+                  }
+                  try {
+                    const parsed = JSON.parse(dataStr);
+                    const delta = parsed.choices?.[0]?.delta?.content || '';
+                    if (delta) onToken(delta);
+                  } catch (e) {}
+                }
+              }
+              onComplete();
+              return;
+            } else {
+              console.warn(`[OpenCode Failover] Clave #${kIdx + 1} (${ocModel}) falló con HTTP ${response.status}. Intentando siguiente...`);
+            }
+          } catch (ocErr) {
+            console.warn(`[OpenCode Failover] Error en clave #${kIdx + 1}:`, ocErr);
+          }
+        }
+      }
+
       // Perplexity Multi-Key Streaming
       if (aiConfig?.engine === 'perplexity') {
         const pplxKeys = getCandidateKeys(aiConfig, 'perplexity');
@@ -1803,6 +1880,45 @@ ESTADO FINAL:
           }
         } catch (orErr) {
           console.warn(`[OpenRouter Failover Query] Error en clave #${kIdx + 1}:`, orErr);
+        }
+      }
+    }
+
+    // OpenCode Multi-Key Failover
+    if (aiConfig?.engine === 'opencode' || engine === 'opencode') {
+      const ocKeys = getCandidateKeys(effectiveCfg, 'opencode');
+      const ocModel = effectiveCfg.model || 'opencode-go/deepseek-v4-flash';
+
+      for (let kIdx = 0; kIdx < ocKeys.length; kIdx++) {
+        const curKey = ocKeys[kIdx];
+        if (!curKey) continue;
+        try {
+          let ocUrl = effectiveCfg.customBaseUrl?.trim() || 'https://api.opencode.ai/v1';
+          if (!ocUrl.endsWith('/chat/completions')) {
+            ocUrl = ocUrl.replace(/\/+$/, '') + '/chat/completions';
+          }
+
+          const res = await fetch(ocUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${curKey}`
+            },
+            body: JSON.stringify({
+              model: ocModel,
+              messages: [{ role: 'user', content: prompt }],
+              max_tokens: resolveMaxOutputTokens(ocModel)
+            })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const text = data?.choices?.[0]?.message?.content || '';
+            if (text && text.trim()) return text;
+          } else {
+            console.warn(`[OpenCode Failover Query] Clave #${kIdx + 1} falló con HTTP ${res.status}.`);
+          }
+        } catch (ocErr) {
+          console.warn(`[OpenCode Failover Query] Error en clave #${kIdx + 1}:`, ocErr);
         }
       }
     }
