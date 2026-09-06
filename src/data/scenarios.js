@@ -231,17 +231,6 @@ export const SCENARIOS = [
     civilians: false
   },
   {
-    id: "eclipse-berserk",
-    name: "El Eclipse — Dimensión del Dios Mano",
-    universe: "Berserk",
-    desc: "El plano dimensional donde el God Hand convoca el sacrificio del Falcon of Darkness. Un abismo de penumbra roja con fragmentos de mundo flotando.",
-    sensory: "Un olor a hierro y carne quemada impregna el aire. El suelo está formado por cuerpos de apóstoles apiñados. Un eclipse solar permanente tiñe todo de rojo sangre profundo.",
-    terrainEffect: "El plano potencia a los demonios y apóstoles. Los guerreros sin marca de sacrificio pierden un 10% de resistencia por el ambiente demoníaco. El territorio es infinito: no hay borde.",
-    gravity: "0.8G (Dimensional)",
-    temperature: "Sofocante (55°C, calor demoníaco)",
-    civilians: false
-  },
-  {
     id: "marineford-batalla-suprema",
     name: "Marineford — La Gran Guerra del Siglo",
     universe: "One Piece",
@@ -374,17 +363,6 @@ export const SCENARIOS = [
     civilians: false
   },
   {
-    id: "valley-of-the-end",
-    name: "El Valle del Fin (Cascada de los Fundadores)",
-    universe: "Naruto Shippuden",
-    desc: "Garganta colosal flanqueada por las estatuas ciclópeas de Hashirama Senju y Madara Uchiha unidas por sellos Shinobi, divididas por una catarata ensordecedora y un lago caudaloso.",
-    sensory: "Rocío constante de agua fría vaporizada por el choque de energía. El rugido atronador de millones de litros de agua cayendo por segundo amortigua cualquier sonido menor. Olor a piedra húmeda, musgo y chakra concentrado.",
-    terrainEffect: "Superficie de agua para combate anfibio o caminata sobre chakra. Cabezas de las estatuas utilizables como puntos de ventaja táctica elevada. Muros de roca escarpada para rebotes y derribos.",
-    gravity: "1G (Tierra Shinobi)",
-    temperature: "Fresca y húmeda (16°C, brisa de catarata)",
-    civilians: false
-  },
-  {
     id: "malevolent-shrine-domain",
     name: "Expansión de Dominio: Santuario Malévolo",
     universe: "Jujutsu Kaisen",
@@ -415,17 +393,6 @@ export const SCENARIOS = [
     terrainEffect: "Zonas con gravedad anómala que permiten saltos monumentales. Escombros colosales de acero alienígena como cobertura o proyectiles telequinéticos.",
     gravity: "0.5G a 1.5G (Anomalías Gravitatorias)",
     temperature: "Fría desértica (4°C)",
-    civilians: false
-  },
-  {
-    id: "tokyo-underground-dome",
-    name: "Cúpula Subterránea del Tokyo Dome (Arena Sin Reglas)",
-    universe: "Baki the Grappler",
-    desc: "Foso de combate circular de 30 metros de diámetro a 6 pisos bajo tierra, rodeado por paredes de acero y arena empapada con la sangre y dientes de cientos de gladiadores.",
-    sensory: "Olor a sudor, sangre seca y cloroformo. El eco ensordecedor de los golpes contra la carne desnuda resuena en las paredes de hormigón. Gradas privadas para los hombres más poderosos del mundo.",
-    terrainEffect: "Espacio cerrado claustrofóbico. Cero escape: no hay esquinas ni cuerdas. La arena del suelo absorbe impactos pero puede usarse para cegar al rival.",
-    gravity: "1G (Tierra)",
-    temperature: "Húmeda y calurosa (29°C por la multitud)",
     civilians: false
   },
   {
@@ -536,6 +503,50 @@ export const SCENARIOS = [
     terrainEffect: "Borde directo a una caída libre de 10 kilómetros hacia la Tierra. Baldosas blancas indestructibles ante ataques mundanos. El Reloj de Arena y la torre de observación ofrecen cobertura vertical.",
     gravity: "1G (Tierra de Alta Altitud)",
     temperature: "Fresca y pura (14°C, bajo oxígeno)",
+    civilians: false
+  },
+  {
+    id: "vacio-interestelar-profundidad",
+    name: "Vacío Interestelar Profundo — Cinturón de Asteroides",
+    universe: "Espacio Cósmico (Multiverso)",
+    desc: "El abismo puro entre sistemas estelares: oscuridad total salpicada por micro-meteoritos, nubes de polvo cósmico, estrellas lejanas y la fría radiación de fondo del universo.",
+    sensory: "No hay aire: el sonido no viaja salvo por conducción de energía. La luz de las estrellas es la única iluminación. La temperatura es de 3 Kelvin de fondo.",
+    terrainEffect: "SIN ATMÓSFERA: los luchadores deben usar Ki, aura o traje para respirar. Gravedad cero total; cada movimiento conserva impulso. Los asteroides ofrecen cobertura móvil y plataformas de salto. Las técnicas de fuego/plasma se comportan de forma anómala en el vacío.",
+    gravity: "0G (Microgravedad Total)",
+    temperature: "3K (Cero Absoluto Cósmico)",
+    civilians: false
+  },
+  {
+    id: "dimension-bolsillo-infinita",
+    name: "Dimensión de Bolsillo Infinita — Espacio de Entrenamiento",
+    universe: "APEX Original / Híbrido",
+    desc: "Un plano de batalla contenido en un espacio dimensional plegado: infinito en extensión pero sellado del mundo exterior, con cielo sintético, gravedad ajustable y arquitectura geométrica flotante.",
+    sensory: "El cielo es un holograma perfecto. No hay horizonte visible: plataformas de luz y cubos geométricos flotan en todas direcciones. El silencio es absoluto salvo el propio combate.",
+    terrainEffect: "El dueño de la dimensión puede alterar gravedad y geometría (teletransportar plataformas). El espacio es infinito pero SÍ se puede escapar si se rompe el sello dimensional. Los ataques que agujerean realidades interactúan con el tejido sintético.",
+    gravity: "1G a 20G (Ajustable por el anfitrión)",
+    temperature: "Controlada (21°C, ambiente sintético)",
+    civilians: false
+  },
+  {
+    id: "plano-mental-compartido",
+    name: "Plano Mental Compartido — Batalla en la Mente",
+    universe: "APEX Original / Híbrido",
+    desc: "El campo de batalla se materializa dentro de la psique compartida de los combatientes: paisajes oníricos moldeados por sus recuerdos, miedos y voluntad.",
+    sensory: "El terreno cambia con las emociones: tormentas de ira, junglas de miedo, océanos de nostalgia. Cada pensamiento poderoso materializa estructuras transitorias.",
+    terrainEffect: "El poder mental/psíquico (Ilusiones, Expansión de Dominio, Manipulación Mental, Stands psíquicos) se potencia +20%. Las técnicas físicas puras funcionan pero dependen de la estabilidad mental del usuario. Romper la concentración del rival colapsa estructuras sobre él. Daño mental = daño real aquí.",
+    gravity: "Variable onírica (según la psique dominante)",
+    temperature: "Psico-sensible (variable)",
+    civilians: false
+  },
+  {
+    id: "anillo-teletransporte-continuo",
+    name: "Anillo de Teletransporte Continuo — Relámpagos Dimensionales",
+    universe: "APEX Original / Híbrido",
+    desc: "Una arena circular dividida en 8 sectores que se teletransportan aleatoriamente cada pocos segundos a otras coordenadas del multiverso (desierto, océano, volcán, espacio, ciudad...).",
+    sensory: "El mundo parpadea: un segundo estás en un desierto rojo y al siguiente bajo el agua o en una llanura volcánica. La desorientación es constante.",
+    terrainEffect: "Cada 5-10 segundos los sectores cambian de bioma con efectos distintos (agua: ahogamiento lento sin Ki; volcán: quemaduras; espacio: falta de oxígeno). Los luchadores con teletransporte propio ganan ventaja táctica al predecir los saltos. Romper el anillo central desactiva el efecto.",
+    gravity: "1G (constante en todos los biomas)",
+    temperature: "Variable según bioma activo",
     civilians: false
   }
 ];

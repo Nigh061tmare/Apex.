@@ -6,7 +6,7 @@ import {
   Users, UserPlus, UserCheck, Edit3, Check, FileText, GitBranch
 } from 'lucide-react';
 import SearchableCharacterSelector from './SearchableCharacterSelector.jsx';
-import { FRANCHISE_GROUPS, DB_PACKS } from '../services/franchiseHelper';
+import { FRANCHISE_GROUPS, DB_PACKS, THEME_PACKS } from '../services/franchiseHelper';
 import { SimulationEngine } from '../services/simulationEngine';
 import { SoundFX } from '../services/soundFx';
 import { enrichMatchNarrative } from '../services/narrativeFormatter';
@@ -43,6 +43,7 @@ export default function TournamentModal({
   // Advanced Randomizer Filter States
   const [filterFranchise, setFilterFranchise] = useState('all');
   const [filterDBPack, setFilterDBPack] = useState('none'); // packs de Dragon Ball
+  const [filterThemePack, setFilterThemePack] = useState('none'); // packs temáticos
   const [filterTier, setFilterTier] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [seedMode, setSeedMode] = useState('random'); // 'random' | 'balanced' | 'cross_universe'
@@ -266,6 +267,16 @@ export default function TournamentModal({
           return;
         }
       }
+    } else if (filterThemePack !== 'none') {
+      // 0b. Packs temáticos (protagonistas, villanos, dioses...)
+      const tpack = THEME_PACKS.find(p => p.id === filterThemePack);
+      if (tpack) {
+        pool = pool.filter(c => tpack.matches(c));
+        if (pool.length < 2) {
+          alert(`El pack "${tpack.name}" no tiene suficientes luchadores (${pool.length}). Amplía o cambia de pack.`);
+          return;
+        }
+      }
     } else if (filterFranchise !== 'all') {
       // 1. Franchise Filter
       const group = FRANCHISE_GROUPS.find(g => g.id === filterFranchise);
@@ -328,7 +339,7 @@ export default function TournamentModal({
     setActiveTab('bracket');
 
     try { SoundFX.playFanfare?.(); } catch {}
-    const packName = filterDBPack !== 'none' ? (DB_PACKS.find(p => p.id === filterDBPack)?.name || '') : '';
+    const packName = filterDBPack !== 'none' ? (DB_PACKS.find(p => p.id === filterDBPack)?.name || '') : filterThemePack !== 'none' ? (THEME_PACKS.find(p => p.id === filterThemePack)?.name || '') : '';
     setToastMsg(`🎯 Torneo generado con éxito (${tournamentSize} luchadores)${packName ? ` · ${packName}` : ''}.`);
     setTimeout(() => setToastMsg(null), 3500);
   };
@@ -2004,6 +2015,54 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
               )}
             </div>
 
+            {/* Packs Temáticos — arquetipos y roles narrativos */}
+            <div className="p-3.5 rounded-xl bg-gradient-to-br from-rose-950/30 via-slate-900 to-purple-950/20 border border-rose-500/30 space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <label className="block text-rose-300 font-bold text-xs flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-rose-400" />
+                  🎯 Packs Temáticos (Arquetipos)
+                </label>
+                {filterThemePack !== 'none' && (
+                  <button
+                    type="button"
+                    onClick={() => setFilterThemePack('none')}
+                    className="text-[10px] font-mono text-slate-500 hover:text-red-400 transition cursor-pointer"
+                  >
+                    ✕ Quitar pack
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {THEME_PACKS.map((pack) => {
+                  const isActive = filterThemePack === pack.id;
+                  const count = characters.filter(pack.matches).length;
+                  return (
+                    <button
+                      key={pack.id}
+                      type="button"
+                      onClick={() => { setFilterThemePack(isActive ? 'none' : pack.id); if (!isActive) setFilterDBPack('none'); }}
+                      title={pack.description}
+                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer border ${
+                        isActive
+                          ? 'bg-rose-500/25 border-rose-400 text-rose-200 shadow-md shadow-rose-950/40'
+                          : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-rose-500/50 hover:text-rose-200'
+                      }`}
+                    >
+                      <span>{pack.name}</span>
+                      <span className={`px-1.5 py-0.5 rounded font-mono text-[9px] ${isActive ? 'bg-rose-400/30 text-rose-100' : 'bg-slate-800 text-slate-400'}`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              {filterThemePack !== 'none' && (
+                <p className="text-[10px] font-mono text-rose-300/70">
+                  🎯 Pack activo: {THEME_PACKS.find(p => p.id === filterThemePack)?.description}
+                </p>
+              )}
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               
               {/* Franchise / Universe Group */}
@@ -2080,7 +2139,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Generar Torneo con estos Filtros ({tournamentSize} Guerreros)
-                  {filterDBPack !== 'none' ? ` · ${DB_PACKS.find(p => p.id === filterDBPack)?.name || ''}` : ''}
+                  {filterDBPack !== 'none' ? ` · ${DB_PACKS.find(p => p.id === filterDBPack)?.name || ''}` : filterThemePack !== 'none' ? ` · ${THEME_PACKS.find(p => p.id === filterThemePack)?.name || ''}` : ''}
                 </span>
               </button>
             </div>

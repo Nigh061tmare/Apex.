@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
+import ToastHost from './components/ToastHost.jsx';
+import { patchNativeAlerts } from './services/uxFeedback';
 import './index.css';
 
 class ErrorBoundary extends Component {
@@ -103,9 +105,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary>
       <App />
+      <ToastHost />
     </ErrorBoundary>
   </React.StrictMode>
 );
+
+// Convierte todos los alert() de la app en toasts elegantes
+patchNativeAlerts();
 
 // PWA: registra el service worker solo en producción (evita cachés molestas en dev)
 if ('serviceWorker' in navigator && import.meta.env.PROD) {

@@ -62,7 +62,7 @@ const DEFAULT_AI_CONFIG = {
   }
 };
 
-const ROSTER_VERSION = 'v26.0_CANONICAL_770_ACTIVE';
+const ROSTER_VERSION = 'v26.0_CANONICAL';
 
 export default function App() {
   // Load characters: el roster canónico se inyecta tras el primer paint vía
@@ -981,7 +981,7 @@ export default function App() {
           APEX ENGINE
         </h1>
         <p className="mt-2 text-xs font-mono text-slate-500">
-          Cargando roster canónico V26 · 770 combatientes · {ROSTER_VERSION}
+          Cargando roster canónico V26 · {INITIAL_CHARACTERS.length || '...'} combatientes · {ROSTER_VERSION}
         </p>
         <div className="mt-4 w-48 h-1 rounded-full bg-slate-800 overflow-hidden">
           <div className="h-full w-1/3 rounded-full bg-gradient-to-r from-red-500 to-amber-400 animate-[shimmer_1.2s_ease-in-out_infinite]" />
@@ -1340,7 +1340,7 @@ export default function App() {
 
         {/* Engine Baseline Status Indicator */}
         <footer className="pt-6 pb-2 text-center text-xs text-slate-500 font-mono tracking-wide select-none">
-          <span>APEX Engine V26 · 770 activos · 13 archivados · Roster canónico inmutable</span>
+          <span>APEX Engine {ROSTER_VERSION.split('_')[0].toUpperCase()} · {characters.length} activos · 13 archivados · Roster canónico inmutable</span>
         </footer>
 
       </main>

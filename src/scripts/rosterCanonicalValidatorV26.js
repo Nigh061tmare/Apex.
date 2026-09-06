@@ -85,10 +85,10 @@ export function validateV26CanonicalRoster() {
   const deprecatedRecords = v26.deprecatedRecords || [];
 
   // Minimum validations:
-  // 1. activeCount === 770 (Fase final 2026-09-06: +6 fichas, -Granolah dup)
-  checks['activeCount_770'] = Object.keys(activeRecords).length === 770;
-  if (Object.keys(activeRecords).length !== 770) {
-    issues.push(`activeCount mismatch: expected 770, found ${Object.keys(activeRecords).length}`);
+  // 1. activeCount === 772 (Namek 2026-09-06: +Krilin Namek, +Gohan Namek)
+  checks['activeCount_772'] = Object.keys(activeRecords).length === 772;
+  if (Object.keys(activeRecords).length !== 772) {
+    issues.push(`activeCount mismatch: expected 772, found ${Object.keys(activeRecords).length}`);
   }
 
   // 2. deprecatedCount === 13
@@ -97,11 +97,11 @@ export function validateV26CanonicalRoster() {
     issues.push(`deprecatedCount mismatch: expected 13, found ${deprecatedRecords.length}`);
   }
 
-  // 3. activeCount + deprecatedCount === 783
+  // 3. activeCount + deprecatedCount === 785
   const totalCensus = Object.keys(activeRecords).length + deprecatedRecords.length;
-  checks['totalCensus_783'] = totalCensus === 783;
-  if (totalCensus !== 783) {
-    issues.push(`totalCensus mismatch: expected 783, found ${totalCensus}`);
+  checks['totalCensus_785'] = totalCensus === 785;
+  if (totalCensus !== 785) {
+    issues.push(`totalCensus mismatch: expected 785, found ${totalCensus}`);
   }
 
   // 4. Unique active IDs
@@ -241,14 +241,14 @@ export function validateV26CanonicalRoster() {
   // 2026-09-06 R1: Revision Bloque 0 Clasico segun referencia maestra (+9 formas canonicas) => 1316
   // 2026-09-06 R2: Sagas Z corregidas + 2 fichas nuevas (Trunks Adol 13, SSG Ritual) => 1318
   // 2026-09-06 R3: Saga Buu corregida + 2 fichas nuevas (Buutenks, Gohan Universidad) => 1325
-// 2026-09-06 Fan-mangas: +SSJ1 Bardock (+1), +SSJ3 Raditz (+1) => 1342 + 2 = 1344
+// 2026-09-06 Namek: +Krilin Namek (3 formas), +Gohan Namek (6 formas) => 1350 + 9 = 1359
   let totalForms = 0;
   Object.values(activeRecords).forEach(c => {
     if (c.forms) totalForms += c.forms.length;
   });
-  checks['totalForms_1344'] = totalForms === 1344;
-  if (totalForms !== 1344) {
-    issues.push(`Total forms mismatch: expected 1344, found ${totalForms}`);
+  checks['totalForms_1359'] = totalForms === 1359;
+  if (totalForms !== 1359) {
+    issues.push(`Total forms mismatch: expected 1359, found ${totalForms}`);
   }
 
   // DB-form contamination guard: NO Super Saiyan / Kaio-ken / Oozaru forms allowed
@@ -416,13 +416,26 @@ async function validateCharactersTacticalIntegrity() {
   try {
     const mod = await import(pathToFileURL(CHARACTERS_FILE).href + `?v=${Date.now()}`);
     uiCharCount = (mod.INITIAL_CHARACTERS || []).length;
+
+    // Advertencia (no bloqueante): texto plantilla prohibido por las Reglas de Oro
+    // en forms[].stats (ej. "Capacidades de combate activas al 100%...").
+    const TEMPLATE_STATS = /Capacidades de combate activas al 100%/i;
+    let templateHits = 0;
+    for (const c of mod.INITIAL_CHARACTERS || []) {
+      for (const f of (c.forms || [])) {
+        if (f?.stats && TEMPLATE_STATS.test(f.stats)) templateHits++;
+      }
+    }
+    if (templateHits > 0) {
+      console.warn(`⚠️ ADVERTENCIA DE CALIDAD: ${templateHits} formas usan el texto plantilla genérico prohibido ("Capacidades de combate activas al 100%...") en forms[].stats. Revisa tacticalProfiles.json.`);
+    }
   } catch (e) {
     issues.push(`No se pudo importar characters.js: ${e.message}`);
   }
 
-  checks['uiCharCount_770'] = uiCharCount >= 770;
-  if (uiCharCount < 770) {
-    issues.push(`UI character count mismatch: expected at least 770, found ${uiCharCount}`);
+  checks['uiCharCount_772'] = uiCharCount >= 772;
+  if (uiCharCount < 772) {
+    issues.push(`UI character count mismatch: expected at least 772, found ${uiCharCount}`);
   }
 
   return { success: issues.length === 0, checks, issues, characterCount: uiCharCount };

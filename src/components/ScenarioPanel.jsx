@@ -5,6 +5,7 @@ import {
   Wand2, Check, Copy
 } from 'lucide-react';
 import { SCENARIOS } from '../data/scenarios';
+import { DYNAMIC_ARENAS, LEGENDARY_ARTIFACTS } from '../data/arenasArtifactsBosses';
 import { SimulationEngine } from '../services/simulationEngine';
 import { getTranslation } from '../services/i18n';
 import { evaluateInterdimensionalModifiers, DEFAULT_BRIDGE_CONFIG } from '../lib/crossFranchiseBridge';
@@ -59,7 +60,46 @@ export default function ScenarioPanel({
     }
   }, [customScenarios]);
 
-  const allScenarios = [...SCENARIOS, ...customScenarios];
+  // Arenas Legendarias & Dinámicas (compendio arenasArtifactsBosses.js) mapeadas
+// al esquema de escenario jugable. Llevan reglas especiales (hazard, tags) que
+// se inyectan en la descripción para que el motor de simulación las respete.
+const LEGENDARY_ARENA_UNIVERSES = {
+  'arena-torneo-del-poder': 'Dragon Ball Super',
+  'arena-shibuya-ruinas': 'Jujutsu Kaisen',
+  'arena-namek-colapso': 'Dragon Ball Z',
+  'arena-camara-del-tiempo': 'Dragon Ball Z',
+  'arena-metropolis-evacuacion': 'DC Comics',
+  'arena-hueco-mundo': 'Bleach',
+  'arena-valhalla-coliseo': 'Shuumatsu no Valkyrie (Record of Ragnarok)',
+  'arena-kaioshin-jardin': 'Dragon Ball Super',
+  'arena-z-city-colmena': 'One Punch Man',
+  'arena-zona-cero-antimonitor': 'DC Comics'
+};
+
+const mapDynamicArenaToScenario = (arena) => {
+  const tagLines = Object.entries(arena.tagInteractions || {})
+    .map(([k, v]) => `• ${k}: ${v}`)
+    .join('\n');
+  return {
+    id: arena.id,
+    name: `⚡ ${arena.name}`,
+    universe: LEGENDARY_ARENA_UNIVERSES[arena.id] || 'Arenas Legendarias APEX',
+    isLegendary: true,
+    desc: `${arena.type}. Rango: ${arena.tierRange}. ${arena.modifiers}`,
+    sensory: `Condiciones: ${(arena.initialStates || []).join(', ') || 'Estándar'}.`,
+    terrainEffect: `REGLAS ESPECIALES DE LA ARENA:\n• ${arena.hazardZone}\n• Riesgo colateral: ${arena.collateralRisk}\nInteracciones por arquetipo:\n${tagLines}\nContra-tags: ${(arena.counterTags || []).join(', ')}`,
+    gravity: 'Variable (ver reglas de la arena)',
+    temperature: 'Variable',
+    civilians: false
+  };
+};
+
+const legendaryScenarios = DYNAMIC_ARENAS.map(mapDynamicArenaToScenario);
+
+// Artefactos legendarios jugables (se adjuntan a la premisa del combate)
+const ARTIFACT_UNIVERSES_LABEL = '🧿 Artefacto Legendario';
+
+const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
 
   const handleAddArena = (e) => {
     e.preventDefault();
@@ -1318,6 +1358,47 @@ export default function ScenarioPanel({
                 ✕
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Artefactos Legendarios — adjuntan sus reglas a la premisa del combate */}
+        <div className="space-y-1.5 pt-1">
+          <div className="flex items-center justify-between text-[11px] flex-wrap gap-1">
+            <span className="text-slate-300 font-bold flex items-center gap-1.5">
+              <span className="text-cyan-400">🧿</span>
+              <span>Artefactos Legendarios (equipables):</span>
+            </span>
+            <span className="text-[10px] text-slate-500">Pulsa uno para añadir sus reglas a la premisa</span>
+          </div>
+          <div className="flex items-center gap-1.5 flex-wrap text-[10px]">
+            {LEGENDARY_ARTIFACTS.map(art => (
+              <button
+                key={art.id}
+                type="button"
+                title={`${art.type} — ${art.effect}`}
+                onClick={() => setModifiers(prev => ({
+                  ...prev,
+                  customContext: [
+                    prev.customContext,
+                    `\n🧿 ARTEFACTO EQUIPADO: ${art.name} (${art.type}).\nEFECTO: ${art.effect}\nLIMITACIONES: ${art.limitations}\nCONDICIÓN DE USO: ${art.useCondition}`
+                  ].filter(Boolean).join('\n')
+                }))}
+                className="px-2 py-1 rounded-lg bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-700/50 text-cyan-200 font-bold transition cursor-pointer"
+              >
+                🧿 {art.name}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setModifiers(prev => ({
+                ...prev,
+                customContext: (prev.customContext || '').replace(/\n🧿 ARTEFACTO EQUIPADO:.*$/s, '')
+              }))}
+              className="px-2 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 transition cursor-pointer"
+              title="Quitar el último artefacto equipado"
+            >
+              ✕ Quitar
+            </button>
           </div>
         </div>
 

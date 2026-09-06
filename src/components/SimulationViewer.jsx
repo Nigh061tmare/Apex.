@@ -16,6 +16,33 @@ import { getTranslation, translateCombatChronicle } from '../services/i18n';
 const STORAGE_KEY_COMBAT_HISTORY = 'apex_combat_history';
 const STORAGE_KEY_ORACLE_COINS = 'apex_oracle_coins';
 
+// Cuotas dinámicas de apuesta basadas en la diferencia real de poder (Tier).
+// Probabilidad = scoreA/(scoreA+scoreB); cuota = 1.1/prob (mín 1.05, máx 10).
+function computeFightOdds(charA, charB) {
+  const tierScore = (t) => {
+    const s = (t || '').toLowerCase();
+    if (s.includes('high 1-a') || s.includes('outer')) return 140;
+    if (s.includes('1-a') || s.includes('omni')) return 130;
+    if (s.includes('low 1-a') || s.includes('hyper')) return 125;
+    if (s.includes('1-b') || s.includes('2-a')) return 115;
+    if (s.includes('1-c') || s.includes('2-b') || s.includes('2-c') || s.includes('multi')) return 105;
+    if (s.includes('3-a') || s.includes('3-b') || s.includes('universal')) return 95;
+    if (s.includes('3-c') || s.includes('4-a') || s.includes('galac')) return 80;
+    if (s.includes('4-b') || s.includes('4-c') || s.includes('solar') || s.includes('estelar')) return 65;
+    if (s.includes('5-a') || s.includes('5-b') || s.includes('planet')) return 50;
+    if (s.includes('5-c') || s.includes('6-') || s.includes('7-a') || s.includes('contin')) return 35;
+    if (s.includes('7-b') || s.includes('7-c') || s.includes('8-')) return 20;
+    return 10;
+  };
+  const scoreA = tierScore(charA?.tier);
+  const scoreB = tierScore(charB?.tier);
+  const total = scoreA + scoreB || 2;
+  const probA = Math.max(0.1, Math.min(0.9, scoreA / total));
+  const probB = 1 - probA;
+  const clamp = (o) => Math.max(1.05, Math.min(10, o));
+  return { oddsA: clamp(Number((1.1 / probA).toFixed(2))), oddsB: clamp(Number((1.1 / probB).toFixed(2))), probA, probB };
+}
+
 // Configuración visual por cada tipo de fase
 const PHASE_STYLES = {
   'analisis': {
@@ -1113,9 +1140,11 @@ export default function SimulationViewer({
         }
       }
 
-      let multiplier = winnerGuessed ? 2.2 : 0;
+      // Cuota dinámica según el poder real de cada bando (antes payout fijo x2.2)
+      const { oddsA, oddsB } = computeFightOdds(simulationData?.charA, simulationData?.charB);
+      let multiplier = winnerGuessed ? (currentBet.winner === 'A' ? oddsA : currentBet.winner === 'B' ? oddsB : 2.2) : 0;
       if (currentBet.blackSwan === 'yes' && fullOutput.toLowerCase().includes('cisne negro')) {
-        multiplier += 0.8;
+        multiplier += 0.5;
       }
 
       if (multiplier > 0) {
@@ -1259,7 +1288,7 @@ export default function SimulationViewer({
       simulationId: `sim-v2-${Date.now()}`,
       createdAt: new Date().toISOString(),
       engineVersion: "2.0.0",
-      rosterVersion: "V25",
+      rosterVersion: "V26",
       randomSeed: simulationData?.seed || Math.floor(Math.random() * 1000000),
       scenario: simulationData?.scenario || {},
       matchMode: simulationData?.matchMode || "1v1",
@@ -1280,7 +1309,7 @@ export default function SimulationViewer({
       const campaignObj = {
         campaignId: `campaign-${Date.now()}`,
         name: `Campaña: ${nameA} vs ${nameB}`,
-        baseRosterVersion: "V25",
+        baseRosterVersion: "V26",
         selectedBranch: "alfa",
         participants: [nameA, nameB],
         verdict: verdictInfo?.winner || nameA,

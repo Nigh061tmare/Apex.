@@ -8,6 +8,7 @@ dist/
 .env
 .env.local
 .env.*.local
+.cloud_sync_store.json
 *.backup.*.js
 *.bak_*
 *.bak

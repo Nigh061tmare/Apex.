@@ -1573,10 +1573,28 @@
         },
         {
           "id": "form_2",
+          "name": "Super Saiyan",
+          "kiNumeric": 2850000000.0,
+          "kiFormatted": "2.850.000.000",
+          "multiplier": "$\\times 50$",
+          "tier": "4-B",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_3",
+          "name": "Super Saiyan 2",
+          "kiNumeric": 5700000000.0,
+          "kiFormatted": "5.700.000.000",
+          "multiplier": "$\\times 100$",
+          "tier": "4-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_4",
           "name": "Gohan Definitivo (Ultimate / Kaio-shin)",
           "kiNumeric": 77000000000.0,
           "kiFormatted": "77.000.000.000",
-          "multiplier": "$\\times 800$",
+          "multiplier": "$\\times 1351$",
           "tier": "3-C",
           "isApexCustom": false
         }
@@ -1874,7 +1892,7 @@
     },
     "krilin-saga-saiyan-namek": {
       "id": "krilin-saga-saiyan-namek",
-      "name": "Krilin Saga Saiyan Namek",
+      "name": "Krilin (Saga Saiyan)",
       "baseTier": "Low 5-B",
       "baseKiNumeric": 1770.0,
       "baseKiFormatted": "1.770",
@@ -1882,7 +1900,7 @@
       "forms": [
         {
           "id": "form_1",
-          "name": "Krilin (Post-Entrenamiento Kaio-sama)",
+          "name": "Krilin (Post-Entrenamiento Kaio-sama / vs Vegeta)",
           "kiNumeric": 1770.0,
           "kiFormatted": "1.770",
           "multiplier": "$\\times 1$",
@@ -2508,7 +2526,7 @@
     },
     "son-gohan-ni-o-saga-saiyan-namek-830": {
       "id": "son-gohan-ni-o-saga-saiyan-namek-830",
-      "name": "Son Gohan Niño Saga Saiyan Namek",
+      "name": "Son Gohan Niño (Saga Saiyan)",
       "baseTier": "5-B",
       "baseKiNumeric": 1100.0,
       "baseKiFormatted": "1.100",
@@ -2516,7 +2534,7 @@
       "forms": [
         {
           "id": "form_1",
-          "name": "Gohan (Base Post-Entrenamiento)",
+          "name": "Gohan (Base / Batalla vs Vegeta)",
           "kiNumeric": 1100.0,
           "kiFormatted": "1.100",
           "multiplier": "$\\times 1$",
@@ -2525,7 +2543,7 @@
         },
         {
           "id": "form_2",
-          "name": "Rage Boost",
+          "name": "Rage Boost (Ira vs Saibaiman/Vegeta)",
           "kiNumeric": 2800.0,
           "kiFormatted": "2.800",
           "multiplier": "$\\times 2.55$",
@@ -2534,7 +2552,7 @@
         },
         {
           "id": "form_3",
-          "name": "Oozaru",
+          "name": "Oozaru (Cola Saiyan)",
           "kiNumeric": 11000.0,
           "kiFormatted": "11.000",
           "multiplier": "$\\times 10$",
@@ -6339,15 +6357,33 @@
         },
         {
           "id": "form_2",
-          "name": "Estado Definitivo (Ultimate)",
-          "kiNumeric": 77000000000.0,
-          "kiFormatted": "77.000.000.000",
-          "multiplier": "$\\times 1351$",
-          "tier": "2-C",
+          "name": "Super Saiyan",
+          "kiNumeric": 2850000000.0,
+          "kiFormatted": "2.850.000.000",
+          "multiplier": "$\\times 50$",
+          "tier": "4-B",
           "isApexCustom": false
         },
         {
           "id": "form_3",
+          "name": "Super Saiyan 2",
+          "kiNumeric": 5700000000.0,
+          "kiFormatted": "5.700.000.000",
+          "multiplier": "$\\times 100$",
+          "tier": "4-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_4",
+          "name": "Estado Definitivo (Ultimate)",
+          "kiNumeric": 77000000000.0,
+          "kiFormatted": "77.000.000.000",
+          "multiplier": "$\\times 1351$",
+          "tier": "3-C",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_5",
           "name": "Gohan Beast",
           "kiNumeric": 77000000000000.0,
           "kiFormatted": "77.000.000.000.000",
@@ -10436,7 +10472,7 @@
           "kiNumeric": 206000000.0,
           "kiFormatted": "206.000.000",
           "multiplier": "$\\times 2$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         },
         {
@@ -10459,11 +10495,20 @@
         },
         {
           "id": "form_5",
-          "name": "Super Saiyan 3 (Control Energético Superior / Normal)",
+          "name": "Super Saiyan 3 (Control Energético Superior)",
           "kiNumeric": 41200000000.0,
           "kiFormatted": "41.200.000.000",
           "multiplier": "$\\times 400$",
           "tier": "3-C",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_6",
+          "name": "Super Saiyajin Normal (Ki Contenido Perfecto / Iris Turquesa)",
+          "kiNumeric": 82400000000.0,
+          "kiFormatted": "82.400.000.000",
+          "multiplier": "$\\times 800$",
+          "tier": "3-A",
           "isApexCustom": false
         }
       ],
@@ -10795,11 +10840,20 @@
         },
         {
           "id": "form_4",
-          "name": "Super Saiyan 3 (Vegeta U18 / Normal)",
+          "name": "Super Saiyan 3 (Vegeta U18 / Control Superior)",
           "kiNumeric": 40000000000.0,
           "kiFormatted": "40.000.000.000",
           "multiplier": "$\\times 400$",
           "tier": "3-C",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_5",
+          "name": "Super Saiyajin Normal (Ki Contenido Perfecto / Iris Turquesa)",
+          "kiNumeric": 80000000000.0,
+          "kiFormatted": "80.000.000.000",
+          "multiplier": "$\\times 800$",
+          "tier": "3-A",
           "isApexCustom": false
         }
       ],
@@ -21807,7 +21861,7 @@
           "name": "Super Saiyan",
           "kiNumeric": 2500000000.0,
           "kiFormatted": "2.500.000.000",
-          "multiplier": "$\\times 5$",
+          "multiplier": "$\\times 50$",
           "tier": "4-A",
           "isApexCustom": false
         },
@@ -21816,7 +21870,7 @@
           "name": "Super Saiyan 2",
           "kiNumeric": 5000000000.0,
           "kiFormatted": "5.000.000.000",
-          "multiplier": "$\\times 1$",
+          "multiplier": "$\\times 100$",
           "tier": "4-A",
           "isApexCustom": false
         }
@@ -22207,6 +22261,113 @@
           "kiFormatted": "310.000.000",
           "multiplier": "$\\times 1$",
           "tier": "4-B",
+          "isApexCustom": false
+        }
+      ],
+      "powerSchema": {
+        "tierStatus": "internally_aligned"
+      }
+    },
+    "krilin-saga-namek": {
+      "id": "krilin-saga-namek",
+      "name": "Krilin (Saga Namek)",
+      "baseTier": "Low 5-B",
+      "baseKiNumeric": 1900.0,
+      "baseKiFormatted": "1.900",
+      "universe": "DRAGON BALL Z",
+      "forms": [
+        {
+          "id": "form_1",
+          "name": "Krilin (Base / Llegada a Namek)",
+          "kiNumeric": 1900.0,
+          "kiFormatted": "1.900",
+          "multiplier": "$\\times 1$",
+          "tier": "Low 5-B",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_2",
+          "name": "Krilin (Post-Despertar del Gurú)",
+          "kiNumeric": 20000.0,
+          "kiFormatted": "20.000",
+          "multiplier": "$\\times 10.5$",
+          "tier": "5-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_3",
+          "name": "Krilin (Post-Curación de Dende)",
+          "kiNumeric": 28000.0,
+          "kiFormatted": "28.000",
+          "multiplier": "$\\times 14.7$",
+          "tier": "5-A",
+          "isApexCustom": false
+        }
+      ],
+      "powerSchema": {
+        "tierStatus": "internally_aligned"
+      }
+    },
+    "son-gohan-ni-o-saga-namek": {
+      "id": "son-gohan-ni-o-saga-namek",
+      "name": "Son Gohan Niño (Saga Namek)",
+      "baseTier": "Low 5-B",
+      "baseKiNumeric": 2000.0,
+      "baseKiFormatted": "2.000",
+      "universe": "DRAGON BALL Z",
+      "forms": [
+        {
+          "id": "form_1",
+          "name": "Gohan (Base / Llegada a Namek)",
+          "kiNumeric": 2000.0,
+          "kiFormatted": "2.000",
+          "multiplier": "$\\times 1$",
+          "tier": "Low 5-B",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_2",
+          "name": "Gohan (Post-Despertar del Gurú)",
+          "kiNumeric": 21000.0,
+          "kiFormatted": "21.000",
+          "multiplier": "$\\times 10.5$",
+          "tier": "5-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_3",
+          "name": "Gohan (Post-Casi Morir vs Recoome / Mini Zenkai)",
+          "kiNumeric": 25000.0,
+          "kiFormatted": "25.000",
+          "multiplier": "$\\times 12.5$",
+          "tier": "5-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_4",
+          "name": "Gohan (Post-Curación de Dende / 1.er Zenkai)",
+          "kiNumeric": 36000.0,
+          "kiFormatted": "36.000",
+          "multiplier": "$\\times 18$",
+          "tier": "5-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_5",
+          "name": "Gohan (Rage Boost / Ira de Saiyan)",
+          "kiNumeric": 45000.0,
+          "kiFormatted": "45.000",
+          "multiplier": "$\\times 22.5$",
+          "tier": "5-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_6",
+          "name": "Gohan (Rage Post-1.er Zenkai)",
+          "kiNumeric": 1250000.0,
+          "kiFormatted": "1.250.000",
+          "multiplier": "$\\times 625$",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],

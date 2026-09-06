@@ -26,7 +26,7 @@ const v26CharList = Array.isArray(v26Data.characters)
   ? v26Data.characters
   : Object.values(v26Data.characters);
 
-// Construct canonical INITIAL_CHARACTERS strictly from v26Data.characters (770 active)
+// Construct canonical INITIAL_CHARACTERS strictly from v26Data.characters (772 active)
 export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
   const tactical = tacticalMap.get(v26Char.id);
 
@@ -131,8 +131,8 @@ export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
 });
 
 // Development / Runtime Assertions
-if (INITIAL_CHARACTERS.length !== 770) {
-  throw new Error(`[APEX FATAL] INITIAL_CHARACTERS must have exactly 770 active characters, found ${INITIAL_CHARACTERS.length}`);
+if (INITIAL_CHARACTERS.length !== 772) {
+  throw new Error(`[APEX FATAL] INITIAL_CHARACTERS must have exactly 772 active characters, found ${INITIAL_CHARACTERS.length}`);
 }
 
 const seenIds = new Set();

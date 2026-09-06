@@ -359,4 +359,80 @@ export const DB_PACKS = [
   }
 ];
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 🎯 PACKS TEMÁTICOS — agrupan luchadores por arquetipo, rol narrativo o
+// estilo de combate (no por franquicia). Ideales para torneos con sabor.
+// `matches(c)` recibe la ficha fusionada (name/universe/tier/haxTags/speed).
+// ─────────────────────────────────────────────────────────────────────────────
+export const THEME_PACKS = [
+  {
+    id: 'theme_protagonists',
+    name: '🔥 Protagonistas Icónicos',
+    description: 'Los héroes principales de cada franquicia (Goku, Naruto, Luffy, Ichigo, Saitama, Gojo...)',
+    matches: (c) => {
+      const full = `${c.name || ''} ${c.universe || ''}`;
+      return /goku|vegeta|naruto|sasuke|luffy|ichigo|saitama|gon|deku|tanjiro|itadori|jolyne|jojo|mark grayson|rocky|denji|gojo/i.test(full) && !/broly|frieza|cell|buu|madara|shigaraki|muzan|sukuna/i.test(full);
+    }
+  },
+  {
+    id: 'theme_villains',
+    name: '😈 Grandes Villanos',
+    description: 'Freezer, Cell, Buu, Sukuna, Madara, Thanos, Darkseid, Mahito...',
+    matches: (c) => {
+      const full = `${c.name || ''} ${c.universe || ''}`;
+      return /freezer|frieza|cell|buu|moro|jiren|madara|obito|pain|shigaraki|all for one|muzan|dio|kars|sukuna|mahito|geto|thanos|darkseid|joker|saitama-?ninja|atomic samurai/i.test(full);
+    }
+  },
+  {
+    id: 'theme_deities',
+    name: '🌌 Dioses & Entidades Cósmicas',
+    description: 'Bills, Whis, Zeno, Beerus, Zen-Oh, Odín, Zeus, Cósmico, Tribunal...',
+    matches: (c) => {
+      const full = `${c.name || ''} ${c.universe || ''}`;
+      const t = (c.tier || '');
+      return /dios|deidad|zeno|bills|whis|grand priest|zeus|odin|thor|amaterasu|hades|cósmico|cosmic|outerversal|omni/i.test(full) || /1-a|1-b|0/.test(t);
+    }
+  },
+  {
+    id: 'theme_speedsters',
+    name: '💨 Velocistas Supremos',
+    description: 'Flash, Sonic, velocidad MFTL+, inmensurable',
+    matches: (c) => {
+      const spd = typeof c.speed === 'object' ? `${c.speed.combat || ''} ${c.speed.attack || ''}` : String(c.speed || '');
+      const full = `${c.name || ''} ${spd}`;
+      return /mftl|immesurable|inconmensurable|faster than light|speedforce|sonic|flash|mach \d+|trascende el tiempo/i.test(full);
+    }
+  },
+  {
+    id: 'theme_regenerators',
+    name: '♻️ Regeneradores Imparables',
+    description: 'Reyes Demonio, Cell, Buu, Deadpool, Wolverine, Meruem...',
+    matches: (c) => {
+      const hax = Array.isArray(c.haxTags) ? c.haxTags.join(' ') : String(c.haxTags || '');
+      const full = `${c.name || ''} ${hax}`;
+      return /regenera|inmortal|deadpool|wolverine|meruem|cell|buu|demonio|sukuna/i.test(full);
+    }
+  },
+  {
+    id: 'theme_mentalists',
+    name: '🧠 Hax Conceptual & Psíquicos',
+    description: 'Stands, Expansión de Dominio, manipulación de la realidad',
+    matches: (c) => {
+      const hax = Array.isArray(c.haxTags) ? c.haxTags.join(' ') : String(c.haxTags || '');
+      const full = `${c.name || ''} ${hax}`;
+      return /stand|dominio|realidad|concepto|causalidad|tiempo|alma|mente|psíquico|limitless|infinito/i.test(full);
+    }
+  },
+  {
+    id: 'theme_martial_arts',
+    name: '🥋 Artes Marciales Puras',
+    description: 'Baki, Garou, Kenshiro, Goku (técnica), Wang Lee...',
+    matches: (c) => {
+      const full = `${c.name || ''} ${c.universe || ''}`;
+      const t = (c.tier || '');
+      return /baki|garou|kenshiro|martial|grappler|budo|yuichiro|doppo|musashi|jim carrey|wang lee/i.test(full) || (/7-[ab]|8-/.test(t) && /artes marciales|kung fu|karate/i.test(`${c.arsenal ? JSON.stringify(c.arsenal).slice(0, 400) : ''}`));
+    }
+  }
+];
+
 

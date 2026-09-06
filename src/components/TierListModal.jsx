@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, Download, Sparkles, RefreshCw, Plus, Trash2, MoveUp, MoveDown, 
   Share2, Image, Layers, Search, Filter, Check, Crown, Flame, Swords
@@ -14,8 +14,25 @@ const DEFAULT_TIERS = [
   { id: 'tier-d', label: 'D (Callejero / Humano)', color: 'from-purple-500 to-indigo-500', textColor: 'text-purple-400', items: [] }
 ];
 
+const STORAGE_KEY_TIERLIST = 'apex_tierlist_v1';
+
 export default function TierListModal({ isOpen, onClose, characters = [] }) {
-  const [tiers, setTiers] = useState(DEFAULT_TIERS);
+  const [tiers, setTiers] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_TIERLIST);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_TIERS;
+  });
+
+  // Persistencia automática de la tier list (antes se perdía al cerrar)
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEY_TIERLIST, JSON.stringify(tiers)); } catch (e) {}
+  }, [tiers]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFranchise, setSelectedFranchise] = useState('all');
   const [isExporting, setIsExporting] = useState(false);

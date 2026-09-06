@@ -1050,6 +1050,128 @@ app.get('/api/roster/:id', (req, res) => {
   }
 });
 
+// ==========================================
+// 8. CLOUD SYNC (multi-dispositivo) — persistencia en archivo JSON
+//    El serverless de Vercel (api/cloud/sync.js) era 100% en memoria y el
+//    rewrite de vercel.json apunta /api/* aquí (Render), así que este endpoint
+//    ES el que el frontend usa de verdad. Almacena en .cloud_sync_store.json
+//    (writable en Render/local; si falla la escritura, degrada a memoria).
+// ==========================================
+
+const CLOUD_STORE_PATH = path.join(__dirname, '.cloud_sync_store.json');
+let cloudVaultStore = new Map();
+let cloudAccountStore = new Map();
+let cloudLinkCodes = new Map();
+
+function loadCloudStore() {
+  try {
+    if (fs.existsSync(CLOUD_STORE_PATH)) {
+      const raw = JSON.parse(fs.readFileSync(CLOUD_STORE_PATH, 'utf8'));
+      cloudVaultStore = new Map(Object.entries(raw.vaults || {}));
+      cloudAccountStore = new Map(Object.entries(raw.accounts || {}));
+      cloudLinkCodes = new Map(Object.entries(raw.linkCodes || {}));
+    }
+  } catch (e) { /* store corrupto → empieza limpio */ }
+}
+function saveCloudStore() {
+  try {
+    const data = {
+      vaults: Object.fromEntries(cloudVaultStore),
+      accounts: Object.fromEntries(cloudAccountStore),
+      linkCodes: Object.fromEntries(cloudLinkCodes)
+    };
+    fs.writeFileSync(CLOUD_STORE_PATH, JSON.stringify(data), 'utf8');
+  } catch (e) { /* disco no escribible → queda en memoria */ }
+}
+loadCloudStore();
+// Limpieza periódica de códigos de enlace expirados
+setInterval(() => {
+  const now = Date.now();
+  for (const [code, item] of cloudLinkCodes) {
+    if (!item.expiresAt || item.expiresAt < now) cloudLinkCodes.delete(code);
+  }
+}, 60 * 1000).unref?.();
+
+// CORS ligero para el sync (el frontend llama al mismo origen en Render/Vercel)
+app.use('/api/cloud/sync', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  next();
+});
+
+app.get('/api/cloud/sync', (req, res) => {
+  const searchKey = (req.query.userId || req.query.identifier || '').toLowerCase().trim();
+  if (!searchKey) return res.status(400).json({ error: 'Debes proporcionar un userId o identificador.' });
+  const vault = cloudVaultStore.get(searchKey);
+  const account = cloudAccountStore.get(searchKey);
+  if (vault || account) return res.json({ success: true, vault: vault || null, account: account || null });
+  return res.status(404).json({ empty: true, message: 'No se encontraron datos en la nube para este identificador.' });
+});
+
+app.post('/api/cloud/sync', (req, res) => {
+  const data = req.body || {};
+  const action = data.action || req.query.action;
+
+  // Códigos de enlace rápido PC <-> móvil
+  if (action === 'create_link_code') {
+    const cleanCode = `APX-${Math.floor(1000 + Math.random() * 9000)}`;
+    cloudLinkCodes.set(cleanCode, {
+      code: cleanCode,
+      payload: data.payload || null,
+      account: data.account || null,
+      expiresAt: Date.now() + 1000 * 60 * 30
+    });
+    saveCloudStore();
+    return res.json({ success: true, code: cleanCode, message: `Código de enlace generado: ${cleanCode}. Válido por 30 minutos.` });
+  }
+
+  if (action === 'redeem_link_code') {
+    const targetCode = String(data.code || '').trim().toUpperCase();
+    const item = cloudLinkCodes.get(targetCode);
+    if (!item) return res.status(404).json({ success: false, error: 'Código de enlace no encontrado o expirado.' });
+    if (Date.now() > item.expiresAt) { cloudLinkCodes.delete(targetCode); saveCloudStore(); return res.status(410).json({ success: false, error: 'El código de enlace ha expirado.' }); }
+    return res.json({ success: true, payload: item.payload, account: item.account });
+  }
+
+  // Guardar / sincronizar bóveda de usuario
+  const uid = String(data.userId || '').toLowerCase().trim();
+  const email = String(data.userEmail || data.email || '').toLowerCase().trim();
+  const username = String(data.displayName || data.username || '').toLowerCase().trim();
+  if (!uid && !email && !username) return res.status(400).json({ error: 'Datos de usuario insuficientes.' });
+
+  const payload = {
+    userId: uid || `usr_${email}`,
+    userEmail: email,
+    displayName: data.displayName || data.username || 'Usuario APEX',
+    timestamp: new Date().toISOString(),
+    characters: data.characters || [],
+    combatHistory: data.combatHistory || [],
+    oracleCoins: data.oracleCoins ?? 1000,
+    customScenarios: data.customScenarios || [],
+    aiConfig: data.aiConfig || {}
+  };
+  const accountData = {
+    id: payload.userId,
+    email: payload.userEmail,
+    displayName: payload.displayName,
+    avatar: data.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(payload.displayName || payload.userEmail)}`,
+    lastSync: payload.timestamp
+  };
+
+  for (const key of [uid, email, username]) {
+    if (key) { cloudVaultStore.set(key, payload); cloudAccountStore.set(key, accountData); }
+  }
+  saveCloudStore();
+
+  return res.json({
+    success: true,
+    timestamp: payload.timestamp,
+    stats: { charactersCount: payload.characters.length, favoritesCount: (payload.combatHistory || []).filter(h => h && h.isFavorite).length, coins: payload.oracleCoins }
+  });
+});
+
 // SPA Fallback for production dist
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
