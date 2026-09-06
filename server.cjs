@@ -326,6 +326,16 @@ function getEndpointConfig(engine, model, apiKey, customBaseUrl) {
         model: model || 'anthropic/claude-3.5-sonnet',
         type: 'openai_chat'
       };
+    case 'opencode':
+      return {
+        url: (customBaseUrl?.trim() || 'https://api.opencode.ai/v1').replace(/\/$/, '') + '/chat/completions',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey || process.env.OPENCODE_API_KEY || 'sk-oWXywhsHA7JjbESuxKicEFsIDrc2571lbolSctGts2ZZCwypadBfMsr6Dizd6Mm1'}`
+        },
+        model: model || 'opencode-go/deepseek-v4-flash',
+        type: 'openai_chat'
+      };
     case 'openai':
       return {
         url: 'https://api.openai.com/v1/chat/completions',
@@ -390,7 +400,7 @@ app.post('/api/ai/test', async (req, res) => {
     }
 
     if (cfg.type === 'openai_chat') {
-      if (!apiKey && engine !== 'custom') return res.status(400).json({ success: false, message: 'Falta la API Key.' });
+      if (!apiKey && engine !== 'custom' && engine !== 'opencode') return res.status(400).json({ success: false, message: 'Falta la API Key.' });
       const response = await fetch(cfg.url, {
         method: 'POST',
         headers: cfg.headers,
