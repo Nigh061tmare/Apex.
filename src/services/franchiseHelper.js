@@ -275,4 +275,88 @@ export const UNIVERSE_PRESETS = [
   }
 ];
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 🐉 PACKS DE DRAGON BALL — torneos temáticos rápidos.
+// Agrupa las 358 fichas de Dragon Ball del roster por eras/sagas para rellenar
+// brackets al instante (Todo, Clásico+Z, Sin Super/Daima, Sin GT, Fan-Mangas…).
+// `matches(c)` recibe la ficha completa (universe + saga + name) y devuelve bool.
+// ─────────────────────────────────────────────────────────────────────────────
+export const DB_PACKS = [
+  {
+    id: 'db_todo',
+    name: '🐉 Todo Dragon Ball',
+    description: 'Las 358 fichas de todas las eras: Clásico, Z, GT, Super, Daima y fan-mangas',
+    matches: (c) => /dragon ball/i.test(`${c.universe || ''} ${c.saga || ''} ${c.name || ''}`)
+  },
+  {
+    id: 'db_clasico_z',
+    name: '🐉 Clásico + Z',
+    description: 'Era original + Z (incl. películas y OVAs) — sin GT, Super, Daima ni fan-mangas',
+    matches: (c) => {
+      const u = `${c.universe || ''} ${c.saga || ''}`;
+      return /dragon ball/i.test(u) && /clásico|z — películas|dragon ball z|multi-era/i.test(u) && !/super|daima|gt|fan-manga|multiverse|what-?if/i.test(u);
+    }
+  },
+  {
+    id: 'db_sin_super',
+    name: '🐉 Sin Super ni Daima',
+    description: 'Todo Dragon Ball menos las eras de Super y Daima (Clásico, Z, GT y fan-mangas)',
+    matches: (c) => {
+      const u = `${c.universe || ''} ${c.saga || ''}`;
+      return /dragon ball/i.test(u) && !/super|daima/i.test(u);
+    }
+  },
+  {
+    id: 'db_sin_gt',
+    name: '🐉 Sin GT',
+    description: 'Todo Dragon Ball menos la era GT',
+    matches: (c) => {
+      const u = `${c.universe || ''} ${c.saga || ''}`;
+      return /dragon ball/i.test(u) && !/(^|\s)gt(\s|$)/i.test(u) && !/dragon ball gt/i.test(u);
+    }
+  },
+  {
+    id: 'db_z_super',
+    name: '🐉 Z + Super + Daima',
+    description: 'Las eras modernas más potentes (incl. películas Z y OVAs) — sin clásico, GT ni fan-mangas',
+    matches: (c) => {
+      const u = `${c.universe || ''} ${c.saga || ''}`;
+      return /dragon ball/i.test(u) && /z|super|daima/i.test(u) && !/clásico|dragon ball gt|fan-manga|multiverse|what-?if/i.test(u);
+    }
+  },
+  {
+    id: 'db_fanmanga',
+    name: '🔮 Fan-Mangas & What-Ifs',
+    description: 'Kakumei, Multiverse, New Hope, Brokoly, After… (86 fichas)',
+    matches: (c) => {
+      const u = `${c.universe || ''} ${c.saga || ''}`;
+      return /dragon ball/i.test(u) && /fan-manga|multiverse|what-?if|kakumei|new hope|brokoly|db after/i.test(u);
+    }
+  },
+  {
+    id: 'db_gt',
+    name: '🐉 Solo GT',
+    description: 'La era GT (20 fichas)',
+    matches: (c) => /dragon ball gt/i.test(`${c.universe || ''} ${c.saga || ''}`)
+  },
+  {
+    id: 'db_daima',
+    name: '🐉 Solo Daima',
+    description: 'La era Daima (15 fichas)',
+    matches: (c) => /dragon ball daima/i.test(`${c.universe || ''} ${c.saga || ''}`)
+  },
+  {
+    id: 'db_clasico',
+    name: '🐉 Solo Clásico (Original)',
+    description: 'La era original de Dragon Ball (29 fichas)',
+    matches: (c) => /dragon ball \(clásico\)|dragon ball clásico/i.test(`${c.universe || ''} ${c.saga || ''}`)
+  },
+  {
+    id: 'db_super',
+    name: '🐉 Solo Super',
+    description: 'La era Dragon Ball Super (79 fichas)',
+    matches: (c) => /dragon ball super/i.test(`${c.universe || ''} ${c.saga || ''}`)
+  }
+];
+
 

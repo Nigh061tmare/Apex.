@@ -6,7 +6,7 @@ import {
   Users, UserPlus, UserCheck, Edit3, Check
 } from 'lucide-react';
 import SearchableCharacterSelector from './SearchableCharacterSelector.jsx';
-import { FRANCHISE_GROUPS } from '../services/franchiseHelper';
+import { FRANCHISE_GROUPS, DB_PACKS } from '../services/franchiseHelper';
 import { SoundFX } from '../services/soundFx';
 import { enrichMatchNarrative } from '../services/narrativeFormatter';
 
@@ -41,9 +41,19 @@ export default function TournamentModal({
 
   // Advanced Randomizer Filter States
   const [filterFranchise, setFilterFranchise] = useState('all');
+  const [filterDBPack, setFilterDBPack] = useState('none'); // packs de Dragon Ball
   const [filterTier, setFilterTier] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [seedMode, setSeedMode] = useState('random'); // 'random' | 'balanced' | 'cross_universe'
+
+  // Contadores en vivo de cada pack de Dragon Ball (recuento exacto sobre el roster)
+  const dbPackCounts = useMemo(() => {
+    const counts = {};
+    for (const pack of DB_PACKS) {
+      counts[pack.id] = characters.filter(pack.matches).length;
+    }
+    return counts;
+  }, [characters]);
 
   // Tournament History
   const [history, setHistory] = useState(() => {
@@ -204,8 +214,18 @@ export default function TournamentModal({
   const handleGenerateFilteredTournament = () => {
     let pool = [...characters];
 
-    // 1. Franchise Filter
-    if (filterFranchise !== 'all') {
+    // 0. Packs de Dragon Ball (tienen prioridad sobre el filtro genérico de franquicia)
+    if (filterDBPack !== 'none') {
+      const pack = DB_PACKS.find(p => p.id === filterDBPack);
+      if (pack) {
+        pool = pool.filter(c => pack.matches(c));
+        if (pool.length < 2) {
+          alert(`El pack "${pack.name}" no tiene suficientes luchadores (${pool.length}). Amplía o cambia de pack.`);
+          return;
+        }
+      }
+    } else if (filterFranchise !== 'all') {
+      // 1. Franchise Filter
       const group = FRANCHISE_GROUPS.find(g => g.id === filterFranchise);
       if (group && group.keywords.length > 0) {
         pool = pool.filter(c => {
@@ -266,7 +286,8 @@ export default function TournamentModal({
     setActiveTab('bracket');
 
     try { SoundFX.playFanfare?.(); } catch {}
-    setToastMsg(`🎯 Torneo generado con éxito (${tournamentSize} luchadores filtrados).`);
+    const packName = filterDBPack !== 'none' ? (DB_PACKS.find(p => p.id === filterDBPack)?.name || '') : '';
+    setToastMsg(`🎯 Torneo generado con éxito (${tournamentSize} luchadores)${packName ? ` · ${packName}` : ''}.`);
     setTimeout(() => setToastMsg(null), 3500);
   };
 
@@ -972,6 +993,54 @@ export default function TournamentModal({
               </p>
             </div>
 
+            {/* Packs de Dragon Ball — torneos temáticos rápidos */}
+            <div className="p-3.5 rounded-xl bg-gradient-to-br from-orange-950/30 via-slate-900 to-amber-950/20 border border-orange-500/30 space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <label className="block text-orange-300 font-bold text-xs flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-orange-400" />
+                  🐉 Packs de Dragon Ball (Torneos por Eras)
+                </label>
+                {filterDBPack !== 'none' && (
+                  <button
+                    type="button"
+                    onClick={() => setFilterDBPack('none')}
+                    className="text-[10px] font-mono text-slate-500 hover:text-red-400 transition cursor-pointer"
+                  >
+                    ✕ Quitar pack
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {DB_PACKS.map((pack) => {
+                  const isActive = filterDBPack === pack.id;
+                  const count = dbPackCounts[pack.id] || 0;
+                  return (
+                    <button
+                      key={pack.id}
+                      type="button"
+                      onClick={() => setFilterDBPack(isActive ? 'none' : pack.id)}
+                      title={pack.description}
+                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer border ${
+                        isActive
+                          ? 'bg-orange-500/25 border-orange-400 text-orange-200 shadow-md shadow-orange-950/40'
+                          : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-orange-500/50 hover:text-orange-200'
+                      }`}
+                    >
+                      <span>{pack.name}</span>
+                      <span className={`px-1.5 py-0.5 rounded font-mono text-[9px] ${isActive ? 'bg-orange-400/30 text-orange-100' : 'bg-slate-800 text-slate-400'}`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              {filterDBPack !== 'none' && (
+                <p className="text-[10px] font-mono text-orange-300/70">
+                  🎯 Pack activo: {DB_PACKS.find(p => p.id === filterDBPack)?.description}
+                </p>
+              )}
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               
               {/* Franchise / Universe Group */}
@@ -1047,7 +1116,9 @@ export default function TournamentModal({
                 className="w-full py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-amber-600 to-red-600 hover:from-purple-500 hover:to-red-500 text-white font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xl shadow-purple-950 text-sm"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Generar Torneo con estos Filtros ({tournamentSize} Guerreros)</span>
+                <span>Generar Torneo con estos Filtros ({tournamentSize} Guerreros)
+                  {filterDBPack !== 'none' ? ` · ${DB_PACKS.find(p => p.id === filterDBPack)?.name || ''}` : ''}
+                </span>
               </button>
             </div>
           </div>
