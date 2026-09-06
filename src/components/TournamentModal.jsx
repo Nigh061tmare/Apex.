@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   Trophy, Swords, Sparkles, RefreshCw, X, Play, Shield, ChevronRight, 
   Crown, Flame, Coins, Dices, FastForward, Award, CheckCircle, AlertCircle,
@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import SearchableCharacterSelector from './SearchableCharacterSelector.jsx';
 import { FRANCHISE_GROUPS, DB_PACKS } from '../services/franchiseHelper';
+import { SimulationEngine } from '../services/simulationEngine';
 import { SoundFX } from '../services/soundFx';
 import { enrichMatchNarrative } from '../services/narrativeFormatter';
 
@@ -64,6 +65,15 @@ export default function TournamentModal({
       return [];
     }
   });
+
+  // AI Tournament Simulation State
+  const [aiSimKey, setAiSimKey] = useState(null);   // "r-m" del combate que la IA está narrando
+  const [aiSimText, setAiSimText] = useState('');    // texto en streaming en vivo
+  const [aiAllRunning, setAiAllRunning] = useState(false);
+
+  // Ref de rondas SIEMPRE actualizado (evita closures obsoletas en bucles secuenciales)
+  const roundsRef = useRef([]);
+  useEffect(() => { roundsRef.current = rounds; }, [rounds]);
 
   useEffect(() => {
     if (isOpen && rounds.length === 0) {
@@ -361,7 +371,12 @@ export default function TournamentModal({
   };
 
   const advanceWinner = (roundIdx, matchIdx, winner, logText, fullNarrative = null) => {
-    const updatedRounds = [...rounds];
+    // Trabaja sobre roundsRef.current (siempre la versión más reciente), de modo
+    // que las simulaciones secuenciales (todo con IA) encadenen correctamente.
+    const prevRounds = Array.isArray(roundsRef.current) && roundsRef.current.length > 0
+      ? roundsRef.current
+      : rounds;
+    const updatedRounds = prevRounds.map(r => ({ ...r, matches: r.matches.map(m => ({ ...m })) }));
     updatedRounds[roundIdx].matches[matchIdx].winner = winner;
     updatedRounds[roundIdx].matches[matchIdx].log = logText;
     if (fullNarrative) {
@@ -386,7 +401,7 @@ export default function TournamentModal({
     }
 
     // Advance to next round
-    const isFinal = roundIdx === rounds.length - 1;
+    const isFinal = roundIdx === updatedRounds.length - 1;
     if (isFinal) {
       setChampion(winner);
       try { SoundFX.playChampionFanfare?.(); } catch {}
@@ -404,6 +419,7 @@ export default function TournamentModal({
     }
 
     setRounds(updatedRounds);
+    roundsRef.current = updatedRounds;
   };
 
   const handleSimulateFast = (roundIdx, matchIdx) => {
@@ -450,6 +466,141 @@ export default function TournamentModal({
       setToastMsg('⚔️ ¡Todo el torneo ha sido simulado con crónicas completas!');
       setTimeout(() => setToastMsg(null), 3500);
     }, 400);
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🧠 SIMULACIÓN DE TORNEO CON IA (narrativa redactada en vivo por el motor)
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // Prompt compacto de combate de torneo, cierra con "VENCEDOR: X" (formato APEX)
+  const buildTournamentAIPrompt = (charA, charB, roundName) => {
+    const techOf = (c) => {
+      const pool = [
+        c?.arsenal?.superAttacks?.[0],
+        c?.arsenal?.ultimateAttacks?.[0],
+        ...(Array.isArray(c?.abilities) ? c.abilities : [])
+      ].filter(Boolean);
+      return (typeof pool[0] === 'object' ? (pool[0].name || pool[0].desc) : pool[0]) || 'técnica de firma';
+    };
+    const formOf = (c) => c?.forms?.[0]?.name || 'Forma Base';
+    return `Eres el narrador oficial del torneo "${tournamentTitle}". Redacta en español el combate de ${roundName} entre:
+• Luchador A: ${charA.name} (${charA.universe || 'Multiverso'}, Tier ${charA.tier || '?'}, forma inicial: ${formOf(charA)}, técnica: ${techOf(charA)})
+• Luchador B: ${charB.name} (${charB.universe || 'Multiverso'}, Tier ${charB.tier || '?'}, forma inicial: ${formOf(charB)}, técnica: ${techOf(charB)})
+
+Narración: épica de torneo shōnen en 4 fases (Apertura → Intercambio → Fase Decisiva → Clímax), con acción descriptiva, técnicas y un momento de igualdad antes del desenlace.
+Decisión del vencedor: coherente con sus Tiers y Hax (el Tier superior y el arsenal más relevante deben imponerse; un Tier menor solo puede ganar por estrategia si la diferencia de poder es pequeña).
+TERMINA SIEMPRE con una línea exacta en este formato:
+VENCEDOR: Nombre completo del ganador`;
+  };
+
+  // Mapea el nombre del vencedor del relato a charA/charB por coincidencia de tokens
+  const extractWinnerFromNarrative = (narrative = '', charA, charB) => {
+    const verdict = narrative.match(/VENCEDOR:\s*([^\n\r]+)/i) || narrative.match(/GANADOR:\s*([^\n\r]+)/i);
+    if (!verdict) return null;
+    const winnerStr = verdict[1].replace(/[\*\_\[\]]/g, '').trim().toLowerCase();
+    const tokensA = (charA?.name || '').toLowerCase().split(/[\s\(\),:\.\/\-\_]+/).filter(Boolean);
+    const tokensB = (charB?.name || '').toLowerCase().split(/[\s\(\),:\.\/\-\_]+/).filter(Boolean);
+    const scoreA = tokensA.filter(t => winnerStr.includes(t)).length;
+    const scoreB = tokensB.filter(t => winnerStr.includes(t)).length;
+    if (scoreA > scoreB) return charA;
+    if (scoreB > scoreA) return charB;
+    if (tokensA.some(t => winnerStr.includes(t))) return charA;
+    if (tokensB.some(t => winnerStr.includes(t))) return charB;
+    return null;
+  };
+
+  // Simula UN combate con la IA. Resuelve el stream y devuelve true si la IA
+  // entregó un vencedor válido (si falla la conexión devuelve false para fallback).
+  const handleSimulateWithAI = async (roundIdx, matchIdx) => {
+    const current = Array.isArray(roundsRef.current) && roundsRef.current.length > 0 ? roundsRef.current : rounds;
+    const match = current[roundIdx]?.matches[matchIdx];
+    if (!match || !match.charA || !match.charB || match.winner) return false;
+    if (aiSimKey) return false; // ya hay una narración IA en curso
+
+    const simEngine = aiConfig?.simulationEngine || aiConfig || {};
+    if (!simEngine.engine || !simEngine.model) return false; // sin IA configurada → fallback local
+
+    const roundName = current[roundIdx]?.name || 'Combate';
+    const key = `${roundIdx}-${matchIdx}`;
+    setAiSimKey(key);
+    setAiSimText('');
+    try { SoundFX.playEnergyClash?.(); } catch {}
+
+    const prompt = buildTournamentAIPrompt(match.charA, match.charB, roundName);
+
+    return new Promise((resolve) => {
+      let fullText = '';
+      SimulationEngine.streamSimulation(
+        prompt,
+        simEngine,
+        (token) => {
+          fullText += token;
+          setAiSimText(fullText);
+        },
+        () => {
+          const aiWinner = extractWinnerFromNarrative(fullText, match.charA, match.charB);
+          if (aiWinner) {
+            const summaryLog = `🏆 Victoria para ${aiWinner.name} (narrada por IA).`;
+            advanceWinner(roundIdx, matchIdx, aiWinner, summaryLog, fullText);
+            setAiSimKey(null);
+            setAiSimText('');
+            resolve(true);
+          } else {
+            // IA respondió pero sin vencedor claro → fallback a crónica local
+            const { winner, fullNarrative, summaryLog } = generateTournamentMatchChronicle(match.charA, match.charB);
+            advanceWinner(roundIdx, matchIdx, winner, summaryLog, fullNarrative);
+            setAiSimKey(null);
+            setAiSimText('');
+            resolve(false);
+          }
+        },
+        (error) => {
+          console.warn('AI tournament match falló (fallback local):', error);
+          const { winner, fullNarrative, summaryLog } = generateTournamentMatchChronicle(match.charA, match.charB);
+          advanceWinner(roundIdx, matchIdx, winner, summaryLog, fullNarrative);
+          setAiSimKey(null);
+          setAiSimText('');
+          resolve(false);
+        }
+      );
+    });
+  };
+
+  // Simula TODOS los combates restantes con IA, ronda a ronda y en orden.
+  const handleSimulateAllWithAI = async () => {
+    if (aiAllRunning) return;
+    setAiAllRunning(true);
+    setToastMsg('🧠 IA narrando el torneo... (ronda a ronda)');
+    let guard = 0;
+    try {
+      while (guard++ < 200) {
+        const cur = roundsRef.current.length > 0 ? roundsRef.current : rounds;
+        let target = null;
+        for (let r = 0; r < cur.length && !target; r++) {
+          for (let m = 0; m < cur[r].matches.length; m++) {
+            const match = cur[r].matches[m];
+            if (match.charA && match.charB && !match.winner) { target = [r, m]; break; }
+          }
+        }
+        if (!target) break; // torneo completo
+        const ok = await handleSimulateWithAI(target[0], target[1]);
+        if (!ok && !roundsRef.current[target[0]]?.matches[target[1]]?.winner) {
+          // La IA no estaba configurada o falló sin fallback → crónica local directa
+          const match = roundsRef.current[target[0]].matches[target[1]];
+          if (match?.charA && match?.charB && !match.winner) {
+            const { winner, fullNarrative, summaryLog } = generateTournamentMatchChronicle(match.charA, match.charB);
+            advanceWinner(target[0], target[1], winner, summaryLog, fullNarrative);
+          }
+        }
+        await new Promise(res => setTimeout(res, 350));
+      }
+    } finally {
+      setAiAllRunning(false);
+      setAiSimKey(null);
+      setAiSimText('');
+      setToastMsg('🤖 ¡Torneo completado con narración IA! Revisa el cuadro y el historial.');
+      setTimeout(() => setToastMsg(null), 4500);
+    }
   };
 
   // Tournament Save & History Functions
@@ -663,13 +814,36 @@ export default function TournamentModal({
 
               <button
                 onClick={handleSimulateAllRemainingDetailed}
-                disabled={!!champion || isSimulatingDetailed}
+                disabled={!!champion || isSimulatingDetailed || aiAllRunning}
                 className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-amber-600 to-orange-600 hover:from-red-500 text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-red-950 text-[11px] disabled:opacity-50"
                 title="Simular crónicas completas y detalladas para todos los combates restantes"
               >
                 <Swords className={`w-3.5 h-3.5 ${isSimulatingDetailed ? 'animate-spin' : ''}`} />
                 <span>{isSimulatingDetailed ? 'Simulando...' : '⚔️ Simular Crónicas (Todo)'}</span>
               </button>
+
+              <button
+                onClick={handleSimulateAllWithAI}
+                disabled={!!champion || isSimulatingDetailed || aiAllRunning}
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-700 via-fuchsia-600 to-indigo-600 hover:from-purple-600 hover:to-indigo-500 text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-purple-950 text-[11px] disabled:opacity-50"
+                title="Narrar TODO el torneo con IA (ronda a ronda, con texto en vivo)"
+              >
+                <Sparkles className={`w-3.5 h-3.5 ${aiAllRunning ? 'animate-pulse' : ''}`} />
+                <span>{aiAllRunning ? '🤖 Narrando con IA...' : '🤖 Simular Todo con IA'}</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* AI Streaming Banner (torneo completo) */}
+        {aiAllRunning && (
+          <div className="mx-4 mt-2 p-3 rounded-xl bg-purple-950/50 border border-purple-500/40 text-purple-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+            <Sparkles className="w-4 h-4 text-fuchsia-400 animate-pulse shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="font-bold mb-1">🧠 La IA está narrando el torneo en vivo...</p>
+              <p className="text-purple-300/80 text-[10px] font-mono leading-relaxed break-words max-h-20 overflow-y-auto whitespace-pre-wrap">
+                {aiSimText || 'Conectando con el motor de narrativa...'}
+              </p>
             </div>
           </div>
         )}
@@ -792,7 +966,8 @@ export default function TournamentModal({
                           <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between gap-1.5">
                             <button
                               onClick={() => handleSimulateFast(rIdx, mIdx)}
-                              className="flex-1 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-[10px] transition cursor-pointer flex items-center justify-center gap-1"
+                              disabled={!!aiSimKey || aiAllRunning}
+                              className="flex-1 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-[10px] transition cursor-pointer flex items-center justify-center gap-1 disabled:opacity-40"
                               title="Resolución matemática rápida instantánea"
                             >
                               <FastForward className="w-3 h-3 text-slate-400" />
@@ -800,12 +975,33 @@ export default function TournamentModal({
                             </button>
                             <button
                               onClick={() => handleSimulateDetailed(rIdx, mIdx)}
-                              className="flex-1 py-1 rounded-lg bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 text-white font-bold text-[10px] transition cursor-pointer flex items-center justify-center gap-1 shadow-sm"
+                              disabled={!!aiSimKey || aiAllRunning}
+                              className="flex-1 py-1 rounded-lg bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 text-white font-bold text-[10px] transition cursor-pointer flex items-center justify-center gap-1 shadow-sm disabled:opacity-40"
                               title="Simular crónica de combate completa con fases y narrativa"
                             >
                               <Swords className="w-3 h-3" />
                               <span>⚔️ Crónica</span>
                             </button>
+                            <button
+                              onClick={() => handleSimulateWithAI(rIdx, mIdx)}
+                              disabled={!!aiSimKey || aiAllRunning}
+                              className={`flex-1 py-1 rounded-lg font-bold text-[10px] transition cursor-pointer flex items-center justify-center gap-1 disabled:opacity-40 border ${
+                                aiSimKey === `${rIdx}-${mIdx}`
+                                  ? 'bg-purple-600 text-white border-purple-400 shadow-md shadow-purple-950'
+                                  : 'bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-600 text-white border-purple-500/40 shadow-sm'
+                              }`}
+                              title="Narrar este combate con IA (texto en vivo, vencedor coherente con Tiers)"
+                            >
+                              <Sparkles className={`w-3 h-3 ${aiSimKey === `${rIdx}-${mIdx}` ? 'animate-spin' : ''}`} />
+                              <span>{aiSimKey === `${rIdx}-${mIdx}` ? 'Narrando...' : '🤖 IA'}</span>
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Streaming IA del combate individual */}
+                        {aiSimKey === `${rIdx}-${mIdx}` && (
+                          <div className="mt-2 p-2 rounded-lg bg-purple-950/50 border border-purple-500/40 text-purple-200 text-[10px] font-mono leading-relaxed max-h-24 overflow-y-auto whitespace-pre-wrap animate-in fade-in">
+                            {aiSimText || '🧠 La IA está redactando el combate...'}
                           </div>
                         )}
 
