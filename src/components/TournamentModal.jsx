@@ -3,7 +3,7 @@ import {
   Trophy, Swords, Sparkles, RefreshCw, X, Play, Shield, ChevronRight, 
   Crown, Flame, Coins, Dices, FastForward, Award, CheckCircle, AlertCircle,
   Save, History, Download, Trash2, Filter, Shuffle, Layers, BookOpen, ExternalLink,
-  Users, UserPlus, UserCheck, Edit3, Check
+  Users, UserPlus, UserCheck, Edit3, Check, FileText, GitBranch
 } from 'lucide-react';
 import SearchableCharacterSelector from './SearchableCharacterSelector.jsx';
 import { FRANCHISE_GROUPS, DB_PACKS } from '../services/franchiseHelper';
@@ -71,6 +71,32 @@ export default function TournamentModal({
   const [aiSimText, setAiSimText] = useState('');    // texto en streaming en vivo
   const [aiAllRunning, setAiAllRunning] = useState(false);
 
+  // Formato de torneo: 'elim' (eliminatoria) | 'liga' (todos contra todos)
+  const [formatMode, setFormatMode] = useState('elim');
+
+  // Podio completo: subcampeón + combate de bronce
+  const [runnerUp, setRunnerUp] = useState(null);
+  const [bronzeCandidates, setBronzeCandidates] = useState([]);
+  const [bronzeMatch, setBronzeMatch] = useState(null); // { charA, charB, winner }
+  const [thirdPlace, setThirdPlace] = useState(null);
+
+  // Cuotas calculadas por IA (por matchId)
+  const [customOdds, setCustomOdds] = useState({});
+  const [aiOddsLoading, setAiOddsLoading] = useState(false);
+
+  // Liga: todos contra todos
+  const [leagueMatches, setLeagueMatches] = useState([]);
+  const [leagueSimKey, setLeagueSimKey] = useState(null);
+  const [leagueSimText, setLeagueSimText] = useState('');
+  const [leagueSimRunning, setLeagueSimRunning] = useState(false);
+
+  // Exhibiciones del campeón vs retadores
+  const [showExhibitions, setShowExhibitions] = useState(false);
+  const [exhibitionOpponent, setExhibitionOpponent] = useState(null);
+  const [exhibitionResult, setExhibitionResult] = useState(null);
+  const [exhibitionRecord, setExhibitionRecord] = useState({ wins: 0, losses: 0 });
+  const [exhibitionBusy, setExhibitionBusy] = useState(false);
+
   // Ref de rondas SIEMPRE actualizado (evita closures obsoletas en bucles secuenciales)
   const roundsRef = useRef([]);
   useEffect(() => { roundsRef.current = rounds; }, [rounds]);
@@ -110,6 +136,12 @@ export default function TournamentModal({
     const oddsA = Number((1.1 / probA).toFixed(2));
     const oddsB = Number((1.1 / probB).toFixed(2));
     return { oddsA: Math.max(1.05, Math.min(10.0, oddsA)), oddsB: Math.max(1.05, Math.min(10.0, oddsB)) };
+  };
+
+  // Cuotas de un combate (usa las calculadas por IA si existen para ese matchId)
+  const getMatchOdds = (matchId, charA, charB) => {
+    if (customOdds[matchId]) return customOdds[matchId];
+    return calculateOdds(charA, charB);
   };
 
   const setupBracket = (gladiators, size) => {
@@ -370,6 +402,11 @@ export default function TournamentModal({
     return { winner, fullNarrative, summaryLog };
   };
 
+  const loserOf = (winner, match) => {
+    if (!winner || !match || !match.charA || !match.charB) return null;
+    return winner.id === match.charA.id ? match.charB : winner.id === match.charB.id ? match.charA : null;
+  };
+
   const advanceWinner = (roundIdx, matchIdx, winner, logText, fullNarrative = null) => {
     // Trabaja sobre roundsRef.current (siempre la versión más reciente), de modo
     // que las simulaciones secuenciales (todo con IA) encadenen correctamente.
@@ -377,10 +414,11 @@ export default function TournamentModal({
       ? roundsRef.current
       : rounds;
     const updatedRounds = prevRounds.map(r => ({ ...r, matches: r.matches.map(m => ({ ...m })) }));
-    updatedRounds[roundIdx].matches[matchIdx].winner = winner;
-    updatedRounds[roundIdx].matches[matchIdx].log = logText;
+    const match = updatedRounds[roundIdx].matches[matchIdx];
+    match.winner = winner;
+    match.log = logText;
     if (fullNarrative) {
-      updatedRounds[roundIdx].matches[matchIdx].fullNarrative = fullNarrative;
+      match.fullNarrative = fullNarrative;
     }
 
     // Check Bet Settlement
@@ -402,8 +440,27 @@ export default function TournamentModal({
 
     // Advance to next round
     const isFinal = roundIdx === updatedRounds.length - 1;
+    const isSemi = updatedRounds.length >= 3 && roundIdx === updatedRounds.length - 2;
+    if (isSemi && loserOf(winner, match)) {
+      // Los dos semifinalistas derrotados disputarán el combate de bronce
+      setBronzeCandidates(prev => {
+        const next = [...prev];
+        if (!next.includes(loserOf(winner, match))) next.push(loserOf(winner, match));
+        return next;
+      });
+    }
     if (isFinal) {
       setChampion(winner);
+      const finalLoser = match.charA.id === winner.id ? match.charB : match.charA;
+      setRunnerUp(finalLoser);
+      // Monta el combate de bronce con los 2 semifinalistas derrotados
+      setBronzeCandidates(prevCandidates => {
+        const cands = [...prevCandidates];
+        if (cands.length >= 2) {
+          setBronzeMatch({ charA: cands[0], charB: cands[1], winner: null, log: '' });
+        }
+        return cands;
+      });
       try { SoundFX.playChampionFanfare?.(); } catch {}
       saveTournamentToHistory(tournamentTitle, winner, updatedRounds);
     } else {
@@ -472,7 +529,7 @@ export default function TournamentModal({
   // 🧠 SIMULACIÓN DE TORNEO CON IA (narrativa redactada en vivo por el motor)
   // ───────────────────────────────────────────────────────────────────────────
 
-  // Prompt compacto de combate de torneo, cierra con "VENCEDOR: X" (formato APEX)
+  // Prompt de combate de torneo en formato 5 fases APEX (barras HP + VENCEDOR)
   const buildTournamentAIPrompt = (charA, charB, roundName) => {
     const techOf = (c) => {
       const pool = [
@@ -487,8 +544,25 @@ export default function TournamentModal({
 • Luchador A: ${charA.name} (${charA.universe || 'Multiverso'}, Tier ${charA.tier || '?'}, forma inicial: ${formOf(charA)}, técnica: ${techOf(charA)})
 • Luchador B: ${charB.name} (${charB.universe || 'Multiverso'}, Tier ${charB.tier || '?'}, forma inicial: ${formOf(charB)}, técnica: ${techOf(charB)})
 
-Narración: épica de torneo shōnen en 4 fases (Apertura → Intercambio → Fase Decisiva → Clímax), con acción descriptiva, técnicas y un momento de igualdad antes del desenlace.
-Decisión del vencedor: coherente con sus Tiers y Hax (el Tier superior y el arsenal más relevante deben imponerse; un Tier menor solo puede ganar por estrategia si la diferencia de poder es pequeña).
+Narración épica de torneo shōnen. Usa EXACTAMENTE este formato de 5 fases con biometría, cada fase con su título en ### y UNA línea ||BIOMETRICS|| al final de cada fase:
+
+### FASE 1: TANTEO
+[Apertura táctica, ambos se estudian]
+||BIOMETRICS|| HP_A: 100 | STM_A: 100 | HP_B: 100 | STM_B: 100 ||
+### FASE 2: INTERCAMBIO
+[Choque de técnicas, primera sangre]
+||BIOMETRICS|| HP_A: 80 | STM_A: 75 | HP_B: 85 | STM_B: 70 ||
+### FASE 3: ESCALADA
+[Transformaciones/estados activados, daño creciente]
+||BIOMETRICS|| HP_A: 55 | STM_A: 50 | HP_B: 60 | STM_B: 45 ||
+### FASE 4: FASE DECISIVA
+[Ventaja clara de un bando, el otro al límite]
+||BIOMETRICS|| HP_A: 30 | STM_A: 25 | HP_B: 45 | STM_B: 30 ||
+### FASE 5: CLÍMAX Y VEREDICTO
+[Resolución final con técnica definitiva]
+||BIOMETRICS|| HP_A: 0 | STM_A: 5 | HP_B: 20 | STM_B: 10 ||
+
+Decisión del vencedor: coherente con sus Tiers y Hax (el Tier superior y el arsenal más relevante deben imponerse; un Tier menor solo puede ganar por estrategia si la diferencia de poder es pequeña). Los valores de HP/STM deben decrecer coherentemente según quién domina.
 TERMINA SIEMPRE con una línea exacta en este formato:
 VENCEDOR: Nombre completo del ganador`;
   };
@@ -601,6 +675,407 @@ VENCEDOR: Nombre completo del ganador`;
       setToastMsg('🤖 ¡Torneo completado con narración IA! Revisa el cuadro y el historial.');
       setTimeout(() => setToastMsg(null), 4500);
     }
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🥇 PODIO COMPLETO — combate de bronce + subcampeón
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // Combate de bronce (rápido) entre los dos semifinalistas derrotados
+  const handleResolveBronzeFast = () => {
+    if (!bronzeMatch || !bronzeMatch.charA || !bronzeMatch.charB || bronzeMatch.winner) return;
+    const { winner, log } = resolveMatchFast({ charA: bronzeMatch.charA, charB: bronzeMatch.charB });
+    const loser = winner.id === bronzeMatch.charA.id ? bronzeMatch.charB : bronzeMatch.charA;
+    setBronzeMatch(prev => ({ ...prev, winner, log: `${log} 🥉 ${winner.name} se lleva el 3er puesto tras vencer a ${loser.name}.` }));
+    setThirdPlace(winner);
+    try { SoundFX.playBetWin?.(); } catch {}
+  };
+
+  // Combate de bronce narrado con IA
+  const handleResolveBronzeWithAI = async () => {
+    if (!bronzeMatch || !bronzeMatch.charA || !bronzeMatch.charB || bronzeMatch.winner || aiSimKey) return;
+    const simEngine = aiConfig?.simulationEngine || aiConfig || {};
+    if (!simEngine.engine || !simEngine.model) { handleResolveBronzeFast(); return; }
+    setAiSimKey('bronze');
+    setAiSimText('');
+    const prompt = `Eres el narrador del torneo "${tournamentTitle}". Redacta en español el COMBATE DE BRONCE (3er puesto) entre:
+• Luchador A: ${bronzeMatch.charA.name} (${bronzeMatch.charA.universe || 'Multiverso'}, Tier ${bronzeMatch.charA.tier || '?'})
+• Luchador B: ${bronzeMatch.charB.name} (${bronzeMatch.charB.universe || 'Multiverso'}, Tier ${bronzeMatch.charB.tier || '?'})
+
+Usa exactamente este formato de 5 fases con biometría (cada fase con su título ### FASE N):
+### FASE 1: TANTEO
+...narración...
+||BIOMETRICS|| HP_A: 100 | STM_A: 100 | HP_B: 100 | STM_B: 100 ||
+### FASE 2: INTERCAMBIO
+...
+### FASE 3: ESCALADA
+...
+### FASE 4: FASE DECISIVA
+...
+### FASE 5: CLÍMAX Y VEREDICTO
+...
+TERMINA SIEMPRE con:
+VENCEDOR: Nombre completo del ganador`;
+    return new Promise((resolve) => {
+      let fullText = '';
+      SimulationEngine.streamSimulation(
+        prompt,
+        simEngine,
+        (token) => { fullText += token; setAiSimText(fullText); },
+        () => {
+          const aiWinner = extractWinnerFromNarrative(fullText, bronzeMatch.charA, bronzeMatch.charB);
+          const winner = aiWinner || (resolveMatchFast({ charA: bronzeMatch.charA, charB: bronzeMatch.charB }).winner);
+          const loser = winner.id === bronzeMatch.charA.id ? bronzeMatch.charB : bronzeMatch.charA;
+          setBronzeMatch(prev => ({ ...prev, winner, log: `🏆 Victoria para ${winner.name} tras vencer a ${loser.name}.`, fullNarrative: fullText }));
+          setThirdPlace(winner);
+          setAiSimKey(null);
+          setAiSimText('');
+          try { SoundFX.playBetWin?.(); } catch {}
+          resolve(true);
+        },
+        () => { handleResolveBronzeFast(); setAiSimKey(null); setAiSimText(''); resolve(false); }
+      );
+    });
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🪙 CUOTAS DINÁMICAS POR IA
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const computeOddsForMatchWithAI = (matchId, charA, charB) => {
+    const simEngine = aiConfig?.simulationEngine || aiConfig || {};
+    if (!simEngine.engine || !simEngine.model) return Promise.resolve(false);
+    const prompt = `Analiza este combate de torneo y devuelve ÚNICAMENTE probabilidades de victoria en porcentaje:
+A: ${charA.name} (${charA.universe || ''}, Tier ${charA.tier || '?'})
+B: ${charB.name} (${charB.universe || ''}, Tier ${charB.tier || '?'})
+Considera Tiers, Hax y arsenal. Formato exacto de respuesta:
+PROB_A: 60% PROB_B: 40%`;
+    return new Promise((resolve) => {
+      let fullText = '';
+      SimulationEngine.streamSimulation(
+        prompt,
+        simEngine,
+        (token) => { fullText += token; },
+        () => {
+          const mA = fullText.match(/PROB_A:\s*(\d{1,3})/i);
+          const mB = fullText.match(/PROB_B:\s*(\d{1,3})/i);
+          const pA = mA ? Math.max(1, Math.min(99, parseInt(mA[1], 10))) : null;
+          const pB = mB ? Math.max(1, Math.min(99, parseInt(mB[1], 10))) : null;
+          if (pA !== null && pB !== null && pA + pB > 0) {
+            const oddsA = Number((1.1 / (pA / 100)).toFixed(2));
+            const oddsB = Number((1.1 / (pB / 100)).toFixed(2));
+            setCustomOdds(prev => ({ ...prev, [matchId]: { oddsA: Math.max(1.05, Math.min(10, oddsA)), oddsB: Math.max(1.05, Math.min(10, oddsB)) } }));
+            resolve(true);
+          } else resolve(false);
+        },
+        () => resolve(false)
+      );
+    });
+  };
+
+  const handleComputeAllOddsWithAI = async () => {
+    if (aiOddsLoading) return;
+    setAiOddsLoading(true);
+    setToastMsg('🪙 La IA está calculando las cuotas de cada combate...');
+    try {
+      const cur = roundsRef.current.length > 0 ? roundsRef.current : rounds;
+      for (let r = 0; r < cur.length; r++) {
+        for (let m = 0; m < cur[r].matches.length; m++) {
+          const match = cur[r].matches[m];
+          if (match.charA && match.charB && !match.winner && !customOdds[match.id]) {
+            await computeOddsForMatchWithAI(match.id, match.charA, match.charB);
+          }
+        }
+      }
+      setToastMsg('🪙 Cuotas IA aplicadas a todos los combates disponibles.');
+    } finally {
+      setAiOddsLoading(false);
+      setTimeout(() => setToastMsg(null), 3500);
+    }
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // ⚽ TORNEO LIGA (todos contra todos con puntos)
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const buildLeagueMatches = (list) => {
+    const pairs = [];
+    for (let i = 0; i < list.length; i++) {
+      for (let j = i + 1; j < list.length; j++) {
+        pairs.push({ id: `liga-${i}-${j}`, charA: list[i], charB: list[j], winner: null, log: '', fullNarrative: null });
+      }
+    }
+    return pairs;
+  };
+
+  const getLeagueStandings = (matches) => {
+    const table = {};
+    for (const p of participants) {
+      if (p) table[p.id] = { char: p, played: 0, wins: 0, draws: 0, losses: 0, points: 0 };
+    }
+    for (const match of matches) {
+      if (!match.winner) continue;
+      const a = table[match.charA?.id];
+      const b = table[match.charB?.id];
+      if (!a || !b) continue;
+      if (match.winner === 'draw') { a.played++; b.played++; a.draws++; b.draws++; a.points++; b.points++; }
+      else if (match.winner.id === match.charA.id) { a.played++; b.played++; a.wins++; b.losses++; a.points += 3; }
+      else if (match.winner.id === match.charB.id) { a.played++; b.played++; a.losses++; b.wins++; b.points += 3; }
+    }
+    return Object.values(table).sort((x, y) => y.points - x.points || (y.wins - x.wins) || (x.losses - y.losses));
+  };
+
+  const startLeague = () => {
+    const list = participants.filter(Boolean);
+    if (list.length < 3) { alert('La liga necesita al menos 3 participantes.'); return; }
+    setLeagueMatches(buildLeagueMatches(list));
+    setFormatMode('liga');
+    setChampion(null);
+    setActiveTab('league');
+  };
+
+  const simulateLeagueMatch = (matchId) => {
+    const idx = leagueMatches.findIndex(m => m.id === matchId);
+    const match = leagueMatches[idx];
+    if (!match || !match.charA || !match.charB || match.winner) return;
+    // Pequeña posibilidad de empate (~8%) para resultados realistas
+    const isDraw = Math.random() < 0.08;
+    if (isDraw) {
+      const updated = [...leagueMatches];
+      updated[idx] = { ...match, winner: 'draw', log: '🤝 Empate tras el límite de tiempo reglamentario.' };
+      setLeagueMatches(updated);
+      return;
+    }
+    const { winner, log } = resolveMatchFast(match);
+    const updated = [...leagueMatches];
+    updated[idx] = { ...match, winner, log };
+    setLeagueMatches(updated);
+  };
+
+  const simulateLeagueMatchWithAI = async (matchId) => {
+    const idx = leagueMatches.findIndex(m => m.id === matchId);
+    const match = leagueMatches[idx];
+    if (!match || !match.charA || !match.charB || match.winner || leagueSimKey) return;
+    const simEngine = aiConfig?.simulationEngine || aiConfig || {};
+    if (!simEngine.engine || !simEngine.model) { simulateLeagueMatch(matchId); return; }
+    setLeagueSimKey(matchId);
+    setLeagueSimText('');
+    const prompt = `Eres el narrador del torneo "${tournamentTitle}" (formato LIGA, todos contra todos). Redacta en español el partido de liga entre:
+• A: ${match.charA.name} (Tier ${match.charA.tier || '?'}, ${match.charA.universe || ''})
+• B: ${match.charB.name} (Tier ${match.charB.tier || '?'}, ${match.charB.universe || ''})
+
+Formato de 5 fases con biometría (### FASE N + línea ||BIOMETRICS|| HP_A/STM_A/HP_B/STM_B).
+El combate puede terminar en empate si ambos quedan incapacitados a la vez.
+TERMINA SIEMPRE con:
+VENCEDOR: Nombre completo del ganador
+o, en caso de empate:
+VENCEDOR: EMPATE`;
+    return new Promise((resolve) => {
+      let fullText = '';
+      SimulationEngine.streamSimulation(
+        prompt,
+        simEngine,
+        (token) => { fullText += token; setLeagueSimText(fullText); },
+        () => {
+          const isDraw = /VENCEDOR:\s*EMPATE/i.test(fullText);
+          let winner = null;
+          if (!isDraw) winner = extractWinnerFromNarrative(fullText, match.charA, match.charB);
+          const updated = [...leagueMatches];
+          if (isDraw || !winner) {
+            updated[idx] = { ...match, winner: isDraw ? 'draw' : resolveMatchFast(match).winner, log: isDraw ? '🤝 Empate' : '🏆 Victoria (IA)', fullNarrative: fullText };
+          } else {
+            updated[idx] = { ...match, winner, log: `🏆 Victoria para ${winner.name} (narrada por IA)`, fullNarrative: fullText };
+          }
+          setLeagueMatches(updated);
+          setLeagueSimKey(null);
+          setLeagueSimText('');
+          resolve(true);
+        },
+        () => { simulateLeagueMatch(matchId); setLeagueSimKey(null); setLeagueSimText(''); resolve(false); }
+      );
+    });
+  };
+
+  const simulateAllLeagueWithAI = async () => {
+    if (leagueSimRunning) return;
+    setLeagueSimRunning(true);
+    try {
+      let guard = 0;
+      while (guard++ < 200) {
+        const next = leagueMatches.find(m => m.charA && m.charB && !m.winner);
+        if (!next) break;
+        await simulateLeagueMatchWithAI(next.id);
+        if (leagueMatches.find(m => m.id === next.id)?.winner) { /* ya resuelto */ }
+        await new Promise(res => setTimeout(res, 250));
+      }
+      const standings = getLeagueStandings(leagueMatches);
+      if (standings[0] && standings[0].played === leagueMatches.length * 2 / participants.length) {
+        // Campeón de liga cuando todos los partidos están jugados
+      }
+      setToastMsg('🏁 ¡Liga completada! Revisa la clasificación.');
+      setTimeout(() => setToastMsg(null), 4000);
+    } finally {
+      setLeagueSimRunning(false);
+    }
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 🤺 COMBATES DE EXHIBICIÓN — campeón vs retadores
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const handleExhibitionSimulate = (mode) => {
+    if (!champion || !exhibitionOpponent || exhibitionBusy) return;
+    setExhibitionBusy(true);
+    setExhibitionResult(null);
+    const isAI = mode === 'ai';
+    const simEngine = aiConfig?.simulationEngine || aiConfig || {};
+    const runLocal = () => {
+      const { winner, fullNarrative, summaryLog } = generateTournamentMatchChronicle(champion, exhibitionOpponent);
+      const won = winner.id === champion.id;
+      setExhibitionResult({ winner, summaryLog, fullNarrative, won });
+      setExhibitionRecord(prev => ({ wins: prev.wins + (won ? 1 : 0), losses: prev.losses + (won ? 0 : 1) }));
+      setExhibitionBusy(false);
+    };
+    if (!isAI || !simEngine.engine || !simEngine.model) { runLocal(); return; }
+    let fullText = '';
+    SimulationEngine.streamSimulation(
+      `Eres el narrador de los COMBATES DE EXHIBICIÓN del campeón "${champion.name}". Redacta en español el duelo de exhibición entre:
+• Campeón: ${champion.name} (Tier ${champion.tier || '?'}, ${champion.universe || ''})
+• Retador: ${exhibitionOpponent.name} (Tier ${exhibitionOpponent.tier || '?'}, ${exhibitionOpponent.universe || ''})
+
+Formato de 5 fases con biometría (### FASE N + ||BIOMETRICS||). El campeón puede perder si el retador es superior.
+TERMINA SIEMPRE con:
+VENCEDOR: Nombre completo del ganador`,
+      simEngine,
+      (token) => { fullText += token; setExhibitionResult({ streaming: fullText }); },
+      () => {
+        const aiWinner = extractWinnerFromNarrative(fullText, champion, exhibitionOpponent) || champion;
+        const won = aiWinner.id === champion.id;
+        const { summaryLog } = generateTournamentMatchChronicle(champion, exhibitionOpponent);
+        setExhibitionResult({ winner: aiWinner, summaryLog, fullNarrative: fullText, won });
+        setExhibitionRecord(prev => ({ wins: prev.wins + (won ? 1 : 0), losses: prev.losses + (won ? 0 : 1) }));
+        setExhibitionBusy(false);
+      },
+      () => runLocal()
+    );
+  };
+
+  const pickRandomChallenger = () => {
+    const pool = characters.filter(c => c.id !== champion?.id);
+    if (pool.length === 0) return;
+    setExhibitionOpponent(pool[Math.floor(Math.random() * pool.length)]);
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 📄 EXPORTAR TORNEO (Markdown / PDF vía impresión)
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const buildTournamentMarkdown = () => {
+    const md = [];
+    md.push(`# 🏆 ${tournamentTitle}`);
+    md.push('');
+    md.push(`> Formato: ${formatMode === 'liga' ? 'Liga (todos contra todos)' : 'Eliminatoria'} · Participantes: ${participants.filter(Boolean).length} · Generado: ${new Date().toLocaleString()}`);
+    md.push('');
+    if (champion) {
+      md.push('## 🥇 Campeón');
+      md.push(`- **${champion.name}** (${champion.universe || ''}, Tier ${champion.tier || '?'})`);
+      md.push('');
+    }
+    if (runnerUp) { md.push(`## 🥈 Subcampeón\n- ${runnerUp.name}\n`); }
+    if (thirdPlace) { md.push(`## 🥉 Tercer puesto\n- ${thirdPlace.name}\n`); }
+
+    md.push('## 📋 Participantes');
+    md.push(participants.filter(Boolean).map(p => `- ${p.name} (${p.universe || ''}, Tier ${p.tier || '?'})`).join('\n'));
+    md.push('');
+
+    if (formatMode === 'liga') {
+      md.push('## ⚽ Clasificación de la Liga');
+      const standings = getLeagueStandings(leagueMatches);
+      md.push('| Pos | Luchador | PJ | G | E | P | Pts |');
+      md.push('|---|---|---|---|---|---|---|');
+      standings.forEach((s, i) => {
+        md.push(`| ${i + 1} | ${s.char.name} | ${s.played} | ${s.wins} | ${s.draws} | ${s.losses} | **${s.points}** |`);
+      });
+      md.push('');
+      md.push('## ⚔️ Partidos de la Liga');
+      for (const match of leagueMatches) {
+        if (!match.winner) continue;
+        const w = match.winner === 'draw' ? 'EMPATE' : match.winner.name;
+        md.push(`### ${match.charA.name} vs ${match.charB.name} — 🏁 ${w}`);
+        md.push(match.log || '');
+        if (match.fullNarrative) md.push(`\n<details><summary>Crónica completa</summary>\n\n${match.fullNarrative}\n</details>`);
+        md.push('');
+      }
+    } else {
+      for (const round of roundsRef.current.length > 0 ? roundsRef.current : rounds) {
+        md.push(`## ${round.name}`);
+        md.push('');
+        for (const match of round.matches) {
+          if (!match.charA || !match.charB) continue;
+          const w = match.winner ? `🏆 ${match.winner.name}` : '⏳ Pendiente';
+          md.push(`### ${match.charA.name} vs ${match.charB.name} — ${w}`);
+          md.push(match.log || 'Pendiente de simulación.');
+          if (match.fullNarrative) md.push(`\n<details><summary>Crónica completa</summary>\n\n${match.fullNarrative}\n</details>`);
+          md.push('');
+        }
+      }
+    }
+    if (bronzeMatch?.winner) {
+      md.push(`## 🥉 Combate de Bronce\n- **${bronzeMatch.winner.name}** derrota a ${bronzeMatch.charA.id === bronzeMatch.winner.id ? bronzeMatch.charB.name : bronzeMatch.charA.name}.\n`);
+    }
+    md.push('---');
+    md.push('*Generado por APEX Engine — Multiverse Powerscaling & Battle Simulator*');
+    return md.join('\n');
+  };
+
+  const handleExportMarkdown = () => {
+    const text = buildTournamentMarkdown();
+    const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `torneo-${tournamentTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setToastMsg('📄 Torneo exportado en Markdown.');
+    setTimeout(() => setToastMsg(null), 3000);
+  };
+
+  const handleExportPDF = () => {
+    const title = tournamentTitle;
+    const md = buildTournamentMarkdown();
+    const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${title}</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:32px;color:#111;line-height:1.5}
+h1{color:#b45309} h2{color:#7c2d12;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin-top:24px}
+details{margin:6px 0} summary{cursor:pointer;font-weight:600;color:#92400e}
+table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;padding:6px 10px;font-size:13px} th{background:#fef3c7}
+@media print{details>div{display:block !important}}
+</style></head><body>${md.split('\n').map(l => {
+      if (l.startsWith('### ')) return `<h3>${l.slice(4)}</h3>`;
+      if (l.startsWith('## ')) return `<h2>${l.slice(3)}</h2>`;
+      if (l.startsWith('# ')) return `<h1>${l.slice(2)}</h1>`;
+      if (l.startsWith('| ') && l.endsWith(' |')) {
+        const cells = l.split('|').filter(c => c.trim()).map(c => c.trim());
+        if (cells.every(c => /^-+$/.test(c))) return '';
+        return `<tr>${cells.map(c => c.replace(/^\*+|\*+$/g, '')).map(c => `<td>${c}</td>`).join('')}</tr>`;
+      }
+      if (l.startsWith('<details>')) return '<details><div>';
+      if (l.startsWith('</details>')) return '</div></details>';
+      if (l.startsWith('<summary>')) return `<summary>${l.slice(9, -10)}</summary>`;
+      if (l.startsWith('- ')) return `<li>${l.slice(2)}</li>`;
+      if (l === '---') return '<hr>';
+      return `<p>${l}</p>`;
+    }).join('')}</body></html>`;
+    const win = window.open('', '_blank');
+    if (!win) return;
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => { win.focus(); win.print(); }, 500);
+    setToastMsg('🖨️ Abriendo vista para guardar como PDF (Ctrl+P → Guardar como PDF).');
+    setTimeout(() => setToastMsg(null), 3500);
   };
 
   // Tournament Save & History Functions
@@ -742,6 +1217,16 @@ VENCEDOR: Nombre completo del ganador`;
               </button>
 
               <button
+                onClick={() => setActiveTab('league')}
+                className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer flex items-center gap-1 ${
+                  activeTab === 'league' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>Liga {leagueMatches.filter(m => m.winner).length > 0 ? `(${leagueMatches.filter(m => m.winner).length}/${leagueMatches.length})` : ''}</span>
+              </button>
+
+              <button
                 onClick={() => setActiveTab('history')}
                 className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer flex items-center gap-1 ${
                   activeTab === 'history' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'
@@ -791,9 +1276,55 @@ VENCEDOR: Nombre completo del ganador`;
                 <Shuffle className="w-3 h-3" />
                 <span>Barajar</span>
               </button>
+
+              <span className="text-slate-400 text-[11px] ml-2">Formato:</span>
+              <div className="flex bg-slate-900 p-0.5 rounded-lg border border-slate-800">
+                <button
+                  onClick={() => setFormatMode('elim')}
+                  className={`px-2.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${formatMode === 'elim' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  title="Cuadro eliminatorio clásico"
+                >
+                  🏆 Eliminatoria
+                </button>
+                <button
+                  onClick={startLeague}
+                  className={`px-2.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${formatMode === 'liga' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  title="Todos contra todos con puntos (3 por victoria, 1 por empate)"
+                >
+                  ⚽ Liga (Todos vs Todos)
+                </button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={handleComputeAllOddsWithAI}
+                disabled={!!champion || aiOddsLoading || aiAllRunning}
+                className="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-yellow-600/40 text-yellow-300 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm text-[11px] disabled:opacity-50"
+                title="La IA calcula cuotas dinámicas (probabilidades) para cada combate disponible"
+              >
+                <Coins className={`w-3.5 h-3.5 ${aiOddsLoading ? 'animate-spin' : ''}`} />
+                <span>{aiOddsLoading ? 'Calculando cuotas IA...' : '🪙 Cuotas IA'}</span>
+              </button>
+
+              <button
+                onClick={handleExportMarkdown}
+                className="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm text-[11px]"
+                title="Descargar el torneo completo en Markdown (crónicas incluidas)"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Markdown</span>
+              </button>
+
+              <button
+                onClick={handleExportPDF}
+                className="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm text-[11px]"
+                title="Abrir vista de impresión para guardar como PDF (Ctrl+P)"
+              >
+                <FileText className="w-3.5 h-3.5 text-red-400" />
+                <span>PDF</span>
+              </button>
+
               <button
                 onClick={() => saveTournamentToHistory(tournamentTitle, champion, rounds)}
                 className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-amber-300 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm text-[11px]"
@@ -867,7 +1398,7 @@ VENCEDOR: Nombre completo del ganador`;
                 <div className="flex flex-col justify-around gap-4 flex-1">
                   {round.matches.map((match, mIdx) => {
                     const hasFighters = match.charA && match.charB;
-                    const { oddsA, oddsB } = calculateOdds(match.charA, match.charB);
+                    const { oddsA, oddsB } = getMatchOdds(match.id, match.charA, match.charB);
                     const activeBet = bets[match.id];
 
                     return (
@@ -1046,19 +1577,255 @@ VENCEDOR: Nombre completo del ganador`;
 
             {/* Champion Podium */}
             {champion && (
-              <div className="flex-1 flex flex-col items-center justify-center min-w-[240px] p-6 rounded-3xl bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-400 shadow-[0_0_50px_rgba(245,158,11,0.4)] animate-in zoom-in-95">
-                <Crown className="w-12 h-12 text-yellow-400 animate-bounce mb-2" />
+              <div className="flex-1 flex flex-col items-center justify-center min-w-[280px] p-5 rounded-3xl bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-400 shadow-[0_0_50px_rgba(245,158,11,0.4)] animate-in zoom-in-95">
+                <Crown className="w-10 h-10 text-yellow-400 animate-bounce mb-1" />
                 <span className="text-[11px] text-amber-400 font-bold uppercase tracking-widest block text-center">
-                  🏆 CAMPEÓN DEL MULTIVERSO 🏆
+                  🏆 PODIO FINAL 🏆
                 </span>
-                <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-yellow-400 shadow-xl my-3 bg-slate-950">
-                  <img src={champion.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(champion.name)}`} alt="" className="w-full h-full object-contain" />
+
+                {/* Podium 3-column */}
+                <div className="flex items-end gap-3 mt-4 w-full justify-center">
+                  {/* Subcampeón */}
+                  <div className="flex flex-col items-center gap-1 w-[30%]">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden border border-slate-500 bg-slate-950 flex items-center justify-center text-2xl">
+                      {runnerUp?.avatar ? <img src={runnerUp.avatar} alt="" className="w-full h-full object-contain" onError={e => { e.target.style.display='none'; }} /> : '🥈'}
+                    </div>
+                    <span className="text-[9px] font-bold text-slate-300 text-center leading-tight">{runnerUp?.name?.split('(')[0].trim() || 'Subcampeón'}</span>
+                    <span className="text-[8px] font-mono text-slate-500">🥈 2º puesto</span>
+                  </div>
+                  {/* Campeón */}
+                  <div className="flex flex-col items-center gap-1 w-[40%] -translate-y-2">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-yellow-400 shadow-xl bg-slate-950">
+                      <img src={champion.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(champion.name)}`} alt="" className="w-full h-full object-contain" />
+                    </div>
+                    <h3 className="text-sm font-black text-white font-cinzel text-center leading-tight">{champion.name.split('(')[0].trim()}</h3>
+                    <span className="text-[10px] text-amber-300 font-mono text-center">{champion.tier}</span>
+                    <span className="text-[9px] font-mono text-slate-400">🥇 CAMPEÓN</span>
+                  </div>
+                  {/* Tercer puesto */}
+                  <div className="flex flex-col items-center gap-1 w-[30%]">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden border border-amber-700 bg-slate-950 flex items-center justify-center text-2xl">
+                      {thirdPlace?.avatar ? <img src={thirdPlace.avatar} alt="" className="w-full h-full object-contain" onError={e => { e.target.style.display='none'; }} /> : '🥉'}
+                    </div>
+                    <span className="text-[9px] font-bold text-slate-300 text-center leading-tight">{thirdPlace?.name?.split('(')[0].trim() || '3er puesto'}</span>
+                    <span className="text-[8px] font-mono text-slate-500">🥉 Bronce</span>
+                  </div>
                 </div>
-                <h3 className="text-base font-black text-white font-cinzel text-center">{champion.name}</h3>
-                <span className="text-xs text-amber-300 font-mono text-center mt-1">{champion.universe}</span>
-                <span className="text-[11px] text-slate-400 font-mono text-center mt-0.5">{champion.tier}</span>
+
+                {/* Combate de bronce pendiente */}
+                {bronzeMatch && !bronzeMatch.winner && (
+                  <div className="mt-4 w-full p-3 rounded-xl bg-slate-950/70 border border-amber-700/50 text-center space-y-2">
+                    <p className="text-[10px] font-mono text-amber-300">🥉 COMBATE DE BRONCE</p>
+                    <p className="text-[10px] text-slate-300 truncate">{bronzeMatch.charA?.name?.split('(')[0].trim()} vs {bronzeMatch.charB?.name?.split('(')[0].trim()}</p>
+                    <div className="flex gap-1.5 justify-center">
+                      <button
+                        onClick={handleResolveBronzeFast}
+                        className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-bold cursor-pointer"
+                      >
+                        ⚡ Resolver
+                      </button>
+                      <button
+                        onClick={handleResolveBronzeWithAI}
+                        disabled={!!aiSimKey}
+                        className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-600 text-white text-[10px] font-bold cursor-pointer disabled:opacity-50 flex items-center gap-1"
+                      >
+                        <Sparkles className={`w-3 h-3 ${aiSimKey === 'bronze' ? 'animate-spin' : ''}`} />
+                        {aiSimKey === 'bronze' ? 'Narrando...' : '🤖 Con IA'}
+                      </button>
+                    </div>
+                    {aiSimKey === 'bronze' && (
+                      <p className="text-[9px] font-mono text-purple-300/80 text-left max-h-16 overflow-y-auto whitespace-pre-wrap break-words">{aiSimText || 'Conectando...'}</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Exhibiciones del campeón */}
+                <button
+                  onClick={() => setShowExhibitions(!showExhibitions)}
+                  className="mt-3 px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-cyan-500/40 text-cyan-300 font-bold text-[10px] flex items-center gap-1.5 transition cursor-pointer"
+                >
+                  <Swords className="w-3 h-3" />
+                  {showExhibitions ? 'Ocultar Exhibiciones' : `🤺 Exhibiciones del Campeón (${exhibitionRecord.wins}V-${exhibitionRecord.losses}D)`}
+                </button>
+
+                {showExhibitions && (
+                  <div className="mt-2 w-full p-3 rounded-xl bg-slate-950/70 border border-cyan-500/30 space-y-2.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <SearchableCharacterSelector
+                        characters={characters}
+                        value={exhibitionOpponent?.id || ''}
+                        onChange={(c) => setExhibitionOpponent(c)}
+                        color="cyan"
+                      />
+                      <button
+                        onClick={pickRandomChallenger}
+                        className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-bold cursor-pointer flex items-center gap-1"
+                        title="Retador aleatorio"
+                      >
+                        <Dices className="w-3 h-3" />
+                        Azar
+                      </button>
+                    </div>
+                    {exhibitionOpponent && (
+                      <div className="flex flex-wrap gap-1.5">
+                        <button
+                          onClick={() => handleExhibitionSimulate('fast')}
+                          disabled={exhibitionBusy}
+                          className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-bold cursor-pointer disabled:opacity-50"
+                        >
+                          ⚡ Rápido
+                        </button>
+                        <button
+                          onClick={() => handleExhibitionSimulate('ai')}
+                          disabled={exhibitionBusy}
+                          className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-600 text-white text-[10px] font-bold cursor-pointer disabled:opacity-50"
+                        >
+                          🤖 Narrado con IA
+                        </button>
+                      </div>
+                    )}
+                    {exhibitionResult?.streaming && !exhibitionResult.winner && (
+                      <p className="text-[9px] font-mono text-purple-300/80 max-h-20 overflow-y-auto whitespace-pre-wrap break-words">{exhibitionResult.streaming}</p>
+                    )}
+                    {exhibitionResult?.winner && (
+                      <div className="p-2 rounded-lg bg-slate-900 border border-cyan-500/30 text-[10px]">
+                        <p className={exhibitionResult.won ? 'text-emerald-300 font-bold' : 'text-red-400 font-bold'}>
+                          {exhibitionResult.won ? '🏆 El campeón defiende el título' : '💀 ¡El campeón CAE ante el retador!'}
+                        </p>
+                        <p className="text-slate-300 mt-0.5">Vencedor: {exhibitionResult.winner.name} · Récord del campeón: {exhibitionRecord.wins}V-{exhibitionRecord.losses}D</p>
+                        {exhibitionResult.fullNarrative && (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedChronicleMatch({ charA: champion, charB: exhibitionOpponent, fullNarrative: exhibitionResult.fullNarrative, log: exhibitionResult.summaryLog, winner: exhibitionResult.winner })}
+                            className="mt-1.5 text-[9px] font-mono text-cyan-400 underline cursor-pointer"
+                          >
+                            📜 Ver crónica completa
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Modal Body: TAB LIGA (todos contra todos con puntos) */}
+        {activeTab === 'league' && (
+          <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 border border-emerald-500/40 flex flex-wrap items-center justify-between gap-3 shadow-lg">
+              <div>
+                <h4 className="font-bold text-white text-sm font-cinzel flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-emerald-400" />
+                  <span>⚽ Liga Multiversal — Todos contra Todos</span>
+                </h4>
+                <p className="text-slate-400 text-xs mt-0.5">
+                  {participants.filter(Boolean).length} participantes · {leagueMatches.filter(m => m.winner).length}/{leagueMatches.length} partidos jugados · 3 pts victoria, 1 pt empate
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => { leagueMatches.filter(m => !m.winner).forEach(m => simulateLeagueMatch(m.id)); }}
+                  disabled={leagueSimRunning}
+                  className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+                >
+                  <FastForward className="w-3.5 h-3.5" />
+                  <span>Simular Restantes (Rápido)</span>
+                </button>
+                <button
+                  onClick={simulateAllLeagueWithAI}
+                  disabled={leagueSimRunning}
+                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-700 via-fuchsia-600 to-indigo-600 hover:from-purple-600 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-lg shadow-purple-950 disabled:opacity-50"
+                >
+                  <Sparkles className={`w-3.5 h-3.5 ${leagueSimRunning ? 'animate-pulse' : ''}`} />
+                  <span>{leagueSimRunning ? '🤖 Narrando liga...' : '🤖 Simular Liga con IA'}</span>
+                </button>
+                <button
+                  onClick={handleExportMarkdown}
+                  className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Exportar</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Clasificación */}
+            <div className="rounded-2xl bg-slate-900/70 border border-slate-800 overflow-hidden">
+              <div className="px-4 py-2.5 bg-slate-950 border-b border-slate-800 font-bold text-xs text-emerald-300 font-mono flex items-center gap-2">
+                <Crown className="w-3.5 h-3.5 text-yellow-400" /> CLASIFICACIÓN
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-[11px] font-mono">
+                  <thead>
+                    <tr className="text-slate-500 text-[10px] uppercase">
+                      <th className="px-3 py-2 text-left">Pos</th>
+                      <th className="px-3 py-2 text-left">Luchador</th>
+                      <th className="px-2 py-2">PJ</th>
+                      <th className="px-2 py-2">G</th>
+                      <th className="px-2 py-2">E</th>
+                      <th className="px-2 py-2">P</th>
+                      <th className="px-3 py-2">Pts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getLeagueStandings(leagueMatches).map((s, i) => (
+                      <tr key={s.char.id} className={`border-t border-slate-800/60 ${i === 0 ? 'bg-amber-950/30 text-amber-200 font-bold' : 'text-slate-300'}`}>
+                        <td className="px-3 py-2">{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</td>
+                        <td className="px-3 py-2 truncate max-w-[160px]">{s.char.name.split('(')[0].trim()}</td>
+                        <td className="px-2 py-2 text-center">{s.played}</td>
+                        <td className="px-2 py-2 text-center text-emerald-400">{s.wins}</td>
+                        <td className="px-2 py-2 text-center text-slate-400">{s.draws}</td>
+                        <td className="px-2 py-2 text-center text-red-400">{s.losses}</td>
+                        <td className="px-3 py-2 text-center font-black text-amber-300">{s.points}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Partidos de la liga */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              {leagueMatches.map((match) => {
+                const isSimulating = leagueSimKey === match.id;
+                return (
+                  <div key={match.id} className={`p-3 rounded-xl border ${match.winner ? 'border-emerald-500/40 bg-slate-900/60' : 'border-slate-800 bg-slate-900/40'}`}>
+                    <div className="flex items-center justify-between gap-2 text-[10px] font-mono">
+                      <span className="text-slate-400 truncate">
+                        {match.charA?.name?.split('(')[0].trim()} <span className="text-red-500/70">vs</span> {match.charB?.name?.split('(')[0].trim()}
+                      </span>
+                      {match.winner ? (
+                        <span className="text-emerald-400 font-bold shrink-0">
+                          {match.winner === 'draw' ? '🤝 Empate' : `🏆 ${match.winner.name.split('(')[0].trim()}`}
+                        </span>
+                      ) : (
+                        <span className="flex gap-1 shrink-0">
+                          <button onClick={() => simulateLeagueMatch(match.id)} disabled={isSimulating || leagueSimRunning} className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-[9px] font-bold cursor-pointer disabled:opacity-40">⚡</button>
+                          <button onClick={() => simulateLeagueMatchWithAI(match.id)} disabled={isSimulating || leagueSimRunning} className={`px-1.5 py-0.5 rounded text-[9px] font-bold cursor-pointer disabled:opacity-40 border ${isSimulating ? 'bg-purple-600 text-white border-purple-400' : 'bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white border-purple-500/40'}`}>
+                            {isSimulating ? 'Narrando...' : '🤖 IA'}
+                          </button>
+                        </span>
+                      )}
+                    </div>
+                    {match.log && <p className="mt-1.5 text-[9px] text-slate-500 italic">{match.log}</p>}
+                    {isSimulating && (
+                      <p className="mt-1.5 text-[9px] font-mono text-purple-300/80 max-h-14 overflow-y-auto whitespace-pre-wrap break-words">{leagueSimText || 'Conectando...'}</p>
+                    )}
+                    {match.fullNarrative && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedChronicleMatch(match)}
+                        className="mt-1.5 text-[9px] font-mono text-cyan-400 underline cursor-pointer"
+                      >
+                        📜 Ver crónica
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 

@@ -3,6 +3,7 @@ import { Shuffle, Zap, Sparkles, X, Globe, Swords, Target, Crosshair, Users, Cro
 import { getRosterSync } from '../data/rosterLoader';
 import { SCENARIOS } from '../data/scenarios';
 import { getTranslation } from '../services/i18n';
+import { DB_PACKS } from '../services/franchiseHelper';
 
 // Normalizador estricto de franquicias para evitar confusiones de universo
 const getFranchise = (u) => {
@@ -35,6 +36,7 @@ export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, o
   const [brSize, setBrSize] = useState(6); // 3 to 10
   const [universeFilter, setUniverseFilter] = useState('any'); 
   const [tierFilter, setTierFilter] = useState('fair'); // fair, chaos
+  const [dbPackFilter, setDbPackFilter] = useState('none'); // packs de Dragon Ball
 
   if (!isOpen) return null;
 
@@ -56,8 +58,12 @@ export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, o
   const handleRandomize = () => {
     let pool = [...sourceChars];
 
-    // 1. Filtrar pool según el universo elegido
-    if (universeFilter !== 'any' && universeFilter !== 'same' && universeFilter !== 'cross') {
+    // 0. Pack de Dragon Ball (tiene prioridad sobre el filtro genérico de universo)
+    if (dbPackFilter !== 'none') {
+      const pack = DB_PACKS.find(p => p.id === dbPackFilter);
+      if (pack) pool = pool.filter(c => pack.matches(c));
+    } else if (universeFilter !== 'any' && universeFilter !== 'same' && universeFilter !== 'cross') {
+      // 1. Filtrar pool según el universo elegido
       pool = pool.filter(c => getFranchise(c.universe) === universeFilter);
     }
 
@@ -330,6 +336,39 @@ export default function RandomMatchmakerModal({ isOpen, onClose, onMatchReady, o
                 }`}
               >
                 {u.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 2b. Packs de Dragon Ball (torneos por eras) */}
+        <div className="space-y-2">
+          <label className="text-[11px] font-bold text-orange-300 flex items-center gap-1.5 font-cinzel">
+            <Zap className="w-3.5 h-3.5 text-orange-400" /> 🐉 Packs de Dragon Ball
+          </label>
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              onClick={() => setDbPackFilter('none')}
+              className={`px-2.5 py-1.5 rounded-lg border text-[10px] font-bold transition cursor-pointer ${
+                dbPackFilter === 'none'
+                  ? 'bg-slate-950 border-orange-400 text-orange-200'
+                  : 'bg-slate-900/70 border-slate-800 text-slate-400 hover:border-slate-600'
+              }`}
+            >
+              🌐 Todos
+            </button>
+            {DB_PACKS.map(pack => (
+              <button
+                key={pack.id}
+                onClick={() => setDbPackFilter(pack.id)}
+                title={pack.description}
+                className={`px-2.5 py-1.5 rounded-lg border text-[10px] font-bold transition cursor-pointer ${
+                  dbPackFilter === pack.id
+                    ? 'bg-orange-950/80 border-orange-400 text-orange-200 shadow-md shadow-orange-950/60'
+                    : 'bg-slate-900/70 border-slate-800 text-slate-400 hover:border-orange-500/50'
+                }`}
+              >
+                {pack.name}
               </button>
             ))}
           </div>

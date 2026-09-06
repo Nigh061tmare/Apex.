@@ -5,6 +5,7 @@ import {
   Search, Filter, Check, Trash2, CheckCircle2, Star, RefreshCw, X
 } from 'lucide-react';
 import { ROSTER_IMAGES_MAP } from '../data/rosterImagesMap';
+import { DB_PACKS } from '../services/franchiseHelper';
 
 const TIER_SCORE_MAP = [
   { pattern: /High\s*1-A/i, score: 140 },
@@ -198,6 +199,7 @@ export default function MatchupMatrix({
   const [selectedForMatrix, setSelectedForMatrix] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [universeFilter, setUniverseFilter] = useState('Todos');
+  const [dbPackFilter, setDbPackFilter] = useState('none'); // packs de Dragon Ball
   const [sagaFilter, setSagaFilter] = useState('Todos');
   const [tierFilter, setTierFilter] = useState('Todos');
 
@@ -221,7 +223,9 @@ export default function MatchupMatrix({
         c.saga?.toLowerCase().includes(q) || 
         c.tier?.toLowerCase().includes(q);
       
-      const matchesUniverse = universeFilter === 'Todos' || c.universe === universeFilter;
+      const matchesUniverse = (dbPackFilter !== 'none' && universeFilter === 'Todos')
+        ? (DB_PACKS.find(p => p.id === dbPackFilter)?.matches(c) || false)
+        : (universeFilter === 'Todos' || c.universe === universeFilter);
       const matchesSaga = sagaFilter === 'Todos' || c.saga === sagaFilter;
       
       const tLow = (c.tier || '').toLowerCase();
@@ -234,7 +238,7 @@ export default function MatchupMatrix({
 
       return matchesSearch && matchesUniverse && matchesSaga && matchesTier;
     });
-  }, [characters, searchQuery, universeFilter, sagaFilter, tierFilter]);
+  }, [characters, searchQuery, universeFilter, dbPackFilter, sagaFilter, tierFilter]);
 
   // Quick Selection Helpers
   const handleSelectTop5 = () => {
@@ -423,6 +427,21 @@ export default function MatchupMatrix({
                     <option value="Todos">Todos ({allUniverses.length})</option>
                     {allUniverses.map(u => (
                       <option key={u} value={u}>{u}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* DB Pack Filter */}
+                <div className="flex items-center gap-1">
+                  <span className="text-[10px] text-orange-400 font-bold">🐉 Pack DB:</span>
+                  <select
+                    value={dbPackFilter}
+                    onChange={e => { setDbPackFilter(e.target.value); if (e.target.value !== 'none') setUniverseFilter('Todos'); }}
+                    className="bg-slate-900 border border-orange-700/50 rounded-lg px-2 py-1 text-white text-[11px] font-mono focus:border-orange-500 focus:outline-none max-w-[150px]"
+                  >
+                    <option value="none">Sin pack (todos)</option>
+                    {DB_PACKS.map(p => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
                     ))}
                   </select>
                 </div>
