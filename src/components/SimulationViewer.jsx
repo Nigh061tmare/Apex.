@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { 
   Play, Download, Copy, Check, Sparkles, FileText, Swords, RefreshCw, RotateCcw,
   Heart, Zap, History, Trash2, ShieldAlert, Award, Compass, AlertTriangle, 
@@ -116,13 +116,13 @@ function getPhaseStyle(title) {
 }
 
 // Renderizador visual enriquecido de texto de combate
-function RichCombatText({ content, isStreamingLast }) {
+function RichCombatText({ content, isStreamingLast, comicMode = false }) {
   if (!content) return null;
 
   const lines = content.split('\n');
 
   return (
-    <div className="space-y-4 font-sans leading-relaxed text-[14px] text-slate-200">
+    <div aria-live="polite" className={`space-y-4 font-sans leading-relaxed text-[14px] text-slate-200 ${comicMode ? 'uppercase tracking-wide' : ''}`}>
       {lines.filter((line, i, arr) => line.trim() === '' || line.trim() !== arr[i - 1]?.trim()).map((line, lIdx) => {
         const trimmed = line.trim();
         if (!trimmed) return <div key={lIdx} className="h-1.5" />;
@@ -195,12 +195,22 @@ function RichCombatText({ content, isStreamingLast }) {
                   </div>
                   <div className="h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
                     <div 
+                      role="progressbar"
+                      aria-valuenow={Math.max(0, Math.min(100, hpAVal))}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`HP Bando A: ${Math.max(0, Math.min(100, hpAVal))}%`}
                       className="h-full bg-gradient-to-r from-red-600 via-amber-500 to-red-500 rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(239,68,68,0.5)]" 
                       style={{ width: `${Math.max(0, Math.min(100, hpAVal))}%` }} 
                     />
                   </div>
                   <div className="h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800/60">
                     <div 
+                      role="progressbar"
+                      aria-valuenow={Math.max(0, Math.min(100, stmAVal))}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`Stamina Bando A: ${Math.max(0, Math.min(100, stmAVal))}%`}
                       className="h-full bg-amber-400 rounded-full transition-all duration-700" 
                       style={{ width: `${Math.max(0, Math.min(100, stmAVal))}%` }} 
                     />
@@ -218,12 +228,22 @@ function RichCombatText({ content, isStreamingLast }) {
                   </div>
                   <div className="h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5 flex justify-end">
                     <div 
+                      role="progressbar"
+                      aria-valuenow={Math.max(0, Math.min(100, hpBVal))}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`HP Bando B: ${Math.max(0, Math.min(100, hpBVal))}%`}
                       className="h-full bg-gradient-to-l from-blue-600 via-cyan-400 to-blue-500 rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
                       style={{ width: `${Math.max(0, Math.min(100, hpBVal))}%` }} 
                     />
                   </div>
                   <div className="h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800/60 flex justify-end">
                     <div 
+                      role="progressbar"
+                      aria-valuenow={Math.max(0, Math.min(100, stmBVal))}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`Stamina Bando B: ${Math.max(0, Math.min(100, stmBVal))}%`}
                       className="h-full bg-cyan-400 rounded-full transition-all duration-700" 
                       style={{ width: `${Math.max(0, Math.min(100, stmBVal))}%` }} 
                     />
@@ -521,8 +541,9 @@ const parseSimulation = (text, simulationData, activeTab = 'all', manualOverride
   };
 
   // Separador flexible multi-patrón de fases (soporta ###, ##, **FASE X**, FASE X ·, VEREDICTO, etc.)
+  // Acepta \n previo O inicio de texto (^) para no perder la primera fase.
   const cleanText = text.replace(/\|\|BIOMETRICS\|[^|]+\|\|/g, '');
-  const phaseSplitRegex = /(?=\n#{1,3}\s+(?:FASE|ANÁLISIS|VEREDICTO|ACTO|CAPÍTULO|ESTADO|EFECTO|CLÍMAX|TANTEO|ESCALADA|GIRO)|\n\*{0,2}FASE\s+\d+[\s\:\·]|\n\*{0,2}VEREDICTO\s+DEFINITIVO|\n\*{0,2}ANÁLISIS\s+PREVIO)/gi;
+  const phaseSplitRegex = /(?=(?:^|\n)#{1,3}\s+(?:FASE|ANÁLISIS|VEREDICTO|ACTO|CAPÍTULO|ESTADO|EFECTO|CLÍMAX|TANTEO|ESCALADA|GIRO)|(?:^|\n)\*{0,2}FASE\s+\d+[\s\:\·]|(?:^|\n)\*{0,2}VEREDICTO\s+DEFINITIVO|(?:^|\n)\*{0,2}ANÁLISIS\s+PREVIO)/gi;
 
   let rawPhases = cleanText.split(phaseSplitRegex).map(p => p.trim()).filter(Boolean);
   if (rawPhases.length <= 1 && cleanText.includes('\n---\n')) {
@@ -613,14 +634,25 @@ const parseSimulation = (text, simulationData, activeTab = 'all', manualOverride
       return { hpA: curHpA, stmA: curStmA, hpB: curHpB, stmB: curStmB };
     }
 
-    // 3. Degradación dinámica por fase si no hay veredicto aún
+    // 3. Degradación dinámica EQUILIBRADA por fase si no hay veredicto aún.
+    //    Antes el Bando B perdía 75% vs 55% del A (sesgo a favor de A). Ahora
+    //    ambos sufren el mismo desgaste base; el que domina (tokens de ofensiva)
+    //    conserva más HP.
     const progressRatio = Math.min(1, chunkText.length / Math.max(1, text.length));
     const severeHits = (chunkText.match(/(kamehameha|genkidama|ryūken|corte|espada|guadaña|fractura|impacto|explosión|desgarro|choque|colisión)/gi) || []).length;
 
-    curHpA = Math.max(12, Math.round(100 - (progressRatio * 55) - (severeHits * 3.5)));
-    curStmA = Math.max(8, Math.round(100 - (progressRatio * 70) - (severeHits * 4.5)));
-    curHpB = Math.max(0, Math.round(100 - (progressRatio * 75) - (severeHits * 5)));
-    curStmB = Math.max(0, Math.round(100 - (progressRatio * 85) - (severeHits * 6)));
+    // Detectar dominio ofensivo por token de nombre (quién está más presente en el chunk)
+    const chunkLower = chunkText.toLowerCase();
+    const offA = tokensA.filter(t => t.length > 3 && chunkLower.includes(t)).length;
+    const offB = tokensB.filter(t => t.length > 3 && chunkLower.includes(t)).length;
+    const balanceA = offA + offB > 0 ? 0.5 + (offA - offB) * 0.06 : 0.5;
+    const balanceB = 1 - balanceA;
+
+    const baseDrain = progressRatio * 65 + severeHits * 4;
+    curHpA = Math.max(8, Math.round(100 - baseDrain * (1.4 - balanceA)));
+    curStmA = Math.max(5, Math.round(100 - baseDrain * 1.15 * (1.3 - balanceA)));
+    curHpB = Math.max(8, Math.round(100 - baseDrain * (1.4 - balanceB)));
+    curStmB = Math.max(5, Math.round(100 - baseDrain * 1.15 * (1.3 - balanceB)));
 
     return { hpA: curHpA, stmA: curStmA, hpB: curHpB, stmB: curStmB };
   };
@@ -987,7 +1019,22 @@ export default function SimulationViewer({
     { letter: '🅰️', color: 'red', label: 'Sobrecarga de Ataque / Forzar Límite', prompt: 'El personaje arriesga su integridad física canalizando toda su energía en un asalto frontal implacable para quebrar la guardia rival a costa de retroceso.' },
     { letter: '🅱️', color: 'blue', label: 'Replegarse al Entorno / Maniobra Táctica', prompt: 'Se repliega hacia los puntos ciegos y escombros del escenario, usando el magma/gravedad del mapa para ganar tiempo y recomponer su postura.' },
     { letter: '🅲', color: 'purple', label: 'Contramedida Hax / Técnica Secreta', prompt: 'Prepara en secreto su habilidad pasiva o técnica definitiva más peligrosa a distancia cero como contraataque definitivo.' },
-    { letter: '🅳', color: 'amber', label: 'Despertar de Emergencia / Transformación de Crisis', prompt: 'Al borde de la derrota, libera una nueva forma latente, Zenkai o evolución reactiva que re-escala el combate.' }
+    { letter: '🅳', color: 'amber', label: 'Despertar de Emergencia / Transformación de Crisis', prompt: 'Al borde de la derrota, libera una nueva forma latente, Zenkai o evolución reactiva que re-escala el combate.' },
+    { letter: '🅴', color: 'emerald', label: 'Alianza / Refuerzo Aliado', prompt: 'Un aliado entra al campo de batalla para inclinar la balanza: cobertura, curación, fusión o distracción táctica.' },
+    { letter: '🅵', color: 'pink', label: 'Manipulación del Escenario', prompt: 'Usa el entorno a su favor: gravedad, clima, terreno, estructuras colapsables o campos de energía para ganar ventaja posicional.' },
+    { letter: '🅶', color: 'cyan', label: 'Arma o Artefacto Oculto', prompt: 'Desempolva un artefacto, arma, reliquia o equipo especial guardado en reserva con un efecto decisivo pero de uso limitado.' },
+    { letter: '🅷', color: 'lime', label: 'Sacrificio / Autodestrucción Controlada', prompt: 'Paga un coste extremo (miembro, vida, memoria, alianza) por un estallido de poder que cambia el rumbo de la pelea.' }
+  ]);
+
+  // 🎭 Giros argumentales libres para el Modo Libro-Juego (continuación creativa)
+  const [plotTwists, setPlotTwists] = useState([
+    { letter: '1', color: 'orange', label: 'Intervención Divina / Deidad', prompt: 'Un ser superior (dios, ángel, entidad cósmica) observa o interfiere, alterando las reglas del combate o del escenario.' },
+    { letter: '2', color: 'rose', label: 'Traición Inesperada', prompt: 'Un aliado cambia de bando, o un enemigo se revela como algo distinto de lo que parecía.' },
+    { letter: '3', color: 'sky', label: 'Cláusula de Realidad Alterada', prompt: 'El escenario cambia bruscamente: otra dimensión, salto temporal, gravedad extrema o distorsión del espacio.' },
+    { letter: '4', color: 'violet', label: 'Despertar de una Antigua Amenaza', prompt: 'Un ser dormido, un sello roto o una entidad ancestral se manifiesta en medio del combate.' },
+    { letter: '5', color: 'stone', label: 'Regla del Torneo / Arbitraje', prompt: 'Un árbitro, juez o autoridad impone una regla nueva, pausa el combate o declara una condición de victoria alterada.' },
+    { letter: '6', color: 'teal', label: 'Flashback / Recuerdo Poderoso', prompt: 'Un recuerdo del pasado despierta una técnica, un poder latente o una motivación que re-energiza al luchador.' },
+    { letter: '7', color: 'slate', label: 'Refuerzo del Multiverso', prompt: 'Otra versión del luchador (o un aliado de otra línea temporal) cruza para unirse al conflicto.' }
   ]);
 
   const generateUniversalCombatArt = async (promptSubject, style = 'anime') => {
@@ -1063,9 +1110,15 @@ export default function SimulationViewer({
   };
 
   const handleAddCustomUrl = () => {
-    if (!customImageUrlInput.trim()) return;
-    setBattleArtwork(customImageUrlInput.trim());
-    setGalleryArtworks(prev => [{ id: Date.now(), url: customImageUrlInput.trim(), title: 'Arte Enlazado por URL', style: 'url' }, ...prev]);
+    const url = (customImageUrlInput || '').trim();
+    if (!url) return;
+    // Validación anti-XSS: solo protocolos de imagen seguros (https/http)
+    if (!/^https?:\/\//i.test(url)) {
+      alert('Solo se permiten URLs de imagen válidas (https://...)');
+      return;
+    }
+    setBattleArtwork(url);
+    setGalleryArtworks(prev => [{ id: Date.now(), url, title: 'Arte Enlazado por URL', style: 'url' }, ...prev]);
     setCustomImageUrlInput('');
   };
 
@@ -1118,7 +1171,12 @@ export default function SimulationViewer({
   const fullOutput = translateCombatChronicle(rawOutput, lang);
   const hasOutput = fullOutput.trim().length > 0;
   
-  const { phases, hpA, stmA, hpB, stmB, squadStats, squadStatsA, verdictInfo, criticalEvents } = parseSimulation(fullOutput, simulationData, activePhaseTab, manualHpOverrides);
+  // Memoización: parseSimulation ejecuta ~51 regex sobre texto largo. Solo se
+  // recalcula cuando cambian sus entradas reales (antes corría en CADA render).
+  const { phases, hpA, stmA, hpB, stmB, squadStats, squadStatsA, verdictInfo, criticalEvents } = useMemo(
+    () => parseSimulation(fullOutput, simulationData, activePhaseTab, manualHpOverrides),
+    [fullOutput, simulationData, activePhaseTab, manualHpOverrides]
+  );
 
   // Evaluate Oracle Bets when battle completes
   useEffect(() => {
@@ -1186,6 +1244,33 @@ export default function SimulationViewer({
     }
     return () => clearInterval(timer);
   }, [isPlayingAutoplay, phases.length, soundEnabled]);
+
+  // Atajos de teclado: Espacio = play/pausa espectador · 1-9 = saltar a fase · Esc = cerrar modal
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      // Ignorar si el usuario está escribiendo en un input/textarea/select
+      const tag = (e.target?.tagName || '').toLowerCase();
+      if (['input', 'textarea', 'select', 'button'].includes(tag) || e.ctrlKey || e.metaKey || e.altKey) return;
+
+      if (e.code === 'Space' && hasOutput && phases.length > 1) {
+        e.preventDefault();
+        setIsPlayingAutoplay(prev => !prev);
+        return;
+      }
+      if (e.key >= '1' && e.key <= '9' && phases.length > 1) {
+        const target = Number(e.key) - 1;
+        if (target < phases.length) {
+          setActivePhaseTab(target);
+        }
+        return;
+      }
+      if (e.key === 'Escape' && activePhaseTab !== 'all') {
+        setActivePhaseTab('all');
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [hasOutput, phases.length, activePhaseTab]);
 
   // Auto-scroll to bottom of timeline ONLY if user explicitly enabled it
   useEffect(() => {
@@ -1787,7 +1872,13 @@ export default function SimulationViewer({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Pick Winner */}
             <div className="space-y-1 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-              <label className="text-[10px] text-slate-400 font-bold block">1. ¿Quién ganará? (x2.2)</label>
+              <label className="text-[10px] text-slate-400 font-bold block">
+                1. ¿Quién ganará? {simulationData?.charA && simulationData?.charB && (
+                  <span className="text-amber-300">
+                    (A x{computeFightOdds(simulationData.charA, simulationData.charB).oddsA} · B x{computeFightOdds(simulationData.charA, simulationData.charB).oddsB})
+                  </span>
+                )}
+              </label>
               <select
                 disabled={currentBet.placed && isSimulating}
                 value={currentBet.winner}
@@ -2516,22 +2607,32 @@ export default function SimulationViewer({
                 </div>
               </div>
 
-              {/* 4 RPG Tactical Choice Cards */}
+              {/* 8 RPG Tactical Choice Cards */}
               {rpgDecisionsEnabled && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
                   {(rpgChoices || []).map((choice, cIdx) => {
-                    const borderColors = [
+                    const borderPalette = [
                       'hover:border-red-500/80 hover:from-red-950/40',
                       'hover:border-blue-500/80 hover:from-blue-950/40',
                       'hover:border-purple-500/80 hover:from-purple-950/40',
-                      'hover:border-amber-500/80 hover:from-amber-950/40'
+                      'hover:border-amber-500/80 hover:from-amber-950/40',
+                      'hover:border-emerald-500/80 hover:from-emerald-950/40',
+                      'hover:border-pink-500/80 hover:from-pink-950/40',
+                      'hover:border-cyan-500/80 hover:from-cyan-950/40',
+                      'hover:border-lime-500/80 hover:from-lime-950/40'
                     ];
-                    const glowColors = [
+                    const glowPalette = [
                       'text-red-400 group-hover:text-red-300',
                       'text-blue-400 group-hover:text-blue-300',
                       'text-purple-400 group-hover:text-purple-300',
-                      'text-amber-400 group-hover:text-amber-300'
+                      'text-amber-400 group-hover:text-amber-300',
+                      'text-emerald-400 group-hover:text-emerald-300',
+                      'text-pink-400 group-hover:text-pink-300',
+                      'text-cyan-400 group-hover:text-cyan-300',
+                      'text-lime-400 group-hover:text-lime-300'
                     ];
+                    const borderColors = (choice.borderColor ? [choice.borderColor] : borderPalette);
+                    const glowColors = (choice.glowColor ? [choice.glowColor] : glowPalette);
 
                     return (
                       <button
@@ -2558,6 +2659,34 @@ export default function SimulationViewer({
                       </button>
                     );
                   })}
+                </div>
+              )}
+
+              {/* 🎭 Giros Argumentales Libres (Modo Libro-Juego avanzado) */}
+              {rpgDecisionsEnabled && (
+                <div className="pt-2 space-y-2">
+                  <div className="flex items-center gap-1.5 text-[11px]">
+                    <span className="font-bold text-fuchsia-400">🎭 Giros Argumentales Libres (para alargar y sorprender):</span>
+                    <span className="text-[9px] font-mono text-slate-500">toca uno para continuar con un giro</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                    {(plotTwists || []).map((twist, tIdx) => (
+                      <button
+                        key={tIdx}
+                        type="button"
+                        onClick={() => onContinueSimulation(twist.prompt)}
+                        className="p-2.5 rounded-lg text-left bg-slate-900/70 border border-fuchsia-900/40 hover:border-fuchsia-400/70 hover:bg-fuchsia-950/30 transition-all cursor-pointer group"
+                      >
+                        <div className="text-[10.5px] font-bold text-fuchsia-300 group-hover:text-fuchsia-200 flex items-center gap-1.5">
+                          <span>🎲</span>
+                          <span>{twist.label}</span>
+                        </div>
+                        <p className="text-[9.5px] font-mono text-slate-500 group-hover:text-slate-300 mt-1 leading-snug">
+                          {twist.prompt}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -2661,7 +2790,22 @@ export default function SimulationViewer({
                   />
                   <button
                     onClick={() => {
-                      onContinueSimulation(nextActionPrompt);
+                      onContinueSimulation("Continúa la pelea y ALÁRGALA: añade más intercambios, más vuelta de tuerca, mayor desgaste y nuevas técnicas. No termines aún. Escala la tensión hacia un clímax aún más lejano e intenso.");
+                      setNextActionPrompt('');
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 via-red-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white font-bold text-xs shadow-lg shadow-red-950/80 transition cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-orange-400/50"
+                    title="Continúa el combate sin terminarlo, alargando la pelea"
+                  >
+                    <Flame className="w-4 h-4 text-orange-200" />
+                    <span>⏩ Alargar la Pelea</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      // Si el campo está vacío, el motor decide automáticamente (alargar con giro)
+                      const action = nextActionPrompt?.trim()
+                        ? nextActionPrompt
+                        : "Continúa la pelea de forma orgánica: un nuevo giro o intensificación de tu elección (puedes alargarla, cambiar el enfoque táctico, revelar un recurso, o preparar el desenlace si el combate está en su punto álgido). Respeta el modo narrativo seleccionado.";
+                      onContinueSimulation(action);
                       setNextActionPrompt('');
                     }}
                     className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-cyan-950/80 transition cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-cyan-400/50"
@@ -2669,6 +2813,29 @@ export default function SimulationViewer({
                     <FastForward className="w-4 h-4 text-cyan-200" />
                     <span>Siguiente Acto ▶</span>
                   </button>
+                </div>
+                {/* 💡 Sugerencias rápidas de acción (pulsa para llenar el campo o usar directo) */}
+                <div className="flex flex-wrap gap-1.5 pt-1.5">
+                  {[
+                    { icon: '⚡', label: 'Alargar más', action: 'Sigue la pelea y alárgala aún más: más intercambios, más desgaste, más técnicas. No termines.' },
+                    { icon: '🎭', label: 'Giro sorpresa', action: 'Introduce un giro argumental sorpresa e inesperado que cambie el rumbo del combate de forma dramática.' },
+                    { icon: '💥', label: 'Forma superior', action: 'El luchador con desventaja despierta una forma o técnica superior latente para reequilibrar el combate.' },
+                    { icon: '🩸', label: 'Herida grave', action: 'Un golpe decisivo causa una herida grave que condiciona el resto de la pelea (limita técnicas o movilidad).' },
+                    { icon: '🛡️', label: 'Tregua táctica', action: 'Los luchadores se separan y se evalúan en una pausa tensa, con intercambio de diálogo y nueva estrategia.' },
+                    { icon: '🌪️', label: 'Escenario colapsa', action: 'El escenario de combate colapsa o cambia drásticamente (dimensión, gravedad, ambiente) afectando a ambos.' },
+                  ].map((sug) => (
+                    <button
+                      key={sug.label}
+                      type="button"
+                      onClick={() => {
+                        setNextActionPrompt(sug.action);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-700 hover:border-cyan-400/60 hover:bg-cyan-950/30 text-[10px] font-mono text-slate-300 hover:text-cyan-200 transition-all cursor-pointer"
+                      title="Pulsa para rellenar el campo de acción (o edítalo antes de enviar)"
+                    >
+                      {sug.icon} {sug.label}
+                    </button>
+                  ))}
                 </div>
               </div>
 

@@ -29,7 +29,7 @@ import {
   ChevronRight, Layers, Compass, Scroll, Award, HeartHandshake, Zap,
   X, History, FileText, Play, RotateCcw, Package, Search, Trash2,
   Wand2, ArrowRight, Dna, Crown, ShieldAlert, Heart, Trophy,
-  Dices, HeartPulse, EyeOff, PackageCheck, Mountain
+  Dices, HeartPulse, EyeOff, PackageCheck, Mountain, Edit3, Check
 } from 'lucide-react';
 import { SimulationEngine } from '../services/simulationEngine';
 import { SoundFX } from '../services/soundFx';
@@ -94,6 +94,14 @@ export default function ChronicleViewer({ characters = [], lang = 'es', onLaunch
   const [addItemModalOpen, setAddItemModalOpen] = useState(false);
   const [isGeneratingAiNovella, setIsGeneratingAiNovella] = useState(false);
   const [isGeneratingSceneAi, setIsGeneratingSceneAi] = useState(false);
+  
+  // Streaming & Cancelación para generación IA
+  const [sceneStreamingText, setSceneStreamingText] = useState('');
+  const [sceneAbortController, setSceneAbortController] = useState(null);
+  
+  // Edición de escenas
+  const [editingSceneId, setEditingSceneId] = useState(null);
+  const [editingSceneText, setEditingSceneText] = useState('');
 
   // Search & Inputs
   const [newThreadInput, setNewThreadInput] = useState('');
@@ -467,7 +475,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
   // Recruiter actions
   const handleRecruitCharacter = (charId) => {
     if ((chronicle.activeCast || []).includes(charId)) return;
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     stateCopy.activeCast = [...(stateCopy.activeCast || []), charId];
     
     if (!stateCopy.characterStates[charId]) {
@@ -505,7 +513,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
     }
     const charName = charMap.get(charId)?.name || charId;
     if (window.confirm(`¿Desmovilizar a ${charName} del elenco activo? Podrás volver a reclutarlo cuando desees.`)) {
-      const stateCopy = JSON.parse(JSON.stringify(chronicle));
+      const stateCopy = structuredClone(chronicle);
       stateCopy.activeCast = stateCopy.activeCast.filter(id => id !== charId);
       setChronicle(stateCopy);
     }
@@ -513,7 +521,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
 
   // Item usage
   const handleUseItem = (itemId, targetCharId = null) => {
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     const itemIndex = (stateCopy.inventory || []).findIndex(i => i.id === itemId);
     if (itemIndex === -1) return;
 
@@ -547,7 +555,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
 
   const handleCreateNewItem = () => {
     if (!newItemName.trim()) return;
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     if (!stateCopy.inventory) stateCopy.inventory = [];
     stateCopy.inventory.push({
       id: `art-custom-${Date.now()}`,
@@ -583,7 +591,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
         hazardId: tacticalHazardId
       });
 
-      const stateCopy = JSON.parse(JSON.stringify(chronicle));
+      const stateCopy = structuredClone(chronicle);
       stateCopy.lastTacticalRoll = rollResult;
 
       // Apply biomechanical condition if result triggers injury
@@ -610,7 +618,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
 
   // Instant Healing of Character Injuries (Senzu / Tanque Médico)
   const handleHealCharacter = (charId) => {
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     const healItemIndex = (stateCopy.inventory || []).findIndex(
       item => item.id.includes('senzu') || item.type === 'medico' ||
       item.name.toLowerCase().includes('senzu') ||
@@ -659,6 +667,7 @@ Debes responder ÚNICAMENTE con un bloque JSON válido con este formato exacto (
     // If no pre-baked narrative is provided, generate dynamically with AI Engine!
     if (!narrativeText) {
       setIsGeneratingSceneAi(true);
+      setSceneStreamingText('');
       SoundFX?.playPowerUp?.();
 
       const lastRoll = chronicle.lastTacticalRoll;
@@ -696,14 +705,39 @@ REGLAS NARRATIVAS OBLIGATORIAS:
 4. Culmina con un gancho dramático para el siguiente capítulo.`;
 
       try {
-        const aiResponse = await SimulationEngine.callAiApi(promptScene, simEngine);
-        if (aiResponse && typeof aiResponse === 'string' && aiResponse.trim().length > 60) {
-          narrativeText = aiResponse.trim();
-        }
+        // Streaming con cancelación
+        const abortController = new AbortController();
+        setSceneAbortController(abortController);
+        
+        let fullText = '';
+        await SimulationEngine.streamSimulation(
+          promptScene,
+          simEngine,
+          (token) => {
+            fullText += token;
+            setSceneStreamingText(fullText);
+          },
+          () => {
+            // Completado
+            if (fullText && fullText.trim().length > 60) {
+              narrativeText = fullText.trim();
+            }
+            setIsGeneratingSceneAi(false);
+            setSceneStreamingText('');
+            setSceneAbortController(null);
+          },
+          (error) => {
+            console.warn('AI Scene streaming failed:', error);
+            setIsGeneratingSceneAi(false);
+            setSceneStreamingText('');
+            setSceneAbortController(null);
+          }
+        );
       } catch (e) {
         console.warn('AI Scene generation failed, using dynamic contextual fallback:', e);
-      } finally {
         setIsGeneratingSceneAi(false);
+        setSceneStreamingText('');
+        setSceneAbortController(null);
       }
     }
 
@@ -740,7 +774,7 @@ REGLAS NARRATIVAS OBLIGATORIAS:
       narrativeText += `\n\n[Evolución táctica del Director: ${userGuidance.trim()}]`;
     }
 
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     advanceChronicleScene(stateCopy, {
       title,
       sceneType: effectiveType,
@@ -754,6 +788,41 @@ REGLAS NARRATIVAS OBLIGATORIAS:
     setCustomSceneTitle('');
     setUserGuidance('');
     SoundFX?.playCombatHit?.();
+  };
+
+  // Cancelar generación de escena IA
+  const handleCancelSceneGeneration = () => {
+    if (sceneAbortController) {
+      sceneAbortController.abort();
+      setSceneAbortController(null);
+    }
+    setIsGeneratingSceneAi(false);
+    setSceneStreamingText('');
+  };
+
+  // Editar escena existente
+  const handleStartEditScene = (sceneId, currentText) => {
+    setEditingSceneId(sceneId);
+    setEditingSceneText(currentText || '');
+  };
+
+  const handleSaveEditedScene = () => {
+    if (!editingSceneId || !editingSceneText.trim()) return;
+    
+    const stateCopy = structuredClone(chronicle);
+    const sceneIndex = (stateCopy.chapterArchive || []).findIndex(s => s.id === editingSceneId);
+    if (sceneIndex >= 0) {
+      stateCopy.chapterArchive[sceneIndex].narrativeText = editingSceneText.trim();
+      setChronicle(stateCopy);
+    }
+    
+    setEditingSceneId(null);
+    setEditingSceneText('');
+  };
+
+  const handleCancelEditScene = () => {
+    setEditingSceneId(null);
+    setEditingSceneText('');
   };
 
   // Generate Epic AI Novella Chapter (4 Actos Literarios, tokens extendidos 65k-131k)
@@ -844,7 +913,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
         `Cuando el humo ionizado se disipó lentamente, el silencio volvió a gobernar ${loc}. Los dos guerreros permanecían en pie, pero el tributo físico era innegable: respiraciones entrecortadas, filamentos musculares desgarrados y quemaduras por fricción de aura en ambos costados. ${userGuidance ? `La directriz del conflicto se cumplió con creces: ${userGuidance}. ` : ''}Las facciones espectadoras comprendieron de inmediato que el equilibrio de poder había cambiado para siempre, y que el próximo capítulo exigirá medidas extremas para evitar el colapso definitivo.`;
     }
 
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     advanceChronicleScene(stateCopy, {
       title: effectiveTitle,
       sceneType: 'eternity_oracle_battle',
@@ -879,7 +948,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
 
   // Universal Dojo Training & Awakening Handler for ANY character in the active cast
   const handleTrainCharacter = (charId, trainingType = 'ki_mastery') => {
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     if (!stateCopy.characterStates[charId]) {
       stateCopy.characterStates[charId] = {
         recordId: charId,
@@ -950,26 +1019,56 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
     const c1 = charMap.get(chronicle.activeCast[0]) || { name: chronicle.activeCast[0], kiNumeric: 100000000 };
     const c2 = charMap.get(chronicle.activeCast[1]) || { name: chronicle.activeCast[1], kiNumeric: 95000000 };
 
+    // Sistema de combate táctico con factores múltiples
     const c1Ki = Number(c1.kiNumeric) || 1;
     const c2Ki = Number(c2.kiNumeric) || 1;
-    const winner = c1Ki >= c2Ki ? c1 : c2;
-    const loser = c1Ki >= c2Ki ? c2 : c1;
-
-    const combatConsequences = [
+    
+    // Factores tácticos (0.8 a 1.2 de multiplicador)
+    const c1BattleIQ = c1.battleIQ ? Math.min(1.2, 0.8 + (c1.battleIQ / 100) * 0.4) : 1.0;
+    const c2BattleIQ = c2.battleIQ ? Math.min(1.2, 0.8 + (c2.battleIQ / 100) * 0.4) : 1.0;
+    
+    // Estado actual (lesiones reducen efectividad)
+    const c1State = chronicle.characterStates?.[c1.id];
+    const c2State = chronicle.characterStates?.[c2.id];
+    const c1Condition = c1State?.shortTermCondition === 'Óptimo' ? 1.0 : 
+                        c1State?.shortTermCondition === 'Fatigado' ? 0.85 : 0.7;
+    const c2Condition = c2State?.shortTermCondition === 'Óptimo' ? 1.0 : 
+                        c2State?.shortTermCondition === 'Fatigado' ? 0.85 : 0.7;
+    
+    // Aleatoriedad táctica (±15% de variación)
+    const c1Random = 0.85 + Math.random() * 0.3;
+    const c2Random = 0.85 + Math.random() * 0.3;
+    
+    // Cálculo final de poder de combate
+    const c1Power = c1Ki * c1BattleIQ * c1Condition * c1Random;
+    const c2Power = c2Ki * c2BattleIQ * c2Condition * c2Random;
+    
+    const winner = c1Power >= c2Power ? c1 : c2;
+    const loser = c1Power >= c2Power ? c2 : c1;
+    
+    // Determinar intensidad del combate
+    const powerDiff = Math.abs(c1Power - c2Power) / Math.max(c1Power, c2Power);
+    const isClose = powerDiff < 0.1; // Menos del 10% de diferencia = combate reñido
+    
+    const combatConsequences = isClose ? [
+      `Combate extremadamente reñido: ${winner.name} se impone por mínima ventaja táctica ante ${loser.name}.`,
+      `Ambos combatientes sufren desgaste severo: ${winner.name} (-30% stamina), ${loser.name} (-45% stamina + fatiga).`,
+      `${loser.name} recibe heridas moderadas que requerirán recuperación.`
+    ] : [
       `Encuentro resuelto: ${winner.name} se impone tácticamente ante ${loser.name}.`,
       `${loser.name} sufre fatiga moderada (+25%) e impacto muscular.`,
       `${winner.name} consume un 15% de reservas de stamina.`
     ];
 
     handleAdvanceScene('brief_combat', {
-      title: `Duelo Relámpago: ${winner.name} vs ${loser.name}`,
+      title: `Duelo Relámpago: ${winner.name} vs ${loser.name}${isClose ? ' (¡Combate Reñido!)' : ''}`,
       consequences: combatConsequences
     });
   };
 
   // Compact history
   const handleCompact = () => {
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     compactChronicleHistory(stateCopy);
     setChronicle(stateCopy);
     alert('¡Historial compactado exitosamente! Los capítulos antiguos se consolidaron en el resumen acumulado conservando la trazabilidad en el archivo histórico.');
@@ -1019,7 +1118,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
 
   // Toggle thread
   const handleToggleThread = (index) => {
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     const current = stateCopy.openThreads[index];
     current.status = current.status === 'Abierto' ? 'Resuelto' : 'Abierto';
     setChronicle(stateCopy);
@@ -1028,7 +1127,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
   // Add thread
   const handleAddThread = () => {
     if (!newThreadInput.trim()) return;
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     stateCopy.openThreads.push({
       threadId: `thread_${Date.now()}`,
       title: newThreadInput.trim(),
@@ -1043,7 +1142,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
   // Add faction
   const handleAddFaction = () => {
     if (!newFactionName.trim()) return;
-    const stateCopy = JSON.parse(JSON.stringify(chronicle));
+    const stateCopy = structuredClone(chronicle);
     if (!stateCopy.factions) stateCopy.factions = [];
     const fac = createFactionState({
       factionId: `faction_${Date.now()}`,
@@ -1339,6 +1438,57 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
                       title={ch.title}
                       isFirstChapter={idx === 0}
                     />
+
+                    {/* Botones de acción de la escena */}
+                    <div className="flex items-center gap-2 pt-2 border-t border-slate-800/80">
+                      <button
+                        onClick={() => handleStartEditScene(ch.sceneId, ch.narrativeText)}
+                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[10px] font-bold transition cursor-pointer flex items-center gap-1.5"
+                        title="Editar el texto de esta escena"
+                      >
+                        <Edit3 className="w-3 h-3" />
+                        Editar Escena
+                      </button>
+                    </div>
+
+                    {/* Modal de edición inline */}
+                    {editingSceneId === ch.sceneId && (
+                      <div className="mt-3 p-4 rounded-xl bg-slate-950 border border-cyan-500/40 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                            <Edit3 className="w-3.5 h-3.5" />
+                            Editando: {ch.title}
+                          </span>
+                          <button
+                            onClick={handleCancelEditScene}
+                            className="text-slate-400 hover:text-white cursor-pointer"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <textarea
+                          value={editingSceneText}
+                          onChange={(e) => setEditingSceneText(e.target.value)}
+                          className="w-full h-64 p-3 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 text-xs font-mono resize-y focus:border-cyan-500 focus:outline-none"
+                          placeholder="Edita el texto de la escena..."
+                        />
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={handleSaveEditedScene}
+                            className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition cursor-pointer flex items-center gap-1.5"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                            Guardar Cambios
+                          </button>
+                          <button
+                            onClick={handleCancelEditScene}
+                            className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition cursor-pointer"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    )}
 
                     {ch.consequences && ch.consequences.length > 0 && (
                       <div className="pt-2 border-t border-slate-800/80 space-y-1">
@@ -2025,7 +2175,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
                 </p>
               </div>
               <button
-                onClick={() => setActiveTab('cast')}
+                onClick={() => setActiveTab('cast_factions')}
                 className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-lg transition inline-flex items-center gap-2 cursor-pointer"
               >
                 <Users className="w-4 h-4" />
@@ -2601,7 +2751,7 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
       {/* Global AI Generating Backdrop Overlay */}
       {(isGeneratingSceneAi || isGeneratingAiNovella) && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-purple-500/60 p-8 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.4)] max-w-md w-full space-y-4 font-mono">
+          <div className="bg-slate-900 border border-purple-500/60 p-8 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.4)] max-w-2xl w-full space-y-4 font-mono">
             <Sparkles className="w-12 h-12 text-pink-400 mx-auto animate-spin" />
             <h3 className="text-base font-bold text-white">
               {isGeneratingAiNovella ? '🪄 Redactando Novela Épica (4 Actos)...' : '✨ Redactando Escena con IA...'}
@@ -2609,12 +2759,34 @@ ESTILO: Prosa inmersiva en español neutro de alta calidad. Diálogos viscerales
             <p className="text-xs text-purple-300">
               Motor: <span className="font-bold text-pink-300">{aiConfig?.simulationEngine?.model || 'NVIDIA Nemotron 3 Ultra 550B'}</span>
             </p>
+            
+            {/* Streaming de texto en vivo */}
+            {sceneStreamingText && (
+              <div className="bg-slate-950/80 border border-purple-500/30 rounded-xl p-4 max-h-64 overflow-y-auto text-left">
+                <p className="text-[11px] text-slate-300 leading-relaxed whitespace-pre-wrap">
+                  {sceneStreamingText}
+                  <span className="inline-block w-2 h-4 bg-pink-400 ml-1 animate-pulse"></span>
+                </p>
+              </div>
+            )}
+            
             <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
               <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 h-full w-full animate-pulse"></div>
             </div>
             <p className="text-[11px] text-slate-400">
-              Generando coreografías milimétricas, prosa inmersiva y balance táctico...
+              {sceneStreamingText ? 'Generando prosa inmersiva en tiempo real...' : 'Generando coreografías milimétricas, prosa inmersiva y balance táctico...'}
             </p>
+            
+            {/* Botón cancelar */}
+            {isGeneratingSceneAi && (
+              <button
+                onClick={handleCancelSceneGeneration}
+                className="mt-2 px-4 py-2 rounded-xl bg-red-950/80 hover:bg-red-900 border border-red-500/50 text-red-300 text-xs font-bold transition cursor-pointer flex items-center gap-2 mx-auto"
+              >
+                <X className="w-4 h-4" />
+                Cancelar Generación
+              </button>
+            )}
           </div>
         </div>
       )}
