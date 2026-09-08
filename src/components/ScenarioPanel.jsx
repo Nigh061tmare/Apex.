@@ -315,6 +315,8 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
               <span className="text-[10px] text-cyan-300 font-bold">{scenario?.gravity || '1G'}</span>
             </div>
             <select
+              aria-label="Gravedad del escenario"
+              name="gravedad"
               value={scenario?.gravity || '1G (Tierra Estándar)'}
               onChange={(e) => setScenario(prev => ({ ...prev, gravity: e.target.value }))}
               className="w-full bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-slate-200 text-[10px] font-mono cursor-pointer"
@@ -338,6 +340,8 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
               <span className="text-[10px] text-orange-300 font-bold">{scenario?.climate || 'Templado'}</span>
             </div>
             <select
+              aria-label="Clima del escenario"
+              name="clima"
               value={scenario?.climate || 'Templada (22°C)'}
               onChange={(e) => setScenario(prev => ({ ...prev, climate: e.target.value, temperature: e.target.value }))}
               className="w-full bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-slate-200 text-[10px] font-mono cursor-pointer"
@@ -361,6 +365,8 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
               <span className="text-[10px] text-red-300 font-bold truncate max-w-[100px]">{scenario?.hazard || 'Ninguno'}</span>
             </div>
             <select
+              aria-label="Peligro ambiental del escenario"
+              name="peligro"
               value={scenario?.hazard || 'Sin peligros adicionales.'}
               onChange={(e) => setScenario(prev => ({ ...prev, hazard: e.target.value, terrainEffect: e.target.value }))}
               className="w-full bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-slate-200 text-[10px] font-mono cursor-pointer"
