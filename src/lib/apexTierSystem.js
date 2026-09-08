@@ -247,7 +247,23 @@ export function formatApexKi(value) {
     return num.toFixed(1) + " Unidades";
   }
 
-  if (num >= 1e30) return "Trascendente Cósmico";
+  // Escala española extendida completa: los números SIEMPRE muestran su valor
+  // real en APEX-Ki (nunca se ocultan tras "Trascendente Cósmico"). Solo los
+  // valores ≥10^68 (log10 ≥ 68, Tiers infinitos reales) se declaran "∞ Incalculable".
+  if (num >= 1e68) return "∞ Incalculable";
+  if (num >= 1e66) return (num / 1e66).toFixed(2) + " Unvigintillones";
+  if (num >= 1e63) return (num / 1e63).toFixed(2) + " Vigintillones";
+  if (num >= 1e60) return (num / 1e60).toFixed(2) + " Undevigintillones";
+  if (num >= 1e57) return (num / 1e57).toFixed(2) + " Duodevigintillones";
+  if (num >= 1e54) return (num / 1e54).toFixed(2) + " Septendecillones";
+  if (num >= 1e51) return (num / 1e51).toFixed(2) + " Sexdecillones";
+  if (num >= 1e48) return (num / 1e48).toFixed(2) + " Quindecillones";
+  if (num >= 1e45) return (num / 1e45).toFixed(2) + " Cuatordecillones";
+  if (num >= 1e42) return (num / 1e42).toFixed(2) + " Tredecillones";
+  if (num >= 1e39) return (num / 1e39).toFixed(2) + " Duodecillones";
+  if (num >= 1e36) return (num / 1e36).toFixed(2) + " Undecillones";
+  if (num >= 1e33) return (num / 1e33).toFixed(2) + " Decillones";
+  if (num >= 1e30) return (num / 1e30).toFixed(2) + " Nonillones";
   if (num >= 1e27) return (num / 1e27).toFixed(2) + " Octillones";
   if (num >= 1e24) return (num / 1e24).toFixed(2) + " Septillones";
   if (num >= 1e21) return (num / 1e21).toFixed(2) + " Sextillones";
@@ -268,7 +284,20 @@ export function formatSourceKi(value) {
   if (value === null || value === undefined || isNaN(value) || value <= 0) return null;
   const num = Number(value);
   if (!Number.isFinite(num)) return "∞ Incalculable (Scouter)";
-  if (num >= 1e30) return "Trascendente Cósmico (Scouter)";
+  if (num >= 1e68) return "∞ Incalculable (Scouter)";
+  if (num >= 1e66) return (num / 1e66).toFixed(2) + " Unvigintillones (Scouter)";
+  if (num >= 1e63) return (num / 1e63).toFixed(2) + " Vigintillones (Scouter)";
+  if (num >= 1e60) return (num / 1e60).toFixed(2) + " Undevigintillones (Scouter)";
+  if (num >= 1e57) return (num / 1e57).toFixed(2) + " Duodevigintillones (Scouter)";
+  if (num >= 1e54) return (num / 1e54).toFixed(2) + " Septendecillones (Scouter)";
+  if (num >= 1e51) return (num / 1e51).toFixed(2) + " Sexdecillones (Scouter)";
+  if (num >= 1e48) return (num / 1e48).toFixed(2) + " Quindecillones (Scouter)";
+  if (num >= 1e45) return (num / 1e45).toFixed(2) + " Cuatordecillones (Scouter)";
+  if (num >= 1e42) return (num / 1e42).toFixed(2) + " Tredecillones (Scouter)";
+  if (num >= 1e39) return (num / 1e39).toFixed(2) + " Duodecillones (Scouter)";
+  if (num >= 1e36) return (num / 1e36).toFixed(2) + " Undecillones (Scouter)";
+  if (num >= 1e33) return (num / 1e33).toFixed(2) + " Decillones (Scouter)";
+  if (num >= 1e30) return (num / 1e30).toFixed(2) + " Nonillones (Scouter)";
   if (num >= 1e24) return (num / 1e24).toFixed(2) + " Septillones (Scouter)";
   if (num >= 1e21) return (num / 1e21).toFixed(2) + " Sextillones (Scouter)";
   if (num >= 1e18) return (num / 1e18).toFixed(2) + " Quintillones (Scouter)";
