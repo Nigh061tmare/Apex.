@@ -166,7 +166,14 @@ export function resolveCombatState(character, activeStateId = 'base', scenario =
     : { ...TEMP_PROFILES.balanced };
   const baseQuality = calculateQuality(baseStatsRaw);
   const baseWithinTierScore = Math.max(0, Math.min(100, Math.round(baseQuality * 100)));
-  const baseApexKiLog10 = baseTierRank !== null ? getBaseApexKiLog10(cleanBaseTier, baseWithinTierScore) : null;
+  // PREFERIR el Ki real calibrado del roster (patrón de oro) sobre el ancla del tier.
+  // Antes se usaba SIEMPRE getBaseApexKiLog10(tier), cuyos anclajes estaban inflados
+  // (ej. "Low 2-C" = log10 50) → personajes con tier alto mostraban 10^50 aunque su
+  // APEX-Ki real fuera 10^11. Ahora se usa log10(Ki real) cuando existe.
+  const realKi = character.numericStats?.apexKi || character.baseKiNumeric || character.apexKi || character.ki;
+  const baseApexKiLog10 = validPositive(realKi)
+    ? Math.log10(realKi)
+    : (baseTierRank !== null ? getBaseApexKiLog10(cleanBaseTier, baseWithinTierScore) : null);
 
   // ── 2. Source Ki (Scouter canónico) — SOLO para Dragon Ball ───────────────────
   let sourceKiBase   = null;
@@ -488,8 +495,7 @@ export function resolveCombatState(character, activeStateId = 'base', scenario =
      isApexKiTranscendent = true;
    } else if (activeTierName && (activeTierName === '1-A' || activeTierName === 'High 1-A' || activeTierName === 'Low 1-A'
                || activeTierName === '1-B' || activeTierName === 'High 1-B'
-               || activeTierName === '1-C' || activeTierName === 'High 1-C' || activeTierName === 'Low 1-C'
-               || activeTierName === 'Low 2-C')) {
+               || activeTierName === '1-C' || activeTierName === 'High 1-C' || activeTierName === 'Low 1-C')) {
      isApexKiTranscendent = true;
    }
    
