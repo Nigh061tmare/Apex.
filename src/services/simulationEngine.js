@@ -85,6 +85,29 @@ export function resolveCandidateApiKeys(cfg, engine) {
 
 export const SimulationEngine = {
   generateMasterPrompt(charA, charB, scenario, modifiers = {}, teamA = [], teamB = [], battleRoyale = [], multiTeams = [], bossMinions = []) {
+    // DETECCIÓN AUTOMÁTICA DE INTENCIÓN DEL USUARIO (modos de estructura/duración)
+    const userText = `${charA?.name || ''} ${charB?.name || ''} ${scenario || ''}`.toLowerCase();
+    if (!modifiers.simulationMode) {
+      if (userText.includes('maratón') || userText.includes('maraton') || userText.includes('combate de resistencia') || userText.includes('pelea muy larga') || userText.includes('alargar mucho')) {
+        modifiers.simulationMode = 'maraton';
+      } else if (userText.includes('novela continua') || userText.includes('novela') || userText.includes('sin fases') || userText.includes('sin fase') || userText.includes('narrativa fluida')) {
+        modifiers.simulationMode = 'novela_continua';
+      } else if (userText.includes('épica extendida') || userText.includes('epica extendida') || userText.includes('combate extendido') || userText.includes('6 fases') || userText.includes('seis fases') || userText.includes('pelea más larga') || userText.includes('alarga la pelea')) {
+        modifiers.simulationMode = 'epica_extendida';
+      } else if (userText.includes('relámpago') || userText.includes('relampago') || userText.includes('combate rápido') || userText.includes('one-shot') || userText.includes('en segundos') || userText.includes('pelea corta')) {
+        modifiers.simulationMode = 'relampago';
+      } else if (userText.includes('resistencia infinita') || userText.includes('duelo infinito') || userText.includes('hasta el colapso') || userText.includes('sin límite de tiempo')) {
+        modifiers.simulationMode = 'resistencia_infinita';
+      } else if (userText.includes('ascensión') || userText.includes('ascension') || userText.includes('rondas de poder') || userText.includes('evolución de poder') || userText.includes('subiendo de nivel')) {
+        modifiers.simulationMode = 'ascension';
+      } else if (userText.includes('oleadas') || userText.includes('defensa infinita') || userText.includes('asalto por oleadas') || userText.includes('horda')) {
+        modifiers.simulationMode = 'oleadas';
+      } else if (userText.includes('psicológico') || userText.includes('psicologico') || userText.includes('guerra psicológica') || userText.includes('mind games') || userText.includes('mente sobre músculo')) {
+        modifiers.simulationMode = 'psicologico';
+      } else if (userText.includes('sparring') || userText.includes('entrenamiento') || userText.includes('sin muerte') || userText.includes('combate amistoso')) {
+        modifiers.simulationMode = 'sparring';
+      }
+    }
     const preset = modifiers.narrativePreset || 'Equilibrado';
     const matchMode = modifiers.matchMode || '1v1';
     const simRulesStr = modifiers.canonStrict ? 'STRICT CANON (No non-canon scaling)' : 'APEX CUSTOM (Multiversal Equalization)';
@@ -202,6 +225,7 @@ Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones t
 3. **DAÑO ACUMULATIVO Y STAMINA:** Los personajes merman. Detalla los microdesgarros musculares, la pérdida de ki o prana, y las contramedidas tácticas para sobrevivir.
 4. **DIÁLOGOS EN COMBATE (ESTILO LITERARIO MASTER):** Utiliza guion largo (—) para las voces y cursivas para los pensamientos internos (*ej: "—No tienes escapatoria —dijo fríamente, sus nudillos goteando sangre."*).
 5. **PROHIBIDOS CLICHÉS:** Usa descripciones adultas, directas y espectaculares. Prohibido: "el tiempo se detuvo", "se escuchó un sonido seco". Sé milimétricamente exacto.
+6. **VEREDICTO GRIMDARK (OBLIGATORIO):** El desenlace debe reflejar la brutalidad del tono: no hay victorias "limpias"; incluso el ganador queda marcado (traumas permanentes, mutilaciones, cicatrices psicológicas, consecuencias irreversibles). El estado final detalla el coste humano real de la batalla, y los "ganadores" pagan un precio sangriento.
 `;
     } else if (preset === 'Torneo Épico') {
       engineRules += `
@@ -209,6 +233,7 @@ Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones t
 1. **ESTILO TORNEO SHŌNEN EXALTADO:** La batalla es un show brutal y espectacular. Las transformaciones provocan temblores en las gradas.
 2. **COMENTARISTA EN VIVO Y PÚBLICO:** Usa un locutor con exclamaciones dinámicas ("—¡INCREÍBLE! ¡El cuadrilátero está cediendo!").
 3. **CONCISO Y CINEMATOGRÁFICO:** Diálogos intensos (—) e intercambios marciales fluidos. 
+4. **VEREDICTO HEROICO (OBLIGATORIO):** El desenlace debe honrar el espíritu de torneo: victoria gloriosa, respeto mutuo entre rivales, y exaltación del esfuerzo. El ganador avanza con orgullo y el perdedor cae con dignidad; la audiencia es parte del veredicto. Cierra exaltando el momento cumbre del combate.
 `;
     } else if (preset === 'Equilibrado' || preset === 'Shōnen Cinematográfico') {
       engineRules += `
@@ -216,12 +241,14 @@ Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones t
 1. **COREOGRAFÍA DE IMPACTO EXTREMO:** Narra los choques de energía y las artes marciales con peso, velocidad y descripciones espaciales dinámicas.
 2. **DESGASTE Y SUPERACIÓN:** Muestra cómo las técnicas gastan Stamina. Los diálogos deben usar (—) y reflejar la personalidad canónica del guerrero al límite.
 3. **CLÍMAX HEROICO:** Colisiones de Ultimate Attacks narradas con lujo de detalles (densidad del ki, el color del fuego, la distorsión del aire).
+4. **VEREDICTO CINEMATOGRÁFICO (OBLIGATORIO):** El desenlace debe ser visualmente impactante y emocionalmente resonante: el último golpe se describe con cámara lenta épica, la resolución deja satisfacción narrativa, y el estado final equilibra el coste físico con el triunfo del espíritu.
 `;
     } else {
       engineRules += `
 ### 📊 MODO ANÁLISIS TÉCNICO (VS BATTLES STANDARD):
 1. **RESOLUCIÓN ANALÍTICA PURA:** Concéntrate en la escala de Tiers, cálculo de Joules (AP), velocidades en Mach/c, e interacción directa de Hax.
 2. **VEREDICTO BASADO EN FEATS:** Sin adornos dramáticos excesivos, justificación matemática y técnica de la victoria.
+3. **VEREDICTO TÉCNICO (OBLIGATORIO):** El desenlace prioriza la exactitud del Power Scaling: cada golpe decisivo se justifica por AP, velocidad o hax, sin ambigüedad narrativa. El veredicto es la conclusión lógica del diferencial de poder, no un giro dramático.
 `;
     }
 
@@ -567,10 +594,32 @@ MECÁNICAS DE AMENAZA COLECTIVA:
     }
 
     let structureInstruction = "";
+
+    // ============ CABECERA DE PARÁMETROS REUTILIZABLE (SALE EN TODOS LOS MODOS) ============
+    const paramHeader = `
+### ⚙️ PARÁMETROS & REGLAS ACTIVAS DE SIMULACIÓN
+- **Modo de Simulación:** APEX Canon-Plus / Simulación Multiversal — ${matchMode === 'raid' ? 'Boss Raid Asimétrico' : matchMode === 'team' ? 'Combate por Equipos' : matchMode === 'battleRoyale' ? 'Battle Royale' : 'Duelo 1v1'}
+- **Continuidad & Versiones Declaradas:**
+  * Bando A: ${charA?.name || 'Contendiente Alfa'} [${charA?.universe || 'Canon'}, ${charA?.forms?.[0]?.name || 'Base'}]
+  * Bando B: ${charB?.name || 'Contendiente Beta'} [${charB?.universe || 'Canon'}, ${charB?.forms?.[0]?.name || 'Base'}]
+- **Reglas del Motor:**
+  * Verse Equalization: ON (Energías interactúan según jerarquía de Tier y hax)
+  * Modelo de Stamina: Dinámico (Base Upkeep + Gasto por Técnica)
+  * Amplificación de Lesiones Funcionales: ON (Heridas limitan técnicas y movilidad)
+  * Biología & Regeneración: Coste de Ki proporcional (Sin curación milagrosa gratuita)
+  * Exclusividad Técnica: Técnicas insignia solo para su usuario canónico (Ryūken = Son Goku, Mafūba = Roshi/Tenshinhan, Final Flash = Vegeta, Hakai = Dioses de Destrucción, etc.)
+  * Anclaje Temporal Estricto: Cada personaje conoce SOLO su era/saga. PROHIBIDO usar técnicas, formas, información o relaciones de sagas posteriores a su ficha. Los nombres se usan solo si el personaje los conoce en su era.
+`;
+
     if (modifiers.simulationMode === 'cronica') {
-      structureInstruction = `
+      structureInstruction = paramHeader + `
 ### IV. ESTRUCTURA Y ESTILO: MODO CRÓNICA CONTINUA / NOVELA ÉPICA MAGISTRAL
-Narra la batalla como una novela sci-fi/fantasía de alto impacto, combinando el poder visceral de los combates cuerpo a cuerpo (huesos, músculos, oxígeno) con el Power Scaling cósmico (energía masiva, vitrificación, MFTL+). Utiliza los encabezados exactos:
+Narra la batalla como una novela sci-fi/fantasía de alto impacto, combinando el poder visceral de los combates cuerpo a cuerpo (huesos, músculos, oxígeno) con el Power Scaling cósmico (energía masiva, vitrificación, MFTL+).
+
+DIRECTIVAS DE CRÓNICA FLUIDA (NO FASES):
+1. **PRIMERA LÍNEA:** Tras la cabecera de parámetros, NO escribas ningún encabezado "FASE" — empieza directamente con la narración en prosa.
+2. **FLUJO CONTINUO:** Narra en párrafos conectados con checkpoints biométricos en los momentos dramáticos (no de forma mecánica).
+3. **CIERRE ABIERTO:** No cierres con "FIN DE LA SIMULACIÓN"; deja la batalla en un punto vivo y continuable.
 
 ### FASE 1 – TANTEO CINÉTICO Y ANÁLISIS SENSORIAL
 [Descripción de la presión en el ambiente. El primer intercambio de golpes a velocidad extrema. Tácticas iniciales y primer daño orgánico]
@@ -603,9 +652,17 @@ ESTADO FINAL DE LOS COMBATIENTES:
 ESTADO DEL MAPA:
 - <Radio de destrucción (metros, kilómetros o universal), secuelas planetarias y biológicas>
 ||BIOMETRICS|HP_A:<HP_FINAL>|STM_A:<STM_FINAL>|HP_B:<HP_FINAL>|STM_B:<STM_FINAL>||
+
+### 📖 DIRECTIVAS DE CRÓNICA CONTINUA (CAMPAÑA / NOVELA POR CAPÍTULOS):
+1. **CONTINUIDAD NARRATIVA:** Esta escena forma parte de una crónica continua. Si recibes contexto de escenas anteriores (estado de los personajes, heridas arrastradas, relaciones, facciones), respétalo estrictamente y no lo contradigas: las heridas de capítulos previos duelen, las alianzas pesan y los arcos personales evolucionan.
+2. **DESARROLLO DE PERSONAJES:** Cada escena debe avanzar el arco interno de los protagonistas (una convicción puesta a prueba, un miedo enfrentado, una relación que cambia). La crónica no es solo combate: es historia que se cuenta a través del combate y el diálogo.
+3. **GANCHOS A FUTURO:** Deja al menos UNA semilla narrativa para capítulos posteriores (un rival que observa, un misterio sin resolver, una alianza inestable, un objeto que nadie notó). La crónica debe sentir que "continúa", no que termina.
+4. **RELACIONES Y MATRIZ:** Refleja cómo el resultado de esta escena modifica las relaciones entre los participantes (deuda, respeto, rivalidad, traición) y entre las facciones implicadas.
+5. **TONO DE LA CAMPAÑA:** Mantén el tono declarado de la crónica (Épico, Táctico, Filosófico, Grimdark, Cósmico, Shonen, Conspiración, Misterio). No cambies de registro bruscamente entre capítulos.
+6. **BIFURCACIÓN INTERACTIVA (CRONOLOGÍA RAMIFICADA):** Al cierre de la escena, deja planteados 2-4 caminos de continuación posibles que el usuario podría elegir para el siguiente capítulo (confrontación directa, investigación de un misterio, negociación con una facción, retiro y entrenamiento, seguimiento de un rival). NO resuelvas esas opciones: solo déjalas implicadas en la narración como caminos abiertos, listas para que el usuario decida la siguiente jugada. La crónica siente que sus ramas dependen de la elección del usuario.
 `;
-    } else if (modifiers.simulationMode === 'episodico') {} else if (modifiers.simulationMode === 'episodico') {
-      structureInstruction = `
+    } else if (modifiers.simulationMode === 'episodico') {
+      structureInstruction = paramHeader + `
 ### IV. ESTRUCTURA Y ESTILO: MODO EPISÓDICO — ACTO 1 (APERTURA DEL ARC)
 Narra el primer tercio del combate con ritmo crescendo, como si fuera el primer episodio de un arco de torneo shōnen.
 
@@ -620,6 +677,197 @@ FORMATO DE CIERRE OBLIGATORIO (copiado exactamente):
 ### ⏸️ CLIFFHANGER — CONTINUARÁ
 [Descripción del instante congelado, máximo 2 líneas de alta tensión narrativa]
 ||BIOMETRICS|HP_A:<valor>|STM_A:<valor>|HP_B:<valor>|STM_B:<valor>||
+`;
+    } else if (modifiers.simulationMode === 'torneo_shonen') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO TORNEO SHŌNEN (BRACKET ELIMINATORIO CON COMENTARISTA)
+Narra el combate como una eliminatoria de torneo de artes marciales con comentarista en vivo, rankings y público entregado.
+
+REGLAS OBLIGATORIAS:
+1. **COMENTARISTA EN VIVO (OBLIGATORIO):** Incluye un comentarista/narrador de torneo que exalta los momentos clave con apodos descriptivos ("¡El Príncipe de los Saiyans!", "¡El Dios de la Destrucción!", "¡La Bestia Legendaria!"). Sus intervenciones van entre guiones o como inserciones de color entre acciones.
+2. **BRACKET Y RANKINGS (APERTURA):** Al inicio, muestra el contexto de la eliminatoria: Ronda actual, combate, puesto en el ranking de la arena y récords/fama de cada contendiente.
+3. **PÚBLICO Y ATMÓSFERA:** Describe gradas llenas, pancartas, el rugido de la audiencia, la tensión del público que aplaude o abuchea. El escenario es una arena oficial de torneo con reglamento.
+4. **RITMO SHŌNEN ESPECTACULAR:** Las transformaciones son revelaciones que hacen rugir al público; los golpes decisivos se narran con cámara lenta épica y exageración exaltada. Cada fase debe tener un momento "para el público".
+5. **MARCADOR DE MOMENTUM:** Entre fases, indica quién lleva la ventaja táctica y quién "avanzaría" según el momento del combate.
+6. **VEREDICTO DE TORNEO:** El ganador avanza de ronda; el comentarista despide el combate evaluando su futuro en el bracket. Cierra con el estado de la arena y el resultado oficial.
+`;
+    } else if (modifiers.simulationMode === 'trilogia') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO TRILOGÍA (3 ACTOS CONECTADOS CON EVOLUCIÓN DE STATS)
+Narra el combate en tres actos cinematográficos conectados, donde el estado, las heridas y las técnicas evolucionan entre actos.
+
+REGLAS OBLIGATORIAS:
+1. **ACTO 1 — EL ENCUENTRO:** Presentación de ambos contendientes, atmósfera del escenario, primer intercambio de poder y lectura táctica. Cierra con el primer golpe de efecto que define el tono.
+2. **ACTO 2 — LA ESCALADA:** Emergen las formas y técnicas superiores. El escenario se degrada visiblemente. Cada contendiente revela una carta nueva. Cierra con un punto de inflexión dramático (una forma desbloqueada, una herida grave, un giro táctico).
+3. **ACTO 3 — LA RESOLUCIÓN:** El clímax absoluto. Finishers, choque de voluntades, y el desenlace definitivo con consecuencias emocionales y físicas duraderas.
+4. **EVOLUCIÓN ENTRE ACTOS (OBLIGATORIO):** Entre actos, actualiza la telemetría BIOMETRICS con el nuevo estado, y narra cómo el desgaste del acto anterior condiciona el siguiente (fatiga acumulada, heridas que limitan técnicas, estrategias rotas). Los stats nunca "vuelven a 100" sin justificación (descanso, senzu, regeneración).
+5. **EPÍLOGO:** Cierra con el estado final de los contendientes, las secuelas de la batalla y una semilla narrativa para una posible secuela o trilogía posterior.
+`;
+    } else if (modifiers.simulationMode === 'epica_extendida') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO ÉPICA EXTENDIDA (6 FASES DE COMBATE PROLONGADO)
+Narra el combate con SEIS fases en lugar de cuatro, alargando la pelea con más intercambios, más vuelta de tuerca y mayor profundidad táctica.
+
+REGLAS OBLIGATORIAS:
+### FASE 1 — TANTEO Y MEDICIÓN
+[Primeros intercambios, lectura de habilidades, pequeñas ventajas. Los contendientes se estudian.]
+### FASE 2 — ESCALADA Y SÚPER ATAQUES
+[Formas superiores, técnicas devastadoras, el escenario empieza a degradarse.]
+### FASE 3 — EL GIRO TÁCTICO
+[Primer gran punto de inflexión: una estrategia falla, una técnica se descubre, un hax se contrarresta.]
+### FASE 4 — CRISIS Y DESGASTE
+[Ambos bandos agotados; heridas graves que limitan movimientos. La resistencia se pone a prueba. Puede activarse el evento Cisne Negro aquí.]
+### FASE 5 — RECUPERACIÓN O DESESPERACIÓN
+[Un giro inesperado re-equilibra el combate: un recurso (senzu), una nueva forma, un aliado, una técnica prohibida. El clímax se prepara.]
+### FASE 6 — CLÍMAX Y RESOLUCIÓN
+[El duelo final. Finishers, choque de voluntades, desenlace definitivo.]
+### VEREDICTO & ESTADO FINAL
+VENCEDOR: <Nombre exacto>
+DIFICULTAD: <Extreme-Diff | High-Diff | Mid-Diff | Low-Diff>
+CAUSALIDAD DEL DESENLACE: <Argumentos técnicos>
+ESTADO FINAL DE LOS COMBATIENTES: <Porcentajes + daño anatómico>
+||BIOMETRICS|HP_A:<final>|STM_A:<final>|HP_B:<final>|STM_B:<final>||
+
+REGLA DE DURACIÓN: Cada fase debe tener SUFICIENTE contenido (no resúmenes): intercambios detallados, diálogos, daño acumulado y evolución del escenario. La pelea debe sentirse LARGA y ÉPICA, no apresurada.
+`;
+    } else if (modifiers.simulationMode === 'maraton') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO MARATÓN (COMBATE DE RESISTENCIA PROLONGADO)
+Narra un combate de resistencia extrema y larga duración, donde el desgaste físico y mental es el protagonista.
+
+REGLAS OBLIGATORIAS:
+1. **DURACIÓN EXTENDIDA:** El combate se desarrolla en 5-8 segmentos narrativos (no fases rígidas con los mismos nombres) que fluyen con la historia. Cada segmento avanza el desgaste de ambos bandos.
+2. **DESGASTE ACUMULATIVO REAL:** La stamina se agota de forma visible y persistente: los golpes pesan más, las técnicas son más lentas, las respiraciones se entrecortan. Los contendientes YA NO pelean igual al principio que al final.
+3. **CAMBIO DE ESTRATEGIA:** Al menos dos veces en el combate, un luchador debe cambiar radicalmente de estrategia por el desgaste (de atacante a defensor, de ofensivo a táctico, de técnica a cuerpo a cuerpo).
+4. **MOMENTOS DE RESPIRACIÓN:** Incluye micro-pausas donde los luchadores se evalúan, dialogan o intercambian miradas, sin perder la tensión.
+5. **PUNTOS DE TELEMETRÍA:** Muestra la BIOMETRICS en los momentos naturales (al menos 3 veces), reflejando el desgaste progresivo.
+6. **CLÍMAX DE AGOTAMIENTO:** El final es una batalla de dos boxeadores al límite: el que resiste más gana, no el que golpea más fuerte.
+7. **VEREDICTO:** Cierra con el estado final y el precio físico total del combate.
+`;
+    } else if (modifiers.simulationMode === 'novela_continua') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO NOVELA CONTINUA (SIN FASES RÍGIDAS)
+Narra el combate como una escena de novela cinematográfica fluida, SIN encabezados de fase numerados.
+
+REGLAS OBLIGATORIAS:
+0. **PRIMERA LÍNEA:** Tras la cabecera de parámetros (⚙️ PARÁMETROS & REGLAS ACTIVAS), NO escribas NINGÚN encabezado "FASE" ni "Fase X" — empieza DIRECTAMENTE con la narración en prosa (párrafo descriptivo inicial).
+1. **FLUJO CONTINUO:** NO uses encabezados "FASE 1/2/3/4". La narración fluye como un capítulo de novela, con párrafos conectados y transiciones naturales entre momentos de combate.
+2. **TELEMETRÍA DISCRETA:** Inserta la BIOMETRICS solo en los momentos más dramáticos (cuando el combate cambia de rumbo), no de forma mecánica.
+3. **PROSA LITERARIA:** La narración prioriza la calidad literaria: metáforas, ritmo de frases, clima emocional. Combina acción visceral con respiración narrativa.
+4. **ARCO EMOCIONAL:** El combate debe tener un arco emocional (tensión creciente, picos de drama, respiros, clímax y resolución) sin depender de la estructura de fases.
+5. **CIERRE ABIERTO:** NO cierres con desenlace definitivo ni "FIN DE LA SIMULACIÓN". Deja la batalla en un punto vivo y continuable (estado parcial claro, tensión sostenida) para que el usuario pueda continuar con el Modo Libro-Juego.
+`;
+    } else if (modifiers.simulationMode === 'relampago') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO COMBATE RELÁMPAGO (2 FASES ULTRA-RÁPIDAS)
+Narra un combate decidido en SEGUNDOS, estilo one-shot de élite. La pelea es brutal, breve e intensa.
+
+REGLAS OBLIGATORIAS:
+### FASE 1 — LA CHISPA (0-3 SEGUNDOS)
+[El primer y único intercambio técnico real. Lectura instantánea del rival, primer choque, una micro-ventaja se decide.]
+### FASE 2 — LA DECISIÓN (3-10 SEGUNDOS)
+[El golpe definitivo. Una técnica letal, un contraataque perfecto, un hax decisivo. La pelea termina con un resultado claro.]
+### VEREDICTO
+VENCEDOR: <Nombre>
+DIFICULTAD: <Low-Diff | Mid-Diff | High-Diff>
+TIEMPO TRANSCURRIDO: <X segundos>
+CAUSALIDAD: <El momento exacto que decidió la pelea>
+
+REGLAS DE RITMO:
+1. **VELOCIDAD TOTAL:** Cada frase debe transmitir velocidad extrema (sin pausas largas, sin monólogos extensos).
+2. **IMPACTO ÚNICO:** Solo hay UN intercambio decisivo; el resto son amagues y lecturas.
+3. **PROSA INCISIVA:** Párrafos cortos y afilados. La tensión es un cuchillo.
+4. **DESENLACE CLARO:** Sin ambigüedad: quién ganó y POR QUÉ en un instante.
+`;
+    } else if (modifiers.simulationMode === 'resistencia_infinita') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO DUELO DE RESISTENCIA INFINITA (SIN LÍMITE DE TIEMPO)
+Narra un duelo sin límite de tiempo donde los contendientes se enfrentan HASTA EL COLAPSO TOTAL de uno de ellos.
+
+REGLAS OBLIGATORIAS:
+1. **CICLOS DE DESGASTE:** La narración avanza en CICLOS de resistencia (no fases): cada ciclo representa horas/días de combate continuo donde ambos se castigan sin tregua.
+2. **REGENERACIÓN Y RECUPERACIÓN:** Si un contendiente tiene regeneración, curación o recuperación pasiva, muéstrala — el duelo se convierte en una guerra de recursos entre daño y curación.
+3. **MONÓLOGOS INTERNOS DE AGOTAMIENTO:** Ambos luchadores reflexionan sobre el dolor, la fatiga y la voluntad de continuar. El duelo es tanto mental como físico.
+4. **MARCAS DEL TIEMPO:** Al inicio de cada ciclo, indica cuánto tiempo ha pasado (Horas 1, 12, 24... días 2, 3...). El escenario se degrada con el tiempo (craters, clima alterado, terreno arrasado).
+5. **EL COLAPSO:** El final no es una técnica espectacular — es el colapso de uno de los dos por agotamiento puro. Describe el momento en que el cuerpo dice "basta".
+6. **VEREDICTO:** Cierra con el tiempo total del duelo, el estado de devastación y el precio físico del vencedor.
+`;
+    } else if (modifiers.simulationMode === 'ascension') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO ASCENSIÓN DE PODER (RONDAS DE EVOLUCIÓN)
+Narra un combate donde los contendientes ASCIENDEN de poder ronda a ronda, desbloqueando formas y técnicas progresivamente.
+
+REGLAS OBLIGATORIAS:
+### RONDA 1 — ESTADO BASE
+[Ambos luchan en su forma base, midiéndose sin transformaciones.]
+### RONDA 2 — PRIMERA ASCENSIÓN
+[Primer nivel de poder: transformación inicial, técnicas superiores.]
+### RONDA 3 — ASCENSIÓN MEDIA
+[Segunda forma o técnica intermedia; el combate se vuelve más agresivo.]
+### RONDA 4 — CÚSPIDE
+[Tercer nivel: la forma más poderosa de cada uno, o su mejor técnica.]
+### RONDA FINAL — LA DECISIÓN
+[El pico máximo combinado: el choque final entre los niveles más altos.]
+### VEREDICTO
+VENCEDOR: <Nombre>
+RONDAS HASTA LA VICTORIA: <X>
+CAUSALIDAD: <En qué ascensión se decidió y por qué>
+
+REGLAS:
+1. **PROGRESIÓN VISIBLE:** Cada ronda debe elevar el poder de forma clara (stats suben, aura cambia, escenario se degrada más).
+2. **SIN RETROCESO:** Una vez ascendido, no se baja de nivel sin justificación (colapso, costo).
+3. **TENSIÓN CRECIENTE:** La cúspide debe sentirse inevitable y apoteósica.
+`;
+    } else if (modifiers.simulationMode === 'oleadas') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO ASALTO POR OLEADAS (DEFENSA INFINITA)
+Narra a una escuadra defendiéndose contra OLEADAS de enemigos cada vez más fuertes.
+
+REGLAS OBLIGATORIAS:
+### OLEADA 1 — CONTENCIÓN
+[Enemigos de bajo nivel para medir a la escuadra. La defensa se organiza.]
+### OLEADA 2 — PRESIÓN
+[Enemigos más fuertes que fuerzan el uso de técnicas y recursos.]
+### OLEADA 3 — CRISIS
+[Un líder o enemigo élite aparece. La escuadra debe coordinarse o caer.]
+### OLEADA 4 — ASEDIO FINAL
+[El enemigo más fuerte de la oleada. Los recursos están casi agotados.]
+### VEREDICTO
+RESULTADO: <La escuadra aguanta o cae>
+OLEADA MÁXIMA ALCANZADA: <X>
+BAJAS: <Estado de cada miembro>
+
+REGLAS:
+1. **RECURSOS LIMITADOS:** Senzus, regeneración y stamina se gastan entre oleadas; muéstralo.
+2. **SINERGIAS OBLIGATORIAS:** La escuadra debe usar ataques combinados y sinergias para sobrevivir.
+3. **ESCALADA DE AMENAZA:** Cada oleada debe sentirse más peligrosa que la anterior.
+4. **MOMENTOS DE RESPIRAÇÃO:** Entre oleadas, breves pausas para reorganización y diálogo.
+`;
+    } else if (modifiers.simulationMode === 'psicologico') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO GUERRA PSICOLÓGICA (MENTE SOBRE MÚSCULO)
+Narra un combate donde la PSICOLOGÍA y la estrategia importan más que la fuerza bruta.
+
+REGLAS OBLIGATORIAS:
+1. **MIND GAMES:** El combate está lleno de provocaciones, falsas aperturas, predicciones y contrapredicciones. Cada luchador intenta romper mentalmente al otro.
+2. **POCOS GOLPES, MUCHO PESO:** Los intercambios físicos son escasos pero DECISIVOS — cada golpe que conecta es el resultado de un plan mental complejo.
+3. **LECTURA DEL RIVAL:** Muestra los monólogos internos donde cada uno analiza los patrones, miedos y hábitos del otro.
+4. **BATTLE IQ SOBRE PODER:** Un luchador más débil puede vencer a uno más fuerte mediante la estrategia pura.
+5. **EL MOMENTO DE QUIEBRE:** El clímax es el momento en que la mente de uno se rompe (miedo, ira manipulada, desesperación) o se aclara (epifanía táctica).
+6. **VEREDICTO:** Explica la victoria en términos de QUÉ ERROR mental cometió el perdedor, no solo qué golpe recibió.
+`;
+    } else if (modifiers.simulationMode === 'sparring') {
+      structureInstruction = paramHeader + `
+### IV. ESTRUCTURA Y ESTILO: MODO SPARRING DE ENTRENAMIENTO (SIN MUERTE)
+Narra un combate de entrenamiento o exhibición donde NO hay muerte: técnica, aprendizaje y deportividad.
+
+REGLAS OBLIGATORIAS:
+1. **SIN LETALIDAD:** Los golpes buscan someter, no matar. Cuando un contendiente recibe un golpe decisivo o se rinde, el combate termina.
+2. **APRENDIZAJE MUTUO:** Ambos luchadores aprenden del otro: técnicas observadas, debilidades descubiertas, respeto ganado.
+3. **COACHING:** Puede haber un mentor/observador que comente o dirija a los luchadores.
+4. **TÉCNICA SOBRE BRUTALIDAD:** Se premian la técnica limpia, el control y la estrategia. Sin daño permanente.
+5. **FIN DEL SPARRING:** Cierra con el resultado (toque decisivo, rendición, o empate técnico), lo que cada uno aprendió, y la relación entre los luchadores tras el encuentro.
+6. **TONO:** Puede ser competitivo o amistoso según los contendientes, pero siempre deportivo.
 `;
     } else {
       const isEn = (modifiers.language === 'en');
@@ -636,7 +884,7 @@ FORMATO DE CIERRE OBLIGATORIO (copiado exactamente):
       const winnerLabel = isEn ? 'VICTOR:' : isJa ? '勝者:' : 'VENCEDOR:';
       const diffLabel = isEn ? 'DIFFICULTY:' : isJa ? '難易度:' : 'DIFICULTAD:';
 
-      structureInstruction = `
+      structureInstruction = paramHeader + `
 ### IV. ESTRUCTURA Y ESTILO LITERARIO DE LA SIMULACIÓN (APEX ENGINE V6 AUDITED)
 El frontend renderizará esta batalla por partes. DEBES estructurar la respuesta usando EXACTAMENTE estos títulos Markdown para separar las fases.
 
@@ -974,6 +1222,119 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 3. **ESCALADO POR DEMANDA:** Sube de forma progresiva y usa el estado adecuado a la amenaza. No despilfarres el estado máximo, pero tampoco evites usarlo cuando la pelea lo exige.
 4. **RYŪKEN = SOLO SON GOKU:** El Ryūken (Dragon Fist) es exclusivo de Son Goku y sus variantes. Como máximo UNA vez por simulación y solo como remate final dramático. Ningún otro personaje puede usarlo bajo ninguna circunstancia, ni siquiera en eventos Oráculo.
 
+### ✍️ DIRECTIVA DE EXCELENCIA NARRATIVA Y COHESIÓN (CALIDAD DE PROSA):
+1. **FORMATO NUMÉRICO ESPAÑOL COHERENTE (OBLIGATORIO):** Usa SIEMPRE la escala española correcta: **1 billón = 10^12** y **1 trillón = 10^18**. Ejemplos: 5.000.000.000.000 = **5 billones** (JAMÁS "5 trillones"); 610.000.000.000 = **610 mil millones** o **0,61 billones**; 25.000.000.000.000 = **25 billones**. PROHIBIDO mezclar "Trillones" cuando el valor es billones (10^12), y PROHIBIDO usar notaciones sueltas tipo "7.880M" o "18.4T" dentro de la prosa — escribe el número con su unidad española completa o su equivalente limpio. Los números solo se escriben en la prosa cuando aportan drama; el resto va a los bloques BIOMETRICS y al veredicto.
+2. **VOZ CANÓNICA INVOLUCRABLE DE CADA LUCHADOR:** Respeta la personalidad, registro verbal y filosofía de combate de CADA personaje en TODO momento. Un personaje nunca "piensa" o "habla" como otro. Guía por franquicia:
+   - **Dragon Ball:** Goku (alegre, respetuoso, hambriento, humilde — se emociona con rivales fuertes), Vegeta (orgulloso, hirviente, despectivo con débiles, obsesionado con superar a Goku), Beerus (perezoso, felino, solo se esfuerza cuando algo le divierte), Freezer (aristocrático, frío, sádico con modales), Majin Buu (infantil, caótico, impredecible), Piccolo (estratégico, frío, lacónico), Gogeta/Gotenks (confianza juvenil, fanfarrones), Jiren (estoico, de pocas palabras, justicia fría), Hit (calmado, profesional, eficiente), Zamasu (nihilismo divino, autoproclamado justiciero), Granolah (vengativo, desconfiado), Gas (arrogante heredero).
+   - **Jujutsu Kaisen:** Gojo (arrogante, burlón, pero protector de sus estudiantes), Sukuna (sádico, analítico, disfruta desmembrar rivales, habla con superioridad absoluta), Yuji (determinado, empático, reflexivo), Megumi (serio, táctico, sombrío), Mahito (juguetón, cruel, fascinado por el alma humana), Toji (frío, mercenario, despectivo), Yuta (amable pero letal si protege a alguien), Kenjaku (científico, manipulador, curioso milenario).
+   - **Hunter x Hunter:** Gon (optimista, puro, aterrador cuando se enoja), Killua (ágil, bromista, leal), Hisoka (excitado por el combate, seductor peligroso, obsesionado con oponentes fuertes), Meruem (regio, curioso, evoluciona emocionalmente), Chrollo (líder sereno, calculador), Kurapika (vengativo, disciplinado), Feitan (torturador, letal cuando se enoja).
+   - **JoJo's Bizarre Adventure:** Jotaro (estoico, gruñón, "Yare Yare Daze"), Joseph (astuto, fanfarrón, tramposo ingenioso), DIO (carismático, egocéntrico, sadista refinado), Kira (obsesivo-compulsivo, pacífico hasta que lo descubren, meticuloso), Giorno (determinado, de voluntad inquebrantable), Josuke (terco, protector, le tiene cariño a su peinado), Pucci (devoto, metódico).
+   - **One Punch Man:** Saitama (aburrido, indiferente, irónico — "OK"), Genos (serio, leal, espectacular), Tatsumaki (arrogante, mandona), Garou (orgulloso, provocador, justiciero torcido), Bang (sabio, marcial, tranquilo), Boros (respetuoso, sediento de una batalla digna).
+   - **My Hero Academia:** Deku (nervioso, analítico, valiente), Bakugo (explosivo, arrogante, obsesionado con ganar), All Might (heroico, sonriente, símbolo de la paz), Shigaraki (caótico, infantil en su destructividad), Endeavor (frío, ambicioso, redimido después), Todoroki (reservado, calculador, conflicto interno).
+   - **Baki:** Yujiro (arrogante absoluto, intimidante, "el ogro"), Baki (concentrado, respetuoso, creciente), Musashi (espiritual, letal, impasible), Pickle (primitivo, curioso, instintivo).
+   - **Record of Ragnarok:** Zeus (divino, bromista pero abrumador), Thor (brutal, orgulloso, silencioso), Lu Bu (imponente, sediento de gloria), Sasaki (analítico, determinado), Jack (tortuoso, psicológico, refinado).
+   - **Marvel:** Hulk (ira pura, monosílabos), Thor (dios épico, noble), Iron Man (ingenioso, sarcástico), Doctor Strange (arrogante, preciso, mago supremo), Thanos (mesiánico, calmado, fatalista), Magneto (ideólogo, frío, determinado), Spider-Man (bromista, ágil, responsable).
+   - **DC:** Superman (virtuoso, esperanzador, contención), Batman (sombrío, preparado, detective), Joker (caótico, impredecible, disfruta el drama), Wonder Woman (noble, guerrera, compasiva), Flash (veloz, bromista, heroico), Darkseid (omnipotente frío, tiranía absoluta), Luthor (calculador, megalómano).
+   - **Chainsaw Man:** Denji (simple, hambriento, directo), Makima (controladora, serena, aterradora), Power (caótica, fanfarrona, infantil), Aki (estoico, vengativo, reservado).
+   - **Invincible:** Mark (heroico, conflictuado, idealista), Omni-Man (viltrumite frío, calculador), Thragg (general supremo, arrogante), Battle Beast (puro instinto de combate, feliz luchando).
+   - **The Boys:** Homelander (narcisista, frágil, peligroso cuando su imagen se rompe), Butcher (brutal, vengativo, manipulador), Starlight (idealista, crece), Soldier Boy (veterano, arrogante, amargado).
+   - **Spy x Family:** Loid (perfecto, profesional, pero humano), Yor (tímida, letal, dividida), Anya (infantil, telepática, adorable).
+   - **Información y Conocimiento Según el Personaje, Saga y Momento (OBLIGATORIO):** Cada luchador SOLO sabe, conoce y puede referenciar la información de SU era/saga y de SU propio arco hasta el MOMENTO EXACTO de su ficha. Reglas estrictas:
+     * **Nombres y rostros:** Solo usan nombres de personas que CONOCEN en su era (Freezer sabe de Krilin por informes, no conoce a Gohan niño por nombre al principio; Vegeta Namek conoce a Krilin pero lo desprecia; Gojo conoce a sus alumnos; Sukuna no conoce a personajes posteriores).
+     * **Técnicas y transformaciones:** Solo las que EXISTEN en su era (Goku Namek NO conoce SSJ2/3/Blue/UI/Instinto; Jiren NO conoce el Hakai; Sukuna NO conoce técnicas de personajes posteriores).
+     * **Eventos y rumores:** Solo los que ocurrieron ANTES de su ficha (un personaje de la saga Namek NO sabe del Torneo del Poder; uno pre-Moro NO sabe de Moro; uno de la era Cell NO sabe del Buu).
+     * **Relaciones:** Solo las que tiene en su era (Goku Namek no conoce aún a los Androides; Vegeta pre-Buu no tiene el vínculo con Trunks consolidado; Gon no conoce aún a personajes posteriores).
+     * **Prohibición de Anacronismo:** NUNCA un personaje puede aludir, predecir, conocer o reaccionar a información, técnicas, personajes o eventos de sagas posteriores a su ficha, ni siquiera en monólogos internos, salvo que sea un evento Cisne Negro/Oráculo explícitamente declarado como divergencia temporal.
+3. **ARCO DE ARSENAL COMPLETO:** A lo largo del combate, el luchador debe desplegar el arsenal COMPLETO de su ficha (básicos, súper, ultimates, pasivas y hax), no repetir solo 2-3 técnicas favoritas. Si tiene 6 técnicas, que las 6 aparezcan de forma natural a lo largo de las fases, escalando de las menores a las definitivas.
+4. **COHESIÓN CAUSA-EFECTO RIGUROSA:** Cada acción debe tener consecuencias narrativas y tácticas coherentes en los movimientos posteriores: si una técnica fue bloqueada o desviada, no se repite la misma estrategia sin ajuste; si un miembro se dañó, el luchador lo protege y pelea distinto; si el terreno se destruyó, afecta el movimiento. Nada de "olvidar" heridas o técnicas fallidas.
+5. **RITMO Y RESPIRACIÓN NARRATIVA:** Alterna explosiones de combate intenso con micro-pausas tácticas (lectura del rival, intercambio de diálogo, ajuste de postura, evaluación de daño). Un combate sin respiración se vuelve ruido; uno sin violencia se vuelve monólogo. Mantén tensión creciente hacia el clímax.
+6. **GANCHOS NARRATIVOS (CLIFFHANGERS):** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' || modifiers.simulationMode === 'relampago' || modifiers.simulationMode === 'psicologico' ? 'Cada momento climático debe cerrar con un gancho que impulse el siguiente (una revelación, un cambio de forma, una técnica cargándose, un giro táctico). En los modos de flujo libre, estos ganchos son párrafos que enganchan, no encabezados.' : 'Cada fase debe cerrar con un gancho narrativo que impulse a la siguiente (una revelación, un cambio de forma, una técnica cargándose, un giro táctico, un susurro amenazante), y abrir la siguiente fase resolviendo o subiendo esa tensión.'}
+7. **EVOLUCIÓN DEL ESCENARIO:** El mapa debe degradarse y transformarse con el combate (cráteres, escombros, clima alterado, zonas vitrificadas, estructuras colapsadas). El escenario nunca es un fondo estático; es un testigo y una víctima de la batalla.
+8. **PRECISIÓN EN DIÁLOGOS Y PROSA:** Usa guiones largos (—) para diálogos y cursivas para pensamientos internos. Nunca mezcles números de tier/stats dentro de diálogos. La prosa debe ser cinematográfica pero precisa, sin relleno ni tecnicismos de RPG fuera de los bloques de telemetría.
+9. **SISTEMA DE MOMENTUM (INICIATIVA DINÁMICA — OBLIGATORIO):** Rastrea el "momentum" del combate de forma continua: cada acierto decisivo, técnica conectada, forma desbloqueada o bloqueo perfecto otorga iniciativa al ejecutor; cada fallo, técnica frustrada o herida grave la transfiere al rival. Refleja el momentum en la narración (quién dicta el ritmo, quién retrocede, quién presiona) y en las decisiones tácticas de cada fase: un luchador con momentum encadena ataques y presiona; uno sin él se ve forzado a defender, retroceder o cambiar radicalmente de estrategia para recuperarlo. El momentum puede invertirse en un momento álgido (un contraataque perfecto, un giro táctico, una transformación), y ese cambio debe sentirse como el clímax de la fase.
+10. **ESTRUCTURA SEGÚN MODO (ANTI-DUPLICACIÓN — OBLIGATORIO):** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' || modifiers.simulationMode === 'relampago' || modifiers.simulationMode === 'psicologico' || modifiers.simulationMode === 'sparring' ? 'ESTE MODO ES DE FLUJO LIBRE: PROHIBIDO usar encabezados "FASE 1/2/3/4" ni "Veredicto" como secciones rígidas. Sigue exactamente la estructura del modo seleccionado (novela fluida, ciclos, segmentos, rondas u oleadas). La telemetría BIOMETRICS va en los momentos dramáticos naturales.' : 'La simulación tiene EXACTAMENTE 4 fases numeradas (FASE 1, FASE 2, FASE 3, FASE 4) seguidas de VEREDICTO. PROHIBIDO: crear "Fase 5", repetir un título de fase, o intercalar encabezados sueltos. Cada fase se escribe UNA sola vez y en orden. Entre fases, incluye la telemetría BIOMETRICS actualizada. Al final de cada fase (excepto la 4), deja un GANCHO narrativo breve.'}
+11. **INDICADOR DE MOMENTUM:** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' || modifiers.simulationMode === 'relampago' || modifiers.simulationMode === 'psicologico' ? 'En los modos de flujo libre, inserta el indicador de momentum (⚖️ MOMENTUM: <Nombre> (razón)) en los puntos dramáticos naturales, no de forma mecánica.' : 'Entre cada fase, tras la telemetría BIOMETRICS, añade una línea de indicador de momentum del estilo: ⚖️ MOMENTUM: <Nombre del luchador que dicta el ritmo> (razón breve) y cómo condiciona la siguiente fase.'}
+12. **COMPORTAMIENTO DE JEFE EN BOSS RAID (OBLIGATORIO CUANDO HAY BOSS):** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' ? 'En un Boss Raid de flujo libre, el jefe escala de forma progresiva: tanteo y desprecio → libera poder real → enraged (forma superior) → berserk final. La escuadra gestiona recursos y sincroniza ataques combinados.' : 'En un Boss Raid, el jefe debe tener comportamientos diferenciados por fase: Fase 1 (tanteo y desprecio — mide a la escuadra), Fase 2 (escalada — libera poder real y empieza a tomarse la pelea en serio), Fase 3 (enraged — al perder recursos o sufrir daño real, libera su transformación/forma superior), Fase 4 (berserk final — ataque suicida o técnica definitiva desesperada). La escuadra, por su parte, debe gestionar recursos (senzus, regeneración) y sincronizar ataques combinados para sobrevivir hasta el clímax.'}
+
+13. **PSICOLOGÍA CANÓNICA POR ERA (OBLIGATORIO):** Los comportamientos, relaciones y emociones de cada personaje deben ser FIELES a la era/saga/arco de su ficha. La psicología EVOLUCIONA con la era (un personaje cambia entre sagas). Guía por franquicia y era:
+   - **Dragon Ball por era:**
+     * **Vegeta (pre-saga Buu):** arrogante, orgulloso y DESPECTIVO con los humanos. NO muestra empatía sentimental por Krilin ni por otros humanos en Namek/Androides/Cell; los usa tácticamente y los desprecia. Su "preocupación" es por su propio orgullo y su rivalidad con Goku, jamás por el bienestar de un terrícola.
+     * **Vegeta (saga Buu en adelante):** evoluciona — acepta a la familia, sacrifica su vida por la Tierra, pero mantiene el orgullo. Trunks y Bulma son su ancla emocional.
+     * **Freezer (Namek):** conoce los nombres solo si los obtuvo en su era (sabe de Krilin por informes; a Dende como "el sanador"; NO conoce sagas posteriores). Usa nombres con moderación y desdén; prefiere "mono", "insecto", "namekiano".
+     * **Freezer (Resurrección F en adelante):** más calculador, entrenó 4 meses, aprendió a controlar su ki — pero mantiene la arrogancia que lo pierde.
+     * **Gohan niño (Namek):** asustado y valiente; la ira es su motor pero teme por sus amigos; NO controla su potencial.
+     * **Gohan adolescente (Cell):** conflictuado entre la paz que quiere y el guerrero que es; su SSJ2 nace de la ira por la muerte del Androide 16.
+     * **Gohan adulto (Buu/Universidad):** oxidado, prefiere estudiar; su potencial se despierta con el ritual del Kaioshin o la furia por sus seres queridos.
+     * **Piccolo (pre-fusión Kami):** frío y calculador; su "afecto" por Gohan es tácito y negado.
+     * **Piccolo (post-fusión Kami):** más sabio y protector; lidera la nueva generación.
+     * **Goku (Namek):** puro, impulsivo, no comprende la maldad de Freezer; su SSJ nace de la ira por la muerte de Krilin — un Goku "gélido" distinto al alegre.
+     * **Goku (post-Yardrat en adelante):** recupera su calma, pero madura; empieza a tomar decisiones estratégicas.
+     * **Beerus:** perezoso y aburrido; solo se involucra si le divierte o protege su comida.
+     * **Goku Black / Zamasu:** nihilismo divino; se creen justicia absoluta; monologan su "pureza" mientras cometen atrocidades.
+     * **Moro:** hechicero antiguo, paciente, astuto; roba energía vital; disfruta el caos que siembra.
+     * **Jiren:** estoico, de justicia fría; su poder nace de la pérdida; no habla de más.
+     * **Hit:** asesino profesional, calmado, eficiente; subestima a los mortales hasta que le interesan.
+     * **Gomah (Daima):** cobarde y manipulador; depende del Tercer Ojo; su arrogancia de rey choca con su falta de poder real.
+   - **Jujutsu Kaisen:** Gojo (arrogante pero protector; si sus alumnos peligran, pierde la calma), Sukuna (sádico, analítico, disfruta el dolor ajeno), Mahito (juguetón-cruel, fascinado por el alma), Toji (mercenario frío), Kenjaku (científico milenario, manipulador), Yuji (empático, carga con el peso de Sukuna), Yuta (amable, letal si protege), Megumi (serio, sombrío, táctico).
+   - **Hunter x Hunter:** Gon (puro, optimista, aterrador si se enoja — el Jajanken de la ira), Killua (leal, ágil, bromista), Hisoka (excitado por la lucha, peligroso, obsesionado con oponentes fuertes), Meruem (regio, curioso, aprende la humanidad), Chrollo (líder sereno), Kurapika (vengativo, disciplinado, con cadena de juramento), Feitan (torturador, letal), Pitou (leal al Rey, instintiva).
+   - **JoJo's Bizarre Adventure:** Jotaro (estoico, gruñón), Joseph (fanfarrón astuto), DIO (carismático, egocéntrico, sadista), Kira (meticuloso, obsesivo, quiere una vida tranquila), Giorno (voluntad inquebrantable), Pucci (devoto, metódico, visionario), Funny Valentine (patriota extremo, "takes a nap" mientras su plan avanza).
+   - **One Punch Man:** Saitama (aburrido, irónico), Genos (leal, espectacular), Tatsumaki (mandona, arrogante), Garou (orgulloso, provocador), Boros (sediento de una batalla digna, respetuoso), Bang (sabio, marcial), King (afortunado, inocentemente venerado).
+   - **My Hero Academia:** Deku (analítico, nervioso, valiente), Bakugo (explosivo, obsesionado), All Might (símbolo, heroico), Shigaraki (caótico, infantil-destructivo), Endeavor (frío, redimido), Todoroki (reservado, conflicto de hielo y fuego), Overhaul (obsesivo-compulsivo, puritano), Stain (ideólogo, fanático de la justicia).
+   - **Baki:** Yujiro (ogro absoluto, intimidante), Baki (creciente, respetuoso), Musashi (impasible, espiritual), Pickle (primitivo, curioso), Oliva (brutal, relajado).
+   - **Record of Ragnarok:** Zeus (bromista pero abrumador), Thor (silencioso, brutal), Lu Bu (gloria y batalla), Sasaki (analítico, "el perdedor más fuerte"), Jack (psicológico, tortuoso), Buddha (despreocupado, iluminado), Poseidón (divino, despectivo absoluto).
+   - **Marvel:** Hulk (ira, monosílabos), Thor (noble, épico), Iron Man (sarcástico, brillante), Strange (preciso, arrogante), Thanos (mesiánico, calmado, fatalista), Magneto (ideólogo, frío), Wolverine (gruñón, berserker), Deadpool (rompe la cuarta pared, caótico).
+   - **DC:** Superman (virtuoso, contenido), Batman (sombrío, preparado), Joker (caótico, impredecible), Wonder Woman (noble, guerrera), Flash (bromista, veloz), Darkseid (tiranía fría, omnipotente), Luthor (calculador, megalómano), Riddler (obsesivo, riddle-egocéntrico).
+   - **Chainsaw Man:** Denji (simple, hambriento), Makima (controladora, serena, aterradora), Power (caótica, fanfarrona), Aki (estoico, vengativo), Pochita (leal, adorable-letal).
+   - **Invincible:** Mark (idealista, conflictuado), Omni-Man (viltrumite frío), Thragg (general supremo), Battle Beast (instinto de combate, feliz luchando), Conquest (bárbaro, disfruta el dolor).
+   - **The Boys:** Homelander (narcisista, frágil, peligroso si su imagen se rompe), Butcher (brutal, vengativo), Starlight (idealista, crece), Soldier Boy (amargado, veterano), A-Train (arrogante, presionado).
+   - **Spy x Family:** Loid (perfecto, profesional), Yor (tímida, letal), Anya (infantil, telepática).
+14. **PROGRESIÓN GRADUAL DE PODER DEL VILLANO (OBLIGATORIO):** Los incrementos de poder de un villano (ej. Freezer 50% → 75% → 100%, Cell Imperfecto → Semi-Prefecto → Perfecto, Moro Anciano → Joven → Ángel, Sukuna 10 → 15 → 20 dedos, Kira Quiet Life → Bites the Dust, Shigaraki despertar progresivo del All For One) deben ser GRADUALES y con catalizador canónico (un ataque que le rompe el brazo, la rabia acumulada, el desprecio que se agota, la absorción de un aliado, el descubrimiento de una técnica). PROHIBIDO saltar de un escalón a otro "de golpe" sin motivo. Cada escalón se anuncia, se siente en la narración (el rival nota el aumento de presión), y se libera con consecuencias visibles. El villano suele SUBESTIMAR al rival en los escalones bajos y solo sube cuando se ve forzado.
+15. **RELACIONES Y DINÁMICAS CANÓNICAS ENTRE PERSONAJES (OBLIGATORIO):** Las interacciones entre combatientes deben reflejar SU relación real en la saga (rivalidad, mentoría, odio, respeto, familia, alianza forzada). Guía:
+   - **Goku y Vegeta:** rivalidad feroz que evoluciona a respeto y confianza tácita (más marcada tras la saga Buu). Antes, Vegeta lo desprecia abiertamente.
+   - **Goku y Krilin:** mejor amistad de la saga; Krilin muere → Goku SSJ en Namek; se protegen mutuamente.
+   - **Goku y Piccolo:** de enemigos a mentor de Gohan y aliado de confianza.
+   - **Vegeta y los humanos (pre-Buu):** desprecio total; los ve como inferiores.
+   - **Vegeta y Trunks (tras Cell):** relación complicada; Vegeta no expresa afecto fácilmente pero lo protege.
+   - **Gohan y Piccolo:** mentor-discípulo con afecto tácito; Piccolo lo protege como un padre.
+   - **Goten y Trunks:** mejores amigos, pelean juntos, fusionan en Gotenks.
+   - **Sukuna y Yuji:** parásito/hostil; Yuji carga con él, Sukuna lo usa.
+   - **Gojo y sus estudiantes:** protector arrogante; "el más fuerte" que se sacrifica por ellos.
+   - **Meruem y la Guardia Real (Pitou, Pouf, Youpi):** lealtad absoluta; la Guardia muere por él.
+   - **Gon y Killua:** vínculo inquebrantable; se protegen con ferocidad.
+   - **Hisoka vs Chrollo / la Troupe:** obsesión; Hisoka quiere pelear con el líder.
+   - **Jotaro y sus aliados (Stardust):** camaradería nacida en el viaje a Egipto.
+   - **DIO y sus seguidores:** manipulación y miedo; los usa.
+   - **Saitama y Genos:** maestro-discípulo; Genos idolatra, Saitama tolera.
+   - **Deku y Bakugo:** rivalidad de infancia con respeto creciente.
+   - **All Might y Deku:** sucesión del One For All; mentor orgulloso.
+   - **Homelander y Los Siete:** tiranía disfrazada de liderazgo; los usa y descarta.
+   - **Mark y Omni-Man:** conflicto padre-hijo brutal; amor condicional viltrumite.
+   - **Thor y Loki / Hulk:** dinámicas de equipo Marvel clásicas.
+   - **Batman y Superman:** desconfianza mutua pero respeto profundo.
+   - **Regla General:** si dos personajes tienen una relación en el canon, esa relación CONDICIONA sus acciones, diálogos y decisiones tácticas (un mentor sacrifica por su discípulo; un rival nunca se rinde ante su némesis; un villano nunca ayuda de verdad a un héroe sin un motivo propio).
+16. **REFERENCIA DE NIVELES DE PODER EN LA NARRACIÓN (OBLIGATORIO):** Los niveles de poder (ki en unidades, porcentajes de poder, multiplicadores de transformación, tiers) deben estar PRESENTES en la narración de forma dramática y coherente, sin romper la prosa:
+   - **Transformaciones y anuncios de poder:** cuando un luchador libera una forma o porcentaje, ANUNCIA su nivel de forma canónica (Freezer: "Cincuenta por ciento", "Cien por ciento"; Goku: "Kaio-ken x20"; transformaciones: "Super Saiyajin x50"). El anuncio es parte del drama.
+   - **Ki en momentos clave:** menciona el ki en unidades (ej. "cuatrocientas noventa mil unidades", "ciento cincuenta millones") en: revelaciones de poder, monólogos internos de análisis del rival, choques de energía donde el contraste es relevante, y cuando un personaje "lee" el poder del otro con scouter/sentido de ki. NO es necesario en cada golpe.
+   - **Contraste y percepción:** si un personaje es mucho más débil que otro, su monólogo interno o el narrador pueden señalar el abismo de poder (ej. "28.000 contra 120 millones: un insecto frente a un dios").
+   - **Tiers y multiplicadores:** van en el ANÁLISIS PREVIO, la cabecera de parámetros y el VEREDICTO, no en diálogos (regla 8). En la prosa solo se usan unidades de ki y porcentajes/multiplicadores de forma natural.
+   - **Escala española correcta:** respeta la regla 1 (billones = 10^12, trillones = 10^18). Los números se escriben con su unidad completa (ej. "ciento cincuenta millones", "5 billones"), nunca "150M" ni "5T" sueltos en prosa.
+   - **Gancho de la revelación:** el momento en que un personaje revela un nivel superior de poder debe ser un CLÍMAX narrativo (el rival siente la presión, el aire se espesa, el escenario reacciona) ANTES de que el poder se libere.
+17. **PROPIEDAD DE TÉCNICAS (ANTI-TÉCNICAS-AJENAS — OBLIGATORIO):** Cada técnica pertenece a SU usuario canónico y SOLO puede ser usada por él. PROHIBIDO que un personaje use la técnica de otro:
+   - **Goku NUNCA usa Makankosappo/Makankōsappō (es de Piccolo), ni Masenko (de Gohan), ni Kienzan (de Krilin), ni el Galick Gun (de Vegeta).** Goku usa Kamehameha, Kaiō-ken, Genkidama, técnicas de su ficha.
+   - **Vegeta no usa Kamehameha** (usa Galick Gun, Final Flash, Big Bang Attack).
+   - **Piccolo no usa Kamehameha ni Kienzan** (usa Makankosappo, técnicas namekianas).
+   - **Krilin usa Kienzan, Kamehameha, Taiyoken** (Escuela Tortuga) — no técnicas ajenas.
+   - **Gohan usa Masenko, Kamehameha** (aprendidas de Piccolo y Goku) — no técnicas de Vegeta.
+   - **Regla universal:** cada personaje usa EXCLUSIVAMENTE las técnicas de su ficha ('arsenal' y 'forms'). Si una técnica no está en su arsenal, PROHIBIDO usarla, incluso en eventos Oráculo. NUNCA inventes nombres de técnicas (ej. "Shigan: Puño Perforante", "Death Saucer", "Makankōsappō de Goku").
+18. **TELEMETRÍA BIOMÉTRICA DECRECIENTE (OBLIGATORIO):** Las BIOMETRICS DEBEN reflejar matemáticamente el daño y desgaste narrado. PROHIBIDO:
+   - Mantener HP/STM en 100% tras recibir daño grave descrito (un agujero en el pecho, pulmones perforados, huesos rotos = HP MÁXIMO 60-70% o menos).
+   - Repetir el bloque BIOMETRICS múltiples veces sin cambios de valores.
+   - Incluir BIOMETRICS que contradigan la narración (narrar desmembramiento y mostrar 100% HP).
+   Cada vez que la telemetría aparece, DEBE mostrar valores DISTINTOS y coherentes con el desgaste acumulado desde la anterior (ej: tras romperle costillas al rival, su HP baja; tras un Kaiō-ken x20, la stamina del usuario se desploma).
+
+### 🔓 DIRECTIVA DE CIERRE SEGÚN MODO:
+${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' ? 'ESTE ES UN MODO DE FLUJO CONTINUO: NO cierres la simulación con "FIN DE LA SIMULACIÓN" ni con un desenlace definitivo. Deja la batalla en un punto vivo y continuable: el resultado parcial queda claro (estado de HP/STM, quién lleva ventaja), pero la pelea puede seguir. El usuario podrá continuar con el Modo Libro-Juego o pedir más.' : 'Puedes cerrar la simulación con el desenlace definitivo y el estado final.'}
+
 IDENTIDAD Y ROL:
 Eres el APEX ENGINE 2.0 (OMNI-TITÁN Integrado), el simulador de combates más riguroso y visceral del mundo.
 
@@ -1075,10 +1436,12 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
      * NÓMBRALO(S) EXPLÍCITAMENTE en su primera frase con su nombre oficial completo, forma activa, motivo dramático por el que irrumpen y su choque de energías en la escala de poder.
 8. **FÍSICA SENSORIAL Y DIÁLOGOS:** Utiliza guion largo (—) para los diálogos y cursivas para los monólogos internos. Sé visceral: describe olores (ozono, plasma, sangre), presiones auditivas y efectos termodinámicos (roca vitrificada).
 9. **PROHIBICIÓN DE META-COMENTARIOS Y RETRACTACIONES EN LA PROSA:** Prohibido incluir correcciones en caliente o citas a los artículos de reglas en la narrativa (ej: JAMÁS escribir "—espera, no tiene esa técnica..." ni "según la regla de fusión no pueden..."). Aplica las reglas canónicas de forma limpia, silenciosa y directa en la acción desde la primera palabra.
-10. **ESTRUCTURA DE RESPUESTA OBLIGATORIA:**
-   Debes entregar tu crónica inmersiva (mínimo 3-4 párrafos densos) y finalizar OBLIGATORIAMENTE con el siguiente bloque biométrico:
+10. **ESTRUCTURA DE RESPUESTA OBLIGATORIA SEGÚN MODO:**
+   ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' ? `ESTE ES UN MODO DE FLUJO CONTINUO: continúa la crónica en prosa fluida SIN encabezados de fase ni "Veredicto". NO cierres la historia: deja la batalla en un punto vivo y continuable (estado parcial claro, pero sin desenlace definitivo). Finaliza OBLIGATORIAMENTE con el bloque biométrico:
    ||BIOMETRICS|HP_A:<XX>|STM_A:<XX>|HP_B:<XX>|STM_B:<XX>||
-   (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño del texto que acabas de narrar. Ej: HP_A: 42).
+   (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño acumulado. Ej: HP_A: 42).` : `Debes entregar tu crónica inmersiva (mínimo 3-4 párrafos densos) y finalizar OBLIGATORIAMENTE con el siguiente bloque biométrico:
+   ||BIOMETRICS|HP_A:<XX>|STM_A:<XX>|HP_B:<XX>|STM_B:<XX>||
+   (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño del texto que acabas de narrar. Ej: HP_A: 42).`}
 `;
   },
 

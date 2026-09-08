@@ -5,6 +5,10 @@ import net from 'net';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { runMaintenance } = require('./maintainOpenCodeDb.cjs');
 
 process.on('uncaughtException', (err) => {
   console.warn('[SUPERVISOR SHIELD] Error no capturado interceptado (proceso protegido):', err?.message || err);
@@ -70,6 +74,20 @@ const KEYS = [
 let activeKeyIndex = 0;
 
 async function bootstrap() {
+  // ── Mantenimiento preventivo anti-bloat y verificación de salud de la BD ──
+  try {
+    runMaintenance({ verbose: true });
+  } catch (mErr) {
+    console.warn('[SUPERVISOR] Mantenimiento inicial:', mErr?.message || mErr);
+  }
+
+  // Mantenimiento continuo cada 2 horas para blindaje definitivo contra acumulación de gigas
+  setInterval(() => {
+    try {
+      runMaintenance({ verbose: false });
+    } catch {}
+  }, 2 * 60 * 60 * 1000);
+
   const opencodePort = await findAvailablePort(4096, [4098, 4100, 4102, 4104]);
   const proxyPort = await findAvailablePort(4097, [4099, 4101, 4103, 4105]);
 

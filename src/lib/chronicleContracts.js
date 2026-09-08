@@ -136,7 +136,7 @@ export const CHRONICLE_PRESET_TEMPLATES = [
     premise: 'El deseo de las Super Dragon Balls al final del Torneo del Poder revivió no solo los universos eliminados en el certamen, sino también los Universos 13 al 18 borrados eones atrás.',
     tone: 'Épico y Competitivo',
     continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
-    suggestedCast: ['son-goku-saga-super-dragon-ball-super-732', 'jiren-dbs-torneo-del-poder', 'hit-dbs-torneo-u6-u7'],
+    suggestedCast: ['son-goku-saga-super-dragon-ball-super-732', 'jiren-dragon-ball-super-983', 'hit-dragon-ball-super-450'],
     startingLocation: 'Plataforma del Mundo de la Nada Reconstruida',
     recommendedFactions: ['Vanguardia de los Universos Primitivos (13-18)', 'Alianza de los 12 Universos Renacidos'],
     initialArtifacts: [
@@ -149,7 +149,7 @@ export const CHRONICLE_PRESET_TEMPLATES = [
     premise: 'Fu ha encadenado siete planetas en una prisión sellada con cadenas cósmicas para realizar su experimento definitivo de energía temporal.',
     tone: 'Aventura Shonen Clásica',
     continuityMode: CHRONICLE_CONTINUITY_MODES.AU_ALTERNATE_TIMELINE,
-    suggestedCast: ['trunks-del-futuro-l-nea-temporal-futura-879', 'son-goku-saga-super-dragon-ball-super-732', 'vegeta-saga-super-dragon-ball-super-454'],
+    suggestedCast: ['trunks-futuro-dbs-anime-rage', 'son-goku-saga-super-dragon-ball-super-732', 'vegeta-saga-super-dragon-ball-super-454'],
     startingLocation: 'Prisión Planetaria — Planeta Babari Aislado',
     recommendedFactions: ['Patrulla del Tiempo Xeno', 'Investigadores de Fu', 'Prisioneros Cósmicos'],
     initialArtifacts: [
@@ -180,6 +180,152 @@ export const CHRONICLE_PRESET_TEMPLATES = [
     recommendedFactions: ['Sindicato Cósmico de Héroes', 'Alianza de Villanos Multiversal', 'Guardianes de la Realidad'],
     initialArtifacts: [
       { id: 'art-dimension-beacon', name: 'Faro de Estabilidad de Realidad', type: 'herramienta', effect: 'Evita que los combatientes se desintegren por colapso dimensional', uses: 99 }
+    ]
+  },
+  {
+    templateId: 'caza_moro_galactica',
+    title: 'Cacería de Moro: La Patrulla Galáctica en Pie de Guerra',
+    premise: 'El hechicero Moro escapa de su prisión galáctica con energía restaurada, y la Patrulla Galáctica recluta a Goku y Vegeta para una cacería interestelar donde cada planeta drenado acerca al hechicero a su forma Ángel.',
+    tone: 'Grimdark y Supervivencia Extrema',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['moro-dragon-ball-super-496', 'son-goku-saga-super-dragon-ball-super-732', 'vegeta-saga-super-dragon-ball-super-454'],
+    startingLocation: 'Cuartel General de la Patrulla Galáctica — Zona de Máxima Seguridad',
+    recommendedFactions: ['Patrulla Galáctica', 'Siervos de Moro (Saganbo y 7-3)', 'Merus y el Pacto del Ángel'],
+    initialArtifacts: [
+      { id: 'art-gala-seal', name: 'Sello de Sujeción Galáctica', type: 'defensa', effect: 'Inmoviliza temporalmente a un objetivo que drene energía vital', uses: 2 },
+      { id: 'art-scouter-patrol', name: 'Rastreador de Nivel de Amenaza Galáctica', type: 'tecnologia', effect: 'Revela el multiplicador de drenaje de ki activo de Moro', uses: 99 }
+    ]
+  },
+  {
+    templateId: 'torneo_u6_u7',
+    title: 'Torneo Interuniversal: Universo 6 vs Universo 7',
+    premise: 'Champa y Beerus apuestan el destino de las Esferas del Dragón Súper en un torneo de cinco guerreros por universos, con Hit, Frost, Cabba y la élite de cada realidad en el ring.',
+    tone: 'Épico y Competitivo',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['hit-dragon-ball-super-450', 'cabba-dragon-ball-super-566', 'son-goku-saga-super-dragon-ball-super-732'],
+    startingLocation: 'Estadio de Combate de la Tierra Neutral — Construido para la Ocasión',
+    recommendedFactions: ['Equipo Universo 6 (Hit, Cabba, Frost)', 'Equipo Universo 7 (Goku, Vegeta, Piccolo)', 'Jueces Hakaishin (Beerus y Champa)'],
+    initialArtifacts: [
+      { id: 'art-senzu-u7', name: 'Senzu de Contingencia U7 (2 uds)', type: 'consumible', effect: 'Restaura 100% de salud entre combates', uses: 2 }
+    ]
+  },
+  {
+    templateId: 'resurreccion_cell_max',
+    title: 'Resurrección de Cell Max: El Legado Gammas',
+    premise: 'Red Ribbon resurge con los Gammas y una cámara que contiene un Cell Max incompleto. Gohan y Piccolo despiertan su potencial definitivo mientras la Tierra se convierte en un campo de pruebas de bio-androides.',
+    tone: 'Cósmico y Mitológico',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['son-gohan-dbs-superhero', 'piccolo-dbs-superhero', 'cell-max-dragon-ball-super-993'],
+    startingLocation: 'Isla Oculta Red Ribbon — Búnker de Cell Max',
+    recommendedFactions: ['Legado Red Ribbon (Gammas y Hedo)', 'Guerreros Z Despiertos', 'Escuadrón de la Fuerza Especial'],
+    initialArtifacts: [
+      { id: 'art-saiyan-suit', name: 'Traje de Combate con Restricción de Energía', type: 'equipamiento', effect: 'Canaliza el ki al 100% sin dañar el entorno urbano', uses: 99 }
+    ]
+  },
+  {
+    templateId: 'esferas_negras_gt',
+    title: 'Las Black Star Dragon Balls: Cacería Interestelar GT',
+    premise: 'Tras el deseo malinterpretado, las Esferas Negras se dispersan por la galaxia y Goku (convertido en niño), Pan y Trunks inician una cacería planetaria que despertará a los Dragones Sombra y al ejército de Baby.',
+    tone: 'Aventura Shonen Clásica',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['son-goku-saga-gt-dragon-ball-gt-281', 'pan-gt-10-anios', 'trunks-adulto-gt'],
+    startingLocation: 'Nave de Bulma — Hangar de la Sonda de Búsqueda',
+    recommendedFactions: ['Equipo de Búsqueda (Goku, Pan, Trunks)', 'Dragones Sombra (Siervos de las Esferas)', 'Fuerzas de Baby Tsufuru'],
+    initialArtifacts: [
+      { id: 'art-black-radar', name: 'Radar de Black Star Dragon Balls', type: 'herramienta', effect: 'Localiza la dirección exacta de cada esfera negra', uses: 99 },
+      { id: 'art-hover-scooter', name: 'Moto Voladora Capsule Corp', type: 'vehiculo', effect: 'Desplazamiento planetario rápido entre esferas', uses: 99 }
+    ]
+  },
+  {
+    templateId: 'reino_demonio_daima',
+    title: 'Aventura en el Reino Demoníaco: La Conspiración del Tercer Ojo',
+    premise: 'Convertidos en mini tras el deseo de Gomah, los Guerreros Z descienden al Reino Demoníaco donde Neva, Degesu y los Tamagamis guardan secretos que conectan al Tercer Ojo con el destino del multiverso.',
+    tone: 'Aventura Shonen Clásica',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['son-goku-mini-daima-full', 'gomah-daima', 'tamagami-1-espada-daima'],
+    startingLocation: 'Puerta Giratoria del Reino Demoníaco — Entrada Sellada',
+    recommendedFactions: ['Corte del Rey Demoníaco (Gomah y Degesu)', 'Guerreros Z Mini', 'Facciones de Majin (Kuu y Duu)'],
+    initialArtifacts: [
+      { id: 'art-daima-capsule', name: 'Cápsulas de Encogimiento Estable', type: 'herramienta', effect: 'Permite transición controlada entre tamaños sin desorientación', uses: 5 }
+    ]
+  },
+  {
+    templateId: 'jjk_noche_shibuya',
+    title: 'JJK: La Noche de Shibuya — La Liberación del Reino Maldito',
+    premise: 'En el caos de Shibuya, hechiceros y espíritus malditos chocan en las calles mientras Sukuna despierta y las Expansiones de Dominio convierten la metrópoli en un tablero de muerte.',
+    tone: 'Grimdark y Supervivencia Extrema',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['gojo-satoru-jjk-peak-gs001', 'sukuna-ryomen-jjk-20sellos-s001', 'yuji-itadori-jjk-shinjuku'],
+    startingLocation: 'Cruce de Shibuya — Puerta del Metro Sellada por Curtain',
+    recommendedFactions: ['Hechiceros de Jujutsu High (Yuji, Megumi, Todo)', 'Espíritus Malditos de Mahito y Jogo', 'Culto de Kenjaku y Suguru Geto'],
+    initialArtifacts: [
+      { id: 'art-curse-talisman', name: 'Talismán de Purificación de Energía Maldita', type: 'consumible', effect: 'Suprime temporalmente la maldición de un hechicero en dominio ajeno', uses: 2 },
+      { id: 'art-inverted-spear', name: 'Lanza Invertida del Cielo', type: 'reliquia', effect: 'Anula técnicas malditas de defensa en un golpe', uses: 1 }
+    ]
+  },
+  {
+    templateId: 'opm_invasion_boros',
+    title: 'OPM: El Asalto de la Nave de Boros a la Ciudad-Z',
+    premise: 'La nave de Boros desciende sobre la Ciudad-Z mientras la Asociación de Héroes y el S-Class despliegan su defensa ante el Dominador del Universo y la llegada inminente del Héroe más fuerte.',
+    tone: 'Épico y Competitivo',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['lord-boros-opm', 'saitama-opm', 'tatsumaki-opm'],
+    startingLocation: 'Centro de la Ciudad-Z — Frente de Batalla Principal',
+    recommendedFactions: ['Asociación de Héroes (S-Class)', 'Dominadores Oscuros de Boros', 'Los Tres Truenos y Geryuganshoop'],
+    initialArtifacts: [
+      { id: 'art-opm-armor', name: 'Metamaterial de Colapso Gravitatorio (Nave de Boros)', type: 'defensa', effect: 'Resiste impactos de rango 5-A mientras dura su carga', uses: 2 }
+    ]
+  },
+  {
+    templateId: 'mha_asalto_tartarus',
+    title: 'MHA: El Asalto a Tartarus y el Auge del Villano',
+    premise: 'El Frente de Liberación ataca la prisión de máxima seguridad Tartarus para liberar a All For One, desatando una guerra a gran escala entre héroes profesionales y el mal despertado.',
+    tone: 'Conspiración y Traición',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.CANON_PLUS,
+    suggestedCast: ['shigaraki-tomura-mha', 'all-might-prime-mha', 'endeavor-mha'],
+    startingLocation: 'Prision Subterránea de Tartarus — Nivel Omega',
+    recommendedFactions: ['Héroes Pro de Primera Línea', 'Frente de Liberación Paranormal', 'Reclusos Villanos Liberados'],
+    initialArtifacts: [
+      { id: 'art-quirk-nullifier', name: 'Inhibidor de Quirks Portátil', type: 'tecnologia', effect: 'Suprime temporalmente quirks en un área pequeña', uses: 1 }
+    ]
+  },
+  {
+    templateId: 'redencion_freezer',
+    title: 'Redención de Freezer: El Emperador en la Encrucijada',
+    premise: 'Forzado a aliarse con los Defensores de la Tierra frente a una amenaza cósmica que supera a ambos, Freezer debe decidir si su orgullo imperial le permite luchar al lado de sus verdugos.',
+    tone: 'Filosófico y Marcial',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.WHAT_IF_MULTIVERSE,
+    suggestedCast: ['freezer-resurreccion-f', 'son-goku-saga-super-dragon-ball-super-732', 'vegeta-saga-super-dragon-ball-super-454'],
+    startingLocation: 'Espacio Neutral — Asteroide de Armisticio',
+    recommendedFactions: ['Imperio Cósmico de Freezer', 'Defensores de la Tierra', 'Amenaza Cósmica Exterior (Guldo Evolucionado / Gas)'],
+    initialArtifacts: [
+      { id: 'art-senzu-truce', name: 'Senzu de Armisticio (3 uds)', type: 'consumible', effect: 'Restaura 100% de salud; usado en tregua táctica', uses: 3 }
+    ]
+  },
+  {
+    templateId: 'redencion_moro',
+    title: 'Redención de Moro: El Hechicero que Robaba Planetas',
+    premise: 'Tras su derrota, un fragmento de la conciencia de Moro sobrevive y es reclutado por la Patrulla Galáctica para enfrentar una corrupción demoníaca que incluso él teme.',
+    tone: 'Cósmico y Mitológico',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.WHAT_IF_MULTIVERSE,
+    suggestedCast: ['moro-dragon-ball-super-496', 'merus-dbs-moro', 'son-goku-saga-super-dragon-ball-super-732'],
+    startingLocation: 'Celda de Contención de la Patrulla Galáctica — Sector de Máxima Seguridad',
+    recommendedFactions: ['Patrulla Galáctica (Merus)', 'Pacto de Moro Redimido', 'Corrupción Demoníaca Ancestral'],
+    initialArtifacts: [
+      { id: 'art-moro-seal', name: 'Freno de Energía Vital de Moro', type: 'defensa', effect: 'Limita el drenaje de ki de Moro a 50% mientras lo contenga', uses: 99 }
+    ]
+  },
+  {
+    templateId: 'redencion_baby',
+    title: 'Redención de Baby: El Legado Tsufuru en Paz',
+    premise: 'Baby, tras la derrota, es una entidad sin recipiente que busca redimir el genocidio de su pueblo. Vegeta, comprende que la venganza solo engendra más, y le ofrece un pacto.',
+    tone: 'Filosófico y Marcial',
+    continuityMode: CHRONICLE_CONTINUITY_MODES.AU_ALTERNATE_TIMELINE,
+    suggestedCast: ['baby-vegeta-dragon-ball-gt-510', 'vegeta-saga-gt-dragon-ball-gt-851', 'son-goku-saga-gt-dragon-ball-gt-281'],
+    startingLocation: 'Ruinas de Plant (Planeta Tsufuru Aniquilado)',
+    recommendedFactions: ['Espíritu Tsufuru de Baby', 'Guerreros Z GT', 'Saiyans del Planeta Sadala'],
+    initialArtifacts: [
+      { id: 'art-tsufur-core', name: 'Núcleo de Conciencia Tsufuru', type: 'reliquia', effect: 'Permite a Baby manifestarse sin poseer cuerpos', uses: 99 }
     ]
   }
 ];

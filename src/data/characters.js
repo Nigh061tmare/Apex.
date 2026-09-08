@@ -3,6 +3,7 @@
 import v26Data from './ROSTER_NIVELES_PODER_CORREGIDO_V26.json' with { type: 'json' };
 
 import RAW_TACTICAL_PROFILES from './tacticalProfiles.json' with { type: 'json' };
+import CHARACTER_IMAGES from './characterImages.json' with { type: 'json' };
 
 
 
@@ -26,7 +27,7 @@ const v26CharList = Array.isArray(v26Data.characters)
   ? v26Data.characters
   : Object.values(v26Data.characters);
 
-// Construct canonical INITIAL_CHARACTERS strictly from v26Data.characters (772 active)
+// Construct canonical INITIAL_CHARACTERS strictly from v26Data.characters (775 active)
 export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
   const tactical = tacticalMap.get(v26Char.id);
 
@@ -104,6 +105,10 @@ export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
     franchise: v26Char.franchise,
     universe: v26Char.universe,
     saga: v26Char.saga,
+    // ── Fase 7: imagen real de Fandom wiki inyectada como avatar (566 fichas).
+    // Se respeta cualquier avatar explícito del JSON V26; si no existe, se usa
+    // la imagen de la wiki. El resto de la app usa char.avatar automáticamente.
+    avatar: v26Char.avatar || CHARACTER_IMAGES[v26Char.id] || null,
     tier: v26Char.baseTier,
     baseTier: v26Char.baseTier,
     baseKiFormatted: v26Char.baseKiFormatted,
@@ -131,8 +136,8 @@ export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
 });
 
 // Development / Runtime Assertions
-if (INITIAL_CHARACTERS.length !== 772) {
-  throw new Error(`[APEX FATAL] INITIAL_CHARACTERS must have exactly 772 active characters, found ${INITIAL_CHARACTERS.length}`);
+if (INITIAL_CHARACTERS.length !== 775) {
+  throw new Error(`[APEX FATAL] INITIAL_CHARACTERS must have exactly 775 active characters, found ${INITIAL_CHARACTERS.length}`);
 }
 
 const seenIds = new Set();

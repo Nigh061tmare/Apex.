@@ -1072,7 +1072,7 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
           </h4>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'fases' }))}
@@ -1124,6 +1124,168 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
             </div>
             <p className="text-[10px] text-slate-400 mt-1 leading-tight">
               Genera por partes con final abierto (Cliffhanger) para continuar a tu ritmo.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'epica_extendida' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'epica_extendida'
+                ? 'bg-orange-950/50 border-orange-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-orange-400 flex items-center gap-1.5">
+              <span>🔥</span>
+              <span>Épica Extendida (6 Fases)</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Combate más largo y profundo: crisis, desgaste y desesperación antes del clímax.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'maraton' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'maraton'
+                ? 'bg-red-950/50 border-red-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-red-400 flex items-center gap-1.5">
+              <span>🏃</span>
+              <span>Maratón de Resistencia</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Combate de desgaste prolongado: gana el que resiste, no el que golpea más fuerte.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'novela_continua' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'novela_continua'
+                ? 'bg-cyan-950/50 border-cyan-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-cyan-400 flex items-center gap-1.5">
+              <span>📖</span>
+              <span>Novela Continua (Sin Fases)</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Prosa literaria fluida, sin encabezados de fase; la pelea fluye como un capítulo.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'relampago' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'relampago'
+                ? 'bg-yellow-950/50 border-yellow-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-yellow-400 flex items-center gap-1.5">
+              <span>⚡</span>
+              <span>Combate Relámpago</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              One-shot brutal decidido en segundos: un único intercambio decisivo.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'resistencia_infinita' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'resistencia_infinita'
+                ? 'bg-emerald-950/50 border-emerald-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-emerald-400 flex items-center gap-1.5">
+              <span>♾️</span>
+              <span>Resistencia Infinita</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Duelo sin límite de tiempo hasta el colapso total por agotamiento.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'ascension' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'ascension'
+                ? 'bg-fuchsia-950/50 border-fuchsia-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-fuchsia-400 flex items-center gap-1.5">
+              <span>⬆️</span>
+              <span>Ascensión de Poder</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Rondas de evolución: ambos escalan formas hasta la cúspide.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'oleadas' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'oleadas'
+                ? 'bg-lime-950/50 border-lime-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-lime-400 flex items-center gap-1.5">
+              <span>🌊</span>
+              <span>Asalto por Oleadas</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              La escuadra defiende contra hordas de enemigos cada vez más fuertes.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'psicologico' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'psicologico'
+                ? 'bg-indigo-950/50 border-indigo-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-indigo-400 flex items-center gap-1.5">
+              <span>🧠</span>
+              <span>Guerra Psicológica</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Mente sobre músculo: mind games, lecturas y pocos golpes muy pesados.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'sparring' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'sparring'
+                ? 'bg-teal-950/50 border-teal-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-teal-400 flex items-center gap-1.5">
+              <span>🥊</span>
+              <span>Sparring de Entrenamiento</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Sin muerte, deportivo: técnica, aprendizaje mutuo y respeto.
             </p>
           </button>
         </div>

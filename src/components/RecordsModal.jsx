@@ -1,7 +1,85 @@
 import React, { useMemo, useState } from 'react';
-import { Trophy, X, Trash2, Swords, Crown, CalendarDays, BarChart3 } from 'lucide-react';
+import { Trophy, X, Trash2, Swords, Crown, CalendarDays, BarChart3, Target, Medal, CheckCircle2, Circle } from 'lucide-react';
 
 const STORAGE_KEY = 'apex_combat_history';
+const STORAGE_KEY_DAILY = 'apex_daily_challenges_v1';
+const STORAGE_KEY_TOURNAMENTS = 'apex_tournament_history';
+const STORAGE_KEY_CUSTOM_CHARS = 'apex_custom_characters';
+const STORAGE_KEY_COINS = 'apex_oracle_coins';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🏅 LOGROS — se calculan 100% desde los datos locales existentes (sin wiring)
+// ─────────────────────────────────────────────────────────────────────────────
+function computeAchievements() {
+  const achievements = [];
+  let battles = 0;
+  let raids = 0;
+  try {
+    const items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    if (Array.isArray(items)) {
+      battles = items.length;
+      raids = items.filter(i => (i.matchMode || '').toLowerCase().includes('raid') || (i.matchMode || '').toLowerCase().includes('1vN')).length;
+    }
+  } catch {}
+
+  let tournaments = 0;
+  try {
+    const t = JSON.parse(localStorage.getItem(STORAGE_KEY_TOURNAMENTS) || '[]');
+    tournaments = Array.isArray(t) ? t.length : 0;
+  } catch {}
+
+  let customChars = 0;
+  try {
+    const c = JSON.parse(localStorage.getItem(STORAGE_KEY_CUSTOM_CHARS) || '[]');
+    customChars = Array.isArray(c) ? c.length : 0;
+  } catch {}
+
+  let coins = 0;
+  try { coins = parseInt(localStorage.getItem(STORAGE_KEY_COINS) || '0', 10) || 0; } catch {}
+
+  const defs = [
+    { id: 'first_fight', icon: '⚔️', name: 'Primer Combate', desc: 'Simula tu primer enfrentamiento', done: battles >= 1 },
+    { id: 'veteran', icon: '🔥', name: 'Veterano', desc: '10 combates simulados', done: battles >= 10 },
+    { id: 'legend', icon: '👑', name: 'Leyenda del Ring', desc: '50 combates simulados', done: battles >= 50 },
+    { id: 'raider', icon: '🐉', name: 'Cazador de Raids', desc: 'Simula 3 combates de Boss Raid', done: raids >= 3 },
+    { id: 'tourney', icon: '🏆', name: 'Torneador', desc: 'Completa un torneo', done: tournaments >= 1 },
+    { id: 'tourney_master', icon: '🎖️', name: 'Maestro de Torneos', desc: 'Completa 3 torneos', done: tournaments >= 3 },
+    { id: 'creator', icon: '🧬', name: 'Creador de Fichas', desc: 'Guarda un personaje personalizado o fusión', done: customChars >= 1 },
+    { id: 'rich', icon: '🪙', name: 'Oráculo Rico', desc: 'Acumula 5.000 monedas del Oráculo', done: coins >= 5000 }
+  ];
+  return {
+    all: defs,
+    unlocked: defs.filter(d => d.done).length,
+    total: defs.length
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🎯 RETOS DEL DÍA — deterministas por fecha, autocumplibles (se resetean a diario)
+// ─────────────────────────────────────────────────────────────────────────────
+function getDailyChallenges(dailyMatchup) {
+  const today = new Date().toISOString().slice(0, 10);
+  let completed = {};
+  try { completed = JSON.parse(localStorage.getItem(STORAGE_KEY_DAILY) || '{}'); } catch {}
+  const isDone = completed[today] ? true : false;
+
+  const challenges = [
+    { id: 'daily_fight', icon: '⚔️', text: 'Juega el Combate del Día', desc: dailyMatchup ? `${dailyMatchup.charA?.name?.split('(')[0].trim()} vs ${dailyMatchup.charB?.name?.split('(')[0].trim()}` : '' },
+    { id: 'daily_arena', icon: '🌌', text: 'Simula en una Arena Legendaria (⚡)', desc: 'Las arenas con reglas especiales cuentan doble' },
+    { id: 'daily_fuse', icon: '⚗️', text: 'Funde un personaje', desc: 'Usa el Laboratorio de Fusiones' }
+  ];
+
+  const mark = (id) => {
+    try {
+      const cur = JSON.parse(localStorage.getItem(STORAGE_KEY_DAILY) || '{}');
+      cur[today] = cur[today] || {};
+      cur[today][id] = !cur[today][id];
+      localStorage.setItem(STORAGE_KEY_DAILY, JSON.stringify(cur));
+    } catch {}
+  };
+
+  return { challenges, completed: completed[today] || {}, mark, today };
+}
 
 // Extrae el vencedor del relato (misma heurística que SimulationViewer)
 function parseWinnerFromNarrative(narrative = '', charA = '', charB = '') {
@@ -63,6 +141,8 @@ export default function RecordsModal({ isOpen, onClose, onPlayDaily, dailyMatchu
   const [refresh, setRefresh] = useState(0);
 
   const data = useMemo(() => (isOpen ? buildRecords() : null), [isOpen, refresh]);
+  const achievements = useMemo(() => (isOpen ? computeAchievements() : null), [isOpen, refresh]);
+  const daily = useMemo(() => (isOpen ? getDailyChallenges(dailyMatchup) : null), [isOpen, dailyMatchup, refresh]);
 
   if (!isOpen) return null;
 
@@ -153,6 +233,58 @@ export default function RecordsModal({ isOpen, onClose, onPlayDaily, dailyMatchu
               ))}
             </div>
           )}
+        </div>
+
+        {/* 🎯 Retos del Día */}
+        <div className="px-5 py-4 border-t border-slate-800">
+          <h3 className="text-xs font-bold font-mono text-slate-400 mb-3 flex items-center gap-2">
+            <Target className="w-3.5 h-3.5 text-emerald-400" /> RETOS DEL DÍA <span className="text-[9px] text-slate-600">({daily.today})</span>
+          </h3>
+          <div className="space-y-2">
+            {daily.challenges.map(ch => {
+              const done = !!daily.completed[ch.id];
+              return (
+                <button
+                  key={ch.id}
+                  onClick={() => { daily.mark(ch.id); setRefresh(r => r + 1); }}
+                  className={`w-full flex items-center gap-3 p-2.5 rounded-xl border transition cursor-pointer text-left ${
+                    done ? 'bg-emerald-950/40 border-emerald-500/50' : 'bg-slate-900/40 border-slate-800 hover:border-emerald-500/40'
+                  }`}
+                >
+                  <span className="text-lg shrink-0">{ch.icon}</span>
+                  <span className="flex-1 min-w-0">
+                    <span className={`block text-[11px] font-bold ${done ? 'text-emerald-300 line-through' : 'text-slate-200'}`}>{ch.text}</span>
+                    {ch.desc && <span className="block text-[9px] font-mono text-slate-500 truncate">{ch.desc}</span>}
+                  </span>
+                  {done ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <Circle className="w-4 h-4 text-slate-600 shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 🏅 Logros */}
+        <div className="px-5 py-4 border-t border-slate-800">
+          <h3 className="text-xs font-bold font-mono text-slate-400 mb-3 flex items-center gap-2">
+            <Medal className="w-3.5 h-3.5 text-amber-400" /> LOGROS <span className="text-[9px] text-slate-600">{achievements.unlocked}/{achievements.total}</span>
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {achievements.all.map(a => (
+              <div
+                key={a.id}
+                title={a.desc}
+                className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border text-[10px] font-bold ${
+                  a.done
+                    ? 'bg-amber-950/50 border-amber-500/60 text-amber-200'
+                    : 'bg-slate-900/40 border-slate-800 text-slate-600 opacity-60'
+                }`}
+              >
+                <span>{a.icon}</span>
+                <span>{a.name}</span>
+                {a.done ? <CheckCircle2 className="w-3 h-3 text-amber-400" /> : <Circle className="w-3 h-3 text-slate-700" />}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Combate del día + últimas batallas */}

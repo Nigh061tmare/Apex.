@@ -85,10 +85,10 @@ export function validateV26CanonicalRoster() {
   const deprecatedRecords = v26.deprecatedRecords || [];
 
   // Minimum validations:
-  // 1. activeCount === 772 (Namek 2026-09-06: +Krilin Namek, +Gohan Namek)
-  checks['activeCount_772'] = Object.keys(activeRecords).length === 772;
-  if (Object.keys(activeRecords).length !== 772) {
-    issues.push(`activeCount mismatch: expected 772, found ${Object.keys(activeRecords).length}`);
+  // 1. activeCount === 775 (DBM extra 2026-09-07: +Gohan U18, +Gotenks U16, +Tapion U3)
+  checks['activeCount_775'] = Object.keys(activeRecords).length === 775;
+  if (Object.keys(activeRecords).length !== 775) {
+    issues.push(`activeCount mismatch: expected 775, found ${Object.keys(activeRecords).length}`);
   }
 
   // 2. deprecatedCount === 13
@@ -97,11 +97,11 @@ export function validateV26CanonicalRoster() {
     issues.push(`deprecatedCount mismatch: expected 13, found ${deprecatedRecords.length}`);
   }
 
-  // 3. activeCount + deprecatedCount === 785
+  // 3. activeCount + deprecatedCount === 788
   const totalCensus = Object.keys(activeRecords).length + deprecatedRecords.length;
-  checks['totalCensus_785'] = totalCensus === 785;
-  if (totalCensus !== 785) {
-    issues.push(`totalCensus mismatch: expected 785, found ${totalCensus}`);
+  checks['totalCensus_788'] = totalCensus === 788;
+  if (totalCensus !== 788) {
+    issues.push(`totalCensus mismatch: expected 788, found ${totalCensus}`);
   }
 
   // 4. Unique active IDs
@@ -241,14 +241,14 @@ export function validateV26CanonicalRoster() {
   // 2026-09-06 R1: Revision Bloque 0 Clasico segun referencia maestra (+9 formas canonicas) => 1316
   // 2026-09-06 R2: Sagas Z corregidas + 2 fichas nuevas (Trunks Adol 13, SSG Ritual) => 1318
   // 2026-09-06 R3: Saga Buu corregida + 2 fichas nuevas (Buutenks, Gohan Universidad) => 1325
-// 2026-09-06 Namek: +Krilin Namek (3 formas), +Gohan Namek (6 formas) => 1350 + 9 = 1359
+// 2026-09-07 Completitud 100%: +15 formas (transformaciones añadidas a fichas con 1 forma) => 1362 + 15 = 1377
   let totalForms = 0;
   Object.values(activeRecords).forEach(c => {
     if (c.forms) totalForms += c.forms.length;
   });
-  checks['totalForms_1359'] = totalForms === 1359;
-  if (totalForms !== 1359) {
-    issues.push(`Total forms mismatch: expected 1359, found ${totalForms}`);
+  checks['totalForms_1377'] = totalForms === 1377;
+  if (totalForms !== 1377) {
+    issues.push(`Total forms mismatch: expected 1377, found ${totalForms}`);
   }
 
   // DB-form contamination guard: NO Super Saiyan / Kaio-ken / Oozaru forms allowed
@@ -433,9 +433,9 @@ async function validateCharactersTacticalIntegrity() {
     issues.push(`No se pudo importar characters.js: ${e.message}`);
   }
 
-  checks['uiCharCount_772'] = uiCharCount >= 772;
-  if (uiCharCount < 772) {
-    issues.push(`UI character count mismatch: expected at least 772, found ${uiCharCount}`);
+  checks['uiCharCount_775'] = uiCharCount >= 775;
+  if (uiCharCount < 775) {
+    issues.push(`UI character count mismatch: expected at least 775, found ${uiCharCount}`);
   }
 
   return { success: issues.length === 0, checks, issues, characterCount: uiCharCount };
