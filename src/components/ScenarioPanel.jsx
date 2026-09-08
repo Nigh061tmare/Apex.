@@ -5,7 +5,7 @@ import {
   Wand2, Check, Copy
 } from 'lucide-react';
 import { SCENARIOS } from '../data/scenarios';
-import { DYNAMIC_ARENAS, LEGENDARY_ARTIFACTS } from '../data/arenasArtifactsBosses';
+import { DYNAMIC_ARENAS, LEGENDARY_ARTIFACTS, RAID_BOSSES_PROFILES } from '../data/arenasArtifactsBosses';
 import { SimulationEngine } from '../services/simulationEngine';
 import { getTranslation } from '../services/i18n';
 import { evaluateInterdimensionalModifiers, DEFAULT_BRIDGE_CONFIG } from '../lib/crossFranchiseBridge';
@@ -1558,6 +1558,47 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
               }))}
               className="px-2 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 transition cursor-pointer"
               title="Quitar el último artefacto equipado"
+            >
+              ✕ Quitar
+            </button>
+          </div>
+        </div>
+
+        {/* Bosses Legendarios de Asedio — mecánicas de 3 fases inyectadas */}
+        <div className="space-y-1.5 pt-1">
+          <div className="flex items-center justify-between text-[11px] flex-wrap gap-1">
+            <span className="text-slate-300 font-bold flex items-center gap-1.5">
+              <span className="text-red-400">🐲</span>
+              <span>Bosses Legendarios de Asedio (3 Fases):</span>
+            </span>
+            <span className="text-[10px] text-slate-500">Ideal para modo Raid — la IA respeta sus mecánicas</span>
+          </div>
+          <div className="flex items-center gap-1.5 flex-wrap text-[10px]">
+            {RAID_BOSSES_PROFILES.map(boss => (
+              <button
+                key={boss.id}
+                type="button"
+                title={boss.structuralWeakness}
+                onClick={() => setModifiers(prev => ({
+                  ...prev,
+                  customContext: [
+                    prev.customContext,
+                    `\n🐲 BOSS LEGENDARIO DE ASEDIO: ${boss.name}.\nRESISTENCIAS: ${Object.entries(boss.resistances || {}).map(([k, v]) => `${k} ${v}%`).join(', ')}\nDEBILIDAD ESTRUCTURAL: ${boss.structuralWeakness}\nFASES:\n• ${boss.phases?.phase1?.name} — ${boss.phases?.phase1?.mechanic}\n• ${boss.phases?.phase2?.name} (${boss.phases?.phase2?.trigger}) — ${boss.phases?.phase2?.mechanic} ${boss.phases?.phase2?.hazardZone ? `| ${boss.phases?.phase2?.hazardZone}` : ''}\n• ${boss.phases?.phase3?.name} (${boss.phases?.phase3?.trigger}) — ${boss.phases?.phase3?.buffs || ''} | FINISHER: ${boss.phases?.phase3?.finisher}\nCONTRATAQUES EFECTIVOS: ${(boss.phases?.phase3?.counterTags || []).join(', ')}`
+                  ].filter(Boolean).join('\n')
+                }))}
+                className="px-2 py-1 rounded-lg bg-red-950/60 hover:bg-red-900/80 border border-red-700/50 text-red-200 font-bold transition cursor-pointer"
+              >
+                🐲 {boss.name.split('—')[0].trim()}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setModifiers(prev => ({
+                ...prev,
+                customContext: (prev.customContext || '').replace(/\n🐲 BOSS LEGENDARIO DE ASEDIO:.*$/s, '')
+              }))}
+              className="px-2 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 transition cursor-pointer"
+              title="Quitar el último boss equipado"
             >
               ✕ Quitar
             </button>
