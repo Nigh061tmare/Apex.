@@ -1880,6 +1880,8 @@ export default function SimulationViewer({
                 )}
               </label>
               <select
+                name="apuesta_ganador"
+                aria-label="Quién ganará la apuesta"
                 disabled={currentBet.placed && isSimulating}
                 value={currentBet.winner}
                 onChange={(e) => setCurrentBet({ ...currentBet, winner: e.target.value })}
@@ -1902,6 +1904,8 @@ export default function SimulationViewer({
             <div className="space-y-1 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
               <label className="text-[10px] text-slate-400 font-bold block">2. ¿Cisne Negro? (+x0.8)</label>
               <select
+                name="apuesta_cisne_negro"
+                aria-label="¿Cisne Negro en la apuesta?"
                 disabled={currentBet.placed && isSimulating}
                 value={currentBet.blackSwan}
                 onChange={(e) => setCurrentBet({ ...currentBet, blackSwan: e.target.value })}

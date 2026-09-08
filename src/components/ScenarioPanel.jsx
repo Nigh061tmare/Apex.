@@ -1316,6 +1316,7 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
             </div>
 
             <select
+              aria-label="Modo de Semillas del Ermitaño"
               value={modifiers.senzuMode || 'none'}
               onChange={(e) => setModifiers(prev => ({ ...prev, senzuMode: e.target.value }))}
               className="w-full bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-slate-200 text-[10px] font-mono cursor-pointer"

@@ -98,6 +98,109 @@ export default function TournamentModal({
   const [exhibitionRecord, setExhibitionRecord] = useState({ wins: 0, losses: 0 });
   const [exhibitionBusy, setExhibitionBusy] = useState(false);
 
+  // ── Torneo del Poder (estilo anime: 2 equipos, eliminación por ring-out) ──
+  const [powerTeams, setPowerTeams] = useState(null); // { A: [{char,hp}], B: [{char,hp}], activeA, activeB, log, winnerTeam, round }
+  const [powerBusy, setPowerBusy] = useState(false);
+  const [powerStreaming, setPowerStreaming] = useState('');
+
+  const startPowerTournament = () => {
+    const list = participants.filter(Boolean);
+    if (list.length < 4) { alert('El Torneo del Poder necesita al menos 4 participantes (2 por equipo).'); return; }
+    const mid = Math.ceil(list.length / 2);
+    const teamA = list.slice(0, mid).map(char => ({ char, hp: 100, eliminated: false }));
+    const teamB = list.slice(mid).map(char => ({ char, hp: 100, eliminated: false }));
+    setPowerTeams({ A: teamA, B: teamB, activeA: 0, activeB: 0, log: [], winnerTeam: null, round: 1 });
+    setFormatMode('power');
+    setActiveTab('power');
+  };
+
+  const powerActiveFighters = (teams) => {
+    if (!teams) return null;
+    const a = teams.A[teams.activeA];
+    const b = teams.B[teams.activeB];
+    return (a && !a.eliminated && b && !b.eliminated) ? { a, b } : null;
+  };
+
+  // Resolución PURA de un combate del Torneo del Poder (devuelve equipos actualizados)
+  const resolvePowerMatchPure = (teams, aiWinner = null) => {
+    const pair = powerActiveFighters(teams);
+    if (!pair || teams.winnerTeam) return teams;
+    const powerA = (Number(pair.a.char.baseKiNumeric) || 1000) * (pair.a.hp / 100) * (0.85 + Math.random() * 0.3);
+    const powerB = (Number(pair.b.char.baseKiNumeric) || 1000) * (pair.b.hp / 100) * (0.85 + Math.random() * 0.3);
+    const winner = aiWinner || (powerA >= powerB ? pair.a : pair.b);
+    const loser = winner === pair.a ? pair.b : pair.a;
+
+    const updated = JSON.parse(JSON.stringify(teams));
+    const winnerSide = winner === pair.a ? 'A' : 'B';
+    const loserSide = winner === pair.a ? 'B' : 'A';
+    const wIdx = winner === pair.a ? updated.activeA : updated.activeB;
+    const lIdx = loser === pair.a ? updated.activeA : updated.activeB;
+    updated[winnerSide][wIdx].hp = Math.max(1, Math.round(updated[winnerSide][wIdx].hp - (20 + Math.random() * 15)));
+    updated[loserSide][lIdx].eliminated = true;
+    updated.log.push(`${aiWinner ? '🧠 IA — ' : '⚔️ '}Ronda ${updated.round}: ${winner.char.name} (${winnerSide}) ELIMINA a ${loser.char.name} (${loserSide}) — HP restante ${updated[winnerSide][wIdx].hp}%`);
+
+    const team = updated[loserSide];
+    const nextIdx = team.findIndex((m, i) => i > lIdx && !m.eliminated);
+    if (nextIdx === -1) {
+      updated.winnerTeam = winnerSide;
+      updated.log.push(`🏆 ¡EL EQUIPO ${winnerSide} GANA EL TORNEO DEL PODER!`);
+    } else {
+      updated[loserSide === 'A' ? 'activeA' : 'activeB'] = nextIdx;
+      updated.log.push(`📡 El Equipo ${loserSide} envía a ${team[nextIdx].char.name}`);
+    }
+    updated.round += 1;
+    return updated;
+  };
+
+  const resolvePowerMatch = () => {
+    if (!powerTeams) return;
+    const next = resolvePowerMatchPure(powerTeams);
+    setPowerTeams(next);
+  };
+
+  // Resuelve con IA (narrativa) el combate actual
+  const resolvePowerMatchWithAI = async () => {
+    const teams = powerTeams;
+    const pair = powerActiveFighters(teams);
+    if (!pair || teams.winnerTeam || powerBusy) return;
+    const simEngine = aiConfig?.simulationEngine || aiConfig || {};
+    if (!simEngine.engine || !simEngine.model) { resolvePowerMatch(); return; }
+    setPowerBusy(true);
+    setPowerStreaming('');
+    const prompt = `Eres el narrador del TORNEO DEL PODER del "${tournamentTitle}". Narra en español el combate de ring-out entre:
+• Equipo A: ${pair.a.char.name} (Tier ${pair.a.char.tier || '?'}, HP ${pair.a.hp}%)
+• Equipo B: ${pair.b.char.name} (Tier ${pair.b.char.tier || '?'}, HP ${pair.b.hp}%)
+El perdedor CAE al vacío (eliminado). El ganador permanece en la arena con fatiga.
+Formato de 5 fases con biometría (### FASE N + ||BIOMETRICS|| HP_A/STM_A/HP_B/STM_B).
+TERMINA SIEMPRE con:
+VENCEDOR: Nombre completo del ganador`;
+    let fullText = '';
+    SimulationEngine.streamSimulation(
+      prompt,
+      simEngine,
+      (token) => { fullText += token; setPowerStreaming(fullText); },
+      () => {
+        const aiWinner = extractWinnerFromNarrative(fullText, pair.a.char, pair.b.char);
+        const next = resolvePowerMatchPure(teams, aiWinner || undefined);
+        setPowerTeams(next);
+        setPowerBusy(false);
+        setPowerStreaming('');
+      },
+      () => { setPowerBusy(false); setPowerStreaming(''); resolvePowerMatch(); }
+    );
+  };
+
+  // Simula todos los combates restantes en un solo paso (resolución pura en bucle)
+  const simulateAllPowerMatches = () => {
+    if (!powerTeams) return;
+    let cur = powerTeams;
+    let guard = 0;
+    while (guard++ < 100 && !cur.winnerTeam) {
+      cur = resolvePowerMatchPure(cur);
+    }
+    setPowerTeams(cur);
+  };
+
   // Ref de rondas SIEMPRE actualizado (evita closures obsoletas en bucles secuenciales)
   const roundsRef = useRef([]);
   useEffect(() => { roundsRef.current = rounds; }, [rounds]);
@@ -1238,6 +1341,16 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
               </button>
 
               <button
+                onClick={() => setActiveTab('power')}
+                className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer flex items-center gap-1 ${
+                  activeTab === 'power' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Swords className="w-3.5 h-3.5" />
+                <span>🏟️ Torneo del Poder</span>
+              </button>
+
+              <button
                 onClick={() => setActiveTab('history')}
                 className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer flex items-center gap-1 ${
                   activeTab === 'history' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'
@@ -1303,6 +1416,13 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                   title="Todos contra todos con puntos (3 por victoria, 1 por empate)"
                 >
                   ⚽ Liga (Todos vs Todos)
+                </button>
+                <button
+                  onClick={startPowerTournament}
+                  className={`px-2.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${formatMode === 'power' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  title="Torneo del Poder estilo anime: 2 equipos, ring-out, el ganador se queda con fatiga"
+                >
+                  🏟️ Torneo del Poder
                 </button>
               </div>
             </div>
@@ -1837,6 +1957,109 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                 );
               })}
             </div>
+          </div>
+        )}
+
+        {/* Modal Body: TAB TORNEO DEL PODER (estilo anime, ring-out 2 equipos) */}
+        {activeTab === 'power' && (
+          <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
+            {!powerTeams ? (
+              <div className="text-center py-12 text-slate-500 text-sm space-y-3">
+                <p className="text-4xl">🏟️</p>
+                <p>El Torneo del Poder aún no ha comenzado.</p>
+                <p className="text-xs text-slate-600">Elige participantes (mín. 4) y pulsa <span className="text-cyan-400 font-bold">"🏟️ Torneo del Poder"</span> en la barra de formato para repartirlos en 2 equipos.</p>
+              </div>
+            ) : (
+              <>
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900 to-slate-950 border border-cyan-500/40 flex flex-wrap items-center justify-between gap-3 shadow-lg">
+                  <div>
+                    <h4 className="font-bold text-white text-sm font-cinzel flex items-center gap-2">
+                      <Swords className="w-4 h-4 text-cyan-400" />
+                      <span>🏟️ Torneo del Poder — {powerTeams.winnerTeam ? `🏆 ¡GANA EL EQUIPO ${powerTeams.winnerTeam}!` : 'Eliminación por Ring-Out'}</span>
+                    </h4>
+                    <p className="text-slate-400 text-xs mt-0.5">
+                      Equipo A ({powerTeams.A.filter(m => !m.eliminated).length} en pie) vs Equipo B ({powerTeams.B.filter(m => !m.eliminated).length} en pie) · Ronda {powerTeams.round}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={simulateAllPowerMatches}
+                      disabled={!!powerTeams.winnerTeam || powerBusy}
+                      className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+                    >
+                      <FastForward className="w-3.5 h-3.5" />
+                      <span>Simular Todo</span>
+                    </button>
+                    <button
+                      onClick={resolvePowerMatchWithAI}
+                      disabled={!!powerTeams.winnerTeam || powerBusy || powerActiveFighters(powerTeams) === null}
+                      className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-700 via-fuchsia-600 to-indigo-600 hover:from-purple-600 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-lg shadow-purple-950 disabled:opacity-50"
+                    >
+                      <Sparkles className={`w-3.5 h-3.5 ${powerBusy ? 'animate-pulse' : ''}`} />
+                      <span>{powerBusy ? 'Narrando...' : '🤖 Con IA'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Streaming IA */}
+                {powerBusy && powerStreaming && (
+                  <div className="p-3 rounded-xl bg-purple-950/50 border border-purple-500/40 text-purple-200 text-[11px] font-mono max-h-32 overflow-y-auto whitespace-pre-wrap">
+                    {powerStreaming}
+                  </div>
+                )}
+
+                {/* Equipos */}
+                <div className="grid grid-cols-2 gap-3">
+                  {['A', 'B'].map(side => (
+                    <div key={side} className={`rounded-2xl border p-3 ${side === 'A' ? 'bg-red-950/20 border-red-500/40' : 'bg-cyan-950/20 border-cyan-500/40'}`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <h5 className="text-[11px] font-black font-mono text-white">EQUIPO {side}</h5>
+                        <span className={`text-[10px] font-mono ${powerTeams.winnerTeam === side ? 'text-amber-300 font-bold' : 'text-slate-400'}`}>
+                          {powerTeams.winnerTeam === side ? '🏆 CAMPEÓN' : `${powerTeams[side].filter(m => !m.eliminated).length} en pie`}
+                        </span>
+                      </div>
+                      <div className="space-y-1.5">
+                        {powerTeams[side].map((member, idx) => {
+                          const isActive = powerTeams[`active${side}`] === idx && !member.eliminated && !powerTeams.winnerTeam;
+                          return (
+                            <div key={idx} className={`flex items-center gap-2 p-1.5 rounded-lg text-[10px] font-mono border ${
+                              member.eliminated
+                                ? 'bg-slate-950/60 border-slate-800 text-slate-600 line-through'
+                                : isActive
+                                  ? 'bg-slate-800 border-amber-500/60 text-amber-200 shadow-md'
+                                  : 'bg-slate-900/60 border-slate-800 text-slate-300'
+                            }`}>
+                              <span className="w-4 text-center shrink-0">{member.eliminated ? '💀' : isActive ? '⚔️' : '•'}</span>
+                              <span className="flex-1 truncate">{member.char.name.split('(')[0].trim()}</span>
+                              {!member.eliminated && (
+                                <div className="w-16 h-1.5 rounded-full bg-slate-950 overflow-hidden shrink-0">
+                                  <div className={`h-full rounded-full ${side === 'A' ? 'bg-red-500' : 'bg-cyan-400'}`} style={{ width: `${member.hp}%` }} />
+                                </div>
+                              )}
+                              <span className="w-7 text-right shrink-0">{member.eliminated ? '—' : `${member.hp}%`}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Log de eliminaciones */}
+                <div className="rounded-2xl bg-slate-900/70 border border-slate-800 p-3">
+                  <h5 className="text-[11px] font-black font-mono text-cyan-300 mb-2">📜 REGISTRO DE ELIMINACIONES</h5>
+                  {powerTeams.log.length === 0 ? (
+                    <p className="text-[10px] text-slate-500 font-mono">Sin combates aún. Pulsa "Simular Todo" o "🤖 Con IA".</p>
+                  ) : (
+                    <div className="space-y-1 max-h-48 overflow-y-auto">
+                      {powerTeams.log.map((entry, i) => (
+                        <p key={i} className={`text-[10px] font-mono ${entry.includes('🏆') ? 'text-amber-300 font-bold' : 'text-slate-400'}`}>{entry}</p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
 
