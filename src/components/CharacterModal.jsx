@@ -1572,10 +1572,10 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                         {isEditingMode ? (
                           <div className="space-y-1">
                             <div className="flex justify-between">
-                              <input type="text" placeholder="Nombre Pasiva" value={item.name} onChange={e => updateArsenalItem('passives', idx, 'name', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-emerald-300 text-xs font-bold" />
+                              <input type="text" aria-label="Nombre de la pasiva" placeholder="Nombre Pasiva" value={item.name} onChange={e => updateArsenalItem('passives', idx, 'name', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-emerald-300 text-xs font-bold" />
                               <button type="button" onClick={() => removeArsenalItem('passives', idx)} className="text-red-400 ml-1 text-xs">✕</button>
                             </div>
-                            <input type="text" placeholder="Efecto continuo..." value={item.desc} onChange={e => updateArsenalItem('passives', idx, 'desc', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-slate-300 text-[10px]" />
+                            <input type="text" aria-label="Efecto de la pasiva" placeholder="Efecto continuo..." value={item.desc} onChange={e => updateArsenalItem('passives', idx, 'desc', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-slate-300 text-[10px]" />
                           </div>
                         ) : (
                           <div>
@@ -1603,10 +1603,10 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                         {isEditingMode ? (
                           <div className="space-y-1">
                             <div className="flex justify-between">
-                              <input type="text" placeholder="Nombre Activa" value={item.name} onChange={e => updateArsenalItem('actives', idx, 'name', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-cyan-300 text-xs font-bold" />
+                              <input type="text" aria-label="Nombre de la habilidad activa" placeholder="Nombre Activa" value={item.name} onChange={e => updateArsenalItem('actives', idx, 'name', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-cyan-300 text-xs font-bold" />
                               <button type="button" onClick={() => removeArsenalItem('actives', idx)} className="text-red-400 ml-1 text-xs">✕</button>
                             </div>
-                            <input type="text" placeholder="Efecto y duración..." value={item.desc} onChange={e => updateArsenalItem('actives', idx, 'desc', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-slate-300 text-[10px]" />
+                            <input type="text" aria-label="Efecto de la habilidad activa" placeholder="Efecto y duración..." value={item.desc} onChange={e => updateArsenalItem('actives', idx, 'desc', e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded p-1 text-slate-300 text-[10px]" />
                           </div>
                         ) : (
                           <div>
@@ -1677,7 +1677,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                   <label className="block text-cyan-400 font-bold text-xs">Combate (Cuerpo a Cuerpo)</label>
                   <p className="text-[10px] text-slate-500">Velocidad en intercambios físicos continuos.</p>
                   {isEditingMode ? (
-                    <input type="text" placeholder="Ej: MFTL+, Inconmensurable, Relativista" value={formData.speed?.combat || ''} onChange={e => handleNestedChange('speed', 'combat', e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white" />
+                    <input type="text" name="speed_combat" aria-label="Velocidad de combate" placeholder="Ej: MFTL+, Inconmensurable, Relativista" value={formData.speed?.combat || ''} onChange={e => handleNestedChange('speed', 'combat', e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white" />
                   ) : (
                     <p className="text-slate-200 font-bold">{formData.speed?.combat || 'No especificada'}</p>
                   )}
@@ -1687,7 +1687,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                   <label className="block text-cyan-400 font-bold text-xs">Reacción (Esquiva / Reflejos)</label>
                   <p className="text-[10px] text-slate-500">Tiempo de procesamiento ante ataques a quemarropa.</p>
                   {isEditingMode ? (
-                    <input type="text" placeholder="Ej: Inconmensurable, Nanosegundos, FTL" value={formData.speed?.reaction || ''} onChange={e => handleNestedChange('speed', 'reaction', e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white" />
+                    <input type="text" name="speed_reaction" aria-label="Velocidad de reacción" placeholder="Ej: Inconmensurable, Nanosegundos, FTL" value={formData.speed?.reaction || ''} onChange={e => handleNestedChange('speed', 'reaction', e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white" />
                   ) : (
                     <p className="text-slate-200 font-bold">{formData.speed?.reaction || 'No especificada'}</p>
                   )}
@@ -1697,7 +1697,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                   <label className="block text-cyan-400 font-bold text-xs">Desplazamiento (Viaje / Vuelo)</label>
                   <p className="text-[10px] text-slate-500">Velocidad en línea recta de punto A a punto B.</p>
                   {isEditingMode ? (
-                    <input type="text" placeholder="Ej: MFTL+ (Intergaláctico), Supersónico" value={formData.speed?.travel || ''} onChange={e => handleNestedChange('speed', 'travel', e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white" />
+                    <input type="text" name="speed_travel" aria-label="Velocidad de desplazamiento" placeholder="Ej: MFTL+ (Intergaláctico), Supersónico" value={formData.speed?.travel || ''} onChange={e => handleNestedChange('speed', 'travel', e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white" />
                   ) : (
                     <p className="text-slate-200 font-bold">{formData.speed?.travel || 'No especificada'}</p>
                   )}

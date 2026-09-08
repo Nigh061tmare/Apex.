@@ -5,6 +5,24 @@ import v26Data from './ROSTER_NIVELES_PODER_CORREGIDO_V26.json' with { type: 'js
 import RAW_TACTICAL_PROFILES from './tacticalProfiles.json' with { type: 'json' };
 import CHARACTER_IMAGES from './characterImages.json' with { type: 'json' };
 
+// ── Fase 7: Retrato IA determinista (Pollinations, gratis, seed estable por id).
+// Genera una URL estable para personajes sin imagen de wiki. Se usa como último
+// recurso antes de DiceBear. El seed deriva del id para que sea reproducible.
+function hashId(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h) % 999999;
+}
+function aiPortraitFor(char) {
+  const seed = hashId(char.id || char.name || 'x');
+  const name = encodeURIComponent((char.name || 'personaje').split('(')[0].trim().slice(0, 40));
+  const uni = encodeURIComponent((char.universe || '').slice(0, 30));
+  const prompt = `anime character portrait of ${name} from ${uni}, dynamic pose, vibrant colors, high quality, clean background`;
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=256&height=256&seed=${seed}&nologo=true&model=flux`;
+}
+
 
 
 // Map raw tactical profiles by id for fast O(1) lookup
@@ -105,10 +123,11 @@ export const INITIAL_CHARACTERS = v26CharList.map((v26Char) => {
     franchise: v26Char.franchise,
     universe: v26Char.universe,
     saga: v26Char.saga,
-    // ── Fase 7: imagen real de Fandom wiki inyectada como avatar (566 fichas).
-    // Se respeta cualquier avatar explícito del JSON V26; si no existe, se usa
-    // la imagen de la wiki. El resto de la app usa char.avatar automáticamente.
-    avatar: v26Char.avatar || CHARACTER_IMAGES[v26Char.id] || null,
+    // ── Fase 7: imagen real de Fandom wiki inyectada como avatar (505 fichas),
+    // con retrato IA determinista (Pollinations) como respaldo para el resto.
+    // Se respeta cualquier avatar explícito del JSON V26.
+    avatar: v26Char.avatar || CHARACTER_IMAGES[v26Char.id] || aiPortraitFor(v26Char),
+    aiPortraitFallback: !v26Char.avatar && !CHARACTER_IMAGES[v26Char.id],
     tier: v26Char.baseTier,
     baseTier: v26Char.baseTier,
     baseKiFormatted: v26Char.baseKiFormatted,

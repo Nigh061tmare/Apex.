@@ -3195,7 +3195,7 @@ export default function SimulationViewer({
 
                   <label className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition cursor-pointer flex items-center gap-1.5 shrink-0">
                     <span>📤 Subir Imagen</span>
-                    <input type="file" accept="image/*" onChange={handleUploadCustomArt} className="hidden" />
+                    <input type="file" aria-label="Subir imagen de arte" accept="image/*" onChange={handleUploadCustomArt} className="hidden" />
                   </label>
                 </div>
 
