@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { Globe, Search, PlusCircle, Check, X, Sparkles, Shield, Trophy } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Globe, Search, PlusCircle, Check, X, Sparkles, Shield, Trophy, ThumbsUp, ThumbsDown, Send } from 'lucide-react';
+import SearchableCharacterSelector from './SearchableCharacterSelector.jsx';
+
+const STORAGE_VOTES = 'apex_community_votes_v1';
+const STORAGE_SUBMISSIONS = 'apex_community_submissions_v1';
 
 const COMMUNITY_CHARACTERS = [
   {
@@ -20,7 +24,8 @@ const COMMUNITY_CHARACTERS = [
       basicAttacks: 'Ráfagas de golpes a velocidad que supera la percepción divina',
       superAttacks: [{ name: 'Kamehameha Deslizado', desc: 'Disparo de energía a quemarropa surfeando sobre el ataque rival.', cost: 'Medio' }],
       ultimateAttacks: [{ name: 'Puño Plateado del Dragón Astral', desc: 'Avatar gigante de Ki plateado que pulveriza la realidad.', cost: 'Alto' }]
-    }
+    },
+    submittedBy: 'APEX Oficial'
   },
   {
     id: 'comm-saitama-serious',
@@ -40,7 +45,8 @@ const COMMUNITY_CHARACTERS = [
       basicAttacks: 'Golpes normales consecutivos a velocidad luz',
       superAttacks: [{ name: 'Golpes Serios Consecutivos', desc: 'Descarga de impactos que colapsa dimensiones estelares.', cost: 'Cero' }],
       ultimateAttacks: [{ name: 'Serious Punch Omnidireccional', desc: 'Salto interdimensional que golpea desde todos los ángulos del espacio.', cost: 'Cero' }]
-    }
+    },
+    submittedBy: 'APEX Oficial'
   },
   {
     id: 'comm-gojo-satoru',
@@ -60,7 +66,8 @@ const COMMUNITY_CHARACTERS = [
       basicAttacks: 'Golpes con Destello Negro (Black Flash) imbuidos en atracción espacial Azul',
       superAttacks: [{ name: 'Rojo (Inversión) & Azul (Atracción)', desc: 'Manipulación de repulsión gravitatoria y colapso espacial.', cost: 'Bajo' }],
       ultimateAttacks: [{ name: 'Púrpura Hueco 200%', desc: 'Colisión de masa virtual que borra todo a nivel atómico en su trayectoria.', cost: 'Medio' }]
-    }
+    },
+    submittedBy: 'APEX Oficial'
   },
   {
     id: 'comm-sukuna-heian',
@@ -80,7 +87,8 @@ const COMMUNITY_CHARACTERS = [
       basicAttacks: 'Cortes invisibles Cleave y Dismantle a velocidad hipersónica',
       superAttacks: [{ name: 'Flecha de Fuego (Kamado)', desc: 'Detonación termobárica que calcina ciudades enteras.', cost: 'Medio' }],
       ultimateAttacks: [{ name: 'World Cutting Slash (Corte Espacial)', desc: 'Corte que ignora durabilidad cortando el tejido del propio espacio.', cost: 'Alto' }]
-    }
+    },
+    submittedBy: 'APEX Oficial'
   },
   {
     id: 'comm-superman-ca',
@@ -100,21 +108,48 @@ const COMMUNITY_CHARACTERS = [
       basicAttacks: 'Ráfagas de energía cuántica que borran universos enteros',
       superAttacks: [{ name: 'Visión Térmica Hiperdimensional', desc: 'Rayo conceptual que calcina realidades.', cost: 'Cero' }],
       ultimateAttacks: [{ name: 'Puño de la Victoria de la Trama', desc: 'Golpe conceptual garantizado a triunfar sobre cualquier mal cósmico.', cost: 'Cero' }]
-    }
+    },
+    submittedBy: 'APEX Oficial'
   }
 ];
 
-export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter }) {
+// Carga votos locales { charId: { up: bool, down: bool } }
+function loadVotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_VOTES) || '{}'); } catch { return {}; }
+}
+function loadSubmissions() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_SUBMISSIONS) || '[]'); } catch { return []; }
+}
+
+export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter, allCharacters = [] }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUniverse, setSelectedUniverse] = useState('ALL');
   const [importedIds, setImportedIds] = useState([]);
+  const [votes, setVotes] = useState(loadVotes);
+  const [submissions, setSubmissions] = useState(loadSubmissions);
+  const [submitOpen, setSubmitOpen] = useState(false);
+  const [selectedCharId, setSelectedCharId] = useState('');
+  const [refresh, setRefresh] = useState(0);
+
+  // Hooks siempre antes del return condicional (regla de React)
+  const allCommunity = useMemo(() => [...COMMUNITY_CHARACTERS, ...submissions], [submissions, refresh]);
+
+  const voteTotals = useMemo(() => {
+    const totals = {};
+    for (const c of allCommunity) {
+      const v = votes[c.id] || {};
+      totals[c.id] = (v.up ? 1 : 0) - (v.down ? 1 : 0);
+    }
+    return totals;
+  }, [votes, allCommunity]);
 
   if (!isOpen) return null;
 
-  const universes = ['ALL', ...Array.from(new Set(COMMUNITY_CHARACTERS.map(c => c.universe)))];
+  const universes = ['ALL', ...Array.from(new Set(allCommunity.map(c => c.universe)))];
+  const sorted = [...allCommunity].sort((a, b) => (voteTotals[b.id] || 0) - (voteTotals[a.id] || 0));
 
-  const filtered = COMMUNITY_CHARACTERS.filter(c => {
-    const matchSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase()) || c.universe.toLowerCase().includes(searchTerm.toLowerCase());
+  const filtered = sorted.filter(c => {
+    const matchSearch = (c.name || '').toLowerCase().includes(searchTerm.toLowerCase()) || (c.universe || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchUniv = selectedUniverse === 'ALL' || c.universe === selectedUniverse;
     return matchSearch && matchUniv;
   });
@@ -126,6 +161,45 @@ export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter
     }
   };
 
+  const handleVote = (charId, dir) => {
+    setVotes(prev => {
+      const next = { ...prev, [charId]: { ...(prev[charId] || {}), [dir]: !(prev[charId]?.[dir]) } };
+      try { localStorage.setItem(STORAGE_VOTES, JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
+  const handleSubmit = () => {
+    const char = allCharacters.find(c => c.id === selectedCharId);
+    if (!char) return;
+    const entry = {
+      id: `comm-user-${char.id}`,
+      name: char.name,
+      universe: char.universe || 'Multiverso',
+      tier: `${char.tier || char.baseTier || '?'} | Comunidad`,
+      ap: char.ap || `Nivel ${char.tier || '?'}`,
+      range: char.range || 'Variable',
+      speed: char.speed || { combat: 'Variable' },
+      strength: char.strength || 'Variable',
+      durability: char.durability || `Nivel ${char.tier || '?'}`,
+      stamina: char.stamina || 'Media',
+      battleIQ: char.battleIQ || 'Estándar',
+      weaknesses: Array.isArray(char.weaknesses) ? char.weaknesses.map(w => w.name || w).join('; ') : (char.weaknesses || 'Ninguna conocida'),
+      haxTags: char.haxTags || [],
+      arsenal: char.arsenal || {},
+      submittedBy: 'Comunidad APEX',
+      avatar: char.avatar || null
+    };
+    setSubmissions(prev => {
+      const next = [entry, ...prev].slice(0, 30);
+      try { localStorage.setItem(STORAGE_SUBMISSIONS, JSON.stringify(next)); } catch {}
+      return next;
+    });
+    setSubmitOpen(false);
+    setSelectedCharId('');
+    setRefresh(r => r + 1);
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
       <div className="bg-slate-950 border border-slate-700/80 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] flex flex-col space-y-4 shadow-[0_0_50px_rgba(0,0,0,0.9)] font-mono text-xs animate-in fade-in zoom-in-95 duration-200">
@@ -134,13 +208,48 @@ export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter
           <div className="flex items-center gap-2">
             <Globe className="w-5 h-5 text-emerald-400" />
             <h3 className="text-sm font-bold text-white uppercase font-cinzel tracking-wider">
-              Galería Comunitaria de Fichas (Community Vault)
+              Galería Comunitaria de Fichas <span className="text-emerald-400">({allCommunity.length} fichas)</span>
             </h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white cursor-pointer">
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSubmitOpen(!submitOpen)}
+              className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold transition cursor-pointer flex items-center gap-1.5"
+            >
+              <Send className="w-3.5 h-3.5" />
+              Enviar mi Ficha
+            </button>
+            <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white cursor-pointer">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
+
+        {/* Submit panel */}
+        {submitOpen && (
+          <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-600/40 space-y-2">
+            <p className="text-[11px] text-emerald-300 font-bold flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" /> Envía un personaje de tu bóveda a la comunidad (se guarda en tu dispositivo):
+            </p>
+            <div className="flex gap-2 items-center">
+              <div className="flex-1">
+                <SearchableCharacterSelector
+                  characters={allCharacters}
+                  value={selectedCharId}
+                  onChange={(c) => setSelectedCharId(c?.id || '')}
+                  color="emerald"
+                />
+              </div>
+              <button
+                onClick={handleSubmit}
+                disabled={!selectedCharId}
+                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition cursor-pointer disabled:opacity-40 shrink-0"
+              >
+                ➕ Publicar
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Filters & Search */}
         <div className="flex flex-col sm:flex-row gap-3">
@@ -148,6 +257,8 @@ export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter
             <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
             <input
               type="text"
+              name="busqueda_comunidad"
+              aria-label="Buscar en la comunidad"
               placeholder="Buscar personaje o universo (ej. Goku, Gojo, Superman)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -173,16 +284,47 @@ export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 overflow-y-auto flex-1 pr-1">
           {filtered.map(char => {
             const isAdded = importedIds.includes(char.id);
+            const v = votes[char.id] || {};
+            const net = voteTotals[char.id] || 0;
+            const isCommunity = char.submittedBy && char.submittedBy !== 'APEX Oficial';
             return (
               <div key={char.id} className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/50 transition space-y-2 group">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h4 className="font-bold text-white text-xs">{char.name}</h4>
-                    <span className="text-[10px] text-slate-400">{char.universe}</span>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    {char.avatar && (
+                      <img src={char.avatar} alt="" className="w-10 h-10 rounded-lg object-contain bg-slate-950 border border-slate-800 shrink-0" onError={e => { e.target.style.display = 'none'; }} />
+                    )}
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-white text-xs truncate">{char.name}</h4>
+                      <span className="text-[10px] text-slate-400 block truncate">{char.universe}</span>
+                      {isCommunity && <span className="text-[9px] text-emerald-400">👥 Enviada por la comunidad</span>}
+                    </div>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-200 border border-purple-800 font-bold">
-                    {char.tier?.split('|')[0]?.trim()}
-                  </span>
+                  <div className="flex flex-col items-end gap-1 shrink-0">
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-200 border border-purple-800 font-bold">
+                      {char.tier?.split('|')[0]?.trim()}
+                    </span>
+                    {/* Votos */}
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => handleVote(char.id, 'up')}
+                        className={`p-1 rounded ${v.up ? 'bg-emerald-700 text-white' : 'bg-slate-800 text-slate-400 hover:text-emerald-300'} cursor-pointer transition`}
+                        aria-label={`Votar a favor de ${char.name}`}
+                      >
+                        <ThumbsUp className="w-3 h-3" />
+                      </button>
+                      <span className={`text-[10px] font-bold ${net > 0 ? 'text-emerald-400' : net < 0 ? 'text-red-400' : 'text-slate-500'}`}>
+                        {net > 0 ? `+${net}` : net}
+                      </span>
+                      <button
+                        onClick={() => handleVote(char.id, 'down')}
+                        className={`p-1 rounded ${v.down ? 'bg-red-700 text-white' : 'bg-slate-800 text-slate-400 hover:text-red-300'} cursor-pointer transition`}
+                        aria-label={`Votar en contra de ${char.name}`}
+                      >
+                        <ThumbsDown className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <p className="text-[11px] text-slate-300 line-clamp-2"><span className="text-amber-400 font-bold">AP:</span> {char.ap}</p>
@@ -194,7 +336,8 @@ export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter
                   ))}
                 </div>
 
-                <div className="pt-2 border-t border-slate-800 flex justify-end">
+                <div className="pt-2 border-t border-slate-800 flex justify-between items-center">
+                  <span className="text-[9px] text-slate-600">por {char.submittedBy || 'APEX'}</span>
                   <button
                     disabled={isAdded}
                     onClick={() => handleAdd(char)}
@@ -205,16 +348,25 @@ export default function CommunityVaultModal({ isOpen, onClose, onImportCharacter
                     }`}
                   >
                     {isAdded ? <Check className="w-3.5 h-3.5" /> : <PlusCircle className="w-3.5 h-3.5" />}
-                    <span>{isAdded ? 'Añadido a mi Bóveda' : '➕ Añadir a mi Bóveda'}</span>
+                    <span>{isAdded ? 'Añadido' : '➕ Añadir a mi Bóveda'}</span>
                   </button>
                 </div>
               </div>
             );
           })}
+          {filtered.length === 0 && (
+            <div className="col-span-full text-center py-10 text-slate-500 text-sm">
+              <p className="text-3xl mb-2">🕳️</p>
+              <p>No hay fichas que coincidan.</p>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end pt-2 border-t border-slate-800">
+        <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+          <span className="text-[9px] text-slate-600 flex items-center gap-1">
+            <Trophy className="w-3 h-3 text-amber-400" /> Los votos y envíos se guardan en tu dispositivo (sincronización global próximamente)
+          </span>
           <button onClick={onClose} className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer">
             Cerrar Galería
           </button>

@@ -1452,6 +1452,7 @@ export default function App() {
         isOpen={showCommunityVault}
         onClose={() => setShowCommunityVault(false)}
         onImportCharacter={(newChar) => handleSaveCustomCharacter(newChar)}
+        allCharacters={characters}
       />
 
       {/* Batch AI Character Importer Modal */}
