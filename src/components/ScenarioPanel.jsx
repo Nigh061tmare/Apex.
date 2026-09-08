@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   MapPin, Skull, Clock, Heart, Sliders, Zap, Shield, Globe, 
   Swords, AlertTriangle, Plus, Trash2, Flame, Thermometer, Compass, Sparkles, RefreshCw, FastForward,
@@ -99,7 +99,33 @@ const legendaryScenarios = DYNAMIC_ARENAS.map(mapDynamicArenaToScenario);
 // Artefactos legendarios jugables (se adjuntan a la premisa del combate)
 const ARTIFACT_UNIVERSES_LABEL = '🧿 Artefacto Legendario';
 
-const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
+const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...customScenarios], [customScenarios]);
+
+  // Filtrado memoizado de arenas: solo se recalcula cuando cambian búsqueda/filtro.
+  // Evita micro-congelamientos al tipear sobre 60+ arenas (800+ personajes en la app).
+  const filteredScenarios = useMemo(() => {
+    const knownUniverses = ['dragon ball', 'jujutsu', 'dc', 'marvel', 'bleach', 'naruto', 'boruto', 'one piece', 'jojo', 'chainsaw', 'invincible', 'berserk', 'attack on titan', 'shingeki'];
+    return allScenarios.filter(s => {
+      const matchSearch = !arenaSearch || s.name.toLowerCase().includes(arenaSearch) || (s.universe || '').toLowerCase().includes(arenaSearch);
+      const u = (s.universe || '').toLowerCase();
+      const matchUniverse = universeFilter === 'Todos' ||
+        (universeFilter === 'Dragon Ball' && u.includes('dragon ball')) ||
+        (universeFilter === 'Jujutsu' && u.includes('jujutsu')) ||
+        (universeFilter === 'DC' && u.includes('dc')) ||
+        (universeFilter === 'Marvel' && u.includes('marvel')) ||
+        (universeFilter === 'Bleach' && u.includes('bleach')) ||
+        (universeFilter === 'Naruto' && (u.includes('naruto') || u.includes('boruto') || u.includes('konoha'))) ||
+        (universeFilter === 'One Piece' && (u.includes('one piece') || u.includes('pirata') || u.includes('marineford'))) ||
+        (universeFilter === 'JoJo' && (u.includes('jojo') || u.includes('bizarre'))) ||
+        (universeFilter === 'CSM' && (u.includes('chainsaw') || u.includes('motosierras'))) ||
+        (universeFilter === 'Invincible' && u.includes('invincible')) ||
+        (universeFilter === 'Berserk' && u.includes('berserk')) ||
+        (universeFilter === 'AoT' && (u.includes('attack on titan') || u.includes('shingeki') || u.includes('marley'))) ||
+        (universeFilter === 'Custom' && s.isCustom) ||
+        (universeFilter === 'Otros' && !knownUniverses.some(k => u.includes(k)) && !s.isCustom);
+      return matchSearch && matchUniverse;
+    });
+  }, [allScenarios, arenaSearch, universeFilter]);
 
   const handleAddArena = (e) => {
     e.preventDefault();
@@ -230,27 +256,7 @@ const allScenarios = [...SCENARIOS, ...legendaryScenarios, ...customScenarios];
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-48 overflow-y-auto pr-1">
-          {allScenarios.filter(s => {
-            const matchSearch = !arenaSearch || s.name.toLowerCase().includes(arenaSearch) || (s.universe || '').toLowerCase().includes(arenaSearch);
-            const u = (s.universe || '').toLowerCase();
-            const knownUniverses = ['dragon ball', 'jujutsu', 'dc', 'marvel', 'bleach', 'naruto', 'boruto', 'one piece', 'jojo', 'chainsaw', 'invincible', 'berserk', 'attack on titan', 'shingeki'];
-            const matchUniverse = universeFilter === 'Todos' ||
-              (universeFilter === 'Dragon Ball' && u.includes('dragon ball')) ||
-              (universeFilter === 'Jujutsu' && u.includes('jujutsu')) ||
-              (universeFilter === 'DC' && u.includes('dc')) ||
-              (universeFilter === 'Marvel' && u.includes('marvel')) ||
-              (universeFilter === 'Bleach' && u.includes('bleach')) ||
-              (universeFilter === 'Naruto' && (u.includes('naruto') || u.includes('boruto') || u.includes('konoha'))) ||
-              (universeFilter === 'One Piece' && (u.includes('one piece') || u.includes('pirata') || u.includes('marineford'))) ||
-              (universeFilter === 'JoJo' && (u.includes('jojo') || u.includes('bizarre'))) ||
-              (universeFilter === 'CSM' && (u.includes('chainsaw') || u.includes('motosierras'))) ||
-              (universeFilter === 'Invincible' && u.includes('invincible')) ||
-              (universeFilter === 'Berserk' && u.includes('berserk')) ||
-              (universeFilter === 'AoT' && (u.includes('attack on titan') || u.includes('shingeki') || u.includes('marley'))) ||
-              (universeFilter === 'Custom' && s.isCustom) ||
-              (universeFilter === 'Otros' && !knownUniverses.some(k => u.includes(k)) && !s.isCustom);
-            return matchSearch && matchUniverse;
-          }).map((s) => {
+          {filteredScenarios.map((s) => {
             const active = scenario.id === s.id;
             return (
               <div

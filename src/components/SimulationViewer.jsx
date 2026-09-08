@@ -43,6 +43,22 @@ function computeFightOdds(charA, charB) {
   return { oddsA: clamp(Number((1.1 / probA).toFixed(2))), oddsB: clamp(Number((1.1 / probB).toFixed(2))), probA, probB };
 }
 
+// Degradado dinámico de barras biométricas: esmeralda (sano) → ámbar → rojo pulsante (crítico)
+function hpBarClass(hp) {
+  const v = Math.max(0, Math.min(100, hp));
+  if (v <= 0) return 'bg-slate-800';
+  if (v < 40) return 'bg-gradient-to-r from-red-700 via-red-500 to-rose-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.7)]';
+  if (v < 70) return 'bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-400 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.5)]';
+  return 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)]';
+}
+function stmBarClass(hp) {
+  const v = Math.max(0, Math.min(100, hp));
+  if (v <= 0) return 'bg-slate-800';
+  if (v < 40) return 'bg-gradient-to-r from-orange-700 to-orange-500 rounded-full';
+  if (v < 70) return 'bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full';
+  return 'bg-gradient-to-r from-cyan-600 to-sky-400 rounded-full';
+}
+
 // Configuración visual por cada tipo de fase
 const PHASE_STYLES = {
   'analisis': {
@@ -200,7 +216,7 @@ function RichCombatText({ content, isStreamingLast, comicMode = false }) {
                       aria-valuemin={0}
                       aria-valuemax={100}
                       aria-label={`HP Bando A: ${Math.max(0, Math.min(100, hpAVal))}%`}
-                      className="h-full bg-gradient-to-r from-red-600 via-amber-500 to-red-500 rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(239,68,68,0.5)]" 
+                      className={`h-full ${hpBarClass(hpAVal)} transition-all duration-700`} 
                       style={{ width: `${Math.max(0, Math.min(100, hpAVal))}%` }} 
                     />
                   </div>
@@ -211,7 +227,7 @@ function RichCombatText({ content, isStreamingLast, comicMode = false }) {
                       aria-valuemin={0}
                       aria-valuemax={100}
                       aria-label={`Stamina Bando A: ${Math.max(0, Math.min(100, stmAVal))}%`}
-                      className="h-full bg-amber-400 rounded-full transition-all duration-700" 
+                      className={`h-full ${stmBarClass(stmAVal)} transition-all duration-700`} 
                       style={{ width: `${Math.max(0, Math.min(100, stmAVal))}%` }} 
                     />
                   </div>
@@ -233,7 +249,7 @@ function RichCombatText({ content, isStreamingLast, comicMode = false }) {
                       aria-valuemin={0}
                       aria-valuemax={100}
                       aria-label={`HP Bando B: ${Math.max(0, Math.min(100, hpBVal))}%`}
-                      className="h-full bg-gradient-to-l from-blue-600 via-cyan-400 to-blue-500 rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
+                      className={`h-full ${hpBarClass(hpBVal)} transition-all duration-700`} 
                       style={{ width: `${Math.max(0, Math.min(100, hpBVal))}%` }} 
                     />
                   </div>
@@ -244,7 +260,7 @@ function RichCombatText({ content, isStreamingLast, comicMode = false }) {
                       aria-valuemin={0}
                       aria-valuemax={100}
                       aria-label={`Stamina Bando B: ${Math.max(0, Math.min(100, stmBVal))}%`}
-                      className="h-full bg-cyan-400 rounded-full transition-all duration-700" 
+                      className={`h-full ${stmBarClass(stmBVal)} transition-all duration-700`} 
                       style={{ width: `${Math.max(0, Math.min(100, stmBVal))}%` }} 
                     />
                   </div>
@@ -427,7 +443,7 @@ function parseInlineMarkdown(text) {
   if (!text) return null;
 
   // Split by bold (**...**), italics (*...*), and timestamps (T+... or T-...)
-  const parts = text.split(/(\[(?:ROSTER V25|ORÁCULO — [^\]]+|SIMULACIÓN — [^\]]+|CAMPAÑA — [^\]]+)\]|\*\*.*?\*\*|\*[^*]+\*|T[+\-]\d+\.?\d*s?:?)/g);
+  const parts = text.split(/(\[(?:ROSTER V26|ORÁCULO — [^\]]+|SIMULACIÓN — [^\]]+|CAMPAÑA — [^\]]+)\]|\*\*.*?\*\*|\*[^*]+\*|T[+\-]\d+\.?\d*s?:?)/g);
 
   return parts.map((part, idx) => {
     if (!part) return null;
@@ -436,7 +452,7 @@ function parseInlineMarkdown(text) {
     if (part.startsWith('[') && part.endsWith(']')) {
       const badgeText = part.slice(1, -1);
       let badgeStyle = "bg-slate-800 text-slate-300 border-slate-700";
-      if (badgeText.includes('ROSTER V25')) badgeStyle = "bg-cyan-950/80 text-cyan-300 border-cyan-500/50 shadow-cyan-950/50";
+      if (badgeText.includes('ROSTER V26')) badgeStyle = "bg-cyan-950/80 text-cyan-300 border-cyan-500/50 shadow-cyan-950/50";
       else if (badgeText.includes('DESPERTAR CANÓNICO')) badgeStyle = "bg-amber-950/80 text-amber-300 border-amber-500/50 shadow-amber-950/50";
       else if (badgeText.includes('DESPERTAR TRASCENDENTE')) badgeStyle = "bg-purple-950/80 text-purple-300 border-purple-500/50 shadow-purple-950/50";
       else if (badgeText.includes('FUSIÓN CANÓNICA')) badgeStyle = "bg-emerald-950/80 text-emerald-300 border-emerald-500/50 shadow-emerald-950/50";
@@ -1648,7 +1664,7 @@ export default function SimulationViewer({
                 {copiedSnapshot ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedSnapshot ? 'Copiado' : 'Snapshot V2'}</span>
               </button>
-              <button onClick={handleSaveCampaign} title="Guardar Línea Alfa como campaña persistente (aislado del Roster V25)" className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 text-xs font-mono transition cursor-pointer border border-amber-700/50 shadow flex-shrink-0">
+              <button onClick={handleSaveCampaign} title="Guardar Línea Alfa como campaña persistente (aislado del Roster V26)" className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 text-xs font-mono transition cursor-pointer border border-amber-700/50 shadow flex-shrink-0">
                 {savedCampaign ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <span>🏛️</span>}
                 <span>{savedCampaign ? 'Guardada' : 'Guardar Campaña'}</span>
               </button>

@@ -27,7 +27,6 @@ const ModesGuideModal = lazy(() => import('./components/ModesGuideModal'));
 const PowerscalingGuideModal = lazy(() => import('./components/PowerscalingGuideModal'));
 const AiSmartMatchmakerModal = lazy(() => import('./components/AiSmartMatchmakerModal'));
 const AuthModal = lazy(() => import('./components/AuthModal'));
-const BeamStruggleModal = lazy(() => import('./components/BeamStruggleModal'));
 const FusionModal = lazy(() => import('./components/FusionModal'));
 const RecordsModal = lazy(() => import('./components/RecordsModal'));
 import { CloudSync } from './services/cloudSyncService';

@@ -327,6 +327,12 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 - **Ventana de Activación:** Ingerir un objeto requiere un micro-segundo de cobertura táctica. Si el rival está a quemarropa con iniciativa superior, puede interceptar o destruir el ítem.
 - **Límites Biológicos:** Las Senzu restauran HP, Stamina y heridas físicas cerrando tejido, pero NO regeneran cabezas decapitadas, desintegración celular ni curan sellos de alma/hax conceptuales.
 
+### 🟣 REGLA DE ORO 9: VEREDICTO DETERMINISTA SOBRE APEX-KI (ÚNICA FUENTE DE VERDAD)
+- El vencedor se determina AL 100% por el **APEX-Ki púrpura canónico** declarado en la cabecera de parámetros (baseKiNumeric/APEX-Ki + multiplicadores de forma + jerarquía de Tier). Es la ÚNICA métrica de poder aceptada para la causalidad del desenlace.
+- **PROHIBIDO** citar lecturas de "scouter verde" o valores verdes como factor decisivo: el scouter fue extirpado del motor. Si en la narrativa aparece un scouter, es solo color dramático del personaje (ej. Freezer consultando un número), pero NUNCA determina el ganador.
+- **Si el APEX-Ki de A supera al de B**, A DEBE ganar salvo que exista una ventaja táctica/hax canónica documentada en las fichas (Battle IQ superior con diferencia de poder menor al 10%, hax específico con contraefecto canónico, desgaste acumulado narrativo). Cualquier excepción DEBE justificarse con argumento técnico de la ficha, nunca por "sorpresa sin motivo".
+- La **CAUSALIDAD DEL DESENLACE** debe anclarse explícitamente a los valores APEX-Ki (ej. "con un APEX-Ki de 82 millones frente a 50 millones y el multiplicador x50 de SSJ, la brecha de poder selló el desenlace") y al desgaste biométrico narrado.
+
 ### ⚡ REGLA DE ORO 9: DILATACIÓN TEMPORAL MFTL Y FILTRO ANTI-CLICHÉS
 - **Tiempo Subjetivo MFTL+:** Para personajes con velocidad Relativista, FTL o Masivamente FTL+, **PROHIBIDO medir los intercambios en 'milisegundos' o 'segundos' terrestres**. Narra la velocidad en función de marcos subjetivos (*"en una fracción de lapso sináptico", "en el tiempo que tarda un haz de luz en recorrer un milímetro", "a través de un vector cinético instantáneo"*).
 - **Prohibición de Clichés Repetitivos:** Evita fórmulas recicladas como *"el tiempo pareció detenerse"*, *"un silencio sepulcral se apoderó del campo"*, *"su pulmón colapsó"* o *"choque gravitacional absoluto"*. Usa variedad descriptiva, coreografía marcial y física sensorial pura.
@@ -611,55 +617,26 @@ MECÁNICAS DE AMENAZA COLECTIVA:
   * Anclaje Temporal Estricto: Cada personaje conoce SOLO su era/saga. PROHIBIDO usar técnicas, formas, información o relaciones de sagas posteriores a su ficha. Los nombres se usan solo si el personaje los conoce en su era.
 `;
 
-    if (modifiers.simulationMode === 'cronica') {
+if (modifiers.simulationMode === 'cronica') {
       structureInstruction = paramHeader + `
 ### IV. ESTRUCTURA Y ESTILO: MODO CRÓNICA CONTINUA / NOVELA ÉPICA MAGISTRAL
 Narra la batalla como una novela sci-fi/fantasía de alto impacto, combinando el poder visceral de los combates cuerpo a cuerpo (huesos, músculos, oxígeno) con el Power Scaling cósmico (energía masiva, vitrificación, MFTL+).
 
-DIRECTIVAS DE CRÓNICA FLUIDA (NO FASES):
-1. **PRIMERA LÍNEA:** Tras la cabecera de parámetros, NO escribas ningún encabezado "FASE" — empieza directamente con la narración en prosa.
-2. **FLUJO CONTINUO:** Narra en párrafos conectados con checkpoints biométricos en los momentos dramáticos (no de forma mecánica).
-3. **CIERRE ABIERTO:** No cierres con "FIN DE LA SIMULACIÓN"; deja la batalla en un punto vivo y continuable.
-
-### FASE 1 – TANTEO CINÉTICO Y ANÁLISIS SENSORIAL
-[Descripción de la presión en el ambiente. El primer intercambio de golpes a velocidad extrema. Tácticas iniciales y primer daño orgánico]
-||BIOMETRICS|HP_A:<100-85>|STM_A:<100-80>|HP_B:<100-85>|STM_B:<100-80>||
-
-### FASE 2 – ESCALADA, SINGULARIDAD Y SUPER ATAQUES
-[Transformaciones descritas de manera implosiva/explosiva. Los cuerpos resienten la tensión arterial y muscular. Intercambio de Super Ataques modificando brutalmente el escenario (ej. katchin fundido, planetas agrietados)]
-||BIOMETRICS|HP_A:<80-50>|STM_A:<75-45>|HP_B:<80-50>|STM_B:<75-45>||
-
-### FASE 3 – EL GIRO TÁCTICO Y LA SUPERVIVENCIA
-[Adaptación (Battle IQ). Despliegue de Hax, contramedidas, ataques desesperados a quemarropa (CQC) y lesiones severas reales (ej. fracturas, ceguera temporal, pulmones colapsados)]
-||BIOMETRICS|HP_A:<50-25>|STM_A:<45-20>|HP_B:<50-25>|STM_B:<45-20>||
-
-### FASE 4 – EL CLÍMAX ANATÓMICO (FINISHERS)
-[El duelo final. Choque de Voluntades. Las reservas de Stamina desaparecen. Impactos definitivos y el colapso absoluto de uno o ambos rivales, con narración cruda y épica de su caída]
-||BIOMETRICS|HP_A:<25-0>|STM_A:<20-0>|HP_B:<25-0>|STM_B:<20-0>||
-
-### VEREDICTO DEFINITIVO & ESTADO FINAL
-VENCEDOR: <Nombre exacto del Ganador>
-DIFICULTAD: <Extreme-Diff | High-Diff | Mid-Diff | Low-Diff>
-CAUSALIDAD DEL DESENLACE:
-1. <Argumento técnico de Power Scaling y Battle IQ 1>
-2. <Argumento técnico 2>
-3. <Argumento técnico 3>
-
-ESTADO FINAL DE LOS COMBATIENTES:
-- ${charA.name}: <Porcentaje HP, Daño anatómico descriptivo, Estado vital>
-- ${charB.name}: <Porcentaje HP, Daño anatómico descriptivo, Estado vital>
-
-ESTADO DEL MAPA:
-- <Radio de destrucción (metros, kilómetros o universal), secuelas planetarias y biológicas>
-||BIOMETRICS|HP_A:<HP_FINAL>|STM_A:<STM_FINAL>|HP_B:<HP_FINAL>|STM_B:<STM_FINAL>||
+DIRECTIVAS DE CRÓNICA FLUIDA (PROSA CONTINUA — CERO ENCABEZADOS DE FASE):
+1. **PRIMERA LÍNEA:** Tras la cabecera de parámetros, NO escribas NINGÚN encabezado "FASE", "ACTO" ni "VEREDICTO". Empieza DIRECTAMENTE con la narración en prosa (un párrafo descriptivo que establece la atmósfera, el peso del momento y la tensión acumulada).
+2. **FLUJO CONTINUO POR MINUTOS DE COMBATE:** Narra en párrafos conectados que avanzan en tiempo de combate (ej. "minuto 1", "minuto 4", "minuto 7"). La prosa fluye sin cortes de sección: cada párrafo termina en el punto exacto donde el siguiente continúa la acción.
+3. **CHECKPOINTS BIOMÉTRICOS INLINE:** En los momentos dramáticos (cambio de rumbo, primera sangre, transformación, derribo), inserta la telemetría DENTRO del párrafo como un marcador compacto en su propia línea, sin encabezado:
+   ||BIOMETRICS|HP_A:87|STM_A:79|HP_B:91|STM_B:84||
+   Distribúyelos con ritmo narrativo (3-5 a lo largo de la crónica), nunca mecánicamente.
+4. **PRECIO FÍSICO REAL:** El desgaste se acumula y duele: tendones que chirrían, hematomas que limitan la movilidad, respiración irregular. Los checkpoints reflejan ese desgaste decreciente.
+5. **CIERRE ABIERTO:** No cierres con "FIN DE LA SIMULACIÓN"; deja la batalla en un punto vivo y continuable, con el estado parcial claro.
 
 ### 📖 DIRECTIVAS DE CRÓNICA CONTINUA (CAMPAÑA / NOVELA POR CAPÍTULOS):
-1. **CONTINUIDAD NARRATIVA:** Esta escena forma parte de una crónica continua. Si recibes contexto de escenas anteriores (estado de los personajes, heridas arrastradas, relaciones, facciones), respétalo estrictamente y no lo contradigas: las heridas de capítulos previos duelen, las alianzas pesan y los arcos personales evolucionan.
-2. **DESARROLLO DE PERSONAJES:** Cada escena debe avanzar el arco interno de los protagonistas (una convicción puesta a prueba, un miedo enfrentado, una relación que cambia). La crónica no es solo combate: es historia que se cuenta a través del combate y el diálogo.
-3. **GANCHOS A FUTURO:** Deja al menos UNA semilla narrativa para capítulos posteriores (un rival que observa, un misterio sin resolver, una alianza inestable, un objeto que nadie notó). La crónica debe sentir que "continúa", no que termina.
-4. **RELACIONES Y MATRIZ:** Refleja cómo el resultado de esta escena modifica las relaciones entre los participantes (deuda, respeto, rivalidad, traición) y entre las facciones implicadas.
-5. **TONO DE LA CAMPAÑA:** Mantén el tono declarado de la crónica (Épico, Táctico, Filosófico, Grimdark, Cósmico, Shonen, Conspiración, Misterio). No cambies de registro bruscamente entre capítulos.
-6. **BIFURCACIÓN INTERACTIVA (CRONOLOGÍA RAMIFICADA):** Al cierre de la escena, deja planteados 2-4 caminos de continuación posibles que el usuario podría elegir para el siguiente capítulo (confrontación directa, investigación de un misterio, negociación con una facción, retiro y entrenamiento, seguimiento de un rival). NO resuelvas esas opciones: solo déjalas implicadas en la narración como caminos abiertos, listas para que el usuario decida la siguiente jugada. La crónica siente que sus ramas dependen de la elección del usuario.
+6. **CONTINUIDAD NARRATIVA:** Esta escena forma parte de una crónica continua. Si recibes contexto de escenas anteriores (estado de los personajes, heridas arrastradas, relaciones, facciones), respétalo estrictamente: las heridas de capítulos previos duelen, las alianzas pesan y los arcos personales evolucionan.
+7. **DESARROLLO DE PERSONAJES:** Cada escena avanza el arco interno de los protagonistas (una convicción puesta a prueba, un miedo enfrentado, una relación que cambia). La crónica no es solo combate: es historia contada a través del combate y el diálogo.
+8. **GANCHOS A FUTURO:** Deja al menos UNA semilla narrativa para capítulos posteriores (un rival que observa, un misterio sin resolver, una alianza inestable). La crónica debe sentir que "continúa", no que termina.
+9. **RELACIONES Y MATRIZ:** Refleja cómo el resultado modifica las relaciones entre participantes y facciones.
+10. **TONO DE LA CAMPAÑA:** Mantén el tono declarado de la crónica sin cambiar de registro bruscamente.
 `;
     } else if (modifiers.simulationMode === 'episodico') {
       structureInstruction = paramHeader + `
@@ -1331,6 +1308,19 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
    - Repetir el bloque BIOMETRICS múltiples veces sin cambios de valores.
    - Incluir BIOMETRICS que contradigan la narración (narrar desmembramiento y mostrar 100% HP).
    Cada vez que la telemetría aparece, DEBE mostrar valores DISTINTOS y coherentes con el desgaste acumulado desde la anterior (ej: tras romperle costillas al rival, su HP baja; tras un Kaiō-ken x20, la stamina del usuario se desploma).
+19. **CERO CLICHÉS Y PESO FÍSICO REAL (OBLIGATORIO):** PROHIBIDAS las frases genéricas y planas. Nunca uses: "el tiempo se detuvo", "se escuchó un golpe seco", "el mundo tembló", "un destello cegador", "la velocidad del rayo", "una energía abrumadora" como muletilla. En su lugar, narra sensorialidad física concreta y específica del combate:
+   - **Compresión del aire:** la onda expansiva precede al impacto y aplanaba la hierba/arena en ondas concéntricas; el oído del rival estalla en presión antes de que llegue el golpe.
+   - **Calor del Ki:** el aura vitrifica la roca en chasquidos vítreos, curva la luz, levanta vaho del suelo húmedo; el metal cercano se ablanda.
+   - **Temblor tectónico:** cada choque de energía resuena en el subsuelo; los huesos del espectador (o del rival) sienten la vibración antes que el sonido.
+   - **Tensión corporal:** tendones que crujen bajo la carga, articulaciones que chasquean al límite, músculos que arden por el oxígeno consumido.
+   - **Sensaciones internas:** el sabor a óxido de una hemorragia interna, el zumbido de un tímpano reventado, la visión lateral que se oscurece tras un impacto craneal.
+   - **Peso de cada golpe:** un impacto debe sentirse en los órganos, no solo en la superficie; describe QUÉ daña (costillas, esternón, diafragma) y CÓMO afecta al siguiente movimiento.
+20. **FIDELIDAD PSICOLÓGICA INVIOLABLE (OBLIGATORIO):** Cada personaje piensa, habla y razona con su naturaleza canónica exacta:
+   - **Vegeta:** orgullo saiyan herido, obsesión por superar a Kakaroto, dignidad marcial incluso al borde de la derrota; jamás se arrastra ni abandona su honor (solo un sacrificio final es aceptable).
+   - **Goku:** serenidad analítica, entusiasmo genuino por la superación, alegría de pelear; busca aperturas con calma y trata al rival con respeto deportivo (incluso a los villanos).
+   - **Freezer:** frialdad aristocrática, crueldad sádica y elegante, desprecio por las "monos"; al verse superado, estalla en histeria, súplicas y traiciones cobardes — NUNCA acepta su derrota con dignidad.
+   - **Gohan:** furia protectora contenida, remordimiento por el daño causado, prioridad absoluta a sus seres queridos; su poder se dispara por emoción, no por cálculo.
+   - **Regla general:** consulta la sección 'psychology' de la ficha si existe; si el personaje tiene arquetipo de villano/héroe/anti-héroe, sus diálogos y decisiones DEBEN reflejarlo. Un personaje no cambia de personalidad por conveniencia del combate.
 
 ### 🔓 DIRECTIVA DE CIERRE SEGÚN MODO:
 ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' ? 'ESTE ES UN MODO DE FLUJO CONTINUO: NO cierres la simulación con "FIN DE LA SIMULACIÓN" ni con un desenlace definitivo. Deja la batalla en un punto vivo y continuable: el resultado parcial queda claro (estado de HP/STM, quién lleva ventaja), pero la pelea puede seguir. El usuario podrá continuar con el Modo Libro-Juego o pedir más.' : 'Puedes cerrar la simulación con el desenlace definitivo y el estado final.'}
