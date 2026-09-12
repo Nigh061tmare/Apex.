@@ -45,7 +45,7 @@ export default function DevolutionArcadeModal({ isOpen, onClose }) {
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block font-sans">
-                Emulacion nativa Ruffle Flash 8 - v1.2.3 y Mod Super
+                Dragon Ball Devolution (Edición Definitiva DBS) - Emulador Ruffle WASM
               </p>
             </div>
           </div>
