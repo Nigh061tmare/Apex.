@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dragon Ball Devolution - Apex Arcade</title>
-  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <style>
     :root {
       --bg-dark: #07090e;
@@ -190,6 +189,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 </head>
 <body>
 
@@ -200,13 +200,13 @@
     </div>
     <div class="status-pill">
       <div class="status-dot"></div>
-      <span>Edición Definitiva DBS</span>
+      <span>Edición Oficial v1.2.3 Desbloqueada</span>
     </div>
   </header>
 
   <div class="controls-bar">
     <div class="edition-tag">
-      <span>🔥 Versión Completa con Torneo del Poder & Nuevas Fases</span>
+      <span>🔥 Versión 1.2.3 Oficial (Offline Unlocked - Todos los luchadores y sagas)</span>
     </div>
 
     <div class="actions-group">
@@ -222,7 +222,6 @@
   <div class="arcade-wrapper">
     <div class="cabinet-frame">
       <div id="player-container">
-        <!-- Carga nativa mediante custom element de Ruffle -->
         <ruffle-player id="main-player"></ruffle-player>
       </div>
     </div>
@@ -247,7 +246,7 @@
         <tr><td>Golpes / Ataque (P2)</td><td><span class="kbd">1 (NumPad)</span></td></tr>
         <tr><td>Cargar Ki / Especial (P2)</td><td><span class="kbd">2 (NumPad)</span></td></tr>
         <tr><td>Pantalla / Sonido</td><td><span class="kbd">Haz clic en el juego para iniciar audio</span></td></tr>
-        <tr><td>Emulador Oficial</td><td><span class="kbd">Ruffle WebAssembly Engine</span></td></tr>
+        <tr><td>Estado</td><td><span class="kbd">Offline Standalone (Sin bloqueos web)</span></td></tr>
       </table>
     </div>
   </div>
@@ -255,7 +254,7 @@
   <script>
     const SWF_FILE = "./devolution-latest.swf";
 
-    function startRuffle() {
+    window.addEventListener("DOMContentLoaded", () => {
       const player = document.getElementById("main-player");
       if (!player) return;
 
@@ -268,14 +267,20 @@
         allowScriptAccess: true
       };
 
-      player.load(SWF_FILE).catch(err => {
-        console.warn("player.load falló, intentando fetch buffer:", err);
-        fetch(SWF_FILE)
-          .then(r => r.arrayBuffer())
-          .then(buf => player.load({ data: buf }))
-          .catch(e => console.error("Error final:", e));
-      });
-    }
+      // Carga directa con tolerancia
+      fetch(SWF_FILE)
+        .then(res => {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.arrayBuffer();
+        })
+        .then(buffer => {
+          player.load({ data: buffer });
+        })
+        .catch(err => {
+          console.warn("Buffer fetch falló, intentando por URL:", err);
+          player.load(SWF_FILE);
+        });
+    });
 
     function toggleFullscreen() {
       const cabinet = document.querySelector(".cabinet-frame");
@@ -285,10 +290,6 @@
         document.exitFullscreen();
       }
     }
-
-    window.addEventListener("load", () => {
-      setTimeout(startRuffle, 150);
-    });
   </script>
 </body>
 </html>
