@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dragon Ball Devolution - Arcade Launcher</title>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+  <style>
+    :root {
+      --bg-dark: #0a0c13;
+      --panel-bg: #121624;
+      --accent-orange: #ff5e00;
+      --accent-yellow: #ffb700;
+      --accent-blue: #00d2ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, Sans-Serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(255, 94, 0, 0.15) 0%, transparent 50%),
+        linear-gradient(to bottom, #070a0e, #0d111a);
+      overflow-x: hidden;
+    }
+    header {
+      width: 100%;
+      max-width: 1100px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .logo-area { display: flex; align-items: center; gap: 14px; }
+    .badge-ki {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+      color: #000;
+      font-weight: 900;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(to right, #fff, #ffd280);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13px;
+      margin-left: 20px;
+      transition: color 0.2s;
+    }
+    .header-links a:hover { color: var(--accent-orange); }
+
+    .controls-bar {
+      width: 100%;
+      max-width: 1100px;
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .version-selector {
+      display: flex;
+      background: rgba(18, 22, 36, 0.8);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .ver-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+    }
+    .ver-btn.active {
+      background: linear-gradient(135deg, #ff5e00, #ff8c00);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(255, 94, 0, 0.4);
+    }
+    .ver-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .actions-group { display: flex; gap: 10px; }
+    .tool-btn {
+      background: #181f33;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tool-btn:hover {
+      background: #232d47;
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+
+    .arcade-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .cabinet-frame {
+      width: 100%;
+      background: #000;
+      border-radius: 16px;
+      border: 3px solid #1e293b;
+      box-shadow: 
+        0 0 0 1px rgba(255, 94, 0, 0.2),
+        0 20px 40px -10px rgba(0, 0, 0, 0.8),
+        0 0 35px rgba(255, 94, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 580px;
+    }
+    #player-container {
+      width: 100%;
+      height: 580px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+    }
+    #player-container ruffle-player {
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 12, 19, 0.95);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      z-index: 20;
+      padding: 30px;
+      text-align: center;
+    }
+    .drop-overlay.show { display: flex; }
+    .drop-box {
+      border: 2px dashed var(--accent-orange);
+      border-radius: 12px;
+      padding: 35px;
+      background: rgba(255, 94, 0, 0.04);
+      cursor: pointer;
+      max-width: 500px;
+    }
+
+@    .info-grid {
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 24px 40px;
+      display: grid;
+      grid-template-columns: 1f 1f;
+      gap: 20px;
+    }
+    .info-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+    .info-card h3 {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: var(--accent-yellow);
+    }
+    .keys-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+    .keys-table td { padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .keys-table td:last-child { text-align: right; }
+    .kbd {
+      background: #1f293d;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-area">
+      <div class="badge-ki">APEX TRAINING</div>
+      <h1>DRAGON BALL DEVOLUTION</h1>
+    </div>
+    <div class="header-links">
+      <a href="https://www.txori.com/dbdevolution" target="_blank">🌐 Web Oficial Txori</a>
+      <a href="javascript:location.reload()">🔄 Reiniciar</a>
+    </div>
+  </header>
+
+  <div class="controls-bar">
+    <div class="version-selector">
+      <button class="ver-btn active" id="btn-v123" onclick="loadGame('v123')">
+        ⒴ DBZ Devolution 1.2.3 (Clásica)
+      </button>
+      <button class="ver-btn" id="btn-dbs" onclick="loadGame('dbs')">
+        🔥 DBS Devolution (Mod Super 11MB)
+      </button>
+    </div>
+
+    <div class="actions-group">
+      <button class="tool-btn" onclick="openFileInput()">
+        📂 Cargar otro .SWF
+      </button>
+      <button class="tool-btn" onclick="toggleFullscreen()">
+        ⛶ Pantalla Completa
+      </button>
+    </div>
+  </div>
+
+  <div class="arcade-wrapper">
+    <div class="cabinet-frame">
+      <div id="player-container"></div>
+
+      <div id="drop-overlay" class="drop-overlay">
+        <div class="drop-box" onclick="document.getElementById('manual-file').click()">
+          <h2 style="font-size: 18px; margin-bottom: 10px; color: #ff9800;">
+            Cargar archivo del juego
+          </h2>
+          <p style="font-size: 13px; color: #94a3b8; line-height: 1.6;">
+            Haz clic aquí para seleccionar el archivo 
+            <strong>dbz-devolution-1.2.3.swf</strong> o <strong>dbs-devolution.swf</strong> de tu carpeta.
+          </p>
+          <input type="file" id="manual-file" accept=".swf" style="display: none;" onchange="handleManualFile(event)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>🎮 Controles de Combate (Jugador 1)</h3>
+      <table class="keys-table">
+        <tr><td>Moverse / Volar</td><td><span class="kbd">Flechas</span> o <span class="kbd">W, A, S, D</span></td></tr>
+        <tr><td>Atacar / Golpes</td><td><span class="kbd">X</span> o <span class="kbd">J</span></td></tr>
+        <tr><td>Cargar Ki / Ráfaga</td><td><span class="kbd">C</span> o <span class="kbd">K</span></td></tr>
+        <tr><td>Bloqueo / Dash</td><td><span class="kbd">Mantener C + Atrás</span></td></tr>
+        <tr><td>Transformación</td><td><span class="kbd">Cargar Ki al 100% pulsar C</span></td></tr>
+      </table>
+    </div>
+
+    <div class="info-card">
+      <h3>⬅ Información de Versiones</h3>
+      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 8px;">
+        <strong>‣ DBZ 1.2.3:</strong> Versión oficial offline cracked clásica sin restricciones.
+      </p>
+      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 8px;">
+        <strong>‣ DBS Mod Super:</strong> Versión expandida con transformaciones de Super y nuevos luchadores.
+      </p>
+      <p style="font-size: 12px; color: #64748b;">
+        Emulado con <strong>Ruffle WebAssembly</strong> nativo (60 FPS estables, sin Flash obsoleto).
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const paths = {
+      v123: "Dbz dev 1.2.3/DBZ_Devolution_1.2.3_Cracked/dbz-devolution-1.2.3.swf",
+      dbs: "DBS Devolution (Mod Super)/dbs-devolution.swf"
+    };
+
+    let activePlayer = null;
+
+    function getRuffle() {
+      window.RufflePlayer = window.RufflePlayer || {};
+      return window.RufflePlayer.newest();
+    }
+
+    function createNewPlayer() {
+      const container = document.getElementById("player-container");
+      container.innerHTML = "";
+      const ruffle = getRuffle();
+      if (!ruffle) return null;
+      const player = ruffle.createPlayer();
+      player.style.width = "100%";
+      player.style.height = "100%";
+      container.appendChild(player);
+      activePlayer = player;
+      return player;
+    }
+
+    function loadGame(versionKey) {
+      document.getElementById("btn-v123").classList.toggle("active", versionKey === "v123");
+      document.getElementById("btn-dbs").classList.toggle("active", versionKey === "dbs");
+
+      const player = createNewPlayer();
+      if (!player) return;
+
+      const url = paths[versionKey];
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error("Fetch fallido");
+          return res.arrayBuffer();
+        })
+        .then(buffer => {
+          document.getElementById("drop-overlay").classList.remove("show");
+          player.load({
+            data: buffer,
+            allowScriptAccess: true,
+            quality: "high",
+            scale: "showAll"
+          });
+        })
+        .catch(err => {
+          player.load({
+            url: url,
+            allowScriptAccess: true,
+            quality: "high",
+            scale: "showAll"
+          }).catch(() => {
+            document.getElementById("drop-overlay").classList.add("show");
+          });
+        });
+    }
+
+    function handleManualFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const player = createNewPlayer();
+        document.getElementById("drop-overlay").classList.remove("show");
+        player.load({
+          data: e.target.result,
+          allowScriptAccess: true,
+          quality: "high",
+          scale: "showAll"
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function openFileInput() {
+      document.getElementById("manual-file").click();
+    }
+
+    function toggleFullscreen() {
+      const container = document.querySelector(".cabinet-frame");
+      if (!document.fullscreenElement) {Z        container.requestFullscreen().catch(err => alert("Error: " + err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        loadGame("v123");
+      }, 400);
+    });
+  </script>
+</body>
+</html>

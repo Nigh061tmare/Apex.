@@ -43,3 +43,9 @@ node_modules/.vite/
 scratch/
 __pycache__/
 
+# Archivos pesados y carpeta local de modding
+*.rar
+*.7z
+*.zip
+DB Devolution/
+

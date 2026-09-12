@@ -15,6 +15,7 @@ const WhatIfTree = lazy(() => import('./components/WhatIfTree'));
 const VaultBrowserModal = lazy(() => import('./components/VaultBrowserModal'));
 const AiConfigModal = lazy(() => import('./components/AiConfigModal'));
 const TournamentModal = lazy(() => import('./components/TournamentModal'));
+const DevolutionArcadeModal = lazy(() => import('./components/DevolutionArcadeModal'));
 const TierListModal = lazy(() => import('./components/TierListModal'));
 const CardExporterModal = lazy(() => import('./components/CardExporterModal'));
 const StatComparatorModal = lazy(() => import('./components/StatComparatorModal'));
@@ -463,6 +464,7 @@ export default function App() {
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [aiModalInitialTab, setAiModalInitialTab] = useState(null);
   const [isTournamentOpen, setIsTournamentOpen] = useState(false);
+  const [isDevolutionArcadeOpen, setIsDevolutionArcadeOpen] = useState(false);
   const [tierListOpen, setTierListOpen] = useState(false);
   const [isAiMatchmakerOpen, setIsAiMatchmakerOpen] = useState(false);
   const [isFusionOpen, setIsFusionOpen] = useState(false);
@@ -1002,6 +1004,7 @@ export default function App() {
           setAiModalOpen(true);
         }}
         onOpenTournament={() => setIsTournamentOpen(true)}
+        onOpenDevolutionArcade={() => setIsDevolutionArcadeOpen(true)}
         onOpenTierList={() => setTierListOpen(true)}
         onOpenComparator={() => setShowComparator(true)}
         onOpenCommunityVault={() => setShowCommunityVault(true)}
@@ -1267,6 +1270,7 @@ export default function App() {
               setOracleCoins={setOracleCoins}
               lang={lang}
               isVip={isVip}
+              onOpenDevolutionArcade={() => setIsDevolutionArcadeOpen(true)}
               simulationData={{
                 charA,
                 charB,
@@ -1419,6 +1423,13 @@ export default function App() {
         onClose={() => setTierListOpen(false)}
         characters={characters}
       />
+
+      {isDevolutionArcadeOpen && (
+        <DevolutionArcadeModal
+          isOpen={isDevolutionArcadeOpen}
+          onClose={() => setIsDevolutionArcadeOpen(false)}
+        />
+      )}
 
       {/* Card Exporter Modal */}
       {cardExportChar && (

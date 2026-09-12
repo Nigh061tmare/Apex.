@@ -4,7 +4,7 @@ import {
   Heart, Zap, History, Trash2, ShieldAlert, Award, Compass, AlertTriangle, 
   Flame, Crosshair, Trophy, Volume2, VolumeX, Eye, FastForward, GitBranch,
   Coins, Dices, HelpCircle, PlayCircle, PauseCircle, BarChart3, Camera,
-  Activity, Split, Sliders, Maximize2, X, ShoppingBag, Star
+  Activity, Split, Sliders, Maximize2, X, ShoppingBag, Star, Gamepad2
 } from 'lucide-react';
 import { ObsidianBridge } from '../services/obsidianBridge';
 import { SoundFX } from '../services/soundFx';
@@ -12,6 +12,7 @@ import MerchBanner from './MerchBanner';
 import BeamStruggleModal from './BeamStruggleModal';
 import ScriptExporterModal from './ScriptExporterModal';
 import { getTranslation, translateCombatChronicle } from '../services/i18n';
+import CombatArenaDevolution2D from './CombatArenaDevolution2D';
 
 const STORAGE_KEY_COMBAT_HISTORY = 'apex_combat_history';
 const STORAGE_KEY_ORACLE_COINS = 'apex_oracle_coins';
@@ -981,8 +982,10 @@ export default function SimulationViewer({
   oracleCoins: propOracleCoins,
   setOracleCoins: propSetOracleCoins,
   lang = 'es',
-  isVip = false
+  isVip = false,
+  onOpenDevolutionArcade
 }) {
+  const [viewArena2D, setViewArena2D] = useState(false);
   const [copied, setCopied] = useState(false);
   const [savedToVault, setSavedToVault] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -1579,6 +1582,20 @@ export default function SimulationViewer({
           >
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-cyan-400" /> : <VolumeX className="w-3.5 h-3.5 text-slate-500" />}
             <span>SFX: {soundEnabled ? 'ON' : 'OFF'}</span>
+          </button>
+
+          {/* Arena 2D Devolution Toggle */}
+          <button
+            onClick={() => setViewArena2D(!viewArena2D)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-mono transition cursor-pointer border shadow-md flex-shrink-0 ${
+              viewArena2D
+                ? 'bg-gradient-to-r from-orange-600/30 to-amber-600/30 border-amber-400 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.4)] font-bold'
+                : 'bg-slate-900 hover:bg-slate-800 border-slate-700/80 text-slate-300'
+            }`}
+            title="Alternar Arena Visual 2D Estilo Devolution"
+          >
+            <Gamepad2 className="w-3.5 h-3.5 text-amber-400" />
+            <span>Arena 2D: {viewArena2D ? 'ON' : 'OFF'}</span>
           </button>
 
           {/* Oracle Predictions & Bets Toggle */}
@@ -2197,6 +2214,21 @@ export default function SimulationViewer({
             )}
 
           </div>
+
+          {/* Visualizador Arena 2D Devolution Style */}
+          {viewArena2D && (
+            <div className="mb-4 animate-in fade-in duration-300">
+              <CombatArenaDevolution2D
+                charA={simulationData?.charA}
+                charB={simulationData?.charB}
+                phase={phases?.[activePhaseTab === 'all' ? 0 : activePhaseTab]?.type || 'tanteo'}
+                hpA={hpA}
+                hpB={hpB}
+                winner={verdictInfo?.winner}
+                onOpenArcade={onOpenDevolutionArcade}
+              />
+            </div>
+          )}
 
           {/* Matriz de Daño Anatómico Modular (Colapsable y Multi-Combatiente) */}
           {showAnatomyMatrix && (
