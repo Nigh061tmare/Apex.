@@ -271,6 +271,35 @@ function RichCombatText({ content, isStreamingLast, comicMode = false }) {
           );
         }
 
+        // 🎨 Renderizado de Tarjeta de Prompt de Ilustración Escénica (Midjourney / Flux / DALL-E)
+        if (trimmed.includes('SCENE_PROMPT|') || trimmed.startsWith('||SCENE_PROMPT|')) {
+          const promptMatch = trimmed.match(/SCENE_PROMPT\|([^|]+)/);
+          const scenePromptText = promptMatch ? promptMatch[1].trim() : trimmed.replace(/\|\|/g, '').replace('SCENE_PROMPT|', '').trim();
+          return (
+            <div key={lIdx} className="my-4 p-3.5 rounded-xl bg-gradient-to-r from-fuchsia-950/40 via-slate-900 to-indigo-950/40 border border-fuchsia-500/40 shadow-lg shadow-fuchsia-950/30 space-y-2 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-fuchsia-900/40 pb-2">
+                <span className="flex items-center gap-2 font-bold text-fuchsia-300">
+                  <span className="text-sm">🎨</span>
+                  <span>PROMPT DE ILUSTRACIÓN ESCÉNICA (MIDJOURNEY / FLUX)</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(scenePromptText);
+                    alert('¡Prompt copiado al portapapeles! Listo para pegar en Midjourney, Flux o DALL-E.');
+                  }}
+                  className="px-2.5 py-1 rounded bg-fuchsia-900/40 hover:bg-fuchsia-800/60 border border-fuchsia-500/50 text-fuchsia-200 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer"
+                >
+                  📋 Copiar Prompt
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-300 italic font-serif leading-relaxed select-all bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
+                "{scenePromptText}"
+              </p>
+            </div>
+          );
+        }
+
         // Autocompletado de asteriscos huérfanos (cierra la cursiva si la IA lo olvidó)
         let processedLine = trimmed;
         if (processedLine.startsWith('*') && !processedLine.startsWith('**') && !processedLine.endsWith('*') && processedLine.length > 5) {
@@ -2534,14 +2563,6 @@ export default function SimulationViewer({
               </div>
             </div>
           )}
-
-          {/* Merchandising & Official Figures Card */}
-          <MerchBanner 
-            charA={simulationData?.charA} 
-            charB={(simulationData?.matchMode === 'raid' || simulationData?.matchMode === 'team') && simulationData?.teamB?.length > 0 ? simulationData.teamB[0] : simulationData?.charB} 
-            isVip={isVip} 
-            lang={lang} 
-          />
         </div>
       )}
 
@@ -2869,12 +2890,15 @@ export default function SimulationViewer({
                 {/* 💡 Sugerencias rápidas de acción (pulsa para llenar el campo o usar directo) */}
                 <div className="flex flex-wrap gap-1.5 pt-1.5">
                   {[
-                    { icon: '⚡', label: 'Alargar más', action: 'Sigue la pelea y alárgala aún más: más intercambios, más desgaste, más técnicas. No termines.' },
+                    { icon: '⚡', label: 'Alargar más', action: 'Sigue la pelea y alárgala aún más: más intercambios de golpes, más desgaste de stamina y nuevas técnicas. No termines todavía.' },
+                    { icon: '💬', label: 'Duelo de Ideales', action: 'Los luchadores chocan miradas y sostienen un intercambio verbal visceral sobre sus convicciones, orgullo y motivos para no rendirse.' },
+                    { icon: '🧠', label: 'Monólogo Táctico', action: 'El personaje en desventaja analiza internamente el patrón de ataque y punto ciego del rival, trazando una contraestrategia milimétrica.' },
                     { icon: '🎭', label: 'Giro sorpresa', action: 'Introduce un giro argumental sorpresa e inesperado que cambie el rumbo del combate de forma dramática.' },
-                    { icon: '💥', label: 'Forma superior', action: 'El luchador con desventaja despierta una forma o técnica superior latente para reequilibrar el combate.' },
-                    { icon: '🩸', label: 'Herida grave', action: 'Un golpe decisivo causa una herida grave que condiciona el resto de la pelea (limita técnicas o movilidad).' },
-                    { icon: '🛡️', label: 'Tregua táctica', action: 'Los luchadores se separan y se evalúan en una pausa tensa, con intercambio de diálogo y nueva estrategia.' },
-                    { icon: '🌪️', label: 'Escenario colapsa', action: 'El escenario de combate colapsa o cambia drásticamente (dimensión, gravedad, ambiente) afectando a ambos.' },
+                    { icon: '💥', label: 'Despertar Latente', action: 'El luchador herido rompe sus límites y despierta una forma o técnica superior latente para reequilibrar el combate.' },
+                    { icon: '🩸', label: 'Herida anatómica', action: 'Un impacto brutal causa una fractura ósea o desgarro grave que limita severamente la movilidad o técnicas del combatiente.' },
+                    { icon: '🛡️', label: 'Tregua tensa', action: 'Ambos se separan momentáneamente jadeando sobre los escombros para evaluar el daño antes del siguiente asalto.' },
+                    { icon: '🌪️', label: 'Escenario colapsa', action: 'El escenario de combate colapsa o cambia drásticamente (dimensión, gravedad, magma) forzando a adaptarse.' },
+                    { icon: '👑', label: 'Finisher Desesperado', action: 'Uno de los guerreros canaliza toda su energía vital restante en un ataque final suicida de máxima escala.' },
                   ].map((sug) => (
                     <button
                       key={sug.label}

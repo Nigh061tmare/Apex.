@@ -998,23 +998,29 @@ ${modifiers.customContext.trim()}
     let narrativeDirective = "";
     const nPreset = modifiers.narrativePreset || 'Shōnen Cinematográfico';
     if (nPreset.includes('Grimdark')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: GRIMDARK / BRUTAL:** Enfatiza el coste biomecánico real de cada impacto, fracturas óseas, hemorragia arterial, desgarros musculares, olor a carne carbonizada y la degradación física implacable.`;
+      narrativeDirective = `\n- **ESTILO LITERARIO: GRIMDARK / ANATOMÍA LETAL:** Enfatiza el coste biomecánico real de cada impacto, fracturas óseas expuestas, hemorragia arterial, desgarros tendinosos, olor a carne carbonizada y la degradación física implacable.`;
     } else if (nPreset.includes('Shōnen')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: SHŌNEN CINEMATOGRÁFICO:** Coreografía épica de alta velocidad, choques de energía titánicos, discursos viscerales sobre convicciones y superación de límites dramática.`;
-    } else if (nPreset.includes('VS Battles')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: ANÁLISIS TÉCNICO VS BATTLES:** Precisión matemática estricta: menciona estimaciones de Joules, velocidades relativas en Mach/MFTL, cálculo de durabilidad molecular e interacciones jerárquicas de Hax según feats.`;
-    } else if (nPreset.includes('Torneo')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: TORNEO ÉPICO / BUDOKAI:** Estilo arco de torneo con tensión en las gradas, el clamor atronador del público, comentarios de los espectadores de élite y un marcador mental de ventaja.`;
-    } else if (nPreset.includes('Cosmic')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: COSMIC HORROR / LOVECRAFTIANO:** Atmósfera opresiva de pesadilla y locura, distorsión dimensional de la física, geometría no euclidiana y el terror biológico de entes que desafían la cordura mortal.`;
-    } else if (nPreset.includes('Cerebral') || nPreset.includes('Hunter')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: CEREBRAL & TÁCTICO (HUNTER X HUNTER / DEATH NOTE):** Monólogos internos de altísima velocidad, deducción analítica de cada milisegundo, medición del consumo de energía y contraestrategias calculadas al milímetro.`;
+      narrativeDirective = `\n- **ESTILO LITERARIO: SHŌNEN HIPER-CINEMATOGRÁFICO:** Coreografía épica de alta velocidad, choques de energía titánicos, discursos viscerales sobre orgullo, amistad y convicciones, y superación dramática de límites en el umbral del K.O.`;
+    } else if (nPreset.includes('VS Battles') || nPreset.includes('Técnico')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: ANÁLISIS CIENTÍFICO / VS BATTLES:** Precisión matemática estricta: desglosa estimaciones en Joules/Megatones, velocidades relativas en Mach/MFTL+, cálculo de durabilidad molecular e interacciones jerárquicas de Hax según feats oficiales.`;
+    } else if (nPreset.includes('Torneo') || nPreset.includes('Budokai')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: TORNEO ÉPICO / BUDOKAI TENKAICHI:** Estilo arco de torneo con comentarista eufórico de micrófono, la vibración ensordecedora del público en las gradas, análisis de los espectadores de élite y conteo de diez segundos.`;
+    } else if (nPreset.includes('Cosmic') || nPreset.includes('Lovecraft')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: COSMIC HORROR / ABISAL:** Atmósfera opresiva de pesadilla y locura, distorsión dimensional de la física euclidiana, desgarro del velo cósmico y el terror biológico de entes que desafían la cordura mortal.`;
+    } else if (nPreset.includes('Cerebral') || nPreset.includes('Hunter') || nPreset.includes('HxH')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: CEREBRAL & TÁCTICO (HUNTER X HUNTER / DEATH NOTE):** Monólogos internos de altísima velocidad, deducción analítica de cada milisegundo, medición del consumo de energía y contraestrategias calculadas al milímetro antes de cada golpe.`;
     } else if (nPreset.includes('Blockbuster') || nPreset.includes('IMAX')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: BLOCKBUSTER CINEMÁTICO IMAX:** Planos de cámara descriptivos ultra-dinámicos, momentos congelados en slow-motion durante impactos críticos, iluminación de cine e inmersión audiovisual de superproducción.`;
-    } else if (nPreset.includes('Cantar') || nPreset.includes('Mitológica')) {
-      narrativeDirective = `\n- **ESTILO LITERARIO: CANTAR ÉPICO / CRÓNICA MITOLÓGICA:** Prosa solemne y arcaica de poema épico homérico, relatando el enfrentamiento como una epopeya legendaria digna de quedar grabada en los anales del cosmos.`;
+      narrativeDirective = `\n- **ESTILO LITERARIO: BLOCKBUSTER CINEMÁTICO IMAX:** Planos de cámara descriptivos ultra-dinámicos, momentos congelados en slow-motion durante impactos críticos, iluminación de cine, sonido atronador e inmersión audiovisual de superproducción de Hollywood.`;
+    } else if (nPreset.includes('Cantar') || nPreset.includes('Mitológica') || nPreset.includes('Homérica')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: EPOPEYA HOMÉRICA / CRÓNICA MITOLÓGICA:** Prosa solemne y arcaica de poema épico o cantar de gesta, relatando el enfrentamiento como una leyenda heroica digna de quedar grabada en los anales eternos del cosmos.`;
     } else if (nPreset.includes('Narrador Clásico') || nPreset.includes('90s')) {
       narrativeDirective = `\n- **ESTILO LITERARIO: NARRADOR CLÁSICO DB 90s (VOZ SOLEMNE):** Usa el icónico tono solemne, dramático y trascendental de los narradores de anime clásicos de los 90s (aperturas con tensión existencial, preguntas retóricas de infarto: "¿Podrá la Tierra soportar esta colisión...?").`;
+    } else if (nPreset.includes('Guion') || nPreset.includes('Director')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: GUION DE CINE / DIRECTOR'S CUT:** Redacta con formato escénico profesional: acotaciones de cámara ([CÁMARA LENTA / PLANO SECUENCIA]), iluminación ambiental, pistas de banda sonora ([BGM: Crescendo de cuerdas tensas]) y diálogos con indicaciones de entonación teatral.`;
+    } else if (nPreset.includes('Survival') || nPreset.includes('Desesperación')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: SURVIVAL HORROR / CRÓNICA DE DESESPERACIÓN:** Tono asfixiante de cacería implacable donde el objetivo no es ganar por fuerza bruta sino sobrevivir minuto a minuto, esconderse, preparar emboscadas y gestionar heridas mortales contra un depredador titánico.`;
+    } else if (nPreset.includes('Manga Noir') || nPreset.includes('Blanco y Negro')) {
+      narrativeDirective = `\n- **ESTILO LITERARIO: MANGA NOIR / TENSIÓN SAMURÁI:** Claroscuros descriptivos, lluvia densa, sombras alargadas, silencios pesados de miradas cruzadas y resolución en estocadas y golpes relampagueantes de letalidad absoluta.`;
     }
 
     const activeTwists = Array.isArray(modifiers.blackSwan) 
@@ -1229,7 +1235,7 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 7. **EVOLUCIÓN DEL ESCENARIO:** El mapa debe degradarse y transformarse con el combate (cráteres, escombros, clima alterado, zonas vitrificadas, estructuras colapsadas). El escenario nunca es un fondo estático; es un testigo y una víctima de la batalla.
 8. **PRECISIÓN EN DIÁLOGOS Y PROSA:** Usa guiones largos (—) para diálogos y cursivas para pensamientos internos. Nunca mezcles números de tier/stats dentro de diálogos. La prosa debe ser cinematográfica pero precisa, sin relleno ni tecnicismos de RPG fuera de los bloques de telemetría.
 9. **SISTEMA DE MOMENTUM (INICIATIVA DINÁMICA — OBLIGATORIO):** Rastrea el "momentum" del combate de forma continua: cada acierto decisivo, técnica conectada, forma desbloqueada o bloqueo perfecto otorga iniciativa al ejecutor; cada fallo, técnica frustrada o herida grave la transfiere al rival. Refleja el momentum en la narración (quién dicta el ritmo, quién retrocede, quién presiona) y en las decisiones tácticas de cada fase: un luchador con momentum encadena ataques y presiona; uno sin él se ve forzado a defender, retroceder o cambiar radicalmente de estrategia para recuperarlo. El momentum puede invertirse en un momento álgido (un contraataque perfecto, un giro táctico, una transformación), y ese cambio debe sentirse como el clímax de la fase.
-10. **ESTRUCTURA SEGÚN MODO (ANTI-DUPLICACIÓN — OBLIGATORIO):** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' || modifiers.simulationMode === 'relampago' || modifiers.simulationMode === 'psicologico' || modifiers.simulationMode === 'sparring' ? 'ESTE MODO ES DE FLUJO LIBRE: PROHIBIDO usar encabezados "FASE 1/2/3/4" ni "Veredicto" como secciones rígidas. Sigue exactamente la estructura del modo seleccionado (novela fluida, ciclos, segmentos, rondas u oleadas). La telemetría BIOMETRICS va en los momentos dramáticos naturales.' : 'La simulación tiene EXACTAMENTE 4 fases numeradas (FASE 1, FASE 2, FASE 3, FASE 4) seguidas de VEREDICTO. PROHIBIDO: crear "Fase 5", repetir un título de fase, o intercalar encabezados sueltos. Cada fase se escribe UNA sola vez y en orden. Entre fases, incluye la telemetría BIOMETRICS actualizada. Al final de cada fase (excepto la 4), deja un GANCHO narrativo breve.'}
+10. **ESTRUCTURA SEGÚN MODO (ANTI-DUPLICACIÓN — OBLIGATORIO):** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' || modifiers.simulationMode === 'relampago' || modifiers.simulationMode === 'psicologico' || modifiers.simulationMode === 'sparring' || modifiers.simulationMode === 'episodico' ? 'ESTE MODO ES DE FLUJO LIBRE O POR ACTOS: PROHIBIDO usar encabezados rígidos de torneo si el modo es novela. Sigue la estructura del modo seleccionado. La telemetría BIOMETRICS va en los momentos de mayor impacto o al final del acto.' : 'La simulación tiene EXACTAMENTE 5 fases canónicas numeradas (FASE 1: TANTEO & NEUTRAL, FASE 2: ESCALADA DE ARSENAL, FASE 3: PUNTO DE INFLEXIÓN / CISNE NEGRO, FASE 4: CLÍMAX DESESPERADO & TRANSFORMACIONES MÁXIMAS, FASE 5: RESOLUCIÓN & CHOQUE FINAL) seguidas obligatoriamente del VEREDICTO APEX. Escribe cada fase en orden progresivo una sola vez. Entre fases, incluye la telemetría BIOMETRICS actualizada.'}
 11. **INDICADOR DE MOMENTUM:** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' || modifiers.simulationMode === 'relampago' || modifiers.simulationMode === 'psicologico' ? 'En los modos de flujo libre, inserta el indicador de momentum (⚖️ MOMENTUM: <Nombre> (razón)) en los puntos dramáticos naturales, no de forma mecánica.' : 'Entre cada fase, tras la telemetría BIOMETRICS, añade una línea de indicador de momentum del estilo: ⚖️ MOMENTUM: <Nombre del luchador que dicta el ritmo> (razón breve) y cómo condiciona la siguiente fase.'}
 12. **COMPORTAMIENTO DE JEFE EN BOSS RAID (OBLIGATORIO CUANDO HAY BOSS):** ${modifiers.simulationMode === 'novela_continua' || modifiers.simulationMode === 'cronica' || modifiers.simulationMode === 'maraton' || modifiers.simulationMode === 'resistencia_infinita' ? 'En un Boss Raid de flujo libre, el jefe escala de forma progresiva: tanteo y desprecio → libera poder real → enraged (forma superior) → berserk final. La escuadra gestiona recursos y sincroniza ataques combinados.' : 'En un Boss Raid, el jefe debe tener comportamientos diferenciados por fase: Fase 1 (tanteo y desprecio — mide a la escuadra), Fase 2 (escalada — libera poder real y empieza a tomarse la pelea en serio), Fase 3 (enraged — al perder recursos o sufrir daño real, libera su transformación/forma superior), Fase 4 (berserk final — ataque suicida o técnica definitiva desesperada). La escuadra, por su parte, debe gestionar recursos (senzus, regeneración) y sincronizar ataques combinados para sobrevivir hasta el clímax.'}
 
@@ -1358,7 +1364,16 @@ ${structureInstruction}
     const nameA = typeof charA === 'string' ? charA : (charA?.name || 'Contendiente A');
     const nameB = typeof charB === 'string' ? charB : (charB?.name || 'Contendiente B');
     const nameScenario = typeof scenario === 'string' ? scenario : (scenario?.name || 'Arena de Combate');
-    const safeOutput = (typeof previousOutput === 'string' ? previousOutput : JSON.stringify(previousOutput)).slice(-4500);
+    // 🚀 EXPANSIÓN MASIVA DE MEMORIA: de 4.500 a 35.000 caracteres con retención de contexto acumulativo
+    const rawPrev = typeof previousOutput === 'string' ? previousOutput : JSON.stringify(previousOutput);
+    let safeOutput = rawPrev;
+    if (rawPrev.length > 35000) {
+      const startOverview = rawPrev.slice(0, 4000);
+      const recentAction = rawPrev.slice(-28000);
+      safeOutput = `${startOverview}\n\n[... HISTORIAL PREVIO CONSERVADO EN MEMORIA RESIDUAL ...]\n\n${recentAction}`;
+    } else {
+      safeOutput = rawPrev;
+    }
 
     const lang = modifiers?.language || 'es';
     const langDirective = lang === 'en'
@@ -1432,6 +1447,12 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
    (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño acumulado. Ej: HP_A: 42).` : `Debes entregar tu crónica inmersiva (mínimo 3-4 párrafos densos) y finalizar OBLIGATORIAMENTE con el siguiente bloque biométrico:
    ||BIOMETRICS|HP_A:<XX>|STM_A:<XX>|HP_B:<XX>|STM_B:<XX>||
    (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño del texto que acabas de narrar. Ej: HP_A: 42).`}
+11. **DIRECTIVA ANTI-CIERRE PRECIPITADO (EXPANSIÓN ORGÁNICA):**
+   - Salvo que la instrucción explícita del usuario pida 'desenlace', 'terminar combate' o 'veredicto', TIENES ESTRICTAMENTE PROHIBIDO finalizar abruptamente el combate o decretar K.O. definitivo.
+   - Desarrolla la continuación como un acto narrativo pleno: nuevas fintas, intercambios de poder, monólogos de convicción, desgaste paulatino y un gancho final de tensión suspendida que invite al siguiente acto.
+12. **GENERADOR DE PROMPT VISUAL DE ESCENA (OPCIONAL AL PIE):**
+   - Justo después del bloque biométrico, añade un bloque con un prompt cinematográfico en inglés optimizado para generadores de imagen (Midjourney v6 / Flux / DALL-E) que capture el momento más icónico de este acto:
+   ||SCENE_PROMPT|<descripción ultra-detallada en inglés con iluminación, encuadre de cámara, detalles anatómicos y auras cinemáticas>||
 `;
   },
 

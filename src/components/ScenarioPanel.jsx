@@ -669,7 +669,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
       <div className="pt-3 border-t border-slate-800/80 space-y-3 font-mono">
         <div className="flex items-center justify-between">
           <h4 className="text-xs font-bold text-fuchsia-400 uppercase tracking-wider flex items-center gap-2">
-            <Globe className="w-3.5 h-3.5" /> Selector de Filtro Narrativo & Estilo Literario (8 Estilos)
+            <Globe className="w-3.5 h-3.5" /> Selector de Filtro Narrativo & Estilo Literario (12 Estilos de Autor)
           </h4>
         </div>
 
@@ -832,16 +832,73 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Cantar Épico / Crónica Homérica' }))}
             className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Cantar Épico / Crónica Homérica'
-                ? 'bg-rose-950/60 border-rose-500 text-white shadow-lg shadow-rose-950/50 scale-[1.01]'
+                ? 'bg-amber-950/60 border-amber-500 text-white shadow-lg shadow-amber-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
             }`}
           >
-            <div className="flex items-center gap-2 font-bold text-xs text-rose-400">
+            <div className="flex items-center gap-2 font-bold text-xs text-amber-400">
               <span>📜</span>
               <span>Crónica Mitológica</span>
             </div>
             <p className="text-[10px] text-slate-400 mt-1 leading-tight">
               Prosa arcaica y solemne de epopeya heroica relatando el choque como una leyenda para la eternidad.
+            </p>
+          </button>
+
+          {/* Preset Guion de Cine / Director's Cut */}
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: "Guion de Cine / Director's Cut" }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.narrativePreset === "Guion de Cine / Director's Cut"
+                ? 'bg-sky-950/60 border-sky-500 text-white shadow-lg shadow-sky-950/50 scale-[1.01]'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="flex items-center gap-2 font-bold text-xs text-sky-400">
+              <span>🎬</span>
+              <span>Guion / Director's Cut</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Formato de guion profesional con acotaciones de cámara, pistas BGM y diálogos escénicos.
+            </p>
+          </button>
+
+          {/* Preset Survival Horror / Desesperación */}
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Survival Horror / Crónica de Desesperación' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.narrativePreset === 'Survival Horror / Crónica de Desesperación'
+                ? 'bg-orange-950/60 border-orange-500 text-white shadow-lg shadow-orange-950/50 scale-[1.01]'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="flex items-center gap-2 font-bold text-xs text-orange-400">
+              <span>⛓️</span>
+              <span>Survival Horror</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Cacería asfixiante: la meta no es noquear, sino sobrevivir, escapar y aguantar daño letal.
+            </p>
+          </button>
+
+          {/* Preset Manga Noir */}
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Manga Noir / Tensión Samurái' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.narrativePreset === 'Manga Noir / Tensión Samurái'
+                ? 'bg-zinc-800/80 border-zinc-400 text-white shadow-lg shadow-zinc-950/50 scale-[1.01]'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="flex items-center gap-2 font-bold text-xs text-zinc-300">
+              <span>🌑</span>
+              <span>Manga Noir / Samurái</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Claroscuros en blanco y negro, lluvia torrencial, silencios tensos y tajos mortales en un parpadeo.
             </p>
           </button>
         </div>
@@ -1298,6 +1355,42 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
             </div>
             <p className="text-[10px] text-slate-400 mt-1 leading-tight">
               Sin muerte, deportivo: técnica, aprendizaje mutuo y respeto.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'torneo_shonen' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'torneo_shonen'
+                ? 'bg-amber-950/50 border-amber-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-amber-400 flex items-center gap-1.5">
+              <span>🏆</span>
+              <span>Torneo Shōnen & Comentarista</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Eliminatoria con comentarista en vivo, rankings de arena y ovación del público.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'trilogia' }))}
+            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+              modifiers.simulationMode === 'trilogia'
+                ? 'bg-sky-950/50 border-sky-500 text-white shadow-md'
+                : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className="font-bold text-xs text-sky-400 flex items-center gap-1.5">
+              <span>🎭</span>
+              <span>Trilogía en 3 Actos</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1 leading-tight">
+              Tres actos cinematográficos interconectados con evolución real de daño y stats.
             </p>
           </button>
         </div>

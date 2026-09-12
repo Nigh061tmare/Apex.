@@ -9,6 +9,11 @@ dist/
 .env.local
 .env.*.local
 .cloud_sync_store.json
+# Claves y secretos — NUNCA subir
+.env
+.env.local
+.env.*.local
+.cloud_sync_store.json
 *.backup.*.js
 *.bak_*
 *.bak
@@ -21,6 +26,10 @@ src/data/BACKUP_ROSTER_*.json
 src/data/REFERENCIA_LIMPIA_*.json
 src/data/tactical_gen_*.json
 src/data/tacticalProfilesBatch*.json
+src/data/tacticalProfiles_backup_*.json
+src/data/tactical_profiles_*.json
+src/data/referencias/
+src/data/backups/
 src/data/*_temp.json
 
 # Logs
@@ -42,10 +51,15 @@ node_modules/.vite/
 .vercel/
 scratch/
 __pycache__/
+*_temp.*
+*temp*.py
+*.py
+*.pdf
 
 # Archivos pesados y carpeta local de modding
 *.rar
 *.7z
 *.zip
 DB Devolution/
+
 
