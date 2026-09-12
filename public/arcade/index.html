@@ -4,20 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dragon Ball Devolution - Apex Arcade</title>
-  <script>
-    window.RufflePlayer = window.RufflePlayer || {};
-    window.RufflePlayer.config = {
-      autoplay: "on",
-      unmuteOverlay: "visible",
-      letterbox: "fullscreen",
-      quality: "high",
-      scale: "showAll",
-      allowScriptAccess: true,
-      warnOnUnsupportedContent: false,
-      publicPath: "./"
-    };
-  </script>
-  <script src="./ruffle.js"></script>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
   <style>
     :root {
       --bg-dark: #07090e;
@@ -162,37 +149,7 @@
     #player-container ruffle-player {
       width: 100%;
       height: 100%;
-    }
-
-    .loading-overlay {
-      position: absolute;
-      inset: 0;
-      background: #090c14;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      z-index: 10;
-      transition: opacity 0.3s ease;
-    }
-    .spinner {
-      width: 44px;
-      height: 44px;
-      border: 4px solid rgba(255, 94, 0, 0.15);
-      border-top-color: var(--accent-orange);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .load-text {
-      font-size: 14px;
-      font-weight: 600;
-      color: #94a3b8;
-      font-family: monospace;
-      letter-spacing: 0.5px;
+      display: block;
     }
 
     .info-grid {
@@ -253,7 +210,7 @@
     </div>
 
     <div class="actions-group">
-      <button class="tool-btn" onclick="reloadGame()">
+      <button class="tool-btn" onclick="location.reload()">
         🔄 Reiniciar Partida
       </button>
       <button class="tool-btn" onclick="toggleFullscreen()">
@@ -264,11 +221,10 @@
 
   <div class="arcade-wrapper">
     <div class="cabinet-frame">
-      <div id="loading" class="loading-overlay">
-        <div class="spinner"></div>
-        <div id="load-label" class="load-text">Cargando Dragon Ball Devolution...</div>
+      <div id="player-container">
+        <!-- Carga nativa mediante custom element de Ruffle -->
+        <ruffle-player id="main-player"></ruffle-player>
       </div>
-      <div id="player-container"></div>
     </div>
   </div>
 
@@ -290,88 +246,35 @@
         <tr><td>Moverse / Volar (P2)</td><td><span class="kbd">Teclado Numérico 8, 4, 5, 6</span></td></tr>
         <tr><td>Golpes / Ataque (P2)</td><td><span class="kbd">1 (NumPad)</span></td></tr>
         <tr><td>Cargar Ki / Especial (P2)</td><td><span class="kbd">2 (NumPad)</span></td></tr>
-        <tr><td>Modo Emulador</td><td><span class="kbd">Ruffle WebAssembly Local (60 FPS)</span></td></tr>
-        <tr><td>Audio</td><td><span class="kbd">Haz clic en el juego para activar sonido</span></td></tr>
+        <tr><td>Pantalla / Sonido</td><td><span class="kbd">Haz clic en el juego para iniciar audio</span></td></tr>
+        <tr><td>Emulador Oficial</td><td><span class="kbd">Ruffle WebAssembly Engine</span></td></tr>
       </table>
     </div>
   </div>
 
   <script>
-    const SWF_PATH = "./devolution-latest.swf";
-    let activePlayer = null;
+    const SWF_FILE = "./devolution-latest.swf";
 
-    function initGame() {
-      const container = document.getElementById("player-container");
-      const loading = document.getElementById("loading");
-      const loadLabel = document.getElementById("load-label");
+    function startRuffle() {
+      const player = document.getElementById("main-player");
+      if (!player) return;
 
-      try {
-        if (!window.RufflePlayer) {
-          throw new Error("Ruffle WebAssembly no está inicializado");
-        }
+      player.config = {
+        autoplay: "on",
+        unmuteOverlay: "visible",
+        letterbox: "fullscreen",
+        quality: "high",
+        scale: "showAll",
+        allowScriptAccess: true
+      };
 
-        const ruffle = window.RufflePlayer.newest();
-        if (!ruffle) {
-          throw new Error("No se pudo obtener el motor Ruffle");
-        }
-
-        container.innerHTML = "";
-        const player = ruffle.createPlayer();
-        player.style.width = "100%";
-        player.style.height = "100%";
-        container.appendChild(player);
-        activePlayer = player;
-
-        loadLabel.innerText = "Descargando datos del juego (11 MB)...";
-
-        // Carga directa de Ruffle
-        player.load({
-          url: SWF_PATH,
-          allowScriptAccess: true,
-          quality: "high",
-          scale: "showAll",
-          autoplay: "on",
-          unmuteOverlay: "visible",
-          parameters: {}
-        }).then(() => {
-          setTimeout(() => {
-            loading.style.opacity = "0";
-            setTimeout(() => loading.style.display = "none", 300);
-          }, 600);
-        }).catch((err) => {
-          console.warn("Carga por URL falló, reintentando por ArrayBuffer:", err);
-          fetch(SWF_PATH)
-            .then(res => {
-              if (!res.ok) throw new Error("HTTP " + res.status);
-              return res.arrayBuffer();
-            })
-            .then(buffer => {
-              player.load({
-                data: buffer,
-                allowScriptAccess: true,
-                quality: "high",
-                scale: "showAll",
-                autoplay: "on"
-              });
-              loading.style.opacity = "0";
-              setTimeout(() => loading.style.display = "none", 300);
-            })
-            .catch(fetchErr => {
-              loadLabel.innerHTML = "<span style='color: #ef4444;'>Error cargando juego: " + fetchErr.message + "</span>";
-            });
-        });
-
-      } catch (err) {
-        loadLabel.innerHTML = "<span style='color: #ef4444;'>Error de inicialización: " + err.message + "</span>";
-      }
-    }
-
-    function reloadGame() {
-      const loading = document.getElementById("loading");
-      loading.style.display = "flex";
-      loading.style.opacity = "1";
-      document.getElementById("load-label").innerText = "Reiniciando...";
-      setTimeout(initGame, 200);
+      player.load(SWF_FILE).catch(err => {
+        console.warn("player.load falló, intentando fetch buffer:", err);
+        fetch(SWF_FILE)
+          .then(r => r.arrayBuffer())
+          .then(buf => player.load({ data: buf }))
+          .catch(e => console.error("Error final:", e));
+      });
     }
 
     function toggleFullscreen() {
@@ -383,8 +286,8 @@
       }
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      setTimeout(initGame, 300);
+    window.addEventListener("load", () => {
+      setTimeout(startRuffle, 150);
     });
   </script>
 </body>
