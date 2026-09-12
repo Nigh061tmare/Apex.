@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dragon Ball Devolution - Apex Arcade</title>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle@0.6.0/ruffle.js"></script>
   <style>
     :root {
       --bg-dark: #07090e;
@@ -134,21 +135,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 600px;
+      min-height: 580px;
       height: 72vh;
     }
     #player-container {
       width: 100%;
       height: 100%;
+      min-height: 580px;
       display: flex;
       justify-content: center;
       align-items: center;
       background-color: #000;
-    }
-    #player-container ruffle-player {
-      width: 100%;
-      height: 100%;
-      display: block;
     }
 
     .info-grid {
@@ -189,7 +186,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
-  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 </head>
 <body>
 
@@ -200,13 +196,13 @@
     </div>
     <div class="status-pill">
       <div class="status-dot"></div>
-      <span>Edición Oficial v1.2.3 Desbloqueada</span>
+      <span>Edición Offline Unlocked v1.2.3</span>
     </div>
   </header>
 
   <div class="controls-bar">
     <div class="edition-tag">
-      <span>🔥 Versión 1.2.3 Oficial (Offline Unlocked - Todos los luchadores y sagas)</span>
+      <span>🔥 Dragon Ball Z Devolution v1.2.3 (Todo el contenido desbloqueado)</span>
     </div>
 
     <div class="actions-group">
@@ -221,9 +217,7 @@
 
   <div class="arcade-wrapper">
     <div class="cabinet-frame">
-      <div id="player-container">
-        <ruffle-player id="main-player"></ruffle-player>
-      </div>
+      <div id="player-container"></div>
     </div>
   </div>
 
@@ -246,41 +240,56 @@
         <tr><td>Golpes / Ataque (P2)</td><td><span class="kbd">1 (NumPad)</span></td></tr>
         <tr><td>Cargar Ki / Especial (P2)</td><td><span class="kbd">2 (NumPad)</span></td></tr>
         <tr><td>Pantalla / Sonido</td><td><span class="kbd">Haz clic en el juego para iniciar audio</span></td></tr>
-        <tr><td>Estado</td><td><span class="kbd">Offline Standalone (Sin bloqueos web)</span></td></tr>
+        <tr><td>Estado</td><td><span class="kbd">Offline Standalone (Ruffle Wasm)</span></td></tr>
       </table>
     </div>
   </div>
 
   <script>
-    const SWF_FILE = "./devolution-latest.swf";
+    const SWF_URL = "./devolution-latest.swf";
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const player = document.getElementById("main-player");
-      if (!player) return;
+    function startArcade() {
+      const container = document.getElementById("player-container");
+      if (!container) return;
 
-      player.config = {
-        autoplay: "on",
-        unmuteOverlay: "visible",
-        letterbox: "fullscreen",
-        quality: "high",
-        scale: "showAll",
-        allowScriptAccess: true
-      };
+      window.RufflePlayer = window.RufflePlayer || {};
+      const ruffle = window.RufflePlayer.newest();
+      if (!ruffle) {
+        console.error("Ruffle no disponible");
+        return;
+      }
 
-      // Carga directa con tolerancia
-      fetch(SWF_FILE)
+      container.innerHTML = "";
+      const player = ruffle.createPlayer();
+      player.style.width = "100%";
+      player.style.height = "100%";
+      container.appendChild(player);
+
+      fetch(SWF_URL)
         .then(res => {
-          if (!res.ok) throw new Error("HTTP " + res.status);
+          if (!res.ok) throw new Error("Fetch error: " + res.status);
           return res.arrayBuffer();
         })
         .then(buffer => {
-          player.load({ data: buffer });
+          player.load({
+            data: buffer,
+            allowScriptAccess: true,
+            quality: "high",
+            scale: "showAll",
+            autoplay: "on"
+          });
         })
         .catch(err => {
-          console.warn("Buffer fetch falló, intentando por URL:", err);
-          player.load(SWF_FILE);
+          console.warn("Fallo por ArrayBuffer, intentando por URL directa:", err);
+          player.load({
+            url: SWF_URL,
+            allowScriptAccess: true,
+            quality: "high",
+            scale: "showAll",
+            autoplay: "on"
+          });
         });
-    });
+    }
 
     function toggleFullscreen() {
       const cabinet = document.querySelector(".cabinet-frame");
@@ -290,6 +299,10 @@
         document.exitFullscreen();
       }
     }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(startArcade, 200);
+    });
   </script>
 </body>
 </html>
