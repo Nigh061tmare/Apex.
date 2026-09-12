@@ -4,7 +4,7 @@ import {
   Heart, Zap, History, Trash2, ShieldAlert, Award, Compass, AlertTriangle, 
   Flame, Crosshair, Trophy, Volume2, VolumeX, Eye, FastForward, GitBranch,
   Coins, Dices, HelpCircle, PlayCircle, PauseCircle, BarChart3, Camera,
-  Activity, Split, Sliders, Maximize2, X, ShoppingBag, Star, Gamepad2
+  Activity, Split, Sliders, Maximize2, X, ShoppingBag, Star, Gamepad2, Mic
 } from 'lucide-react';
 import { ObsidianBridge } from '../services/obsidianBridge';
 import { SoundFX } from '../services/soundFx';
@@ -133,13 +133,13 @@ function getPhaseStyle(title) {
 }
 
 // Renderizador visual enriquecido de texto de combate
-function RichCombatText({ content, isStreamingLast, comicMode = false }) {
+function RichCombatText({ content, isStreamingLast, comicMode = false, fontSize = 'text-[14px]', fontFamily = 'font-sans' }) {
   if (!content) return null;
 
   const lines = content.split('\n');
 
   return (
-    <div aria-live="polite" className={`space-y-4 font-sans leading-relaxed text-[14px] text-slate-200 ${comicMode ? 'uppercase tracking-wide' : ''}`}>
+    <div aria-live="polite" className={`space-y-4 ${fontFamily} leading-relaxed ${fontSize} text-slate-200 ${comicMode ? 'uppercase tracking-wide' : ''}`}>
       {lines.filter((line, i, arr) => line.trim() === '' || line.trim() !== arr[i - 1]?.trim()).map((line, lIdx) => {
         const trimmed = line.trim();
         if (!trimmed) return <div key={lIdx} className="h-1.5" />;
@@ -1218,6 +1218,62 @@ export default function SimulationViewer({
   const rawOutput = simulationResult?.fullOutput || '';
   const fullOutput = translateCombatChronicle(rawOutput, lang);
   const hasOutput = fullOutput.trim().length > 0;
+
+  // 📱 Mobile & Reading UX States
+  const [showStickyMobileHud, setShowStickyMobileHud] = useState(false);
+  const [readingFontSize, setReadingFontSize] = useState('text-[14px]');
+  const [readingFontFamily, setReadingFontFamily] = useState('font-sans');
+  const [isListeningSpeech, setIsListeningSpeech] = useState(false);
+  const [readScrollPercent, setReadScrollPercent] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      setShowStickyMobileHud(scrollY > 380 && hasOutput);
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        setReadScrollPercent(Math.min(100, Math.max(0, Math.round((scrollY / docHeight) * 100))));
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasOutput]);
+
+  const toggleSpeechRecognition = useCallback(() => {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert('Tu navegador no soporta la API de reconocimiento de voz.');
+      return;
+    }
+    if (isListeningSpeech) {
+      setIsListeningSpeech(false);
+      return;
+    }
+    try {
+      const recognition = new SpeechRec();
+      recognition.lang = lang === 'en' ? 'en-US' : lang === 'ja' ? 'ja-JP' : 'es-ES';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        setIsListeningSpeech(true);
+        try { navigator?.vibrate?.(20); } catch (_) {}
+      };
+      recognition.onresult = (e) => {
+        const transcript = e.results?.[0]?.[0]?.transcript;
+        if (transcript) {
+          setNextActionPrompt(prev => prev ? `${prev} ${transcript}` : transcript);
+          try { navigator?.vibrate?.([15, 30, 15]); } catch (_) {}
+        }
+      };
+      recognition.onerror = () => setIsListeningSpeech(false);
+      recognition.onend = () => setIsListeningSpeech(false);
+      recognition.start();
+    } catch (_) {
+      setIsListeningSpeech(false);
+    }
+  }, [isListeningSpeech, lang]);
   
   // Memoización: parseSimulation ejecuta ~51 regex sobre texto largo. Solo se
   // recalcula cuando cambian sus entradas reales (antes corría en CADA render).
@@ -2051,6 +2107,46 @@ export default function SimulationViewer({
         </div>
       )}
 
+      {/* 📱 Mini-HUD Biométrico Sticky Flotante (Exclusivo Móvil al scrollear) */}
+      {showStickyMobileHud && hasOutput && (
+        <aside 
+          aria-label="Telemetría Biometría Flotante" 
+          onClick={() => window.scrollTo({ top: 350, behavior: 'smooth' })}
+          className="fixed top-0 left-0 right-0 z-50 sm:hidden bg-slate-950/95 backdrop-blur-xl border-b border-cyan-500/40 px-3 py-1.5 shadow-[0_6px_25px_rgba(0,0,0,0.85)] flex items-center justify-between gap-2 font-mono text-[11px] animate-in slide-in-from-top duration-200 cursor-pointer"
+        >
+          {/* Fighter A Mini */}
+          <div className="flex items-center gap-1.5 min-w-0 max-w-[42%]">
+            <span className="w-2 h-2 rounded-full bg-red-500 shrink-0 animate-pulse" />
+            <span className="font-bold text-red-300 truncate text-[10px]">{nameA}</span>
+            <span className={`text-[10px] font-black shrink-0 ${hpA > 50 ? 'text-emerald-400' : hpA > 20 ? 'text-amber-400' : 'text-red-400'}`}>
+              {hpA}%
+            </span>
+          </div>
+
+          {/* VS Center Badge */}
+          <div className="shrink-0 flex items-center gap-1">
+            <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-[9px] border border-amber-500/30">
+              VS
+            </span>
+          </div>
+
+          {/* Fighter B Mini */}
+          <div className="flex items-center justify-end gap-1.5 min-w-0 max-w-[42%]">
+            <span className={`text-[10px] font-black shrink-0 ${hpB > 50 ? 'text-emerald-400' : hpB > 20 ? 'text-amber-400' : 'text-cyan-400'}`}>
+              {hpB}%
+            </span>
+            <span className="font-bold text-cyan-300 truncate text-[10px]">{nameB}</span>
+            <span className="w-2 h-2 rounded-full bg-cyan-500 shrink-0" />
+          </div>
+
+          {/* Reading Progress Line */}
+          <div 
+            className="absolute bottom-0 left-0 h-[2.5px] bg-gradient-to-r from-red-500 via-amber-400 to-cyan-400 transition-all duration-150"
+            style={{ width: `${readScrollPercent}%` }}
+          />
+        </aside>
+      )}
+
       {/* Cyberpunk HUD: Biometría Dual (HP + Stamina) */}
       {(hasOutput || isSimulating) && (
         <div className="p-4 bg-slate-950/90 rounded-2xl border border-slate-800/90 shadow-2xl relative z-10 space-y-4">
@@ -2387,6 +2483,45 @@ export default function SimulationViewer({
         </div>
       )}
 
+      {/* 📖 Barra de Herramientas de Lectura Inmersiva (Tipografía & Tamaño) */}
+      {hasOutput && (
+        <div className="flex items-center justify-between gap-2 p-2 px-3 rounded-xl bg-slate-900/70 border border-slate-800 text-[11px] font-mono relative z-10">
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 flex items-center gap-1.5 text-[10px]">
+              <span>📖 Lectura</span>
+            </span>
+            <span className="text-[10px] text-cyan-400 font-bold hidden sm:inline">
+              Progreso: {readScrollPercent}%
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => {
+                setReadingFontFamily(prev => prev === 'font-sans' ? 'font-mono' : prev === 'font-mono' ? 'font-serif' : 'font-sans');
+                try { navigator?.vibrate?.(10); } catch (_) {}
+              }}
+              className="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-[10px] font-bold cursor-pointer border border-slate-700 transition"
+              title="Alternar tipografía de lectura"
+            >
+              {readingFontFamily === 'font-sans' ? '🔤 Sans (Fluida)' : readingFontFamily === 'font-mono' ? '💻 Mono (Táctica)' : '📜 Serif (Novela)'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setReadingFontSize(prev => prev === 'text-[14px]' ? 'text-[16px]' : prev === 'text-[16px]' ? 'text-[18px]' : 'text-[14px]');
+                try { navigator?.vibrate?.(10); } catch (_) {}
+              }}
+              className="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-[10px] font-bold cursor-pointer border border-slate-700 transition"
+              title="Cambiar tamaño de fuente de lectura"
+            >
+              A {readingFontSize === 'text-[14px]' ? 'Normal' : readingFontSize === 'text-[16px]' ? 'Grande' : 'Max'}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Phase Filter Tabs (Jump directly to any Phase) */}
       {phases.length > 1 && (
         <div className="flex items-center gap-2 overflow-x-auto pb-1 font-mono text-xs scrollbar-none relative z-10">
@@ -2638,7 +2773,13 @@ export default function SimulationViewer({
 
                 {/* Rich Formatted Narrative Body */}
                 <div className="relative z-10">
-                  <RichCombatText content={phase.content} isStreamingLast={isSimulating && isLast} comicMode={comicMode} />
+                  <RichCombatText 
+                    content={phase.content} 
+                    isStreamingLast={isSimulating && isLast} 
+                    comicMode={comicMode} 
+                    fontSize={readingFontSize}
+                    fontFamily={readingFontFamily}
+                  />
                 </div>
               </div>
             );
@@ -2847,30 +2988,45 @@ export default function SimulationViewer({
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    type="text"
-                    value={nextActionPrompt}
-                    onChange={(e) => setNextActionPrompt(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        onContinueSimulation(nextActionPrompt);
-                        setNextActionPrompt('');
-                      }
-                    }}
-                    placeholder="Escribe o personaliza la acción (o usa el desplegable de arriba)..."
-                    className="flex-1 p-2.5 px-3.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs focus:border-cyan-400 focus:outline-none transition placeholder:text-slate-600 shadow-inner"
-                  />
+                  <div className="flex-1 relative flex items-center">
+                    <input
+                      type="text"
+                      value={nextActionPrompt}
+                      onChange={(e) => setNextActionPrompt(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          onContinueSimulation(nextActionPrompt);
+                          setNextActionPrompt('');
+                        }
+                      }}
+                      placeholder="Escribe o personaliza la acción (o usa el micro)..."
+                      className="w-full p-2.5 px-3.5 pr-11 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs focus:border-cyan-400 focus:outline-none transition placeholder:text-slate-600 shadow-inner"
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleSpeechRecognition}
+                      className={`absolute right-1.5 p-1.5 rounded-lg border transition cursor-pointer ${
+                        isListeningSpeech
+                          ? 'bg-red-600 text-white border-red-400 animate-pulse shadow-md shadow-red-950/80'
+                          : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-cyan-300'
+                      }`}
+                      title={isListeningSpeech ? 'Escuchando... pulsa para detener' : 'Dictar acción por voz'}
+                    >
+                      <Mic className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <button
                     onClick={() => {
                       onContinueSimulation("Continúa la pelea y ALÁRGALA: añade más intercambios, más vuelta de tuerca, mayor desgaste y nuevas técnicas. No termines aún. Escala la tensión hacia un clímax aún más lejano e intenso.");
                       setNextActionPrompt('');
+                      try { navigator?.vibrate?.(15); } catch (_) {}
                     }}
-                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 via-red-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white font-bold text-xs shadow-lg shadow-red-950/80 transition cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-orange-400/50"
+                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 via-red-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white font-bold text-xs shadow-lg shadow-red-950/80 transition cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-orange-400/50 active:scale-95"
                     title="Continúa el combate sin terminarlo, alargando la pelea"
                   >
                     <Flame className="w-4 h-4 text-orange-200" />
-                    <span>⏩ Alargar la Pelea</span>
+                    <span>⏩ Alargar Pelea</span>
                   </button>
                   <button
                     onClick={() => {
@@ -2880,38 +3036,46 @@ export default function SimulationViewer({
                         : "Continúa la pelea de forma orgánica: un nuevo giro o intensificación de tu elección (puedes alargarla, cambiar el enfoque táctico, revelar un recurso, o preparar el desenlace si el combate está en su punto álgido). Respeta el modo narrativo seleccionado.";
                       onContinueSimulation(action);
                       setNextActionPrompt('');
+                      try { navigator?.vibrate?.(15); } catch (_) {}
                     }}
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-cyan-950/80 transition cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-cyan-400/50"
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-cyan-950/80 transition cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-cyan-400/50 active:scale-95"
                   >
                     <FastForward className="w-4 h-4 text-cyan-200" />
                     <span>Siguiente Acto ▶</span>
                   </button>
                 </div>
-                {/* 💡 Sugerencias rápidas de acción (pulsa para llenar el campo o usar directo) */}
-                <div className="flex flex-wrap gap-1.5 pt-1.5">
-                  {[
-                    { icon: '⚡', label: 'Alargar más', action: 'Sigue la pelea y alárgala aún más: más intercambios de golpes, más desgaste de stamina y nuevas técnicas. No termines todavía.' },
-                    { icon: '💬', label: 'Duelo de Ideales', action: 'Los luchadores chocan miradas y sostienen un intercambio verbal visceral sobre sus convicciones, orgullo y motivos para no rendirse.' },
-                    { icon: '🧠', label: 'Monólogo Táctico', action: 'El personaje en desventaja analiza internamente el patrón de ataque y punto ciego del rival, trazando una contraestrategia milimétrica.' },
-                    { icon: '🎭', label: 'Giro sorpresa', action: 'Introduce un giro argumental sorpresa e inesperado que cambie el rumbo del combate de forma dramática.' },
-                    { icon: '💥', label: 'Despertar Latente', action: 'El luchador herido rompe sus límites y despierta una forma o técnica superior latente para reequilibrar el combate.' },
-                    { icon: '🩸', label: 'Herida anatómica', action: 'Un impacto brutal causa una fractura ósea o desgarro grave que limita severamente la movilidad o técnicas del combatiente.' },
-                    { icon: '🛡️', label: 'Tregua tensa', action: 'Ambos se separan momentáneamente jadeando sobre los escombros para evaluar el daño antes del siguiente asalto.' },
-                    { icon: '🌪️', label: 'Escenario colapsa', action: 'El escenario de combate colapsa o cambia drásticamente (dimensión, gravedad, magma) forzando a adaptarse.' },
-                    { icon: '👑', label: 'Finisher Desesperado', action: 'Uno de los guerreros canaliza toda su energía vital restante en un ataque final suicida de máxima escala.' },
-                  ].map((sug) => (
-                    <button
-                      key={sug.label}
-                      type="button"
-                      onClick={() => {
-                        setNextActionPrompt(sug.action);
-                      }}
-                      className="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-700 hover:border-cyan-400/60 hover:bg-cyan-950/30 text-[10px] font-mono text-slate-300 hover:text-cyan-200 transition-all cursor-pointer"
-                      title="Pulsa para rellenar el campo de acción (o edítalo antes de enviar)"
-                    >
-                      {sug.icon} {sug.label}
-                    </button>
-                  ))}
+                {/* 💡 Sugerencias rápidas de acción (carrusel horizontal deslizable con snap táctil en móvil) */}
+                <div className="space-y-1 pt-1.5">
+                  <div className="flex items-center justify-between text-[9px] font-mono text-slate-500 sm:hidden">
+                    <span>⚡ Acciones Tácticas Rápidas:</span>
+                    <span className="text-cyan-400/80">👈 Desliza 👉</span>
+                  </div>
+                  <div className="flex overflow-x-auto pb-1.5 gap-1.5 no-scrollbar scroll-smooth flex-nowrap sm:flex-wrap">
+                    {[
+                      { icon: '⚡', label: 'Alargar más', action: 'Sigue la pelea y alárgala aún más: más intercambios de golpes, más desgaste de stamina y nuevas técnicas. No termines todavía.' },
+                      { icon: '💬', label: 'Duelo de Ideales', action: 'Los luchadores chocan miradas y sostienen un intercambio verbal visceral sobre sus convicciones, orgullo y motivos para no rendirse.' },
+                      { icon: '🧠', label: 'Monólogo Táctico', action: 'El personaje en desventaja analiza internamente el patrón de ataque y punto ciego del rival, trazando una contraestrategia milimétrica.' },
+                      { icon: '🎭', label: 'Giro sorpresa', action: 'Introduce un giro argumental sorpresa e inesperado que cambie el rumbo del combate de forma dramática.' },
+                      { icon: '💥', label: 'Despertar Latente', action: 'El luchador herido rompe sus límites y despierta una forma o técnica superior latente para reequilibrar el combate.' },
+                      { icon: '🩸', label: 'Herida anatómica', action: 'Un impacto brutal causa una fractura ósea o desgarro grave que limita severamente la movilidad o técnicas del combatiente.' },
+                      { icon: '🛡️', label: 'Tregua tensa', action: 'Ambos se separan momentáneamente jadeando sobre los escombros para evaluar el daño antes del siguiente asalto.' },
+                      { icon: '🌪️', label: 'Escenario colapsa', action: 'El escenario de combate colapsa o cambia drásticamente (dimensión, gravedad, magma) forzando a adaptarse.' },
+                      { icon: '👑', label: 'Finisher Desesperado', action: 'Uno de los guerreros canaliza toda su energía vital restante en un ataque final suicida de máxima escala.' },
+                    ].map((sug) => (
+                      <button
+                        key={sug.label}
+                        type="button"
+                        onClick={() => {
+                          setNextActionPrompt(sug.action);
+                          try { navigator?.vibrate?.(12); } catch (_) {}
+                        }}
+                        className="whitespace-nowrap shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 border border-slate-700 hover:border-cyan-400/60 hover:bg-cyan-950/40 text-[10px] font-mono text-slate-300 hover:text-cyan-200 transition-all cursor-pointer shadow-sm active:scale-95"
+                        title="Pulsa para rellenar el campo de acción"
+                      >
+                        {sug.icon} {sug.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 

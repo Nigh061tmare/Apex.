@@ -2,7 +2,7 @@
  * Estrategia: network-first con fallback a caché para navegación;
  * stale-while-revalidate para assets estáticos. Cache versionado.
  */
-const CACHE_NAME = 'apex-engine-v1';
+const CACHE_NAME = 'apex-engine-v28';
 const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', '/shield.svg'];
 
 self.addEventListener('install', (event) => {

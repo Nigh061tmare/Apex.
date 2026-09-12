@@ -22,4 +22,8 @@ roster_ki_by_universe/
 APEX_DOSSIER_LAGUNA_COMPLETO/
 dist
 .cache
+src/services/modelRouter.js
+.opencode/
+.mcp.json
+
 

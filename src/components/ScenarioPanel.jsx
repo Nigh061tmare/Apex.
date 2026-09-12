@@ -262,7 +262,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
               <div
                 key={s.id}
                 onClick={() => setScenario(s)}
-                className={`p-3 rounded-xl text-left border transition-all cursor-pointer relative group ${
+                className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer relative group ${
                   active
                     ? 'bg-red-950/40 border-red-500/60 text-white shadow-md shadow-red-950/50'
                     : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
@@ -669,16 +669,17 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
       <div className="pt-3 border-t border-slate-800/80 space-y-3 font-mono">
         <div className="flex items-center justify-between">
           <h4 className="text-xs font-bold text-fuchsia-400 uppercase tracking-wider flex items-center gap-2">
-            <Globe className="w-3.5 h-3.5" /> Selector de Filtro Narrativo & Estilo Literario (12 Estilos de Autor)
+            <Globe className="w-3.5 h-3.5" /> Selector de Filtro Narrativo & Estilo Literario (12 Estilos)
           </h4>
+          <span className="text-[10px] text-fuchsia-400/80 font-mono sm:hidden animate-pulse">👈 Desliza 👉</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="flex overflow-x-auto pb-2.5 gap-2.5 no-scrollbar snap-x snap-mandatory sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible">
           {/* Preset Grimdark */}
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Grimdark / Brutal' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Grimdark / Brutal'
                 ? 'bg-red-950/60 border-red-500 text-white shadow-lg shadow-red-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -697,7 +698,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Shōnen Cinematográfico' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               (modifiers.narrativePreset === 'Shōnen Cinematográfico' || !modifiers.narrativePreset)
                 ? 'bg-amber-950/60 border-amber-500 text-white shadow-lg shadow-amber-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -716,7 +717,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Análisis Técnico (VS Battles)' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Análisis Técnico (VS Battles)'
                 ? 'bg-cyan-950/60 border-cyan-500 text-white shadow-lg shadow-cyan-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -735,7 +736,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Torneo Épico' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Torneo Épico'
                 ? 'bg-yellow-950/60 border-yellow-500 text-white shadow-lg shadow-yellow-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -754,7 +755,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Cosmic Horror / Lovecraftiano' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Cosmic Horror / Lovecraftiano'
                 ? 'bg-purple-950/60 border-purple-500 text-white shadow-lg shadow-purple-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -773,7 +774,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Cerebral & Táctico (Hunter x Hunter)' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Cerebral & Táctico (Hunter x Hunter)'
                 ? 'bg-indigo-950/60 border-indigo-500 text-white shadow-lg shadow-indigo-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -792,7 +793,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Narrador Clásico DB 90s (Voz Solemne)' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Narrador Clásico DB 90s (Voz Solemne)'
                 ? 'bg-rose-950/60 border-rose-500 text-white shadow-lg shadow-rose-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -811,7 +812,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Blockbuster Cinemático IMAX' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Blockbuster Cinemático IMAX'
                 ? 'bg-emerald-950/60 border-emerald-500 text-white shadow-lg shadow-emerald-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -830,7 +831,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Cantar Épico / Crónica Homérica' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Cantar Épico / Crónica Homérica'
                 ? 'bg-amber-950/60 border-amber-500 text-white shadow-lg shadow-amber-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -849,7 +850,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: "Guion de Cine / Director's Cut" }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === "Guion de Cine / Director's Cut"
                 ? 'bg-sky-950/60 border-sky-500 text-white shadow-lg shadow-sky-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -868,7 +869,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Survival Horror / Crónica de Desesperación' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Survival Horror / Crónica de Desesperación'
                 ? 'bg-orange-950/60 border-orange-500 text-white shadow-lg shadow-orange-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -887,7 +888,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, narrativePreset: 'Manga Noir / Tensión Samurái' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.narrativePreset === 'Manga Noir / Tensión Samurái'
                 ? 'bg-zinc-800/80 border-zinc-400 text-white shadow-lg shadow-zinc-950/50 scale-[1.01]'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1139,13 +1140,14 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
             <FastForward className="w-3.5 h-3.5" /> Modo de Narrativa y Ritmo de Simulación
           </h4>
+          <span className="text-[10px] text-amber-400/80 font-mono sm:hidden animate-pulse">👈 Desliza 👉</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div className="flex overflow-x-auto pb-2.5 gap-2.5 no-scrollbar snap-x snap-mandatory sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible">
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'fases' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               (modifiers.simulationMode || 'fases') === 'fases'
                 ? 'bg-amber-950/50 border-amber-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1163,7 +1165,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'cronica' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'cronica'
                 ? 'bg-blue-950/50 border-blue-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1181,7 +1183,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'episodico' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'episodico'
                 ? 'bg-purple-950/50 border-purple-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1199,7 +1201,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'epica_extendida' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'epica_extendida'
                 ? 'bg-orange-950/50 border-orange-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1217,7 +1219,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'maraton' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'maraton'
                 ? 'bg-red-950/50 border-red-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1235,7 +1237,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'novela_continua' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'novela_continua'
                 ? 'bg-cyan-950/50 border-cyan-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1253,7 +1255,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'relampago' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'relampago'
                 ? 'bg-yellow-950/50 border-yellow-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1271,7 +1273,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'resistencia_infinita' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'resistencia_infinita'
                 ? 'bg-emerald-950/50 border-emerald-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1289,7 +1291,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'ascension' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'ascension'
                 ? 'bg-fuchsia-950/50 border-fuchsia-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1307,7 +1309,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'oleadas' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'oleadas'
                 ? 'bg-lime-950/50 border-lime-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1325,7 +1327,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'psicologico' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'psicologico'
                 ? 'bg-indigo-950/50 border-indigo-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1343,7 +1345,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'sparring' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'sparring'
                 ? 'bg-teal-950/50 border-teal-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1361,7 +1363,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'torneo_shonen' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'torneo_shonen'
                 ? 'bg-amber-950/50 border-amber-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -1379,7 +1381,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
           <button
             type="button"
             onClick={() => setModifiers(prev => ({ ...prev, simulationMode: 'trilogia' }))}
-            className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+            className={`min-w-[210px] sm:min-w-0 snap-start shrink-0 sm:shrink p-3 rounded-xl text-left border transition-all cursor-pointer ${
               modifiers.simulationMode === 'trilogia'
                 ? 'bg-sky-950/50 border-sky-500 text-white shadow-md'
                 : 'bg-slate-900/50 border-slate-800 text-slate-400 hover:text-slate-200'
