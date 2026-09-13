@@ -9,6 +9,20 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { runMaintenance } = require('./maintainOpenCodeDb.cjs');
+let runSentinel = () => {};
+let runCatalogUpdate = async () => {};
+try {
+  const sentinelPath = path.resolve(__dirname, '../../tools/opencode/blindaje_antocuota.cjs');
+  if (fs.existsSync(sentinelPath)) {
+    runSentinel = require(sentinelPath).runSentinel;
+  }
+} catch (e) {}
+try {
+  const catalogPath = path.resolve(__dirname, '../../tools/opencode/update_free_models_catalog.cjs');
+  if (fs.existsSync(catalogPath)) {
+    runCatalogUpdate = require(catalogPath).runCatalogUpdate;
+  }
+} catch (e) {}
 
 process.on('uncaughtException', (err) => {
   console.warn('[SUPERVISOR SHIELD] Error no capturado interceptado (proceso protegido):', err?.message || err);
@@ -76,14 +90,18 @@ let activeKeyIndex = 0;
 async function bootstrap() {
   // ── Mantenimiento preventivo anti-bloat y verificación de salud de la BD ──
   try {
+    runSentinel();
+    await runCatalogUpdate();
     runMaintenance({ verbose: true });
   } catch (mErr) {
     console.warn('[SUPERVISOR] Mantenimiento inicial:', mErr?.message || mErr);
   }
 
-  // Mantenimiento continuo cada 2 horas para blindaje definitivo contra acumulación de gigas
-  setInterval(() => {
+  // Mantenimiento continuo y chequeo de blindaje cada 2 horas
+  setInterval(async () => {
     try {
+      runSentinel();
+      await runCatalogUpdate();
       runMaintenance({ verbose: false });
     } catch {}
   }, 2 * 60 * 60 * 1000);
@@ -106,7 +124,9 @@ async function bootstrap() {
     'z-ai/glm-5.2:free': 230400,
     'thinkingmachines/inkling:free': 262144,
     'thinkingmachines/inkling-small:free': 262144,
-    'inclusionai/ling-3.0-flash-fin:free': 32768,
+    'deepseek/deepseek-v4.1-flash': 384000,
+    'nex-agi/nex-n2.5-mini:free': 32768,
+    'nex-agi/nex-n2.5-pro:free': 32768,
     'poolside/laguna-s-2.1:free': 32768
   };
 
