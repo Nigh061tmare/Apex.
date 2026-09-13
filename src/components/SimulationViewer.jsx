@@ -12,7 +12,6 @@ import MerchBanner from './MerchBanner';
 import BeamStruggleModal from './BeamStruggleModal';
 import ScriptExporterModal from './ScriptExporterModal';
 import { getTranslation, translateCombatChronicle } from '../services/i18n';
-import CombatArenaDevolution2D from './CombatArenaDevolution2D';
 
 const STORAGE_KEY_COMBAT_HISTORY = 'apex_combat_history';
 const STORAGE_KEY_ORACLE_COINS = 'apex_oracle_coins';
@@ -1553,7 +1552,7 @@ export default function SimulationViewer({
   const handleToggleFavorite = (id, e) => {
     e.stopPropagation();
     setHistory(prev => {
-      const updated = prev.map(h => h.id === id ? { ...h, isFavorite: !h.isFavorite } : h);
+      const updated = (prev || []).filter(Boolean).map(h => (h?.id === id ? { ...h, isFavorite: !h.isFavorite } : h));
       try {
         localStorage.setItem(STORAGE_KEY_COMBAT_HISTORY, JSON.stringify(updated));
       } catch (e) {
@@ -1932,8 +1931,9 @@ export default function SimulationViewer({
             {/* Continuar Línea Temporal */}
             <button
               onClick={() => {
-                const defaultSurvivors = allActiveFighters.filter(f => f.hp > 0).map(f => f.id || f.name);
-                setSelectedTimelineFighterIds(defaultSurvivors.length > 0 ? defaultSurvivors : allActiveFighters.map(f => f.id || f.name));
+                const safeFighters = (allActiveFighters || []).filter(Boolean);
+                const defaultSurvivors = safeFighters.filter(f => (f?.hp ?? 1) > 0).map(f => f?.id || f?.name).filter(Boolean);
+                setSelectedTimelineFighterIds(defaultSurvivors.length > 0 ? defaultSurvivors : safeFighters.map(f => f?.id || f?.name).filter(Boolean));
                 setShowTimelineModal(true);
               }}
               title="Abrir panel de Continuidad de Línea Temporal (Resurrección, Supervivientes y Asignación de Escuadrones)"
@@ -3608,22 +3608,22 @@ export default function SimulationViewer({
                   <button
                     type="button"
                     onClick={() => {
-                      const survivorsOnly = allActiveFighters.filter(f => f.hp > 0).map(f => f.id || f.name);
+                      const survivorsOnly = (allActiveFighters || []).filter(Boolean).filter(f => (f?.hp ?? 1) > 0).map(f => f?.id || f?.name).filter(Boolean);
                       setSelectedTimelineFighterIds(survivorsOnly);
                     }}
                     className="px-2.5 py-1 rounded-lg bg-emerald-950 border border-emerald-500/50 text-emerald-300 text-[10px] font-bold hover:bg-emerald-900 transition cursor-pointer"
                   >
-                    🟢 Solo Supervivientes ({allActiveFighters.filter(f => f.hp > 0).length})
+                    🟢 Solo Supervivientes ({(allActiveFighters || []).filter(Boolean).filter(f => (f?.hp ?? 1) > 0).length})
                   </button>
                   <button
                     type="button"
                     onClick={() => {
-                      const allIds = allActiveFighters.map(f => f.id || f.name);
+                      const allIds = (allActiveFighters || []).filter(Boolean).map(f => f?.id || f?.name).filter(Boolean);
                       setSelectedTimelineFighterIds(allIds);
                     }}
                     className="px-2.5 py-1 rounded-lg bg-indigo-950 border border-indigo-500/50 text-indigo-300 text-[10px] font-bold hover:bg-indigo-900 transition cursor-pointer"
                   >
-                    ✨ Revivir a Todos ({allActiveFighters.length})
+                    ✨ Revivir a Todos ({(allActiveFighters || []).filter(Boolean).length})
                   </button>
                 </div>
               </div>

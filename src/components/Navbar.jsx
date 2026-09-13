@@ -27,8 +27,7 @@ export default function Navbar({
   isVip = false,
   onOpenVipModal,
   onOpenAuthModal,
-  currentUser = null,
-  onOpenDevolutionArcade
+  currentUser = null
 }) {
   const fileInputRef = useRef(null);
   const suiteNavRef = useRef(null);
@@ -393,16 +392,6 @@ export default function Navbar({
               >
                 <Trophy className="w-3 h-3 text-amber-400" />
                 <span className="whitespace-nowrap">Torneo</span>
-              </button>
-
-              {/* Devolution Arcade */}
-              <button
-                onClick={onOpenDevolutionArcade}
-                className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg bg-gradient-to-r from-orange-600/30 to-amber-600/30 hover:from-orange-600/50 border border-orange-500/50 text-[10px] sm:text-xs text-orange-300 font-bold transition cursor-pointer shadow-sm shrink-0 animate-pulse hover:animate-none"
-                title="Arcade DB Devolution (Flash 8 Ruffle)"
-              >
-                <span className="text-xs">🕹️</span>
-                <span className="whitespace-nowrap font-bold">Devolution</span>
               </button>
 
               {/* Tier List Maker */}
