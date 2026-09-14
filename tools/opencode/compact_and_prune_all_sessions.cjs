@@ -33,8 +33,8 @@ function runAutoCompaction(options = { verbose: true }) {
   const updateStmt = db.prepare('UPDATE part SET data = ? WHERE id = ?');
 
   for (const s of sessions) {
-    // Proteger los últimos 4 mensajes (los turnos más recientes del chat)
-    const recentMsgs = db.prepare('SELECT id FROM message WHERE session_id = ? ORDER BY time_created DESC LIMIT 4').all(s.id);
+    // Proteger los últimos 2 mensajes (únicamente el último turno activo)
+    const recentMsgs = db.prepare('SELECT id FROM message WHERE session_id = ? ORDER BY time_created DESC LIMIT 2').all(s.id);
     const protectedMsgIds = new Set(recentMsgs.map(m => m.id));
 
     const parts = db.prepare('SELECT id, message_id, data FROM part WHERE session_id = ?').all(s.id);
@@ -57,6 +57,26 @@ function runAutoCompaction(options = { verbose: true }) {
           modified = true;
         }
 
+        // 1b. Podar state.metadata.output (copia oculta de salida de bash que acumula hasta 30kB por comando)
+        if (obj.state && obj.state.metadata && typeof obj.state.metadata.output === 'string' && obj.state.metadata.output.length > 400) {
+          const head = obj.state.metadata.output.slice(0, 200);
+          const tail = obj.state.metadata.output.slice(-100);
+          obj.state.metadata.output = `${head}\n\n[... Salida de comando previa archivada ...]\n\n${tail}`;
+          modified = true;
+        }
+
+        // 1c. Podar state.metadata.diff y filediff en herramientas de edición (edit)
+        if (obj.state && obj.state.metadata) {
+          if (typeof obj.state.metadata.diff === 'string' && obj.state.metadata.diff.length > 300) {
+            obj.state.metadata.diff = obj.state.metadata.diff.slice(0, 150) + '\n[... diff previo archivado ...]';
+            modified = true;
+          }
+          if (obj.state.metadata.filediff) {
+            delete obj.state.metadata.filediff;
+            modified = true;
+          }
+        }
+
         // 2. Podar state.metadata.preview
         if (obj.state && obj.state.metadata && typeof obj.state.metadata.preview === 'string' && obj.state.metadata.preview.length > 300) {
           obj.state.metadata.preview = obj.state.metadata.preview.slice(0, 200) + '... [compactado]';
@@ -69,12 +89,71 @@ function runAutoCompaction(options = { verbose: true }) {
           modified = true;
         }
 
+        // 3b. Podar state.title excesivamente largo en llamadas a herramientas
+        if (obj.state && typeof obj.state.title === 'string' && obj.state.title.length > 250) {
+          obj.state.title = obj.state.title.slice(0, 200) + '...';
+          modified = true;
+        }
+
         // 4. Podar obj.output directo si existe
         if (typeof obj.output === 'string' && obj.output.length > 500) {
           const head = obj.output.slice(0, 250);
           const tail = obj.output.slice(-150);
           obj.output = `${head}\n\n[... Salida archivada y compactada ...]\n\n${tail}`;
           modified = true;
+        }
+
+        // 5. Podar state.attachments con imágenes base64 gigantes (capturas de pantalla pasadas)
+        // Usar un PNG 1x1 transparente válido en base64 para evitar errores de decodificación o descarga en OpenCode
+        const VALID_1X1_PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+
+        if (obj.state && Array.isArray(obj.state.attachments)) {
+          for (const att of obj.state.attachments) {
+            if (att && typeof att.url === 'string' && att.url.length > 1000) {
+              att.url = VALID_1X1_PNG;
+              modified = true;
+            }
+          }
+        }
+
+        // 6. Podar obj.attachments directo si existe
+        if (Array.isArray(obj.attachments)) {
+          for (const att of obj.attachments) {
+            if (att && typeof att.url === 'string' && att.url.length > 1000) {
+              att.url = VALID_1X1_PNG;
+              modified = true;
+            }
+          }
+        }
+
+        // 7. Podar partes de tipo 'file' con URL base64 directa
+        if (obj.type === 'file' && typeof obj.url === 'string' && obj.url.length > 1000) {
+          obj.url = VALID_1X1_PNG;
+          modified = true;
+        }
+
+        // 8. Podar razonamientos extensos de turnos anteriores (DeepSeek thinking antiguo)
+        if (obj.type === 'reasoning' && typeof obj.text === 'string' && obj.text.length > 200) {
+          obj.text = '[Razonamiento de turno anterior completado y archivado]';
+          modified = true;
+        }
+
+        // 9. Podar volcados masivos de archivos/textos en respuestas antiguas (> 3.000 caracteres)
+        if (obj.type === 'text' && typeof obj.text === 'string' && obj.text.length > 3000) {
+          const head = obj.text.slice(0, 1000);
+          const tail = obj.text.slice(-400);
+          obj.text = `${head}\n\n[... Contenido extenso previo archivado y compactado para ahorro de cuota ...]\n\n${tail}`;
+          modified = true;
+        }
+
+        // 10. Podar state.input gigante en tool calls antiguas (código fuente pasado a write/edit)
+        if (obj.state && obj.state.input && typeof obj.state.input === 'object') {
+          for (const ik of Object.keys(obj.state.input)) {
+            if (typeof obj.state.input[ik] === 'string' && obj.state.input[ik].length > 500) {
+              obj.state.input[ik] = obj.state.input[ik].slice(0, 200) + '\n\n[... Contenido de entrada archivado para ahorro de cuota ...]\n\n' + obj.state.input[ik].slice(-100);
+              modified = true;
+            }
+          }
         }
 
         if (modified) {

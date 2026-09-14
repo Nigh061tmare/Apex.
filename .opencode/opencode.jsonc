@@ -60,27 +60,56 @@
     }
   },
   "agent": {
-    // ── AGENTES INTEGRADOS BLINDADOS (Exploración, General, Plan) ──────────
-    "explore": {
-      "mode": "subagent",
-      "color": "info",
-      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "🔍 Explorer Free (OpenRouter): Búsqueda, lectura y análisis de código 100% gratuito sin consumo de cuota Go",
-      "prompt": "Eres el Agente Explorador de OpenCode. Buscas, lees e inspeccionas archivos y documentación usando exclusivamente Nemotron Super 120B Free para cero gasto de cuota."
+    "chat": {
+      "mode": "primary",
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "💬 Chat 100% GRATIS: Conversación directa sin bucles y con CERO consumo de saldo Go",
+      "prompt": "Eres el Asistente de Chat de OpenCode. Respondes de forma clara, directa y concisa en un solo mensaje. No ejecutas bucles automáticos de herramientas."
+    },
+    "build": {
+      "mode": "primary",
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "steps": 2,
+      "description": "🛠️ Build Ultra-Económico (100% GRATIS): Máximo 2 pasos por turno, CERO consumo de saldo Go",
+      "prompt": "Eres el Agente Constructor Ultra-Económico. Sé quirúrgico y directo: realiza únicamente los cambios solicitados en un máximo de 2 pasos sin lecturas redundantes ni exploraciones masivas. Detén la ejecución al completar el segundo paso."
     },
     "general": {
       "mode": "primary",
-      "color": "primary",
-      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "💬 General Free (OpenRouter): Consultas generales sin consumo de cuota Go",
-      "prompt": "Eres el Agente General de OpenCode. Respondes consultas y asistes al usuario usando Nemotron Super 120B Free con cero consumo de saldo de OpenCode Go."
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "💬 General 100% GRATIS: Modo chat normal con CERO consumo de saldo Go",
+      "prompt": "Eres el Asistente General de OpenCode. Respondes de forma directa y concisa en un solo mensaje."
     },
     "plan": {
       "mode": "primary",
-      "color": "secondary",
-      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "📋 Planner Free (OpenRouter): Planificación y diseño de soluciones gratuito",
-      "prompt": "Eres el Agente Planificador de OpenCode. Creas planes detallados de implementación usando Nemotron Super 120B Free sin consumir cuota Go."
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "📋 Planner 100% GRATIS: Planificación y diseño de soluciones con CERO consumo de saldo Go",
+      "prompt": "Eres el Agente Planificador de OpenCode. Creas planes detallados de implementación sin consumir cuota Go."
+    },
+    "explore": {
+      "mode": "subagent",
+      "color": "info",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "🔍 Explorer 100% GRATIS: Búsqueda, lectura y análisis de código con CERO consumo de cuota Go",
+      "prompt": "Eres el Agente Explorador de OpenCode. Buscas, lees e inspeccionas archivos usando exclusivamente modelos gratuitos."
+    },
+    "chat_deepseek": {
+      "mode": "primary",
+      "color": "warning",
+      "model": "opencode-go/deepseek-v4.1-flash",
+      "description": "⚡ Chat DeepSeek Flash (0,1¢): 1 solo mensaje directo con DeepSeek, sin bucles de herramientas",
+      "prompt": "Eres el Asistente de Chat DeepSeek de OpenCode. Respondes en un único mensaje preciso y conciso. No ejecutas bucles automáticos de herramientas."
+    },
+    "build_deepseek": {
+      "mode": "primary",
+      "color": "warning",
+      "model": "opencode-go/deepseek-v4.1-flash",
+      "steps": 2,
+      "description": "⚡ Build DeepSeek Ultra-Económico: Freno estricto a 2 pasos por turno (máximo ~0,4¢ por mensaje)",
+      "prompt": "Eres el Constructor DeepSeek Ultra-Económico. Sé quirúrgico y conciso: realiza únicamente la acción necesaria en un máximo de 2 pasos sin lecturas redundantes. Deténte inmediatamente al completar los cambios."
     },
     // ── AGENTES GRATUITOS (OpenRouter) ── No consumen cuota semanal ──────
     "nex_pro": {
@@ -222,160 +251,160 @@
         "chunkTimeout": 300000
       },
       "models": {
-        "inclusionai/ling-3.0-flash-vl:free": {
-          "name": "inclusionAI: Ling 3.0 Flash VL (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "nex-agi/nex-n2.5-mini:free": {
-          "name": "Nex AGI: Nex-N2.5-Mini (free)",
-          "limit": {
-            "context": 262144,
-            "output": 235929
-          },
-          "temperature": true
-        },
-        "nex-agi/nex-n2.5-pro:free": {
-          "name": "Nex AGI: Nex-N2.5-Pro (free)",
-          "limit": {
-            "context": 262144,
-            "output": 235929
-          },
-          "temperature": true
-        },
-        "inclusionai/ling-3.0-flash-sante:free": {
-          "name": "inclusionAI: Ling 3.0 Flash Sante (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "inclusionai/ling-3.0-flash-fin:free": {
-          "name": "inclusionAI: Ling 3.0 Flash Fin (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "dots-studio/dots-3-note-preview:free": {
-          "name": "Dots Studio: Dots3-Note Preview (free)",
-          "limit": {
-            "context": 512000,
-            "output": 460800
-          },
-          "temperature": true
-        },
-        "liquid/lfm-2.5-2.6b:free": {
-          "name": "LiquidAI: LFM2.5-2.6B (free)",
-          "limit": {
-            "context": 65536,
-            "output": 8192
-          },
-          "temperature": true
-        },
-        "nvidia/nemotron-3.5-lightning:free": {
-          "name": "NVIDIA: Nemotron 3.5 Lightning (free)",
-          "limit": {
-            "context": 1000000,
-            "output": 65536
-          },
-          "temperature": true
-        },
-        "thinkingmachines/inkling-small:free": {
-          "name": "Thinking Machines: Inkling Small (free)",
-          "limit": {
-            "context": 1048576,
-            "output": 262144
-          },
-          "temperature": true
-        },
-        "poolside/laguna-s-2.1:free": {
-          "name": "Poolside: Laguna S 2.1 (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "thinkingmachines/inkling:free": {
-          "name": "Thinking Machines: Inkling (free)",
-          "limit": {
-            "context": 1048576,
-            "output": 262144
-          },
-          "temperature": true
-        },
-        "poolside/laguna-xs-2.1:free": {
-          "name": "Poolside: Laguna XS 2.1 (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "cohere/north-mini-code:free": {
-          "name": "Cohere: North Mini Code (free)",
-          "limit": {
-            "context": 256000,
-            "output": 64000
-          },
-          "temperature": true
-        },
-        "nvidia/nemotron-3.5-content-safety:free": {
-          "name": "NVIDIA: Nemotron 3.5 Content Safety (free)",
-          "limit": {
-            "context": 128000,
-            "output": 8192
-          },
-          "temperature": true
-        },
-        "nvidia/nemotron-3-ultra-550b-a55b:free": {
-          "name": "NVIDIA: Nemotron 3 Ultra (free)",
-          "limit": {
-            "context": 1000000,
-            "output": 65536
-          },
-          "temperature": true
-        },
-        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free": {
-          "name": "NVIDIA: Nemotron 3 Nano Omni (free)",
-          "limit": {
-            "context": 256000,
-            "output": 65536
-          },
-          "temperature": true,
-          "reasoning": true
-        },
-        "google/gemma-4-26b-a4b-it:free": {
-          "name": "Google: Gemma 4 26B A4B  (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "google/gemma-4-31b-it:free": {
-          "name": "Google: Gemma 4 31B (free)",
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          },
-          "temperature": true
-        },
-        "nvidia/nemotron-3-super-120b-a12b:free": {
-          "name": "NVIDIA: Nemotron 3 Super (free)",
-          "limit": {
-            "context": 262144,
-            "output": 235929
-          },
-          "temperature": true
-        }
-      }
+  "inclusionai/ling-3.0-flash-vl:free": {
+    "name": "inclusionAI: Ling 3.0 Flash VL (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "nex-agi/nex-n2.5-mini:free": {
+    "name": "Nex AGI: Nex-N2.5-Mini (free)",
+    "limit": {
+      "context": 262144,
+      "output": 235929
+    },
+    "temperature": true
+  },
+  "nex-agi/nex-n2.5-pro:free": {
+    "name": "Nex AGI: Nex-N2.5-Pro (free)",
+    "limit": {
+      "context": 262144,
+      "output": 235929
+    },
+    "temperature": true
+  },
+  "inclusionai/ling-3.0-flash-sante:free": {
+    "name": "inclusionAI: Ling 3.0 Flash Sante (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "inclusionai/ling-3.0-flash-fin:free": {
+    "name": "inclusionAI: Ling 3.0 Flash Fin (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "dots-studio/dots-3-note-preview:free": {
+    "name": "Dots Studio: Dots3-Note Preview (free)",
+    "limit": {
+      "context": 512000,
+      "output": 460800
+    },
+    "temperature": true
+  },
+  "liquid/lfm-2.5-2.6b:free": {
+    "name": "LiquidAI: LFM2.5-2.6B (free)",
+    "limit": {
+      "context": 65536,
+      "output": 8192
+    },
+    "temperature": true
+  },
+  "nvidia/nemotron-3.5-lightning:free": {
+    "name": "NVIDIA: Nemotron 3.5 Lightning (free)",
+    "limit": {
+      "context": 1000000,
+      "output": 65536
+    },
+    "temperature": true
+  },
+  "thinkingmachines/inkling-small:free": {
+    "name": "Thinking Machines: Inkling Small (free)",
+    "limit": {
+      "context": 1048576,
+      "output": 262144
+    },
+    "temperature": true
+  },
+  "poolside/laguna-s-2.1:free": {
+    "name": "Poolside: Laguna S 2.1 (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "thinkingmachines/inkling:free": {
+    "name": "Thinking Machines: Inkling (free)",
+    "limit": {
+      "context": 1048576,
+      "output": 262144
+    },
+    "temperature": true
+  },
+  "poolside/laguna-xs-2.1:free": {
+    "name": "Poolside: Laguna XS 2.1 (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "cohere/north-mini-code:free": {
+    "name": "Cohere: North Mini Code (free)",
+    "limit": {
+      "context": 256000,
+      "output": 64000
+    },
+    "temperature": true
+  },
+  "nvidia/nemotron-3.5-content-safety:free": {
+    "name": "NVIDIA: Nemotron 3.5 Content Safety (free)",
+    "limit": {
+      "context": 128000,
+      "output": 8192
+    },
+    "temperature": true
+  },
+  "nvidia/nemotron-3-ultra-550b-a55b:free": {
+    "name": "NVIDIA: Nemotron 3 Ultra (free)",
+    "limit": {
+      "context": 1000000,
+      "output": 65536
+    },
+    "temperature": true
+  },
+  "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free": {
+    "name": "NVIDIA: Nemotron 3 Nano Omni (free)",
+    "limit": {
+      "context": 256000,
+      "output": 65536
+    },
+    "temperature": true,
+    "reasoning": true
+  },
+  "google/gemma-4-26b-a4b-it:free": {
+    "name": "Google: Gemma 4 26B A4B  (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "google/gemma-4-31b-it:free": {
+    "name": "Google: Gemma 4 31B (free)",
+    "limit": {
+      "context": 262144,
+      "output": 32768
+    },
+    "temperature": true
+  },
+  "nvidia/nemotron-3-super-120b-a12b:free": {
+    "name": "NVIDIA: Nemotron 3 Super (free)",
+    "limit": {
+      "context": 262144,
+      "output": 235929
+    },
+    "temperature": true
+  }
+}
     }
   },
   "command": {

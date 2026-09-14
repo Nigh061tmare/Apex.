@@ -565,7 +565,9 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${effectiveKey}`
+              'Authorization': `Bearer ${effectiveKey}`,
+              'x-opencode-session': 'ses_apex_test_' + Date.now(),
+              'User-Agent': 'apex-powerscaling-engine/26.0'
             },
             body: JSON.stringify({
               model: cleanModel,

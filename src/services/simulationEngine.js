@@ -106,6 +106,14 @@ export const SimulationEngine = {
         modifiers.simulationMode = 'psicologico';
       } else if (userText.includes('sparring') || userText.includes('entrenamiento') || userText.includes('sin muerte') || userText.includes('combate amistoso')) {
         modifiers.simulationMode = 'sparring';
+      } else if (userText.includes('crónica') || userText.includes('cronica') || userText.includes('campaña') || userText.includes('por capítulos') || userText.includes('por capitulos')) {
+        modifiers.simulationMode = 'cronica';
+      } else if (userText.includes('episódico') || userText.includes('episodico') || userText.includes('por episodios') || userText.includes('cliffhanger')) {
+        modifiers.simulationMode = 'episodico';
+      } else if (userText.includes('torneo') || userText.includes('bracket') || userText.includes('eliminatoria') || userText.includes('con comentarista')) {
+        modifiers.simulationMode = 'torneo_shonen';
+      } else if (userText.includes('trilogía') || userText.includes('trilogia') || userText.includes('tres actos') || userText.includes('3 actos')) {
+        modifiers.simulationMode = 'trilogia';
       }
     }
     const preset = modifiers.narrativePreset || 'Equilibrado';
@@ -217,7 +225,7 @@ Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones t
 5. **ECUALIZACIÓN DE ENERGÍAS (UNIVERSAL ENERGY SYSTEMS):** Ki, Chakra, Reiatsu, Haki y Magia interactúan en el mismo plano dimensional para barreras y anulaciones.
 `;
 
-    if (preset === 'Mundo Vivo Total' || preset === 'Grimdark / Brutal') {
+    if (preset.includes('Mundo Vivo') || preset.includes('Grimdark')) {
       engineRules += `
 ### 🩸 REGLAS NARRATIVAS DE SIMULACIÓN "GRIMDARK / BRUTAL TOTAL":
 1. **FÍSICA SENSORIAL Y ESTRAGOS BIOMECÁNICOS CRUDOS:** Los impactos tienen anatomía precisa. Menciona los tendones, astillas óseas (ej. vértebra C7, fémur), la hiper-tensión, el sangrado arterial y el gusto a óxido. 
@@ -227,7 +235,7 @@ Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones t
 5. **PROHIBIDOS CLICHÉS:** Usa descripciones adultas, directas y espectaculares. Prohibido: "el tiempo se detuvo", "se escuchó un sonido seco". Sé milimétricamente exacto.
 6. **VEREDICTO GRIMDARK (OBLIGATORIO):** El desenlace debe reflejar la brutalidad del tono: no hay victorias "limpias"; incluso el ganador queda marcado (traumas permanentes, mutilaciones, cicatrices psicológicas, consecuencias irreversibles). El estado final detalla el coste humano real de la batalla, y los "ganadores" pagan un precio sangriento.
 `;
-    } else if (preset === 'Torneo Épico') {
+    } else if (preset.includes('Torneo') || preset.includes('Budokai')) {
       engineRules += `
 ### 🏟️ REGLAS NARRATIVAS: MODO TORNEO ÉPICO CON COMENTARISTA
 1. **ESTILO TORNEO SHŌNEN EXALTADO:** La batalla es un show brutal y espectacular. Las transformaciones provocan temblores en las gradas.
@@ -235,20 +243,20 @@ Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones t
 3. **CONCISO Y CINEMATOGRÁFICO:** Diálogos intensos (—) e intercambios marciales fluidos. 
 4. **VEREDICTO HEROICO (OBLIGATORIO):** El desenlace debe honrar el espíritu de torneo: victoria gloriosa, respeto mutuo entre rivales, y exaltación del esfuerzo. El ganador avanza con orgullo y el perdedor cae con dignidad; la audiencia es parte del veredicto. Cierra exaltando el momento cumbre del combate.
 `;
-    } else if (preset === 'Equilibrado' || preset === 'Shōnen Cinematográfico') {
-      engineRules += `
-### 🎬 REGLAS NARRATIVAS: SHŌNEN CINEMATOGRÁFICO / EQUILIBRADO
-1. **COREOGRAFÍA DE IMPACTO EXTREMO:** Narra los choques de energía y las artes marciales con peso, velocidad y descripciones espaciales dinámicas.
-2. **DESGASTE Y SUPERACIÓN:** Muestra cómo las técnicas gastan Stamina. Los diálogos deben usar (—) y reflejar la personalidad canónica del guerrero al límite.
-3. **CLÍMAX HEROICO:** Colisiones de Ultimate Attacks narradas con lujo de detalles (densidad del ki, el color del fuego, la distorsión del aire).
-4. **VEREDICTO CINEMATOGRÁFICO (OBLIGATORIO):** El desenlace debe ser visualmente impactante y emocionalmente resonante: el último golpe se describe con cámara lenta épica, la resolución deja satisfacción narrativa, y el estado final equilibra el coste físico con el triunfo del espíritu.
-`;
-    } else {
+    } else if (preset.includes('VS Battles') || preset.includes('Técnico')) {
       engineRules += `
 ### 📊 MODO ANÁLISIS TÉCNICO (VS BATTLES STANDARD):
 1. **RESOLUCIÓN ANALÍTICA PURA:** Concéntrate en la escala de Tiers, cálculo de Joules (AP), velocidades en Mach/c, e interacción directa de Hax.
 2. **VEREDICTO BASADO EN FEATS:** Sin adornos dramáticos excesivos, justificación matemática y técnica de la victoria.
 3. **VEREDICTO TÉCNICO (OBLIGATORIO):** El desenlace prioriza la exactitud del Power Scaling: cada golpe decisivo se justifica por AP, velocidad o hax, sin ambigüedad narrativa. El veredicto es la conclusión lógica del diferencial de poder, no un giro dramático.
+`;
+    } else {
+      engineRules += `
+### 🎬 REGLAS NARRATIVAS: CINEMATOGRÁFICO / TONO SEGÚN ESTILO DE AUTOR
+1. **COREOGRAFÍA DE IMPACTO EXTREMO:** Narra los choques de energía y las artes marciales con peso, velocidad y descripciones espaciales dinámicas.
+2. **DESGASTE Y SUPERACIÓN:** Muestra cómo las técnicas gastan Stamina. Los diálogos deben usar (—) y reflejar la personalidad canónica del guerrero al límite.
+3. **CLÍMAX SEGÚN EL ESTILO DE AUTOR:** Colisiona los ataques definitivos con lujo de detalle (densidad del ki, el color del fuego, la distorsión del aire) respetando el ESTILO LITERARIO de autor seleccionado.
+4. **VEREDICTO COHERENTE CON EL TONO (OBLIGATORIO):** El desenlace honra el ESTILO LITERARIO elegido (heroico en Shōnen, opresivo en Cosmic/Survival Horror, solemne en Épica Homérica, sobrio en Noir, frenético en Blockbuster). El estado final equilibra el coste físico con la resolución del conflicto.
 `;
     }
 
@@ -333,24 +341,24 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 - **Si el APEX-Ki de A supera al de B**, A DEBE ganar salvo que exista una ventaja táctica/hax canónica documentada en las fichas (Battle IQ superior con diferencia de poder menor al 10%, hax específico con contraefecto canónico, desgaste acumulado narrativo). Cualquier excepción DEBE justificarse con argumento técnico de la ficha, nunca por "sorpresa sin motivo".
 - La **CAUSALIDAD DEL DESENLACE** debe anclarse explícitamente a los valores APEX-Ki (ej. "con un APEX-Ki de 82 millones frente a 50 millones y el multiplicador x50 de SSJ, la brecha de poder selló el desenlace") y al desgaste biométrico narrado.
 
-### ⚡ REGLA DE ORO 9: DILATACIÓN TEMPORAL MFTL Y FILTRO ANTI-CLICHÉS
+### ⚡ REGLA DE ORO 10: DILATACIÓN TEMPORAL MFTL Y FILTRO ANTI-CLICHÉS
 - **Tiempo Subjetivo MFTL+:** Para personajes con velocidad Relativista, FTL o Masivamente FTL+, **PROHIBIDO medir los intercambios en 'milisegundos' o 'segundos' terrestres**. Narra la velocidad en función de marcos subjetivos (*"en una fracción de lapso sináptico", "en el tiempo que tarda un haz de luz en recorrer un milímetro", "a través de un vector cinético instantáneo"*).
 - **Prohibición de Clichés Repetitivos:** Evita fórmulas recicladas como *"el tiempo pareció detenerse"*, *"un silencio sepulcral se apoderó del campo"*, *"su pulmón colapsó"* o *"choque gravitacional absoluto"*. Usa variedad descriptiva, coreografía marcial y física sensorial pura.
 
-### 🌍 REGLA DE ORO 10: FÍSICA AMBIENTAL Y CÁLCULO SÍSMICO/CIVIL COHERENTE
+### 🌍 REGLA DE ORO 11: FÍSICA AMBIENTAL Y CÁLCULO SÍSMICO/CIVIL COHERENTE
 - **Consistencia Geométrica:** Si el radio de destrucción es R, el área afectada es proporcional a pi*R^2 (un radio de 300 km genera un área de impacto de ~282,700 km²).
 - **Bajas Civiles y Terremotos:** Si un ataque fractura la corteza planetaria con magnitud sísmica extrema (>8.0 Richter o tsunamis), las bajas o el colapso ambiental DEBEN ser proporcionales a la población (prohibido declarar '0 bajas civiles' en un cataclismo global a menos que el escenario sea un páramo deshabitado, dimensión de bolsillo o planeta desierto).
 
-### 🚫 REGLA DE ORO 11: PROHIBICIÓN TOTAL DE HAX Y TÉCNICAS NO PRESENTES EN LA FICHA (CERO HAKAI O HAX INVENTADO)
+### 🚫 REGLA DE ORO 12: PROHIBICIÓN TOTAL DE HAX Y TÉCNICAS NO PRESENTES EN LA FICHA (CERO HAKAI O HAX INVENTADO)
 - Queda **ESTRICTAMENTE PROHIBIDO** que un combatiente utilice técnicas divinas, hax o ataques supremos (ej. **Hakai, Expansión de Dominio, Ultra Instinto, Rasenshuriken, Getsuga, Mafuba, Borrado Conceptual**) que NO estén explícitamente listados en su arsenal o haxTags.
 - Si el personaje no posee la técnica en su ficha de combatiente, la IA NO puede inventársela bajo ninguna circunstancia. Por ejemplo, en Dragon Ball Z/Super Resurrección de 'F', ni Gohan, ni Piccolo, ni Freezer, ni Krilin, ni Yamcha conocen el **Hakai**.
 
-### 📑 REGLA DE ORO 12: DELIMITACIÓN LIMPIA DE FASES Y NO DUPLICACIÓN
+### 📑 REGLA DE ORO 13: DELIMITACIÓN LIMPIA DE FASES Y NO DUPLICACIÓN
 - Cada fase debe comenzar ÚNICAMENTE con su título de nivel 3 (ej. '### FASE 1: TANTEO CINÉTICO').
 - **PROHIBIDO** imprimir listas previas de índices ('Fase 1 Fase 2 Fase 3') antes del desarrollo real de las fases.
 - La telemetría de vida de cada combatiente debe reflejarse con exactitud en el bloque final '||BIOMETRICS|...||' y en el bloque 'ESTADO BIOMÉTRICO FINAL DETALLADO POR BANDOS'.
 
-### ⏳ REGLA DE ORO 13: REALISMO TEMPORAL ESTRICTO Y CERO ANACRONISMOS (PROHIBIDO EL METAGAMING Y SPOILERS FUTUROS)
+### ⏳ REGLA DE ORO 14: REALISMO TEMPORAL ESTRICTO Y CERO ANACRONISMOS (PROHIBIDO EL METAGAMING Y SPOILERS FUTUROS)
 - **Anclaje Temporal Inquebrantable:** Cada personaje está estrictamente restringido al conocimiento, experiencias, técnicas y relaciones de la **era, saga o momento cronológico de su ficha**:
   * Un personaje de una era temprana (ej. Goku en Namek o Vegeta en Saga Saiyajin) **NO CONOCE eventos, villanos, dioses ni conceptos de sagas futuras** (prohibido que mencionen a Bills, Whis, Zeno-sama, Multiverso, Super Saiyan Blue, Ultra Instinto, Cell, Majin Buu o fusiones si no habían ocurrido en su momento).
   * En Dragon Ball Super 'Resurrección de F', Gohan y Piccolo **NO conocen el Torneo del Poder, ni a Jiren, ni a Moro, ni a Granolah, ni la forma Beast, ni el Ultra Ego**.
@@ -359,7 +367,7 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
   * Los combatientes NO son omniscientes. No pueden predecir ni nombrar las habilidades o debilidades de rivales desconocidos o de otros universos a menos que las deduzcan en pleno asalto mediante observación y su Battle IQ.
   * Los diálogos deben sonar fieles a la mentalidad y personalidad del personaje en esa época concreta.
 
-### 🛡️ REGLA DE ORO 14: LEY CANÓNICA ESTRICTA DE INTERVENCIONES, 3ER CONTENDIENTE, ASALTOS Y GIROS
+### 🛡️ REGLA DE ORO 15: LEY CANÓNICA ESTRICTA DE INTERVENCIONES, 3ER CONTENDIENTE, ASALTOS Y GIROS
 - **PROHIBIDO TERMINANTEMENTE INVENTAR PERSONAJES GENÉRICOS O NOMBRES FICTICIOS:**
   * Queda estrictamente prohibido usar descripciones anónimas ("un villano metálico", "una sombra mística", "un ser oscuro") o nombres inventados por la IA (ej. "Azrath Malek", "Lord Xyros", etc.).
 - **OBLIGATORIEDAD DE PERSONAJES CANÓNICOS REALES O DEL ROSTER APEX:**
@@ -368,7 +376,7 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
     2. **Debe nombrarse explícitamente desde su primer milisegundo de aparición** con su nombre propio real y forma exacta (ej. *"Metal Cooler (Cuerpo de Metal Puro / Estrella Big Gete)"*, *"Broly (Super Saiyan Legendario)"*, *"Bills (Dios de la Destrucción)"*, *"Ryomen Sukuna (20 Dedos)"*, *"Thanos (Guantelete del Infinito)"*, *"Doomsday (Criptoniano)"*, *"Toji Fushiguro"*, *"Goku Black & Zamasu"*).
     3. **Respeto Absoluto a su Escala y Arsenal:** Sus técnicas, multiplicadores, pasivas, hax y nivel de Tier deben corresponder fielmente a su ficha canónica o perfil APEX.
 
-### 🔒 REGLA DE ORO 15: AISLAMIENTO ABSOLUTO DE COMBATIENTES FUSIONADOS
+### 🔒 REGLA DE ORO 16: AISLAMIENTO ABSOLUTO DE COMBATIENTES FUSIONADOS
 **Una fusión ELIMINA a sus componentes del espacio de combate individual.**
 - En el momento en que **Goku y Vegeta** completan la Danza de la Fusión o se colocan los Pendientes Potara, **Goku y Vegeta DEJAN DE EXISTIR COMO ACTORES INDIVIDUALES** hasta la desfusión.
 - **PROHIBIDO TERMINANTEMENTE** que los componentes de una fusión:
@@ -380,7 +388,7 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 - ✅ Tras la desfusión, los componentes reaparecen en el estado físico en que estaban al fusionarse (agotados, heridos, etc.).
 - **APLICA A:** Metamoru (30min), Potara (1h en DBZ; permanente para Kaio-Shin), fusiones What-If canónicas.
 
-### 🌑 REGLA DE ORO 16: ENTIDADES ABSORBIDAS (ABSORCIÓN BUU / BIO-ANDROIDE)
+### 🌑 REGLA DE ORO 17: ENTIDADES ABSORBIDAS (ABSORCIÓN BUU / BIO-ANDROIDE)
 **Un personaje absorbido por Majin Buu queda como conciencia atrapada, NO como actor.**
 - Cuando Majin Buu absorbe a Piccolo, Gotenks, Gohan o cualquier combatiente:
   1. El absorbido **NO puede disparar técnicas propias** durante la absorción.
@@ -391,8 +399,8 @@ Queda estrictamente prohibido asignar habilidades biológicas o mutaciones fuera
 - **APLICA TAMBIÉN A:** Cell absorbiendo a Androides 17/18 (los Androides desaparecen como actores independientes).
 - ✅ Liberación: cuando Goku/Vegeta extraen a los absorbidos, estos reaparecen con su estado físico propio.
 
-### 🎭 REGLA DE ORO 17: PROHIBICIÓN DE META-COMENTARIOS, DUDAS Y RETRACTACIONES EN LA PROSA
-- **PROHIBIDO TERMINANTEMENTE** que el narrador o los personajes incluyan correcciones en caliente, dudas, titubeos o meta-referencias a las reglas en el texto literario (por ejemplo: JAMÁS escribas "—esperad, están fusionados en Gogeta según la Regla 15...", ni "—no, Piccolo no tiene Shunkan Idō...", ni "recordemos que la regla prohíbe...").
+### 🎭 REGLA DE ORO 18: PROHIBICIÓN DE META-COMENTARIOS, DUDAS Y RETRACTACIONES EN LA PROSA
+- **PROHIBIDO TERMINANTEMENTE** que el narrador o los personajes incluyan correcciones en caliente, dudas, titubeos o meta-referencias a las reglas en el texto literario (por ejemplo: JAMÁS escribas "—esperad, están fusionados en Gogeta según la Regla 16...", ni "—no, Piccolo no tiene Shunkan Idō...", ni "recordemos que la regla prohíbe...").
 - **Ejecución Silenciosa y Canónica:** Las restricciones canónicas y las reglas de oro deben aplicarse de forma 100% LIMPIA, natural y directa desde la primera palabra de cada escena. Si un personaje no tiene una técnica, jamás se menciona que intentó usarla; si hay una fusión, solo se narra a la fusión sin vacilar.
 
 `;
@@ -892,17 +900,6 @@ PROHIBICIÓN ESTRICTA DE TELEMETRÍA FANTASMA:
 - La telemetría DEBE decrecer de forma dinámica y matemáticamente coherente con el castigo físico narrado.
 
 ESTRUCTURA OBLIGATORIA:
-
-### ⚙️ PARÁMETROS & REGLAS ACTIVAS DE SIMULACIÓN
-- **Modo de Simulación:** APEX Canon-Plus / Simulación Multiversal
-- **Continuidad & Versiones Declaradas:**
-  * Bando A: ${charA?.name || 'Contendiente Alfa'} [${charA?.universe || 'Canon'}, ${charA?.forms?.[0]?.name || 'Base'}]
-  * Bando B: ${charB?.name || 'Contendiente Beta'} [${charB?.universe || 'Canon'}, ${charB?.forms?.[0]?.name || 'Base'}]
-- **Reglas del Motor:**
-  * Verse Equalization: ON (Energías interactúan según jerarquía de Tier y hax)
-  * Modelo de Stamina: Dinámico (Base Upkeep + Gasto por Técnica)
-  * Amplificación de Lesiones Funcionales: ON (Heridas limitan técnicas y movilidad)
-  * Biología & Regeneración: Coste de Ki proporcional (Sin curación milagrosa gratuita)
 
 ${h1}
 [Análisis táctico: diferencias de velocidad, cómo interactúan sus Pasivas/Hax y el impacto de la Arena].
@@ -1536,20 +1533,43 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
               if (geminiModel.includes('3.6')) {
                 geminiModel = 'gemini-3.6-flash';
               }
-              const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:streamGenerateContent?key=${curKey}`;
+              const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:streamGenerateContent?key=${curKey}&alt=sse`;
               const response = await fetch(geminiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
               });
 
-              if (response.ok) {
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                  for (const part of data) {
-                    const text = part?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                    if (text) onToken(text);
+              if (response.ok && response.body) {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let buffer = '';
+                let hasStreamed = false;
+
+                while (true) {
+                  const { done, value } = await reader.read();
+                  if (done) break;
+
+                  buffer += decoder.decode(value, { stream: true });
+                  const lines = buffer.split('\n');
+                  buffer = lines.pop() || '';
+
+                  for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed || !trimmed.startsWith('data:')) continue;
+                    const dataStr = trimmed.replace(/^data:\s*/, '');
+                    try {
+                      const parsed = JSON.parse(dataStr);
+                      const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                      if (text) {
+                        onToken(text);
+                        hasStreamed = true;
+                      }
+                    } catch (e) {}
                   }
+                }
+
+                if (hasStreamed) {
                   onComplete();
                   return;
                 }
@@ -1767,7 +1787,9 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${curKey}`
+                'Authorization': `Bearer ${curKey}`,
+                'x-opencode-session': 'ses_apex_combat_' + Date.now(),
+                'User-Agent': 'apex-powerscaling-engine/26.0'
               },
               body: JSON.stringify({
                 model: cleanModel,
@@ -1800,7 +1822,7 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
                   }
                   try {
                     const parsed = JSON.parse(dataStr);
-                    const delta = parsed.choices?.[0]?.delta?.content || parsed.choices?.[0]?.delta?.reasoning_content || '';
+                    const delta = parsed.choices?.[0]?.delta?.content || '';
                     if (delta) onToken(delta);
                   } catch (e) {}
                 }
@@ -2383,14 +2405,14 @@ Modo: ${matchMode}.
 Condición: Debe ser dinámica, con tono serio de VS Battles y física sensorial (olores a ozono, azufre, gravedad). Responde ÚNICAMENTE con el texto de la premisa, sin introducciones ni comillas.`;
 
     if (matchMode === '1vN') {
-      const squadNames = teamB.length > 0 ? teamB.map(c => c.name).join(' y ') : 'el escuadrón';
+      const squadNames = (teamB || []).filter(Boolean).length > 0 ? (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(' y ') : 'el escuadrón';
       prompt = `Genera una premisa de combate Raid Boss de 2-3 oraciones: El Titán ${cAName} enfrenta a la alianza de ${squadNames} en "${scenName}". Responde solo con la premisa directa sin comillas.`;
     } else if (matchMode === 'teams') {
-      const tANames = teamA.length > 0 ? teamA.map(c => c.name).join(' & ') : 'Equipo Alfa';
-      const tBNames = teamB.length > 0 ? teamB.map(c => c.name).join(' & ') : 'Equipo Beta';
+      const tANames = (teamA || []).filter(Boolean).length > 0 ? (teamA || []).filter(Boolean).map(c => c?.name || c?.id || 'Alfa').join(' & ') : 'Equipo Alfa';
+      const tBNames = (teamB || []).filter(Boolean).length > 0 ? (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Beta').join(' & ') : 'Equipo Beta';
       prompt = `Genera una premisa de combate de facciones de 2-3 oraciones: (${tANames}) vs (${tBNames}) en "${scenName}". Responde solo con la premisa directa sin comillas.`;
     } else if (matchMode === 'battle_royale') {
-      const brNames = battleRoyale.length > 0 ? battleRoyale.map(c => c.name).join(', ') : 'los gladiadores';
+      const brNames = (battleRoyale || []).filter(Boolean).length > 0 ? (battleRoyale || []).filter(Boolean).map(c => c?.name || c?.id || 'Gladiador').join(', ') : 'los gladiadores';
       prompt = `Genera una premisa de Battle Royale de 2-3 oraciones: (${brNames}) en un todos contra todos en "${scenName}". Responde solo con la premisa directa sin comillas.`;
     }
 
@@ -2405,14 +2427,14 @@ Condición: Debe ser dinámica, con tono serio de VS Battles y física sensorial
 
     // Procedural Fallback
     if (matchMode === '1vN') {
-      const squadNames = teamB.length > 0 ? teamB.map(c => c.name).join(' y ') : 'el escuadrón';
+      const squadNames = (teamB || []).filter(Boolean).length > 0 ? (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(' y ') : 'el escuadrón';
       return `En ${scenName}, el aire huele a azufre y ozono quemado mientras el Titán ${cAName} desata su furia cósmica; ${squadNames} deberán coordinar sus arsenales y hax al unísono para quebrar su impenetrable defensa antes de que la arena colapse.`;
     } else if (matchMode === 'teams') {
-      const tANames = teamA.length > 0 ? teamA.map(c => c.name).join(' & ') : 'Equipo Alfa';
-      const tBNames = teamB.length > 0 ? teamB.map(c => c.name).join(' & ') : 'Equipo Beta';
+      const tANames = (teamA || []).filter(Boolean).length > 0 ? (teamA || []).filter(Boolean).map(c => c?.name || c?.id || 'Alfa').join(' & ') : 'Equipo Alfa';
+      const tBNames = (teamB || []).filter(Boolean).length > 0 ? (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Beta').join(' & ') : 'Equipo Beta';
       return `Una guerra de facciones en ${scenName}: ${tANames} miden su sincronía de combate y pasivas combinadas contra la implacable formación de ${tBNames} en un choque sísmico que no admite supervivientes.`;
     } else if (matchMode === 'battle_royale') {
-      const brNames = battleRoyale.length > 0 ? battleRoyale.map(c => c.name).join(', ') : 'los guerreros legendarios';
+      const brNames = (battleRoyale || []).filter(Boolean).length > 0 ? (battleRoyale || []).filter(Boolean).map(c => c?.name || c?.id || 'Gladiador').join(', ') : 'los guerreros legendarios';
       return `El colapso perimetral en ${scenName} obliga a (${brNames}) a un baño de sangre sin alianzas donde solo el estratega con mayor durabilidad y velocidad de reacción resistirá en pie.`;
     }
 
@@ -2429,10 +2451,10 @@ Condición: Debe ser dinámica, con tono serio de VS Battles y física sensorial
     const scenName = scenario?.name || 'Arena de Combate';
 
     const fightersDesc = matchMode === 'teams'
-      ? (teamA.map(c => c.name).join(' & ') + ' vs ' + teamB.map(c => c.name).join(' & '))
+      ? ((teamA || []).filter(Boolean).map(c => c?.name || c?.id || 'Alfa').join(' & ') + ' vs ' + (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Beta').join(' & '))
       : (matchMode === '1vN'
-        ? (cAName + ' vs ' + teamB.map(c => c.name).join(', '))
-        : (matchMode === 'battle_royale' ? battleRoyale.map(c => c.name).join(', ') : `${cAName} vs ${cBName}`));
+        ? (cAName + ' vs ' + (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(', '))
+        : (matchMode === 'battle_royale' ? (battleRoyale || []).filter(Boolean).map(c => c?.name || c?.id || 'Gladiador').join(', ') : `${cAName} vs ${cBName}`));
 
     const prompt = `[DIRECTIVA OBLIGATORIA: Eres un editor y guionista de combates de élite para APEX ENGINE].
 Tu misión es TOMAR LA SIGUIENTE PREMISA / CONDICIONES ESCRITAS POR EL USUARIO y MEJORARLA, DETALLARLA, EXPLICARLA MEJOR Y CORREGIR CUALQUIER FALTA DE ORTOGRAFÍA O GRAMÁTICA, TRABAJANDO A PARTIR DE ELLA SIN CAMBIAR EN ABSOLUTO LO QUE EL USUARIO QUIERE INTERPRETAR.

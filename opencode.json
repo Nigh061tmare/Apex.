@@ -8,6 +8,10 @@
     "GLOBAL_CORE.md"
   ],
   "command": {
+    "compact": {
+      "description": "✂️ Poda y desinfla al instante todas las sesiones de OpenCode para ahorrar cuota",
+      "template": "node Z:/apex-powerscaling-engine/tools/opencode/compact_and_prune_all_sessions.cjs"
+    },
     "audit": {
       "description": "🌙 Auditoría de Roster Flexible: usa OpenRouter o Gemini (Uso: audit [gemini|nemotron|minimax|ling] [universo] [ficha_inicio])",
       "template": "node src/scripts/runAuditDispatcher.js \"$1\" \"$2\" \"$3\""
@@ -78,26 +82,57 @@
     }
   },
   "agent": {
-    "explore": {
-      "mode": "subagent",
-      "color": "info",
-      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "🔍 Explorer Free (OpenRouter): Búsqueda, lectura y análisis de código 100% gratuito sin consumo de cuota Go",
-      "prompt": "Eres el Agente Explorador de OpenCode. Buscas, lees e inspeccionas archivos y documentación usando exclusivamente Nemotron Super 120B Free para cero gasto de cuota."
+    "chat": {
+      "mode": "primary",
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "💬 Chat 100% GRATIS: Conversación directa sin bucles y con CERO consumo de saldo Go",
+      "prompt": "Eres el Asistente de Chat de OpenCode. Respondes de forma clara, directa y concisa en un solo mensaje. No ejecutas bucles automáticos de herramientas."
     },
-    "general": {
+    "build": {
       "mode": "primary",
       "color": "primary",
       "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "💬 General Free (OpenRouter): Consultas generales sin consumo de cuota Go",
-      "prompt": "Eres el Agente General de OpenCode. Respondes consultas y asistes al usuario usando Nemotron Super 120B Free con cero consumo de saldo de OpenCode Go."
+      "description": "🔨 Builder Free (OpenRouter · Nemotron Super 120B): edición, terminal y build sin consumir cuota Go",
+      "prompt": "Eres el Agente Constructor principal. Tienes control de terminal, edición de ficheros y despliegues. Usas Nemotron Super 120B Free de OpenRouter para no consumir cuota de OpenCode Go."
+    },
+    "general": {
+      "mode": "primary",
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "💬 General 100% GRATIS: Modo chat normal con CERO consumo de saldo Go",
+      "prompt": "Eres el Asistente General de OpenCode. Respondes de forma directa y concisa en un solo mensaje."
     },
     "plan": {
       "mode": "primary",
-      "color": "secondary",
-      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "📋 Planner Free (OpenRouter): Planificación y diseño de soluciones gratuito",
-      "prompt": "Eres el Agente Planificador de OpenCode. Creas planes detallados de implementación usando Nemotron Super 120B Free sin consumir cuota Go."
+      "color": "success",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "📋 Planner 100% GRATIS: Planificación y diseño de soluciones con CERO consumo de saldo Go",
+      "prompt": "Eres el Agente Planificador de OpenCode. Creas planes detallados de implementación sin consumir cuota Go."
+    },
+    "explore": {
+      "mode": "subagent",
+      "color": "info",
+      "model": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+      "description": "🔍 Explorer 100% GRATIS: Búsqueda, lectura y análisis de código con CERO consumo de cuota Go",
+      "prompt": "Eres el Agente Explorador de OpenCode. Buscas, lees e inspeccionas archivos usando exclusivamente modelos gratuitos."
+    },
+    "chat_deepseek": {
+      "mode": "primary",
+      "color": "warning",
+      "model": "opencode-go/deepseek-v4-flash",
+      "temperature": 0.5,
+      "description": "⚡ Chat DeepSeek Flash (0,1¢): 1 solo mensaje directo con DeepSeek, sin bucles de herramientas",
+      "prompt": "Eres el Asistente de Chat DeepSeek de OpenCode. Responde de forma directa, precisa y concisa. Evita introducciones, saludos o despedidas innecesarias para ahorrar tokens de salida. No ejecutas bucles automáticos de herramientas."
+    },
+    "build_deepseek": {
+      "mode": "primary",
+      "color": "warning",
+      "model": "opencode-go/deepseek-v4-flash",
+      "steps": 2,
+      "temperature": 0.2,
+      "description": "⚡ Build DeepSeek Ultra-Económico: Freno estricto a 2 pasos por turno (máximo ~0,4¢ por mensaje)",
+      "prompt": "Eres el Constructor DeepSeek Ultra-Económico. Sé quirúrgico y directo: realiza únicamente la acción necesaria en un máximo de 2 pasos sin lecturas redundantes de archivos. Al terminar, da una confirmación concisa de 1 o 2 líneas sin repetir código extenso para minimizar tokens de salida."
     },
     "nex_pro": {
       "mode": "primary",
@@ -188,13 +223,6 @@
       "model": "google/gemini-flash-lite-latest",
       "description": "🌐 Gemini Flash Lite (Google API): 1M contexto, búsqueda web y respuestas instantáneas",
       "prompt": "Eres el Agente de Alta Velocidad basado en Google Gemini Flash Lite Latest. Tu objetivo es procesar consultas rápidas, rastreo en la web, verificación de datos en tiempo real y respuestas concisas."
-    },
-    "build": {
-      "mode": "primary",
-      "color": "primary",
-      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
-      "description": "🔨 Builder Free (OpenRouter · Nemotron Super 120B): edición, terminal y build sin consumir cuota Go",
-      "prompt": "Eres el Agente Constructor principal. Tienes control de terminal, edición de ficheros y despliegues. Usas Nemotron Super 120B Free de OpenRouter para no consumir cuota de OpenCode Go."
     },
     "deepseek_fast": {
       "mode": "primary",

@@ -8,9 +8,14 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, '../../');
+
 const { runMaintenance } = require('./maintainOpenCodeDb.cjs');
 let runSentinel = () => {};
 let runCatalogUpdate = async () => {};
+let runAutoCompaction = () => {};
+
 try {
   const sentinelPath = path.resolve(__dirname, '../../tools/opencode/blindaje_antocuota.cjs');
   if (fs.existsSync(sentinelPath)) {
@@ -23,7 +28,6 @@ try {
     runCatalogUpdate = require(catalogPath).runCatalogUpdate;
   }
 } catch (e) {}
-let runAutoCompaction = () => {};
 try {
   const compactorPath = path.resolve(__dirname, '../../tools/opencode/compact_and_prune_all_sessions.cjs');
   if (fs.existsSync(compactorPath)) {
@@ -37,9 +41,6 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason) => {
   console.warn('[SUPERVISOR SHIELD] Promesa rechazada interceptada (proceso protegido):', reason?.message || reason);
 });
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const projectRoot = path.resolve(__dirname, '../../');
 
 console.log('  🚀 INICIANDO OPENCODE WEB — APEX POWER SCALING');
 console.log('========================================================');
@@ -105,7 +106,7 @@ async function bootstrap() {
     console.warn('[SUPERVISOR] Mantenimiento inicial:', mErr?.message || mErr);
   }
 
-  // Mantenimiento continuo, chequeo de blindaje y autocompactación cada 2 horas
+  // Mantenimiento continuo, chequeo de blindaje y autocompactación cada 10 minutos
   setInterval(async () => {
     try {
       runSentinel();
@@ -113,7 +114,7 @@ async function bootstrap() {
       runAutoCompaction({ verbose: false });
       runMaintenance({ verbose: false });
     } catch {}
-  }, 2 * 60 * 60 * 1000);
+  }, 10 * 60 * 1000);
 
   const opencodePort = await findAvailablePort(4096, [4098, 4100, 4102, 4104]);
   const proxyPort = await findAvailablePort(4097, [4099, 4101, 4103, 4105]);
@@ -153,13 +154,9 @@ async function bootstrap() {
       if (clientReq.method === 'POST' && requestBody.length > 0) {
         try {
           const bodyObj = JSON.parse(requestBody.toString('utf8'));
-          if (bodyObj.model) {
-            const cleanModel = bodyObj.model.replace(/^openrouter\//, '');
-            const targetMax = MODEL_MAX_TOKENS[cleanModel];
-            if (targetMax && (!bodyObj.max_tokens || bodyObj.max_tokens < targetMax)) {
-              bodyObj.max_tokens = targetMax;
-              requestBody = Buffer.from(JSON.stringify(bodyObj), 'utf8');
-            }
+          if (bodyObj.max_tokens && bodyObj.max_tokens > 4096) {
+            bodyObj.max_tokens = 4096;
+            requestBody = Buffer.from(JSON.stringify(bodyObj), 'utf8');
           }
         } catch (err) {}
       }
@@ -338,6 +335,20 @@ async function bootstrap() {
 
   startOpenCodeProcess();
   setTimeout(checkAndOpenBrowser, 1200);
+
+  // Ejecutar primera compactación a los 5 segundos del inicio
+  setTimeout(() => {
+    try {
+      runAutoCompaction({ verbose: true });
+    } catch (e) {}
+  }, 5000);
+
+  // Compactador periódico de sesiones (cada 10 minutos para mantener el contexto ligero y barato)
+  setInterval(() => {
+    try {
+      runAutoCompaction({ verbose: true });
+    } catch (e) {}
+  }, 10 * 60 * 1000);
 
   // Mantener el bucle de eventos de Node.js eternamente activo
   setInterval(() => {}, 30000);
