@@ -23,6 +23,13 @@ try {
     runCatalogUpdate = require(catalogPath).runCatalogUpdate;
   }
 } catch (e) {}
+let runAutoCompaction = () => {};
+try {
+  const compactorPath = path.resolve(__dirname, '../../tools/opencode/compact_and_prune_all_sessions.cjs');
+  if (fs.existsSync(compactorPath)) {
+    runAutoCompaction = require(compactorPath).runAutoCompaction;
+  }
+} catch (e) {}
 
 process.on('uncaughtException', (err) => {
   console.warn('[SUPERVISOR SHIELD] Error no capturado interceptado (proceso protegido):', err?.message || err);
@@ -92,16 +99,18 @@ async function bootstrap() {
   try {
     runSentinel();
     await runCatalogUpdate();
+    runAutoCompaction({ verbose: true });
     runMaintenance({ verbose: true });
   } catch (mErr) {
     console.warn('[SUPERVISOR] Mantenimiento inicial:', mErr?.message || mErr);
   }
 
-  // Mantenimiento continuo y chequeo de blindaje cada 2 horas
+  // Mantenimiento continuo, chequeo de blindaje y autocompactación cada 2 horas
   setInterval(async () => {
     try {
       runSentinel();
       await runCatalogUpdate();
+      runAutoCompaction({ verbose: false });
       runMaintenance({ verbose: false });
     } catch {}
   }, 2 * 60 * 60 * 1000);
