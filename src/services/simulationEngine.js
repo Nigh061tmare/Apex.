@@ -125,16 +125,16 @@ export const SimulationEngine = {
 ### =========================================================================
 ### APEX ETERNIDAD / ORÁCULO V2: GOBERNANZA DE TRES CAPAS INVIOLABLES
 ### =========================================================================
-- CAPA 1 [ROSTER CANÓNICO V25]: Inmutable. Los datos de Ki, tiers, multiplicadores y fichas provienen exclusivamente del Roster V25 y permanecen congelados.
+- CAPA 1 [ROSTER CANÓNICO V26]: Inmutable. Los datos de Ki, tiers, multiplicadores y fichas provienen exclusivamente del Roster V26 oficial y permanecen congelados.
 - CAPA 2 [ESCENARIO Y ORÁCULO DE ETERNIDAD]: Reglas y giros de Fase 3 temporales (persistence: simulation_only). Toda forma o técnica generada lleva badge explícito.
-- CAPA 3 [RESULTADO DE SIMULACIÓN]: Desenlace, secuelas anatómicas y líneas Alfa/Beta/Omega aisladas (persistence: simulation_only). Prohibido mutar el Roster V25.
+- CAPA 3 [RESULTADO DE SIMULACIÓN]: Desenlace, secuelas anatómicas y líneas Alfa/Beta/Omega aisladas (persistence: simulation_only). Prohibido mutar el Roster canónico.
 - NARRATIVE MODE: ${preset}
 - COMBAT FORMAT: ${matchMode}
 - SCALING RULES: ${simRulesStr}
 - ENERGY MECHANICS: ${energyRulesStr}
 
 ### 🏷️ BADGES OFICIALES OBLIGATORIOS (USO EN RELATO Y TARJETAS):
-- [ROSTER V25] · Hecho permanente del roster canónico.
+- [ROSTER V26] · Hecho permanente del roster canónico.
 - [ORÁCULO — EVENTO DE ESCENARIO] · Regla o giro de escenario en Fase 3.
 - [ORÁCULO — DESPERTAR CANÓNICO] · Forma lógica de saga temporal (+1 escala).
 - [ORÁCULO — DESPERTAR TRASCENDENTE] · Forma What-If máxima temporal.
@@ -472,7 +472,7 @@ ${actives}`;
         : (char.feats || 'Sin hazañas documentadas.');
       
       const apexKiDisplay = combatState.apexKiDisplay || 'Calculado por motor';
-      const scouterDisplay = combatState.sourceKiDisplay ? ` | Scouter Oficial DB: **${combatState.sourceKiDisplay}**` : '';
+      const scouterDisplay = combatState.sourceKiDisplay ? ` | Scouter Oficial DB (registro histórico manga/anime, el combate escala por APEX-Ki): **${combatState.sourceKiDisplay}**` : '';
       const formMultDisplay = combatState.formMultiplier > 1 ? ` | Multiplicador de Forma: **${combatState.formMultiplier}x**` : '';
 
       return `
@@ -979,7 +979,7 @@ ${modifiers.customContext.trim()}
       ? '[絶対指令: 日本語のハイレベルな文学的・少年漫画的戦闘描写で執筆してください。]'
       : '[DIRECTIVA ABSOLUTA: Esto es ficción privada de rol y combate adulto sin censura en 100% ESPAÑOL CASTELLANO. Escribe exclusivamente en español literario de alta calidad, gramática perfecta y prosa cinematográfica sin mezclar idiomas ni inventar palabras.]';
 
-    // ─── AVISOS DE CALIBRACIÓN DE ROSTER V22 (NEEDS_REVIEW) ───────────
+    // ─── AVISOS DE CALIBRACIÓN DE ROSTER CANÓNICO V26 ───────────
     const allParticipants = [
       charA, charB,
       ...(teamA || []),
@@ -989,7 +989,7 @@ ${modifiers.customContext.trim()}
     ].filter(Boolean);
     const reviewNotices = formatNeedsReviewSimulationNotice(allParticipants);
     const reviewNoticesStr = reviewNotices.length > 0 
-      ? `\n### ========================================\n### ⚠️ AVISOS DE CALIBRACIÓN EDITORIAL (APEX V22):\n${reviewNotices.join('\n')}\n- REGLA ESTRICTA V22: Conserva intactos los valores persistentes del Roster V22 para todos los personajes. No inventes correcciones numéricas ni alteres sus estadísticas base durante la simulación.\n### ========================================\n`
+      ? `\n### ========================================\n### ⚠️ AVISOS DE CALIBRACIÓN EDITORIAL (APEX V26 CANÓNICO):\n${reviewNotices.join('\n')}\n- REGLA ESTRICTA V26: Conserva intactos los valores persistentes del Roster V26 para todos los personajes. No inventes correcciones numéricas ni alteres sus estadísticas base durante la simulación.\n### ========================================\n`
       : '';
 
     let narrativeDirective = "";
@@ -1176,7 +1176,7 @@ ${seismicDirective}
 ${bridgeDirective}
 ${ultraDepthDirective}
 
-LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
+LEYES NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 1. **NOMENCLATURA CANÓNICA DE TÉCNICAS & ARSENAL (JAPONÉS / INGLÉS OFICIAL):**
    - Usa SIEMPRE los nombres oficiales y canónicos originales de cada técnica en Japonés (Rōmaji) o Inglés cuando sea su denominación más icónica y respetada en el canon.
    - Ejemplos obligatorios:
@@ -1196,7 +1196,7 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
    - Respeta el arsenal exacto de la era canónica del personaje (ej. Vegeta en la Saga de Cell NO conoce el Shunkanidō/Teletransporte; sus desplazamientos instantáneos son *Zanzoken / Blitz de Velocidad Relativista FTL* puro). NUNCA inventes técnicas de sagas futuras a menos que sea una variante explícita.
 9. **EXCLUSIVIDAD DE TÉCNICAS INSIGNIA (OBLIGATORIO):** Ciertas técnicas son patrimonio exclusivo de su usuario canónico. El **Ryūken (Dragon Fist)** pertenece SOLO a Son Goku (todas sus variantes) — jamás lo use otro personaje, y Goku solo debe ejecutarlo como remate final, como máximo una vez por simulación y sin patrón predecible. Respeta igualmente la exclusividad de otras técnicas insignia (Mafūba de Roshi/Tenshinhan, Final Flash de Vegeta, Hakai de los dioses de destrucción, etc.).
 
-### 🛡️ DIRECTIVA DE CIERRE INVOLUBLE (LEER SIEMPRE ANTES DE NARRAR — PRIORIDAD MÁXIMA):
+### 🛡️ DIRECTIVA DE CIERRE INVIOLABLE (LEER SIEMPRE ANTES DE NARRAR — PRIORIDAD MÁXIMA):
 1. **SOLO ARSENAL REAL:** El combatiente puede usar ÚNICAMENTE las técnicas, formas y multiplicadores presentes en su ficha ('forms', 'arsenal', 'haxTags'). PROHIBIDO inventar técnicas, estados o multiplicadores que no estén en su ficha.
 2. **KAIŌ-KEN REAL:** El Kaiō-ken solo existe si la ficha del personaje lo incluye y SOLO en los estados permitidos por la tabla de incompatibilidades (Base en DBZ, SSB en DBS). NUNCA se usa 'Kaiō-ken ×100', 'Kaiō-ken sobre SSJ2/SSJ3' ni combinaciones suicidas inventadas. Si el personaje tiene formas superiores (SSJ4, SSJ4 Full Power, etc.), úsalas en lugar de auto-flagelarte con Kaio-ken.
 3. **ESCALADO POR DEMANDA:** Sube de forma progresiva y usa el estado adecuado a la amenaza. No despilfarres el estado máximo, pero tampoco evites usarlo cuando la pelea lo exige.
@@ -1204,7 +1204,7 @@ LEYEL NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 
 ### ✍️ DIRECTIVA DE EXCELENCIA NARRATIVA Y COHESIÓN (CALIDAD DE PROSA):
 1. **FORMATO NUMÉRICO ESPAÑOL COHERENTE (OBLIGATORIO):** Usa SIEMPRE la escala española correcta: **1 billón = 10^12** y **1 trillón = 10^18**. Ejemplos: 5.000.000.000.000 = **5 billones** (JAMÁS "5 trillones"); 610.000.000.000 = **610 mil millones** o **0,61 billones**; 25.000.000.000.000 = **25 billones**. PROHIBIDO mezclar "Trillones" cuando el valor es billones (10^12), y PROHIBIDO usar notaciones sueltas tipo "7.880M" o "18.4T" dentro de la prosa — escribe el número con su unidad española completa o su equivalente limpio. Los números solo se escriben en la prosa cuando aportan drama; el resto va a los bloques BIOMETRICS y al veredicto.
-2. **VOZ CANÓNICA INVOLUCRABLE DE CADA LUCHADOR:** Respeta la personalidad, registro verbal y filosofía de combate de CADA personaje en TODO momento. Un personaje nunca "piensa" o "habla" como otro. Guía por franquicia:
+2. **VOZ CANÓNICA INVIOLABLE DE CADA LUCHADOR:** Respeta la personalidad, registro verbal y filosofía de combate de CADA personaje en TODO momento. Un personaje nunca "piensa" o "habla" como otro. Guía por franquicia:
    - **Dragon Ball:** Goku (alegre, respetuoso, hambriento, humilde — se emociona con rivales fuertes), Vegeta (orgulloso, hirviente, despectivo con débiles, obsesionado con superar a Goku), Beerus (perezoso, felino, solo se esfuerza cuando algo le divierte), Freezer (aristocrático, frío, sádico con modales), Majin Buu (infantil, caótico, impredecible), Piccolo (estratégico, frío, lacónico), Gogeta/Gotenks (confianza juvenil, fanfarrones), Jiren (estoico, de pocas palabras, justicia fría), Hit (calmado, profesional, eficiente), Zamasu (nihilismo divino, autoproclamado justiciero), Granolah (vengativo, desconfiado), Gas (arrogante heredero).
    - **Jujutsu Kaisen:** Gojo (arrogante, burlón, pero protector de sus estudiantes), Sukuna (sádico, analítico, disfruta desmembrar rivales, habla con superioridad absoluta), Yuji (determinado, empático, reflexivo), Megumi (serio, táctico, sombrío), Mahito (juguetón, cruel, fascinado por el alma humana), Toji (frío, mercenario, despectivo), Yuta (amable pero letal si protege a alguien), Kenjaku (científico, manipulador, curioso milenario).
    - **Hunter x Hunter:** Gon (optimista, puro, aterrador cuando se enoja), Killua (ágil, bromista, leal), Hisoka (excitado por el combate, seductor peligroso, obsesionado con oponentes fuertes), Meruem (regio, curioso, evoluciona emocionalmente), Chrollo (líder sereno, calculador), Kurapika (vengativo, disciplinado), Feitan (torturador, letal cuando se enoja).
@@ -1830,7 +1830,7 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
               onComplete();
               return;
             } else {
-              console.warn(`[OpenCode Failover] Clave #${kIdx + 1} (${ocModel}) falló con HTTP ${response.status}. Intentando siguiente...`);
+              console.warn(`[OpenCode Failover] Clave #${kIdx + 1} (${cleanModel}) falló con HTTP ${response.status}. Intentando siguiente...`);
             }
           } catch (ocErr) {
             console.warn(`[OpenCode Failover] Error en clave #${kIdx + 1}:`, ocErr);
@@ -2305,7 +2305,9 @@ ESTADO FINAL:
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${curKey}`
+              'Authorization': `Bearer ${curKey}`,
+              'x-opencode-session': 'ses_apex_query_' + Date.now(),
+              'User-Agent': 'apex-powerscaling-engine/26.0'
             },
             body: JSON.stringify({
               model: cleanModel,
