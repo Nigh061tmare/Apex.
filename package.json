@@ -13,10 +13,14 @@
     "watch:deploy": "node src/scripts/watchAndSync.js",
     "opencode": "opencode .",
     "opencode:web": "node src/scripts/launchOpenCodeWeb.js",
+    "opencode:clean": "node src/scripts/maintainOpenCodeDb.cjs",
     "opencode:model": "node src/scripts/selectOpenCodeModel.js",
     "opencode:new": "node src/scripts/createNewProject.js",
     "opencode:hub": "start CENTRO_DE_CONTROL.html",
-    "apex:build-index": "node src/scripts/buildApexRosterIndex.js"
+    "apex:build-index": "node src/scripts/buildApexRosterIndex.js",
+    "audit:images": "node src/scripts/auditCharacterImages.cjs --json",
+    "audit:images:missing": "node src/scripts/auditCharacterImages.cjs --missing",
+    "enrich:images": "node src/scripts/enrichCharacterImagesV3.cjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
