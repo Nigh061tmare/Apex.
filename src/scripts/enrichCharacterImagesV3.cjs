@@ -50,24 +50,31 @@ const META_TOKENS = new Set([
   'saga', 'arc', 'base', 'forma', 'form', 'inicio', 'poder', 'completo', 'completa',
   'maximo', 'maxima', 'z', 'gt', 'clasico', 'pelicula', 'peliculas', 'ova', 'ovas',
   'manga', 'anime', 'what', 'if', 'version', 'v1', 'v2', 'v3',
+  // Etiquetas de roster / sagas / fan-mangas (no forman parte del nombre)
+  'mha', 'war', 'guerra', 'pro', 'pre', 'kakumei', 'brokoly', 'after',
+  'redimido', 'superviviente', 'mutante', 'new', 'hope', 'adulto', 'adult',
 ]);
 
-/** Traducción ES→EN de términos frecuentes en el roster. */
+/** Traducción ES→EN de términos frecuentes en el roster (capitalizados para
+ *  que resuelvan como título de MediaWiki). */
 const ES_EN = {
-  androide: 'android', androides: 'android', comandante: 'commander', coronel: 'colonel',
-  emperador: 'emperor', emperatriz: 'empress', mayor: 'major', anciano: 'old', anciana: 'old',
-  maestro: 'master', senor: 'mr', rey: 'king', reina: 'queen', principe: 'prince',
-  dios: 'god', angel: 'angel', demonio: 'demon', ninos: 'kids', nino: 'kid',
-  futuro: 'future', gran: 'grand', patriarca: 'elder', sacerdote: 'priest',
-  norte: 'north', este: 'east', oeste: 'west', sur: 'south',
-  freezer: 'frieza', guerreros: 'warriors',
-  resurreccion: 'resurrection', llegada: 'arrival', tierra: 'earth',
-  armadura: 'armor', espada: 'sword', del: '', de: '', la: '', el: '', los: '', las: '',
+  androide: 'Android', androides: 'Android', comandante: 'Commander', coronel: 'Colonel',
+  emperador: 'Emperor', emperatriz: 'Empress', mayor: 'Major', anciano: 'Old', anciana: 'Old',
+  maestro: 'Master', senor: 'Mr', rey: 'King', reina: 'Queen', principe: 'Prince',
+  dios: 'God', angel: 'Angel', demonio: 'Demon', ninos: 'Kids', nino: 'Kid',
+  futuro: 'Future', gran: 'Grand', patriarca: 'Elder', sacerdote: 'Priest',
+  norte: 'North', este: 'East', oeste: 'West', sur: 'South',
+  freezer: 'Frieza', guerreros: 'Warriors',
+  resurreccion: 'Resurrection', llegada: 'Arrival', tierra: 'Earth',
+  armadura: 'Armor', espada: 'Sword', del: '', de: '', la: '', el: '', los: '', las: '',
   con: '', y: '', en: '', a: '', al: '',
 };
 
 /** Títulos que NO son fichas de personaje. */
 const BAD_TITLE = /\((chapter|episode|volume|manga chapter|disambiguation|gallery|category|image|images|song|soundtrack|ost|game|arc|film|movie|list|timeline)\)|\bvs\.?\b/i;
+
+/** Imágenes que no son arte del personaje (iconos de plantilla, placeholders…). */
+const BAD_IMG = /(^|\/)(male|female|unknown|site-logo|wiki|icon|question|placeholder|transparent|blank|noimage)[^/]*\.(png|jpe?g|gif|webp)/i;
 
 /** Frases compuestas del roster → nombre canónico en la wiki (prevalece sobre la traducción por tokens). */
 const PHRASE_MAP = [
@@ -113,31 +120,31 @@ function wikiFor(universe) {
   return null;
 }
 
-/** "Androide 17 (Saga Androides)" → "Android 17" */
+/** "Androide 17 (Saga Androides)" → "Android 17". PRESERVA la capitalización
+ *  original: MediaWiki solo auto-capitaliza la primera letra del título, por lo
+ *  que "best jeanist" NO resuelve a "Best Jeanist". */
 function cleanName(fullName) {
   let s = String(fullName || '');
   s = s.replace(/\([^)]*\)/g, ' ');            // fuera paréntesis
   s = s.replace(/[/|,].*$/, ' ');              // fuera coletillas tras separador
-  const flat = s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, ' ')
+  const words0 = s.split(/\s+/).filter(Boolean);
+  const flat = words0
+    .map((w) => w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
+    .join(' ')
     .trim();
 
   // 1. Frases compuestas canónicas (mayor prioridad)
   for (const [re, rep] of PHRASE_MAP) if (re.test(flat)) return rep;
 
-  // 2. Limpieza token a token + traducción
-  const words = flat.split(/\s+/).filter(Boolean);
+  // 2. Limpieza token a token + traducción, conservando el caso original
   const kept = [];
-  for (const w of words) {
-    const k = normAlnum(w);
+  for (const orig of words0) {
+    const k = normAlnum(orig);
     if (!k) continue;
     if (META_TOKENS.has(k)) continue;
-    kept.push(ES_EN[k] !== undefined ? ES_EN[k] : w);
+    kept.push(ES_EN[k] !== undefined ? ES_EN[k] : orig);
   }
-  return kept.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+  return kept.join(' ').replace(/\s+/g, ' ').trim();
 }
 
 /** Rangos/títulos genéricos: nunca valen como término de búsqueda por sí solos. */
@@ -168,6 +175,28 @@ function matchScore(term, pageTitle) {
 
 function isReliableMatch(term, pageTitle) {
   return matchScore(term, pageTitle) > 0;
+}
+
+/** Respaldo: primera imagen de arte real dentro del HTML de la página. */
+async function fetchMainImage(wiki, title) {
+  const url =
+    `https://${wiki}.fandom.com/api.php?action=parse&page=${encodeURIComponent(title)}` +
+    `&prop=text&format=json&redirects=1`;
+  const { data, error } = await fetchJson(url);
+  await sleep(DELAY_MS);
+  if (error || !data) return null;
+  const html = (data.parse && data.parse.text && data.parse.text['*']) || '';
+  if (!html) return null;
+  const re = /<img[^>]+src="([^"]+)"/g;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const src = m[1];
+    if (!/^https:\/\/static\.wikia\.nocookie\.net\//i.test(src)) continue;
+    if (BAD_IMG.test(src)) continue;
+    if (/scale-to-width-down\/([0-9]{1,2})\?/i.test(src)) continue; // iconos diminutos
+    return src;
+  }
+  return null;
 }
 
 async function fetchJson(url, attempt = 0) {
@@ -201,6 +230,7 @@ async function findOfficialImage(char) {
 
   const seen = new Set();
   let best = null;
+  let htmlCandidate = null;
 
   // FASE A — consulta directa por título (alta precisión para nombres canónicos:
   // "Superman", "Endeavor", "Magneto", "Overhaul"… sin depender del ranking de búsqueda).
@@ -216,7 +246,7 @@ async function findOfficialImage(char) {
       for (const p of Object.values(dPages)) {
         if (p?.missing) continue;
         const src = p?.thumbnail?.source;
-        if (!isUsable(src)) continue;
+        if (!isUsable(src)) { if (!htmlCandidate) htmlCandidate = p.title; continue; }
         // La consulta EXACTA por título (con redirects) ya resolvió el personaje:
         // se confía en ella aunque el título final sea el nombre real
         // (p. ej. "Endeavor" → "Enji Todoroki", "Dio" → "Dio Brando").
@@ -262,6 +292,14 @@ async function findOfficialImage(char) {
   }
 
   if (best) return { url: best.src, reason: `wiki:${wiki}`, page: best.title };
+
+  // FASE C — respaldo: el wiki no expone `pageimages` (infobox personalizado) pero
+  // la página sí contiene el arte del personaje (p. ej. My Hero Academia).
+  if (htmlCandidate) {
+    const htmlImg = await fetchMainImage(wiki, htmlCandidate);
+    if (htmlImg) return { url: htmlImg, reason: `wiki-html:${wiki}`, page: htmlCandidate };
+  }
+
   return { url: null, reason: `sin-coincidencia-fiable:${wiki}` };
 }
 
