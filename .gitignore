@@ -82,6 +82,8 @@ DB Devolution/
 /src/data/BACKUP_ROSTER_*
 /src/data/REFERENCIA_LIMPIA_*
 /src/data/characters_backup_*
+/src/data/backups/
+/src/data/reports/
 /src/data/tacticalProfiles_backup_*
 /src/data/tactical_gen_*
 /src/data/tactical_profiles_r35_generated.json
