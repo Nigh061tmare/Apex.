@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Shield, Swords, Sparkles, GitBranch, FolderCheck, PlusCircle, Cpu, Trophy, Download, Upload, Scale, Globe, Crown, Coffee, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, getTranslation } from '../services/i18n';
+import { getUserAvatar } from '../lib/characterImages';
 
 export default function Navbar({ 
   mode, 
@@ -238,7 +239,7 @@ export default function Navbar({
                 <>
                   <div className="w-4 h-4 rounded-full bg-cyan-400/20 border border-cyan-400 flex items-center justify-center text-[10px] overflow-hidden shrink-0">
                     <img 
-                      src={currentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.displayName || currentUser.email}`} 
+                      src={currentUser.avatar || getUserAvatar(currentUser)} 
                       alt="" 
                       className="w-full h-full object-contain"
                     />
@@ -371,7 +372,7 @@ export default function Navbar({
                 title="Organizar Roster"
               >
                 <span className="text-xs">🔀</span>
-                <span className="whitespace-nowrap font-bold">Roster ({allCharacters?.length || 770})</span>
+                <span className="whitespace-nowrap font-bold">Roster ({allCharacters?.length || 0})</span>
               </button>
 
               {/* Azar */}

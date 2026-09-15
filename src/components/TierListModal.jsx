@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+import { getCharacterImageWithFallback } from '../lib/characterImages';
 import { 
   X, Download, Sparkles, RefreshCw, Plus, Trash2, MoveUp, MoveDown, 
   Share2, Image, Layers, Search, Filter, Check, Crown, Flame, Swords
@@ -22,7 +24,12 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
       const saved = localStorage.getItem(STORAGE_KEY_TIERLIST);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(t => ({
+            ...t,
+            items: Array.isArray(t?.items) ? t.items.filter(Boolean).filter(c => c && (c.id || c.name)) : []
+          }));
+        }
       }
     } catch (e) {}
     return DEFAULT_TIERS;
@@ -41,20 +48,22 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
   if (!isOpen) return null;
 
   // Filter available characters that aren't yet placed in any tier
-  const placedIds = new Set(tiers.flatMap(t => t.items.map(c => c.id)));
-  const availableCharacters = characters.filter(c => {
-    if (placedIds.has(c.id)) return false;
+  const placedIds = new Set(
+    (tiers || []).flatMap(t => (t?.items || []).filter(Boolean).map(c => c?.id)).filter(Boolean)
+  );
+  const availableCharacters = (characters || []).filter(Boolean).filter(c => {
+    if (c?.id && placedIds.has(c.id)) return false;
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
-      const matchName = (c.name || '').toLowerCase().includes(q);
-      const matchUni = (c.universe || '').toLowerCase().includes(q);
-      const matchTier = (c.tier || '').toLowerCase().includes(q);
+      const matchName = (c?.name || '').toLowerCase().includes(q);
+      const matchUni = (c?.universe || '').toLowerCase().includes(q);
+      const matchTier = (c?.tier || '').toLowerCase().includes(q);
       if (!matchName && !matchUni && !matchTier) return false;
     }
     if (selectedFranchise !== 'all') {
-      const g = FRANCHISE_GROUPS.find(f => f.id === selectedFranchise);
-      if (g && g.keywords.length > 0) {
-        const full = `${c.name} ${c.universe} ${c.saga || ''}`.toLowerCase();
+      const g = FRANCHISE_GROUPS.find(f => f?.id === selectedFranchise);
+      if (g && g.keywords?.length > 0) {
+        const full = `${c?.name || ''} ${c?.universe || ''} ${c?.saga || ''}`.toLowerCase();
         const matchesKey = g.keywords.some(k => full.includes(k.toLowerCase()));
         if (!matchesKey) return false;
       }
@@ -63,9 +72,10 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
   });
 
   const handleAddToTier = (tierId, char) => {
-    setTiers(prev => prev.map(t => {
-      if (t.id === tierId) {
-        return { ...t, items: [...t.items, char] };
+    if (!char) return;
+    setTiers(prev => (prev || []).map(t => {
+      if (t?.id === tierId) {
+        return { ...t, items: [...(t.items || []).filter(Boolean), char] };
       }
       return t;
     }));
@@ -73,9 +83,9 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
   };
 
   const handleRemoveFromTier = (tierId, charId) => {
-    setTiers(prev => prev.map(t => {
-      if (t.id === tierId) {
-        return { ...t, items: t.items.filter(c => c.id !== charId) };
+    setTiers(prev => (prev || []).map(t => {
+      if (t?.id === tierId) {
+        return { ...t, items: (t.items || []).filter(Boolean).filter(c => (c?.id || c?.name) !== charId) };
       }
       return t;
     }));
@@ -195,10 +205,12 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
         // Draw character avatars
         let startX = 285;
         const imgSize = rowHeight - 35;
+        const safeTierItems = (tier?.items || []).filter(Boolean);
 
-        for (let j = 0; j < Math.min(tier.items.length, 12); j++) {
-          const c = tier.items[j];
-          const avatarUrl = c.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(c.name)}`;
+        for (let j = 0; j < Math.min(safeTierItems.length, 12); j++) {
+          const c = safeTierItems[j];
+          if (!c) continue;
+          const avatarUrl = getCharacterImageWithFallback(c);
           
           try {
             const img = new window.Image();
@@ -225,7 +237,7 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
           ctx.fillStyle = '#ffffff';
           ctx.font = 'bold 9px sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText(c.name.slice(0, 12), startX + (imgSize / 2), currentY + imgSize + 6);
+          ctx.fillText((c.name || 'Guerrero').slice(0, 12), startX + (imgSize / 2), currentY + imgSize + 6);
 
           startX += imgSize + 12;
         }
@@ -318,35 +330,41 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
           
           {/* TIER ROWS CONTAINER */}
           <div className="space-y-2.5">
-            {tiers.map((tier, idx) => (
+            {(tiers || []).map((tier, idx) => {
+              const safeItems = (tier?.items || []).filter(Boolean);
+              const tierId = tier?.id || `tier-${idx}`;
+              return (
               <div 
-                key={tier.id}
+                key={tierId}
                 className="flex flex-col sm:flex-row rounded-xl border border-slate-800 bg-slate-900/40 overflow-hidden shadow-md"
               >
                 {/* Tier Name Pill */}
-                <div className={`sm:w-56 p-3 sm:p-4 bg-gradient-to-r ${tier.color} text-white flex items-center justify-between shrink-0 font-bold font-cinzel text-xs sm:text-sm shadow-md`}>
-                  <span>{tier.label}</span>
+                <div className={`sm:w-56 p-3 sm:p-4 bg-gradient-to-r ${tier?.color || 'from-slate-700 to-slate-800'} text-white flex items-center justify-between shrink-0 font-bold font-cinzel text-xs sm:text-sm shadow-md`}>
+                  <span>{tier?.label || 'Tier'}</span>
                   <span className="text-[10px] bg-black/30 px-2 py-0.5 rounded-full font-mono font-normal">
-                    {tier.items.length}
+                    {safeItems.length}
                   </span>
                 </div>
 
                 {/* Placed Fighters Area */}
                 <div className="p-2 sm:p-3 flex-1 flex flex-wrap gap-2 items-center min-h-[64px] bg-slate-950/70">
-                  {tier.items.length === 0 ? (
+                  {safeItems.length === 0 ? (
                     <span className="text-slate-600 italic text-[11px] px-2">
                       Haz clic en un personaje abajo para añadirlo a esta fila...
                     </span>
                   ) : (
-                    tier.items.map(c => (
+                    safeItems.map((c, itemIdx) => {
+                      const charId = c?.id || c?.name || `item-${itemIdx}`;
+                      const charName = c?.name || 'Guerrero';
+                      return (
                       <div 
-                        key={c.id}
-                        onClick={() => handleRemoveFromTier(tier.id, c.id)}
+                        key={charId}
+                        onClick={() => handleRemoveFromTier(tierId, charId)}
                         className="group relative w-12 h-12 rounded-lg bg-slate-900 border border-slate-700 hover:border-red-500 overflow-hidden cursor-pointer transition transform hover:scale-105 shrink-0"
-                        title={`${c.name} (${c.tier}) - Clic para quitar`}
+                        title={`${charName} (${c?.tier || 'Tier'}) - Clic para quitar`}
                       >
                         <img 
-                          src={c.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(c.name)}`} 
+                          src={getCharacterImageWithFallback(c || { name: charName })} 
                           alt="" 
                           className="w-full h-full object-contain"
                         />
@@ -354,26 +372,27 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
                           <X className="w-4 h-4" />
                         </div>
                         <span className="absolute bottom-0 inset-x-0 bg-black/80 text-[8px] text-white truncate text-center px-0.5">
-                          {c.name.split(' ')[0]}
+                          {charName.split(' ')[0]}
                         </span>
                       </div>
-                    ))
+                    );})
                   )}
 
                   {/* Add Active Selected Char Button */}
                   {activeSelectedChar && (
                     <button
                       type="button"
-                      onClick={() => handleAddToTier(tier.id, activeSelectedChar)}
+                      onClick={() => handleAddToTier(tierId, activeSelectedChar)}
                       className="px-3 py-2 rounded-lg bg-cyan-950 border border-cyan-500/60 hover:bg-cyan-900 text-cyan-300 font-bold text-[10px] flex items-center gap-1 animate-pulse cursor-pointer shadow-md"
                     >
                       <Plus className="w-3.5 h-3.5" />
-                      <span>Colocar {activeSelectedChar.name.split(' ')[0]} aquí</span>
+                      <span>Añadir aquí</span>
                     </button>
                   )}
                 </div>
               </div>
-            ))}
+            );})}
+
           </div>
 
           {/* AVAILABLE CHARACTERS PICKER TRAY */}
@@ -410,11 +429,13 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
 
             {/* Character Cards Mini Grid */}
             <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-56 overflow-y-auto p-1">
-              {availableCharacters.slice(0, 64).map(c => {
-                const isSelected = activeSelectedChar?.id === c.id;
+              {availableCharacters.filter(Boolean).slice(0, 64).map((c, cIdx) => {
+                const charId = c?.id || c?.name || `avail-${cIdx}`;
+                const charName = c?.name || 'Guerrero';
+                const isSelected = activeSelectedChar && (activeSelectedChar.id === charId || activeSelectedChar.name === charName);
                 return (
                   <div
-                    key={c.id}
+                    key={charId}
                     onClick={() => setActiveSelectedChar(isSelected ? null : c)}
                     className={`p-1.5 rounded-xl border flex flex-col items-center gap-1 cursor-pointer transition transform hover:scale-105 text-center ${
                       isSelected 
@@ -424,16 +445,16 @@ export default function TierListModal({ isOpen, onClose, characters = [] }) {
                   >
                     <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-900 shrink-0">
                       <img 
-                        src={c.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(c.name)}`} 
+                        src={getCharacterImageWithFallback(c || { name: charName })} 
                         alt="" 
                         className="w-full h-full object-contain"
                       />
                     </div>
                     <span className="text-[9.5px] font-bold text-white truncate w-full">
-                      {c.name}
+                      {charName}
                     </span>
                     <span className="text-[8px] text-cyan-400 truncate w-full">
-                      {c.tier?.split('|')[0] || c.tier}
+                      {c?.tier?.split('|')[0] || c?.tier || 'Tier'}
                     </span>
                   </div>
                 );

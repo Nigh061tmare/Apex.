@@ -1,6 +1,7 @@
 // APEX Cloud Sync & Authentication Service (V3 - Multi-Device Bridge)
 // Seamless cross-device cloud synchronization for characters, favorite fights, settings, and oracle coins.
 
+import { buildUserPlaceholder } from '../lib/apexImagePlaceholders';
 const STORAGE_KEY_AUTH_USER = 'apex_auth_user';
 const STORAGE_KEY_CLOUD_CONFIG = 'apex_cloud_config';
 const STORAGE_KEY_LAST_SYNC = 'apex_last_cloud_sync';
@@ -193,7 +194,7 @@ class CloudSyncService {
       password: password,
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanDisplayName || email)}`,
+      avatar: buildUserPlaceholder({ displayName: cleanDisplayName, email }),
       role: 'member',
       token: `apex_jwt_${userId}`
     };
@@ -292,7 +293,7 @@ class CloudSyncService {
         password: password,
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
-        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(fallbackName)}`,
+        avatar: buildUserPlaceholder({ displayName: fallbackName }),
         role: 'member',
         token: `apex_jwt_${userId}`
       };

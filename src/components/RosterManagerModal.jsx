@@ -234,14 +234,14 @@ export default function RosterManagerModal({
                 onClick={() => {
                   if (onResetMasterRoster) {
                     const total = onResetMasterRoster();
-                    alert(`¡Roster Maestro Actualizado! Base de datos recargada con ${total || allCharacters?.length || 770} personajes.`);
+                    alert(`¡Roster Maestro Actualizado! Base de datos recargada con ${total || characters?.length || 0} personajes.`);
                   }
                 }}
                 className="px-2.5 py-1.5 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-500/60 text-amber-300 text-[10px] font-bold transition cursor-pointer flex items-center gap-1 shadow"
-                title={`Forzar actualización completa con los ${allCharacters?.length || 770} personajes maestros oficiales`}
+                title={`Forzar actualización completa con los ${characters?.length || 0} personajes maestros oficiales`}
               >
                 <RefreshCw className="w-3 h-3 text-amber-400" />
-                <span>🔄 Sincronizar Base Oficial ({allCharacters?.length || 770})</span>
+                <span>🔄 Sincronizar Base Oficial ({characters?.length || 0})</span>
               </button>
             )}
 

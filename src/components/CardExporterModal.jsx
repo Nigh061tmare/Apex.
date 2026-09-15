@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+
+import { getCharacterImageWithFallback } from '../lib/characterImages';
 import { Download, X, Sparkles, Shield, Zap, Crosshair, Trophy, Flame, Image, Layers, Sparkle, RefreshCw, Printer, AlertTriangle } from 'lucide-react';
 import { SoundFX } from '../services/soundFx';
 
@@ -170,7 +172,7 @@ export default function CardExporterModal({ isOpen, onClose, character }) {
       ctx.fill();
 
       // Draw Avatar Image
-      const avatarUrl = character.avatar || character.image || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`;
+      const avatarUrl = getCharacterImageWithFallback(character);
       try {
         const img = new window.Image();
         img.crossOrigin = 'anonymous';
@@ -456,7 +458,7 @@ export default function CardExporterModal({ isOpen, onClose, character }) {
             </div>
             
             <div className="w-full h-36 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center relative">
-              <img src={character.avatar || character.image || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`} alt="" className="w-full h-full object-contain" />
+              <img src={getCharacterImageWithFallback(character)} alt="" className="w-full h-full object-contain" />
               <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/80 text-yellow-300 text-[8px] font-bold">
                 {character.tier?.split('|')[0] || character.tier}
               </span>

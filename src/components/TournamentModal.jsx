@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+
+import { getCharacterImageWithFallback } from '../lib/characterImages';
 import { 
   Trophy, Swords, Sparkles, RefreshCw, X, Play, Shield, ChevronRight, 
   Crown, Flame, Coins, Dices, FastForward, Award, CheckCircle, AlertCircle,
@@ -337,8 +339,8 @@ VENCEDOR: Nombre completo del ganador`;
 
   const handleFillEmptySlotsRandomly = () => {
     const current = [...participants];
-    const usedIds = new Set(current.filter(Boolean).map(c => c.id));
-    const available = characters.filter(c => !usedIds.has(c.id)).sort(() => 0.5 - Math.random());
+    const usedIds = new Set((current || []).filter(Boolean).map(c => c?.id).filter(Boolean));
+    const available = (characters || []).filter(Boolean).filter(c => c?.id && !usedIds.has(c.id)).sort(() => 0.5 - Math.random());
     
     let availIdx = 0;
     for (let i = 0; i < tournamentSize; i++) {
@@ -1570,7 +1572,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                           <div className="flex items-center gap-2 truncate">
                             {match.charA && (
                               <div className="w-6 h-6 rounded-lg overflow-hidden bg-slate-900 shrink-0">
-                                <img src={match.charA.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(match.charA.name)}`} alt="" className="w-full h-full object-contain" />
+                                <img src={getCharacterImageWithFallback(match.charA)} alt="" className="w-full h-full object-contain" />
                               </div>
                             )}
                             <span className="truncate text-xs">{match.charA?.name || 'Por definir...'}</span>
@@ -1602,7 +1604,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                           <div className="flex items-center gap-2 truncate">
                             {match.charB && (
                               <div className="w-6 h-6 rounded-lg overflow-hidden bg-slate-900 shrink-0">
-                                <img src={match.charB.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(match.charB.name)}`} alt="" className="w-full h-full object-contain" />
+                                <img src={getCharacterImageWithFallback(match.charB)} alt="" className="w-full h-full object-contain" />
                               </div>
                             )}
                             <span className="truncate text-xs">{match.charB?.name || 'Por definir...'}</span>
@@ -1727,7 +1729,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                   {/* Campeón */}
                   <div className="flex flex-col items-center gap-1 w-[40%] -translate-y-2">
                     <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-yellow-400 shadow-xl bg-slate-950">
-                      <img src={champion.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(champion.name)}`} alt="" className="w-full h-full object-contain" />
+                      <img src={getCharacterImageWithFallback(champion)} alt="" className="w-full h-full object-contain" />
                     </div>
                     <h3 className="text-sm font-black text-white font-cinzel text-center leading-tight">{champion.name.split('(')[0].trim()}</h3>
                     <span className="text-[10px] text-amber-300 font-mono text-center">{champion.tier}</span>
@@ -2145,7 +2147,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                     {char ? (
                       <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs">
                         <div className="w-8 h-8 rounded-lg overflow-hidden bg-slate-900 shrink-0 border border-slate-700">
-                          <img src={char.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(char.name)}`} alt="" className="w-full h-full object-contain" />
+                          <img src={getCharacterImageWithFallback(char)} alt="" className="w-full h-full object-contain" />
                         </div>
                         <div className="truncate flex-1">
                           <span className="font-bold text-white block truncate text-[11px]">{char.name}</span>
@@ -2387,7 +2389,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid #cbd5e1;paddin
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl bg-slate-950 border border-amber-500/40 p-1 overflow-hidden shrink-0 flex items-center justify-center">
                       {t.champion ? (
-                        <img src={t.champion.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(t.champion.name)}`} alt="" className="w-full h-full object-contain" />
+                        <img src={getCharacterImageWithFallback(t.champion)} alt="" className="w-full h-full object-contain" />
                       ) : (
                         <Trophy className="w-6 h-6 text-amber-500" />
                       )}

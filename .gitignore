@@ -1,65 +1,103 @@
-# Dependencias
+# ============================================================
+# APEX Power Scaling Engine — .gitignore
+# ============================================================
+
+# --- Dependencias ---
 node_modules/
 
-# Build
+# --- Build / salida ---
 dist/
+build/
+.vite/
+coverage/
+.vercel/
 
-# Claves y secretos — NUNCA subir
+# --- Claves y secretos — NUNCA subir ---
 .env
 .env.local
 .env.*.local
+*.pem
+*.key
+
+# --- Persistencia local de simulación / cloud sync ---
 .cloud_sync_store.json
-# Claves y secretos — NUNCA subir
-.env
-.env.local
-.env.*.local
-.cloud_sync_store.json
+
+# --- Copias de seguridad generadas por scripts ---
 *.backup.*.js
 *.bak_*
 *.bak
-src/backups_*
 repeated_bases_report.json
 
-# Backups de pasadas de auditoría (V26) — snapshots temporales
-src/data/characters_backup_*.js
-src/data/BACKUP_ROSTER_*.json
-src/data/REFERENCIA_LIMPIA_*.json
-src/data/tactical_gen_*.json
-src/data/tacticalProfilesBatch*.json
-src/data/tacticalProfiles_backup_*.json
-src/data/tactical_profiles_*.json
-src/data/referencias/
-src/data/backups/
-src/data/*_temp.json
-
-# Logs
+# --- Logs y cachés de herramientas ---
 *.log
 npm-debug.log*
+yarn-error.log*
+logs/
+.cache/
+.turbo/
+.eslintcache
+.vite-cache/
 
-# Editor
-.vscode/
-.idea/
-
-# OS
-.DS_Store
+# --- Artefactos del sistema operativo ---
 Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+.DS_Store
 
-# Vite cache
-node_modules/.vite/
-
-# Vercel and scratch
-.vercel/
-scratch/
+# --- Entornos virtuales / Python auxiliar ---
+.venv/
+venv/
 __pycache__/
 *_temp.*
 *temp*.py
-*.py
-*.pdf
 
-# Archivos pesados y carpeta local de modding
+# --- Archivos de datos pesados ---
 *.rar
 *.7z
 *.zip
+*.pdf
 DB Devolution/
 
+# ============================================================
+# Metadatos de tooling IA (NO forman parte de la app)
+# Anclados con "/" para NO afectar a src/data, src/lib, etc.
+# ============================================================
+/.skills/
+/skills/
+/references/
+/agent/
+/data/
+/.opencode/references/
 
+# --- Scratch y artefactos locales ---
+/scratch/
+/tmp/
+/screenshots/
+
+# ============================================================
+# Artefactos históricos de calibración V26 (snapshots y backups)
+# El roster canónico vive en src/data/*.json (trackeado).
+# ============================================================
+/src/data/BACKUP_ROSTER_*
+/src/data/REFERENCIA_LIMPIA_*
+/src/data/characters_backup_*
+/src/data/tacticalProfiles_backup_*
+/src/data/tactical_gen_*
+/src/data/tactical_profiles_r35_generated.json
+/src/data/tacticalProfilesBatch1_sample.json
+/src/data/referencias/
+
+# ============================================================
+# Scripts ad-hoc de calibración / auditoría (solo raíz)
+# ============================================================
+/fix_*.py
+/generate_*.py
+/audit_*.py
+/inspect_*.py
+/lista_*.py
+/pasada_*.py
+/remove_*.py
+/sync_*.py
+/inject_*.py
+/sincronizar_*.py

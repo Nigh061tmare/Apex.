@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+
+import { getUserAvatar } from '../lib/characterImages';
 import { 
   X, User, Lock, Mail, Cloud, RefreshCw, 
   Check, Shield, Sparkles, LogOut, ArrowUp, ArrowDown, Database,
@@ -202,7 +204,7 @@ export default function AuthModal({
     setIsLoading(true);
     setStatusMsg({ type: '', text: '' });
     try {
-      const newAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(editAvatarSeed || editDisplayName || currentUser.email)}`;
+      const newAvatar = getUserAvatar({ displayName: editAvatarSeed || editDisplayName, email: currentUser.email });
       const updated = await CloudSync.updateProfile({
         displayName: editDisplayName.trim(),
         avatar: newAvatar
@@ -526,7 +528,7 @@ export default function AuthModal({
                       >
                         <div className="w-6 h-6 rounded-full overflow-hidden bg-slate-950 border border-cyan-400 shrink-0">
                           <img 
-                            src={acc.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${acc.displayName || acc.email}`} 
+                            src={getUserAvatar(acc)} 
                             alt="" 
                             className="w-full h-full object-contain" 
                           />
@@ -719,7 +721,7 @@ export default function AuthModal({
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-2xl p-1 bg-slate-950 border border-cyan-500/40 overflow-hidden shrink-0">
                       <img 
-                        src={currentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.displayName || currentUser.email}`} 
+                        src={getUserAvatar(currentUser)} 
                         alt="" 
                         className="w-full h-full object-contain"
                       />
@@ -795,7 +797,7 @@ export default function AuthModal({
                         />
                         <div className="w-8 h-8 rounded-lg bg-slate-900 border border-cyan-500/40 overflow-hidden shrink-0">
                           <img 
-                            src={`https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(editAvatarSeed || editDisplayName || currentUser.email)}`} 
+                            src={getUserAvatar({ displayName: editAvatarSeed || editDisplayName, email: currentUser.email })} 
                             alt="" 
                             className="w-full h-full object-contain"
                           />
