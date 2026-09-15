@@ -48,7 +48,7 @@ const WIKIS = [
 const META_TOKENS = new Set([
   'db', 'dbz', 'dbs', 'dbgt', 'dbd', 'dbsuper', 'tb', '21tb', '22tb', '23tb',
   'saga', 'arc', 'base', 'forma', 'form', 'inicio', 'poder', 'completo', 'completa',
-  'maximo', 'maxima', 'z', 'gt', 'super', 'clasico', 'pelicula', 'peliculas', 'ova', 'ovas',
+  'maximo', 'maxima', 'z', 'gt', 'clasico', 'pelicula', 'peliculas', 'ova', 'ovas',
   'manga', 'anime', 'what', 'if', 'version', 'v1', 'v2', 'v3',
 ]);
 
@@ -202,6 +202,32 @@ async function findOfficialImage(char) {
   const seen = new Set();
   let best = null;
 
+  // FASE A — consulta directa por título (alta precisión para nombres canónicos:
+  // "Superman", "Endeavor", "Magneto", "Overhaul"… sin depender del ranking de búsqueda).
+  for (const term of terms) {
+    const directUrl =
+      `https://${wiki}.fandom.com/api.php?action=query&titles=${encodeURIComponent(term)}` +
+      `&prop=pageimages&piprop=thumbnail&pithumbsize=${THUMB_SIZE}&format=json&redirects=1`;
+    const { data: dData, error: dErr } = await fetchJson(directUrl);
+    await sleep(DELAY_MS);
+    if (dErr) return { url: null, reason: dErr };
+    const dPages = dData?.query?.pages;
+    if (dPages) {
+      for (const p of Object.values(dPages)) {
+        if (p?.missing) continue;
+        const src = p?.thumbnail?.source;
+        if (!isUsable(src)) continue;
+        // La consulta EXACTA por título (con redirects) ya resolvió el personaje:
+        // se confía en ella aunque el título final sea el nombre real
+        // (p. ej. "Endeavor" → "Enji Todoroki", "Dio" → "Dio Brando").
+        best = { src, title: p.title, score: 3 };
+      }
+    }
+    if (best && best.score === 3) break;
+  }
+  if (best && best.score === 3) return { url: best.src, reason: `wiki:${wiki}`, page: best.title };
+
+  // FASE B — búsqueda con scoring
   for (const term of terms) {
     if (seen.has(term)) continue;
     seen.add(term);
