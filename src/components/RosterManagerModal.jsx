@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CharacterAvatar from './CharacterAvatar';
 import { 
   X, Move, ArrowUp, ArrowDown, ArrowUpDown, Pin, Sparkles, 
   FolderPlus, Grid, List, Check, Trash2, Edit3, Shield, Zap, Search, RefreshCw
@@ -304,17 +305,12 @@ export default function RosterManagerModal({
 
                     {/* Avatar & Character Info */}
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {char.avatar ? (
-                        <img 
-                          src={char.avatar} 
-                          alt={char.name} 
-                          className="w-9 h-9 rounded-lg object-cover border border-slate-700 shrink-0" 
-                        />
-                      ) : (
-                        <div className="w-9 h-9 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-600 font-bold shrink-0">
-                          {char.name.charAt(0)}
-                        </div>
-                      )}
+                      <CharacterAvatar
+                        character={char}
+                        alt={char.name}
+                        className="w-9 h-9 rounded-lg border border-slate-700 bg-slate-950 shrink-0"
+                        imgClassName="rounded-lg object-contain"
+                      />
 
                       <div className="truncate">
                         <div className="flex items-center gap-2">
@@ -424,17 +420,12 @@ export default function RosterManagerModal({
                             className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-cyan-500/50 flex items-center justify-between gap-2.5 transition group"
                           >
                             <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                              {char.avatar ? (
-                                <img 
-                                  src={char.avatar} 
-                                  alt={char.name} 
-                                  className="w-8 h-8 rounded-lg object-cover border border-slate-800 shrink-0" 
-                                />
-                              ) : (
-                                <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-slate-500 font-bold shrink-0 text-xs">
-                                  {char.name.charAt(0)}
-                                </div>
-                              )}
+                              <CharacterAvatar
+                                character={char}
+                                alt={char.name}
+                                className="w-8 h-8 rounded-lg border border-slate-800 bg-slate-900 shrink-0"
+                                imgClassName="rounded-lg object-contain"
+                              />
 
                               <div className="truncate">
                                 <span className="font-bold text-white text-[11px] block truncate">

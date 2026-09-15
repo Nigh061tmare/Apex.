@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Zap, Eye, Crosshair, AlertTriangle, Target, Sparkles, Flame, ShieldAlert, Edit3, Trash2, ArrowUpRight } from 'lucide-react';
 import { getTranslation } from '../services/i18n';
 import { resolveCombatState } from '../lib/combatStateResolver';
+import CharacterAvatar from './CharacterAvatar';
 import { getBodilyForms } from '../lib/externalEntityFramework';
 import { SoundFX } from '../services/soundFx';
 import { isCharacterInNeedsReview, getNeedsReviewWarningText } from '../services/needsReviewService';
@@ -109,21 +110,15 @@ export default function CharacterCard({ character = {}, role = '', onInspect, on
 
       {/* Info & Form Selector */}
       <div className="flex items-start justify-between gap-3">
-        {(character.avatar || character.image) && (
-          <div className={`relative group w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-1 bg-gradient-to-b ${
+        <CharacterAvatar
+          character={character}
+          formId={effectiveFormId}
+          alt={character.name}
+          className={`group w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-1 bg-gradient-to-b ${
             isSideA ? 'from-red-950/80 via-slate-900 to-slate-950 border-red-500/40' : 'from-blue-950/80 via-slate-900 to-slate-950 border-blue-500/40'
-          } border shadow-xl shrink-0 overflow-hidden flex items-center justify-center`}>
-            <img
-              src={character.avatar || character.image}
-              alt={character.name}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.style.display = 'none';
-              }}
-              className="w-full h-full rounded-xl object-contain object-center transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_4px_10px_rgba(0,0,0,0.85)]"
-            />
-          </div>
-        )}
+          } border shadow-xl shrink-0`}
+          imgClassName="rounded-xl transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_4px_10px_rgba(0,0,0,0.85)]"
+        />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 min-w-0">
             <h3 className="text-lg font-bold text-white tracking-tight truncate">{character.name}</h3>

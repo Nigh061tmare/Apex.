@@ -55,11 +55,15 @@ function normalizeName(name) {
  * @param {string} [options.formId]    id de la forma activa (imagen por variante)
  * @param {string} [options.formName]  nombre de la forma activa
  * @param {boolean}[options.placeholder=true] permitir placeholder temático
+ * @param {boolean}[options.forcePlaceholder=false] saltar arte real y devolver el placeholder
  * @returns {string|null} URL, data-URI o null
  */
 export function resolveCharacterImage(char, options = {}) {
   if (!char) return null;
-  const { formId, formName, placeholder = true } = options;
+  const { formId, formName, placeholder = true, forcePlaceholder = false } = options;
+
+  // 0. Degradación forzada (usado por los onError de <img>)
+  if (forcePlaceholder) return placeholder ? buildFranchisePlaceholder(char) : null;
 
   // 1. Imagen específica de forma (soporta id de forma y nombre de forma)
   if (formId || formName) {
