@@ -1670,7 +1670,8 @@ export function getCharacterEffectiveTags(char) {
 
 // Evalúa las sinergias activas en un escuadrón
 export function detectSquadTagSynergies(team = []) {
-  if (!team || !Array.isArray(team) || team.length < 2) {
+  const safeTeam = (team || []).filter(Boolean);
+  if (safeTeam.length < 2) {
     return { buffs: [], combos: [] };
   }
 
@@ -1678,18 +1679,18 @@ export function detectSquadTagSynergies(team = []) {
   const activeCombos = [];
 
   // Obtenemos tags efectivos y nombres en minúsculas
-  const memberTags = team.map(c => getCharacterEffectiveTags(c).map(t => t.toLowerCase()));
-  const memberNames = team.map(c => (c.name || '').toLowerCase());
+  const memberTags = safeTeam.map(c => getCharacterEffectiveTags(c).map(t => t.toLowerCase()));
+  const memberNames = safeTeam.map(c => (c?.name || '').toLowerCase());
 
   // 1. Detectar Sinergias Pasivas Base
   TAG_SYNERGIES.forEach(syn => {
     const requiredNorm = syn.requiredTags.map(t => t.toLowerCase());
     const matchedMembers = [];
 
-    team.forEach((c, idx) => {
-      const tags = memberTags[idx];
+    safeTeam.forEach((c, idx) => {
+      const tags = memberTags[idx] || [];
       const matches = requiredNorm.some(req => tags.some(t => t.includes(req) || req.includes(t)));
-      if (matches) matchedMembers.push(c.name);
+      if (matches) matchedMembers.push(c?.name || 'Aliado');
     });
 
     if (matchedMembers.length >= (syn.minMatches || 2)) {

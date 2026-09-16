@@ -153,7 +153,7 @@ export default function MultiFighterPanel({
   const addBossMinion = () => {
     if (!setBossMinions) return;
     if (bossMinions.length >= 6) return alert('Máximo 6 esbirros/sub-jefes para el Boss.');
-    const available = allCharacters.find(c => c.id !== charA?.id && !bossMinions.some(m => m.id === c.id)) || allCharacters[0];
+    const available = (allCharacters || []).find(c => c && c.id !== charA?.id && !(bossMinions || []).some(m => m && m.id === c.id)) || allCharacters[0];
     setBossMinions([...bossMinions, available]);
   };
 
@@ -170,9 +170,22 @@ export default function MultiFighterPanel({
   };
 
   // Multi-Team dynamic handlers
-  const effectiveMultiTeams = (multiTeams && multiTeams.length >= 2) ? multiTeams : [
-    { id: 'alfa', name: 'Equipo Alfa', color: 'red', members: teamA || [] },
-    { id: 'beta', name: 'Equipo Beta', color: 'blue', members: teamB || [] }
+  const cleanMultiTeams = (multiTeams && multiTeams.length >= 2)
+    ? multiTeams.map((t, tIdx) => ({
+        ...t,
+        id: t?.id || `team-${tIdx}`,
+        name: t?.name || `Equipo ${tIdx + 1}`,
+        color: t?.color || 'blue',
+        members: (t?.members || []).filter(Boolean).filter(m => m && (m.id || m.name))
+      }))
+    : [
+        { id: 'alfa', name: 'Equipo Alfa', color: 'red', members: (teamA || []).filter(Boolean) },
+        { id: 'beta', name: 'Equipo Beta', color: 'blue', members: (teamB || []).filter(Boolean) }
+      ];
+
+  const effectiveMultiTeams = cleanMultiTeams.length >= 2 ? cleanMultiTeams : [
+    { id: 'alfa', name: 'Equipo Alfa', color: 'red', members: (teamA || []).filter(Boolean) },
+    { id: 'beta', name: 'Equipo Beta', color: 'blue', members: (teamB || []).filter(Boolean) }
   ];
 
   const addMultiTeamFaction = () => {
@@ -180,7 +193,7 @@ export default function MultiFighterPanel({
     if (effectiveMultiTeams.length >= 5) return alert('Máximo 5 equipos/facciones simultáneos.');
     const nextIdx = effectiveMultiTeams.length;
     const palette = TEAM_PALETTES[nextIdx] || TEAM_PALETTES[0];
-    const available = allCharacters.find(c => !effectiveMultiTeams.some(t => t.members.some(m => m.id === c.id))) || allCharacters[0];
+    const available = (allCharacters || []).find(c => c && !effectiveMultiTeams.some(t => (t.members || []).some(m => m && m.id === c.id))) || allCharacters[0];
     
     const newTeam = {
       id: palette.id,
@@ -200,13 +213,14 @@ export default function MultiFighterPanel({
   const addMemberToMultiTeam = (teamIndex) => {
     if (!setMultiTeams) return;
     const team = effectiveMultiTeams[teamIndex];
-    if (team.members.length >= 8) return alert('Máximo 8 luchadores por equipo.');
-    const available = allCharacters.find(c => !team.members.some(m => m.id === c.id)) || allCharacters[0];
+    if (!team) return;
+    if ((team.members || []).length >= 8) return alert('Máximo 8 luchadores por equipo.');
+    const available = (allCharacters || []).find(c => c && !(team.members || []).some(m => m && m.id === c.id)) || allCharacters[0];
     
     const updatedTeams = [...effectiveMultiTeams];
     updatedTeams[teamIndex] = {
       ...team,
-      members: [...team.members, available]
+      members: [...(team.members || []).filter(Boolean), available]
     };
     setMultiTeams(updatedTeams);
 
@@ -250,36 +264,36 @@ export default function MultiFighterPanel({
 
   // Add fighter to Team B (Raid Squad)
   const addRaidSquadMember = () => {
-    if (teamB.length >= 8) return alert('Máximo 8 combatientes en la escuadra asaltante.');
-    const available = allCharacters.find(c => !teamB.some(t => t.id === c.id)) || allCharacters[1] || allCharacters[0];
-    setTeamB([...teamB, available]);
+    if ((teamB || []).length >= 8) return alert('Máximo 8 combatientes en la escuadra asaltante.');
+    const available = (allCharacters || []).find(c => c && !(teamB || []).some(t => t && t.id === c.id)) || allCharacters[1] || allCharacters[0];
+    setTeamB([...(teamB || []).filter(Boolean), available]);
   };
 
   const removeRaidSquadMember = (index) => {
-    if (teamB.length <= 1) return alert('La escuadra asaltante debe tener al menos 1 luchador.');
-    setTeamB(teamB.filter((_, i) => i !== index));
+    if ((teamB || []).length <= 1) return alert('La escuadra asaltante debe tener al menos 1 luchador.');
+    setTeamB((teamB || []).filter((_, i) => i !== index));
   };
 
   const updateRaidSquadMember = (index, updatedChar) => {
-    const updated = [...teamB];
+    const updated = [...(teamB || [])];
     updated[index] = updatedChar;
     setTeamB(updated);
   };
 
   // Battle Royale handlers
   const addRoyaleMember = () => {
-    if (battleRoyale.length >= 10) return alert('Máximo 10 luchadores en el Battle Royale.');
-    const available = allCharacters.find(c => !battleRoyale.some(t => t.id === c.id)) || allCharacters[0];
-    setBattleRoyale([...battleRoyale, available]);
+    if ((battleRoyale || []).length >= 10) return alert('Máximo 10 luchadores en el Battle Royale.');
+    const available = (allCharacters || []).find(c => c && !(battleRoyale || []).some(t => t && t.id === c.id)) || allCharacters[0];
+    setBattleRoyale([...(battleRoyale || []).filter(Boolean), available]);
   };
 
   const removeRoyaleMember = (index) => {
-    if (battleRoyale.length <= 2) return alert('El Battle Royale debe tener al menos 2 luchadores.');
-    setBattleRoyale(battleRoyale.filter((_, i) => i !== index));
+    if ((battleRoyale || []).length <= 2) return alert('El Battle Royale debe tener al menos 2 luchadores.');
+    setBattleRoyale((battleRoyale || []).filter((_, i) => i !== index));
   };
 
   const updateRoyaleMember = (index, updatedChar) => {
-    const updated = [...battleRoyale];
+    const updated = [...(battleRoyale || [])];
     updated[index] = updatedChar;
     setBattleRoyale(updated);
   };
@@ -549,8 +563,10 @@ export default function MultiFighterPanel({
                 />
 
                 {/* Cartas de los Esbirros / Sub-Jefes del Boss */}
-                {bossMinions && bossMinions.map((minion, mIdx) => (
-                  <div key={`boss-minion-${mIdx}-${minion.id}`} className="relative pl-3 border-l-2 border-red-500/40">
+                {(bossMinions || []).filter(Boolean).map((minion, mIdx) => {
+                  const minionId = minion?.id || minion?.name || `minion-${mIdx}`;
+                  return (
+                  <div key={`boss-minion-${mIdx}-${minionId}`} className="relative pl-3 border-l-2 border-red-500/40">
                     <div className="absolute top-3 right-3 z-10">
                       <button
                         type="button"
@@ -573,7 +589,7 @@ export default function MultiFighterPanel({
                       lang={lang}
                     />
                   </div>
-                ))}
+                );})}
               </div>
             </div>
 
@@ -582,7 +598,7 @@ export default function MultiFighterPanel({
               <div className="p-3.5 rounded-xl bg-gradient-to-r from-cyan-950/80 to-blue-950/80 border border-cyan-500/50 flex items-center justify-between flex-wrap gap-2 shadow-xl">
                 <div className="flex items-center gap-2 font-cinzel font-bold text-cyan-300 text-sm">
                   <Users className="w-4 h-4 text-cyan-400" />
-                  <span>ESCUADRA ASALTANTE ({teamB.length} Luchadores)</span>
+                  <span>ESCUADRA ASALTANTE ({(teamB || []).filter(Boolean).length} Luchadores)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {teamB && teamB.length > 2 && (
@@ -608,11 +624,13 @@ export default function MultiFighterPanel({
               </div>
 
               {/* Panel Dinámico de Sinergias de la Escuadra */}
-              <SquadSynergyCard team={teamB} title={`Sinergia de la Escuadra (${teamB.length} Luchadores)`} accentColor="cyan" />
+              <SquadSynergyCard team={teamB} title={`Sinergia de la Escuadra (${(teamB || []).filter(Boolean).length} Luchadores)`} accentColor="cyan" />
 
               <div className="space-y-4 max-h-[900px] overflow-y-auto pr-1">
-                {teamB.map((member, idx) => (
-                  <div key={`raid-${idx}-${member.id}`} className="relative">
+                {(teamB || []).filter(Boolean).map((member, idx) => {
+                  const memberId = member?.id || member?.name || `raid-${idx}`;
+                  return (
+                  <div key={`raid-${idx}-${memberId}`} className="relative">
                     <div className="absolute top-3 right-3 z-10">
                       <button
                         type="button"
@@ -635,7 +653,7 @@ export default function MultiFighterPanel({
                       lang={lang}
                     />
                   </div>
-                ))}
+                );})}
               </div>
             </div>
 
@@ -724,15 +742,17 @@ export default function MultiFighterPanel({
 
                   {/* Sinergia del Equipo */}
                   <SquadSynergyCard 
-                    team={team.members} 
-                    title={`Sinergia ${team.name} (${team.members.length} Luchadores)`} 
+                    team={(team?.members || []).filter(Boolean)} 
+                    title={`Sinergia ${team.name} (${(team?.members || []).filter(Boolean).length} Luchadores)`} 
                     accentColor={palette.accent} 
                   />
 
                   {/* Lista de Personajes del Equipo */}
                   <div className="space-y-4 max-h-[850px] overflow-y-auto pr-1">
-                    {team.members.map((member, mIdx) => (
-                      <div key={`multiTeam-${tIdx}-${mIdx}-${member.id}`} className="relative">
+                    {(team?.members || []).filter(Boolean).map((member, mIdx) => {
+                      const memberId = member?.id || member?.name || `m-${mIdx}`;
+                      return (
+                      <div key={`multiTeam-${tIdx}-${mIdx}-${memberId}`} className="relative">
                         <div className="absolute top-3 right-3 z-10">
                           <button
                             type="button"
@@ -755,7 +775,7 @@ export default function MultiFighterPanel({
                           lang={lang}
                         />
                       </div>
-                    ))}
+                    );})}
                   </div>
                 </div>
               );
@@ -803,8 +823,10 @@ export default function MultiFighterPanel({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 max-h-[900px] overflow-y-auto pr-1">
-            {battleRoyale.map((gladiator, idx) => (
-              <div key={`royale-${idx}-${gladiator.id}`} className="relative">
+            {(battleRoyale || []).filter(Boolean).map((gladiator, idx) => {
+              const gladId = gladiator?.id || gladiator?.name || `royale-${idx}`;
+              return (
+              <div key={`royale-${idx}-${gladId}`} className="relative">
                 <div className="absolute top-3 right-3 z-10">
                   <button
                     type="button"
@@ -827,7 +849,7 @@ export default function MultiFighterPanel({
                   lang={lang}
                 />
               </div>
-            ))}
+            );})}
           </div>
         </div>
       )}

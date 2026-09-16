@@ -15,6 +15,7 @@ const { runMaintenance } = require('./maintainOpenCodeDb.cjs');
 let runSentinel = () => {};
 let runCatalogUpdate = async () => {};
 let runAutoCompaction = () => {};
+let startSpendMonitor = () => {};
 
 try {
   const sentinelPath = path.resolve(__dirname, '../../tools/opencode/blindaje_antocuota.cjs');
@@ -32,6 +33,12 @@ try {
   const compactorPath = path.resolve(__dirname, '../../tools/opencode/compact_and_prune_all_sessions.cjs');
   if (fs.existsSync(compactorPath)) {
     runAutoCompaction = require(compactorPath).runAutoCompaction;
+  }
+} catch (e) {}
+try {
+  const spendMonitorPath = path.resolve(__dirname, '../../tools/opencode/spend_alert_sentinel.cjs');
+  if (fs.existsSync(spendMonitorPath)) {
+    startSpendMonitor = require(spendMonitorPath).startSpendMonitor;
   }
 } catch (e) {}
 
@@ -88,11 +95,29 @@ async function findAvailablePort(preferred, fallbacks = []) {
   return preferred;
 }
 
-const KEYS = [
-  process.env.OPENROUTER_API_KEY || '',
-  process.env.OPENROUTER_BACKUP_API_KEY || ''
-].filter(Boolean);
+function getLiveKeys() {
+  for (const f of ['.env', '.env.local']) {
+    const p = path.join(projectRoot, f);
+    if (fs.existsSync(p)) {
+      const lines = fs.readFileSync(p, 'utf-8').split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx === -1) continue;
+        const key = trimmed.slice(0, eqIdx).trim();
+        const val = trimmed.slice(eqIdx + 1).trim();
+        if (key) process.env[key] = val;
+      }
+    }
+  }
+  return [
+    process.env.OPENROUTER_API_KEY || '',
+    process.env.OPENROUTER_BACKUP_API_KEY || process.env.OPENROUTER_API_KEY_BACKUP || ''
+  ].filter(Boolean);
+}
 
+let KEYS = getLiveKeys();
 let activeKeyIndex = 0;
 
 async function bootstrap() {
@@ -102,6 +127,7 @@ async function bootstrap() {
     await runCatalogUpdate();
     runAutoCompaction({ verbose: true });
     runMaintenance({ verbose: true });
+    startSpendMonitor(30);
   } catch (mErr) {
     console.warn('[SUPERVISOR] Mantenimiento inicial:', mErr?.message || mErr);
   }
@@ -239,6 +265,7 @@ async function bootstrap() {
         proxyReq.end();
       }
 
+      KEYS = getLiveKeys();
       attemptRequest(activeKeyIndex);
     });
   });

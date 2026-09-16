@@ -11,7 +11,8 @@ export const RAID_BOSS_TIERS = [
 ];
 
 export function calculateSquadSynergy(team = []) {
-  if (!team || !Array.isArray(team) || team.length <= 1) {
+  const safeTeam = (team || []).filter(Boolean);
+  if (safeTeam.length <= 1) {
     return {
       cohesion: 100,
       synergyTier: 'Individual',
@@ -25,7 +26,7 @@ export function calculateSquadSynergy(team = []) {
   const combos = [];
 
   // 0. Sinergias y Combos Universales Basados en Tags (Nuevo Motor)
-  const tagResults = detectSquadTagSynergies(team);
+  const tagResults = detectSquadTagSynergies(safeTeam);
   if (tagResults.buffs.length > 0) {
     baseCohesion += tagResults.buffs.length * 5;
     buffs.push(...tagResults.buffs);
@@ -35,7 +36,7 @@ export function calculateSquadSynergy(team = []) {
   }
 
   // 1. Resonancia de Universo
-  const universes = team.map(c => (c.universe || '').toLowerCase().trim());
+  const universes = safeTeam.map(c => (c?.universe || '').toLowerCase().trim());
   const universeCounts = {};
   universes.forEach(u => {
     universeCounts[u] = (universeCounts[u] || 0) + 1;
@@ -52,7 +53,7 @@ export function calculateSquadSynergy(team = []) {
   }
 
   // 2. Afinidad Específica por Lore
-  const allNames = team.map(c => (c.name || '').toLowerCase());
+  const allNames = safeTeam.map(c => (c?.name || '').toLowerCase());
   const isSaiyanSquad = allNames.filter(n => n.includes('goku') || n.includes('vegeta') || n.includes('gohan') || n.includes('broly') || n.includes('bardock') || n.includes('trunks') || n.includes('vegetto') || n.includes('gogeta')).length >= 2;
   const isJjkSquad = allNames.filter(n => n.includes('gojo') || n.includes('sukuna') || n.includes('yuji') || n.includes('megumi') || n.includes('yuta') || n.includes('geto') || n.includes('toji')).length >= 2;
   const isShinobiSquad = allNames.filter(n => n.includes('naruto') || n.includes('sasuke') || n.includes('madara') || n.includes('itachi') || n.includes('kakashi') || n.includes('minato')).length >= 2;

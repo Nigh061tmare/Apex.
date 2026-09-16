@@ -31,12 +31,15 @@ const FORBIDDEN_PATTERNS = [
 
 const SAFE_FREE_MODEL = "openrouter/nvidia/nemotron-3-super-120b-a12b:free";
 const SAFE_DB_MODEL_JSON = '{"id":"nvidia/nemotron-3-super-120b-a12b:free","providerID":"openrouter","variant":"default"}';
+const GEMINI_SAFE_MODEL_JSON = '{"id":"gemini-flash-latest","providerID":"google","variant":"default"}';
 
 const CONFIG_PATHS = [
   'Z:/apex-powerscaling-engine/opencode.json',
   'Z:/apex-powerscaling-engine/.opencode/opencode.jsonc',
   'C:/Users/Jose Luis/.config/opencode/opencode.jsonc',
-  'C:/Users/Jose Luis/apex-powerscaling-engine/opencode.json'
+  'C:/Users/Jose Luis/apex-powerscaling-engine/opencode.json',
+  '//192.168.1.82/Vault Obsidian/Obsidian Vault/opencode.json',
+  '//192.168.1.82/Vault Obsidian/Obsidian Vault/.opencode/opencode.jsonc'
 ];
 
 function auditAndHealConfig(filePath) {
@@ -105,11 +108,24 @@ function sanitizeOpencodeDb() {
         db.prepare("UPDATE session SET model = ? WHERE id = ?").run(SAFE_DB_MODEL_JSON, s.id);
         console.warn(`[SENTINEL] 🛡️ Sesión saneada en opencode.db: [${s.id}] "${s.title}" (era: ${mStr} -> ahora: ${SAFE_DB_MODEL_JSON})`);
         sanitizedCount++;
+      } else {
+        // Chequeo de Failover Automático si la cuota de OpenCode Go se agotó (Error 402 o quota exceeded)
+        try {
+          const lastPart = db.prepare("SELECT data FROM part WHERE session_id = ? ORDER BY time_created DESC LIMIT 1").get(s.id);
+          if (lastPart && typeof lastPart.data === 'string') {
+            const low = lastPart.data.toLowerCase();
+            if (low.includes('402') || low.includes('quota') || low.includes('insufficient_balance') || low.includes('payment required')) {
+              db.prepare("UPDATE session SET model = ? WHERE id = ?").run(GEMINI_SAFE_MODEL_JSON, s.id);
+              console.log(`[SENTINEL] 🔄 FAILOVER AUTOMÁTICO: Cuota de Go agotada en [${s.id}] "${s.title}". Conmutado automáticamente a Google Gemini Flash 1M Free!`);
+              sanitizedCount++;
+            }
+          }
+        } catch(e) {}
       }
     }
 
     if (sanitizedCount > 0) {
-      console.log(`[SENTINEL] ✅ ${sanitizedCount} sesión(es) antigua(s) saneada(s) en la base de datos de OpenCode Web.`);
+      console.log(`[SENTINEL] ✅ ${sanitizedCount} sesión(es) procesada(s)/rescatadas en la base de datos de OpenCode Web.`);
     } else {
       console.log('[SENTINEL] 🟢 Base de datos opencode.db limpia: Cero sesiones con modelos caros.');
     }

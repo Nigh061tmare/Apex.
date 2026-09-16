@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX & OpenCode - Monitor de Costos y Tokens</title>
+    <meta http-equiv="refresh" content="15">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'JetBrains Mono', monospace; background-color: #080c14; color: #e2e8f0; }
+        .cinzel { font-family: 'Cinzel', serif; }
+        .card-glow { box-shadow: 0 0 25px rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); }
+    </style>
+</head>
+<body class="p-6 md:p-10 max-w-6xl mx-auto">
+    <header class="flex flex-wrap items-center justify-between pb-6 border-b border-cyan-500/30 gap-4 mb-8">
+        <div>
+            <h1 class="text-2xl font-black cinzel tracking-wider text-cyan-400 flex items-center gap-3">
+                <span>⚡ APEX & OpenCode Cost Monitor</span>
+            </h1>
+            <p class="text-xs text-slate-400 mt-1">Monitor en vivo de consumo de Tokens, Costos en USD y llamadas a DeepSeek.</p>
+        </div>
+        <div class="text-right">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Actualizado: 15/09/2026 21:46:03</span>
+            </div>
+            <p class="text-[10px] text-slate-500 mt-1">Auto-refresca cada 15 segundos</p>
+        </div>
+    </header>
+
+    <!-- Cards de Ventanas Temporales -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="p-5 rounded-2xl bg-slate-900/80 card-glow">
+            <div class="text-xs text-cyan-400 font-bold uppercase tracking-wider mb-1">Últimos 30 Minutos</div>
+            <div class="text-3xl font-extrabold text-white">$0.0198 <span class="text-xs text-slate-400 font-normal">USD</span></div>
+            <div class="text-xs text-slate-400 mt-2 flex justify-between">
+                <span>Tokens:</span>
+                <span class="text-cyan-300 font-bold">3,214,226</span>
+            </div>
+            <div class="text-xs text-slate-400 flex justify-between">
+                <span>Mensajes:</span>
+                <span class="text-slate-300">16</span>
+            </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-900/80 card-glow border-indigo-500/30 shadow-indigo-950/40">
+            <div class="text-xs text-indigo-400 font-bold uppercase tracking-wider mb-1">Última 1 Hora</div>
+            <div class="text-3xl font-extrabold text-white">$0.0467 <span class="text-xs text-slate-400 font-normal">USD</span></div>
+            <div class="text-xs text-slate-400 mt-2 flex justify-between">
+                <span>Tokens:</span>
+                <span class="text-indigo-300 font-bold">7,989,564</span>
+            </div>
+            <div class="text-xs text-slate-400 flex justify-between">
+                <span>Mensajes:</span>
+                <span class="text-slate-300">41</span>
+            </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-900/80 card-glow border-purple-500/30 shadow-purple-950/40">
+            <div class="text-xs text-purple-400 font-bold uppercase tracking-wider mb-1">Últimas 3 Horas</div>
+            <div class="text-3xl font-extrabold text-white">$0.1305 <span class="text-xs text-slate-400 font-normal">USD</span></div>
+            <div class="text-xs text-slate-400 mt-2 flex justify-between">
+                <span>Tokens:</span>
+                <span class="text-purple-300 font-bold">13,946,414</span>
+            </div>
+            <div class="text-xs text-slate-400 flex justify-between">
+                <span>Mensajes:</span>
+                <span class="text-slate-300">81</span>
+            </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-slate-900/80 card-glow border-amber-500/30 shadow-amber-950/40">
+            <div class="text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">Todo el Día (24h)</div>
+            <div class="text-3xl font-extrabold text-amber-300">$0.3646 <span class="text-xs text-slate-400 font-normal">USD</span></div>
+            <div class="text-xs text-slate-400 mt-2 flex justify-between">
+                <span>Tokens:</span>
+                <span class="text-amber-200 font-bold">27,491,233</span>
+            </div>
+            <div class="text-xs text-slate-400 flex justify-between">
+                <span>Mensajes:</span>
+                <span class="text-slate-300">269</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desglose de Tokens de Hoy -->
+    <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 mb-8">
+        <h2 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span>🔬 Desglose de Tokens Procesados Hoy (24 Horas)</span>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80">
+                <div class="text-xs text-slate-400 mb-1">Tokens de Entrada (Input)</div>
+                <div class="text-xl font-bold text-cyan-400">1,558,341</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80">
+                <div class="text-xs text-slate-400 mb-1">Tokens de Salida (Output)</div>
+                <div class="text-xl font-bold text-emerald-400">141,714</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80">
+                <div class="text-xs text-slate-400 mb-1">Razonamiento Interno (CoT)</div>
+                <div class="text-xl font-bold text-purple-400">141,066</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Sesiones Activas -->
+    <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-bold text-slate-300 uppercase tracking-wider">
+                📂 Sesiones Recientes con Actividad
+            </h2>
+            <div class="text-xs text-slate-400 font-bold">
+                Total Histórico Acumulado: <span class="text-emerald-400">$15.8117 USD</span>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="border-b border-slate-800 text-slate-400">
+                        <th class="pb-3 font-semibold">Sesión (Slug)</th>
+                        <th class="pb-3 font-semibold">Última Actividad</th>
+                        <th class="pb-3 font-semibold text-right">Tokens</th>
+                        <th class="pb-3 font-semibold text-right">Mensajes</th>
+                        <th class="pb-3 font-semibold text-right">Costo (USD)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/50">
+    
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">jolly-otter</td>
+                        <td class="py-3 text-slate-400">hace 0m</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">318,459,331</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">1038</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$6.5710</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">kind-comet</td>
+                        <td class="py-3 text-slate-400">hace 76m</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">66,303,372</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">302</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$5.6452</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">gentle-orchid</td>
+                        <td class="py-3 text-slate-400">hace 8h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">6,706,678</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">130</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.3391</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">quick-star</td>
+                        <td class="py-3 text-slate-400">hace 10h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">833,438</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">18</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.0000</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">eager-island</td>
+                        <td class="py-3 text-slate-400">hace 20h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">1,702,268</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">22</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.0000</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">shiny-forest</td>
+                        <td class="py-3 text-slate-400">hace 34h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">84,436,986</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">431</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$2.4555</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">cosmic-wolf</td>
+                        <td class="py-3 text-slate-400">hace 43h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">12,849,462</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">120</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.0669</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">nimble-pixel</td>
+                        <td class="py-3 text-slate-400">hace 99h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">2,419,484</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">67</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.1300</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">quiet-nebula</td>
+                        <td class="py-3 text-slate-400">hace 170h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">1,503,273</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">26</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.0560</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">cosmic-mountain</td>
+                        <td class="py-3 text-slate-400">hace 200h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">317,807</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">19</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.0339</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">brave-forest</td>
+                        <td class="py-3 text-slate-400">hace 216h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">4,489,582</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">39</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.1627</td>
+                    </tr>
+        
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-3 font-bold text-cyan-300">quick-mountain</td>
+                        <td class="py-3 text-slate-400">hace 221h</td>
+                        <td class="py-3 text-right text-slate-200 font-mono">869,256</td>
+                        <td class="py-3 text-right text-slate-400 font-mono">18</td>
+                        <td class="py-3 text-right font-bold text-emerald-400 font-mono">$0.0439</td>
+                    </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+    

@@ -7,6 +7,20 @@
     ".opencode/ANTIGRAVITY_SUPERIOR_CORE.md",
     "GLOBAL_CORE.md"
   ],
+  "permission": {
+    "read": "allow",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "bash": "allow",
+    "task": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "external_directory": "allow",
+    "todowrite": "allow",
+    "question": "allow"
+  },
   "command": {
     "compact": {
       "description": "✂️ Poda y desinfla al instante todas las sesiones de OpenCode para ahorrar cuota",
@@ -117,6 +131,41 @@
       "description": "🔍 Explorer 100% GRATIS: Búsqueda, lectura y análisis de código con CERO consumo de cuota Go",
       "prompt": "Eres el Agente Explorador de OpenCode. Buscas, lees e inspeccionas archivos usando exclusivamente modelos gratuitos."
     },
+    "researcher": {
+      "mode": "subagent",
+      "color": "info",
+      "model": "google/gemini-flash-latest",
+      "description": "📚 Researcher 100% GRATIS (Gemini Flash 1M): Investigación profunda, síntesis técnica y lectura masiva",
+      "prompt": "Eres el Subagente Investigador de OpenCode. Tu modelo es Google Gemini Flash con 1.000.000 de tokens de contexto oficial. Analizas documentación compleja, investigas dependencias, cruzas arquitectura y sintetizas información técnica con máxima profundidad y rigor lógico con coste 0."
+    },
+    "architect": {
+      "mode": "subagent",
+      "color": "secondary",
+      "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+      "description": "🏛️ Architect 100% GRATIS (Nemotron Ultra 550B): Diseño de sistemas, arquitectura profunda y balance lógico",
+      "prompt": "Eres el Subagente Arquitecto de OpenCode basado en NVIDIA Nemotron 3 Ultra 550B Free. Diseñas estructuras de datos complejas, balances numéricos y patrones de arquitectura limpios con coste 0."
+    },
+    "reviewer": {
+      "mode": "subagent",
+      "color": "accent",
+      "model": "openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "description": "🔍 Reviewer 100% GRATIS (Nemotron Omni CoT): Auditoría de código, detección de fallos y validación de tipos",
+      "prompt": "Eres el Subagente Revisor de Calidad de OpenCode. Analizas cambios de código, detectas errores de sintaxis o lógica, y validas coherencia paso a paso (Chain-of-Thought) sin coste."
+    },
+    "fast_helper": {
+      "mode": "subagent",
+      "color": "warning",
+      "model": "openrouter/nvidia/nemotron-3.5-lightning:free",
+      "description": "⚡ Fast Helper 100% GRATIS (Nemotron Lightning): Micro-tareas inmediatas, regex, formateo y snippets",
+      "prompt": "Eres el Subagente de Asistencia Rápida de OpenCode. Resuelves tareas atómicas, formateo de datos y snippets con mínima latencia y coste 0."
+    },
+    "vision_helper": {
+      "mode": "subagent",
+      "color": "info",
+      "model": "openrouter/inclusionai/ling-3.0-flash-vl:free",
+      "description": "👁️ Vision Helper 100% GRATIS (Ling 3.0 Flash VL): Análisis de capturas de pantalla, UI y gráficos",
+      "prompt": "Eres el Subagente de Visión de OpenCode. Analizas imágenes, capturas de pantalla de la interfaz y elementos visuales con coste 0."
+    },
     "chat_deepseek": {
       "mode": "primary",
       "color": "warning",
@@ -221,8 +270,15 @@
       "mode": "primary",
       "color": "info",
       "model": "google/gemini-flash-lite-latest",
-      "description": "🌐 Gemini Flash Lite (Google API): 1M contexto, búsqueda web y respuestas instantáneas",
+      "description": "🌐 Gemini Flash Lite (Google API): 1M contexto, búsqueda web y respuestas instantáneas (100% Gratis)",
       "prompt": "Eres el Agente de Alta Velocidad basado en Google Gemini Flash Lite Latest. Tu objetivo es procesar consultas rápidas, rastreo en la web, verificación de datos en tiempo real y respuestas concisas."
+    },
+    "gemini_flash": {
+      "mode": "primary",
+      "color": "info",
+      "model": "google/gemini-flash-latest",
+      "description": "🌐 Google Gemini Flash: 1M contexto oficial de Google, razonamiento multimodal y cero coste",
+      "prompt": "Eres el Agente Multimodal de Google Gemini Flash. Cuentas con 1.000.000 de tokens de contexto oficial para análisis de repositorios completos, arquitectura y código."
     },
     "deepseek_fast": {
       "mode": "primary",
@@ -386,6 +442,14 @@
           "limit": {
             "context": 256000,
             "output": 64000
+          },
+          "temperature": true
+        },
+        "z-ai/glm-5.2:free": {
+          "name": "Z.ai: GLM 5.2 (free)",
+          "limit": {
+            "context": 32768,
+            "output": 29491
           },
           "temperature": true
         },

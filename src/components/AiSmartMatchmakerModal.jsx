@@ -313,7 +313,7 @@ Incluye transformaciones, Tier oficial, velocidades, hax, arsenal y debilidades.
                     </div>
                     <div className="p-2 rounded bg-slate-900 border border-slate-800">
                       <p className="text-slate-300 text-[10px]">
-                        ⚔️ Escuadra Asaltante: {(analyzedMatch.squad || []).map(s => s.name || s.id).join(', ')}
+                        ⚔️ Escuadra Asaltante: {(analyzedMatch.squad || []).filter(Boolean).map(s => s?.name || s?.id || 'Asaltante').join(', ')}
                       </p>
                     </div>
                   </div>
@@ -323,11 +323,11 @@ Incluye transformaciones, Tier oficial, velocidades, hax, arsenal y debilidades.
                   <div className="grid grid-cols-2 gap-2 text-[10.5px]">
                     <div className="p-2 rounded bg-blue-950/30 border border-blue-800/40">
                       <span className="font-bold text-blue-400 block mb-0.5">🛡️ Equipo Alfa:</span>
-                      {(analyzedMatch.teamA || []).map(m => m.name || m.id).join(', ')}
+                      {(analyzedMatch.teamA || []).filter(Boolean).map(m => m?.name || m?.id || 'Alfa').join(', ')}
                     </div>
                     <div className="p-2 rounded bg-red-950/30 border border-red-800/40">
                       <span className="font-bold text-red-400 block mb-0.5">⚔️ Equipo Omega:</span>
-                      {(analyzedMatch.teamB || []).map(m => m.name || m.id).join(', ')}
+                      {(analyzedMatch.teamB || []).filter(Boolean).map(m => m?.name || m?.id || 'Omega').join(', ')}
                     </div>
                   </div>
                 )}
@@ -336,7 +336,7 @@ Incluye transformaciones, Tier oficial, velocidades, hax, arsenal y debilidades.
                   <div className="space-y-1">
                     <span className="font-bold text-purple-300 block">👑 Gladiadores en la Arena:</span>
                     <p className="text-slate-300 text-[10px]">
-                      {(analyzedMatch.battleRoyale || []).map(m => m.name || m.id).join(' ⚡ ')}
+                      {(analyzedMatch.battleRoyale || []).filter(Boolean).map(m => m?.name || m?.id || 'Gladiador').join(' ⚡ ')}
                     </p>
                   </div>
                 )}

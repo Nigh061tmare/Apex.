@@ -1730,7 +1730,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
                   type="button"
                   onClick={() => setModifiers(prev => ({ 
                     ...prev, 
-                    customContext: `Raid Boss Implacable en ${scenario?.name || 'la arena'}: El Titán ${charA?.name || 'Boss'} entra en combate con su multiplicador de Raid activo. La alianza de ${teamB.map(c => c.name).join(' & ') || 'los asaltantes'} debe coordinar sus pasivas y hax combinados para quebrar su barrera colosal antes de que la arena colapse.` 
+                    customContext: `Raid Boss Implacable en ${scenario?.name || 'la arena'}: El Titán ${charA?.name || 'Boss'} entra en combate con su multiplicador de Raid activo. La alianza de ${(teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(' & ') || 'los asaltantes'} debe coordinar sus pasivas y hax combinados para quebrar su barrera colosal antes de que la arena colapse.` 
                   }))}
                   className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-emerald-900/40 text-slate-300 hover:text-emerald-200 border border-slate-800 transition cursor-pointer font-medium"
                 >
@@ -1740,7 +1740,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
                   type="button"
                   onClick={() => setModifiers(prev => ({ 
                     ...prev, 
-                    customContext: `Emboscada Táctica & Flanqueo: ${teamB.map(c => c.name).join(' & ') || 'El escuadrón'} ataca de forma escalonada usando distracciones y señuelos para aislar y penetrar la durabilidad de ${charA?.name || 'Boss'}.` 
+                    customContext: `Emboscada Táctica & Flanqueo: ${(teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(' & ') || 'El escuadrón'} ataca de forma escalonada usando distracciones y señuelos para aislar y penetrar la durabilidad de ${charA?.name || 'Boss'}.` 
                   }))}
                   className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-emerald-900/40 text-slate-300 hover:text-emerald-200 border border-slate-800 transition cursor-pointer"
                 >
@@ -1773,7 +1773,7 @@ const allScenarios = useMemo(() => [...SCENARIOS, ...legendaryScenarios, ...cust
                   type="button"
                   onClick={() => setModifiers(prev => ({ 
                     ...prev, 
-                    customContext: `Guerra de Facciones en ${scenario?.name || 'el campo de batalla'}: El Equipo Alfa (${teamA.map(c => c.name).join(' & ') || 'Alfa'}) y el Equipo Beta (${teamB.map(c => c.name).join(' & ') || 'Beta'}) colisionan en un choque total donde los supervivientes de cada bando se reagrupan en ataques combinados.` 
+                    customContext: `Guerra de Facciones en ${scenario?.name || 'el campo de batalla'}: El Equipo Alfa (${(teamA || []).filter(Boolean).map(c => c?.name || c?.id || 'Alfa').join(' & ') || 'Alfa'}) y el Equipo Beta (${(teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Beta').join(' & ') || 'Beta'}) colisionan en un choque total donde los supervivientes de cada bando se reagrupan en ataques combinados.` 
                   }))}
                   className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-emerald-900/40 text-slate-300 hover:text-emerald-200 border border-slate-800 transition cursor-pointer"
                 >

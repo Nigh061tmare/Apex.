@@ -256,32 +256,32 @@ export default function MatchupMatrix({
   };
 
   // --- Multi-Fighter Aggregators ---
-  const activeFightersA = matchMode === 'teams' ? teamA : [charA].filter(Boolean);
-  const activeFightersB = matchMode === '1vN' || matchMode === 'teams' ? teamB : [charB].filter(Boolean);
+  const activeFightersA = (matchMode === 'teams' ? (teamA || []) : [charA]).filter(Boolean);
+  const activeFightersB = (matchMode === '1vN' || matchMode === 'teams' ? (teamB || []) : [charB]).filter(Boolean);
 
   const squadNameA = matchMode === '1vN' 
     ? `👹 Boss: ${charA?.name || 'Titán'}` 
     : matchMode === 'teams' 
-      ? `🛡️ Equipo Alfa (${teamA.map(c => c.name).join(' + ') || 'Alfa'})` 
+      ? `🛡️ Equipo Alfa (${(teamA || []).filter(Boolean).map(c => c?.name || c?.id || 'Alfa').join(' + ') || 'Alfa'})` 
       : charA?.name || 'Contendiente A';
 
   const squadNameB = matchMode === '1vN' 
-    ? `⚔️ Alianza: ${teamB.map(c => c.name).join(' + ') || 'Escuadrón'}` 
+    ? `⚔️ Alianza: ${(teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Escuadrón').join(' + ') || 'Escuadrón'}` 
     : matchMode === 'teams' 
-      ? `⚔️ Equipo Beta (${teamB.map(c => c.name).join(' + ') || 'Beta'})` 
+      ? `⚔️ Equipo Beta (${(teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Beta').join(' + ') || 'Beta'})` 
       : charB?.name || 'Contendiente B';
 
   // Compute Squad Scores
-  const maxScoreA = Math.max(...activeFightersA.map(c => getTierScore(c.tier)), 1);
-  const maxScoreB = Math.max(...activeFightersB.map(c => getTierScore(c.tier)), 1);
+  const maxScoreA = Math.max(...activeFightersA.map(c => getTierScore(c?.tier)), 1);
+  const maxScoreB = Math.max(...activeFightersB.map(c => getTierScore(c?.tier)), 1);
 
   // Squad Synergy: extra fighters boost aggregated stamina, attack opportunities and hax pool
   const synergyBonusA = Math.min(25, (activeFightersA.length - 1) * 12);
   const synergyBonusB = Math.min(30, (activeFightersB.length - 1) * 15);
 
   // Union of all Unique Hax Tags across squad
-  const allHaxA = Array.from(new Set(activeFightersA.flatMap(c => c.haxTags || [])));
-  const allHaxB = Array.from(new Set(activeFightersB.flatMap(c => c.haxTags || [])));
+  const allHaxA = Array.from(new Set(activeFightersA.flatMap(c => c?.haxTags || [])));
+  const allHaxB = Array.from(new Set(activeFightersB.flatMap(c => c?.haxTags || [])));
 
   const tierDiff = Math.abs(maxScoreA - maxScoreB);
   const isMismatch = tierDiff >= 3 && !modifiers.statsEqualized && matchMode === '1v1';
@@ -599,12 +599,18 @@ export default function MatchupMatrix({
           </div>
 
     {/* N x N Matrix Table */}
-    {selectedForMatrix.length >= 2 && (() => {
+    {(() => {
+      const validSelected = (selectedForMatrix || []).filter(Boolean).filter(c => c && (c.id || c.name));
+      if (validSelected.length < 2) return null;
+
       // Win counts
-      const wins = Object.fromEntries(selectedForMatrix.map(c => [c.id, 0]));
+      const wins = Object.fromEntries(validSelected.map(c => [c.id || c.name, 0]));
 
       const getMatchupResult = (cA, cB) => {
-        if (cA.id === cB.id) return 'self';
+        if (!cA || !cB) return 'self';
+        const idA = cA.id || cA.name;
+        const idB = cB.id || cB.name;
+        if (idA === idB) return 'self';
         const TIER_SCORE = (t) => {
           if (!t) return 10;
           const patterns = [
@@ -630,15 +636,19 @@ export default function MatchupMatrix({
       };
 
       // Count wins
-      selectedForMatrix.forEach(cA => {
-        selectedForMatrix.forEach(cB => {
-          if (cA.id !== cB.id && getMatchupResult(cA, cB) === 'win') wins[cA.id]++;
+      validSelected.forEach(cA => {
+        const idA = cA?.id || cA?.name;
+        validSelected.forEach(cB => {
+          const idB = cB?.id || cB?.name;
+          if (idA !== idB && getMatchupResult(cA, cB) === 'win') {
+            wins[idA] = (wins[idA] || 0) + 1;
+          }
         });
       });
 
       const maxWins = Math.max(...Object.values(wins));
       const champId = Object.entries(wins).find(([, w]) => w === maxWins)?.[0];
-      const champ = selectedForMatrix.find(c => c.id === champId);
+      const champ = validSelected.find(c => (c.id || c.name) === champId);
 
       return (
         <div className="space-y-3">
@@ -647,36 +657,45 @@ export default function MatchupMatrix({
               <thead>
                 <tr className="bg-slate-900">
                   <th className="p-2 text-slate-500 sticky left-0 bg-slate-900">⚔️</th>
-                  {selectedForMatrix.map(c => (
-                    <th key={c.id} className="p-2 text-slate-300 font-bold text-center min-w-[60px] truncate max-w-[60px]" title={c.name}>
-                      {c.name.length > 8 ? c.name.slice(0, 8) + '…' : c.name}
-                    </th>
-                  ))}
+                  {validSelected.map((c, idx) => {
+                    const cid = c?.id || c?.name || `col-${idx}`;
+                    const cname = c?.name || 'Guerrero';
+                    return (
+                      <th key={cid} className="p-2 text-slate-300 font-bold text-center min-w-[60px] truncate max-w-[60px]" title={cname}>
+                        {cname.length > 8 ? cname.slice(0, 8) + '…' : cname}
+                      </th>
+                    );
+                  })}
                   <th className="p-2 text-amber-400 font-bold">Wins</th>
                 </tr>
               </thead>
               <tbody>
-                {selectedForMatrix.map(cA => (
-                  <tr key={cA.id} className="border-t border-slate-800/50 hover:bg-slate-800/20">
-                    <td className="p-2 text-slate-300 font-bold sticky left-0 bg-slate-950 max-w-[80px] truncate" title={cA.name}>
-                      {cA.id === champId ? '🏆 ' : ''}{cA.name.length > 10 ? cA.name.slice(0, 10) + '…' : cA.name}
-                    </td>
-                    {selectedForMatrix.map(cB => {
-                      const result = getMatchupResult(cA, cB);
-                      return (
-                        <td key={cB.id} className={`p-2 text-center font-bold ${
-                          result === 'self' ? 'text-slate-600 bg-slate-900/40' :
-                          result === 'win' ? 'text-emerald-400 bg-emerald-950/30' :
-                          result === 'tie' ? 'text-yellow-400 bg-yellow-950/20' :
-                          'text-red-400 bg-red-950/20'
-                        }`}>
-                          {result === 'self' ? '—' : result === 'win' ? '✓' : result === 'tie' ? '~' : '✗'}
-                        </td>
-                      );
-                    })}
-                    <td className="p-2 text-amber-300 font-bold text-center">{wins[cA.id]}</td>
-                  </tr>
-                ))}
+                {validSelected.map((cA, rowIdx) => {
+                  const idA = cA?.id || cA?.name || `row-${rowIdx}`;
+                  const nameA = cA?.name || 'Guerrero A';
+                  return (
+                    <tr key={idA} className="border-t border-slate-800/50 hover:bg-slate-800/20">
+                      <td className="p-2 text-slate-300 font-bold sticky left-0 bg-slate-950 max-w-[80px] truncate" title={nameA}>
+                        {idA === champId ? '🏆 ' : ''}{nameA.length > 10 ? nameA.slice(0, 10) + '…' : nameA}
+                      </td>
+                      {validSelected.map((cB, colIdx) => {
+                        const idB = cB?.id || cB?.name || `cell-${colIdx}`;
+                        const result = getMatchupResult(cA, cB);
+                        return (
+                          <td key={idB} className={`p-2 text-center font-bold ${
+                            result === 'self' ? 'text-slate-600 bg-slate-900/40' :
+                            result === 'win' ? 'text-emerald-400 bg-emerald-950/30' :
+                            result === 'tie' ? 'text-yellow-400 bg-yellow-950/20' :
+                            'text-red-400 bg-red-950/20'
+                          }`}>
+                            {result === 'self' ? '—' : result === 'win' ? '✓' : result === 'tie' ? '~' : '✗'}
+                          </td>
+                        );
+                      })}
+                      <td className="p-2 text-amber-300 font-bold text-center">{wins[idA] || 0}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

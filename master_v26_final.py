@@ -190,7 +190,7 @@ if all_pass:
     print("=" * 80)
     print("\n🚀 COMANDO DE DEPLOY:")
     print("  cd Z:\\apex-powerscaling-engine")
-    print("  npx vercel --prod --yes --token vcp_5MmNUP2YcWwOSvbouEhpcKio82FkSFKmil8xUP1C958Fcg2yIb1Q7DcI")
+    print("  npx vercel --prod --yes")
     print("\n  # Verificar:")
     print("  Invoke-WebRequest -Uri \"https://apex-engine-six.vercel.app\" -Method Head | Select-Object StatusCode")
 else:

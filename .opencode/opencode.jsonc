@@ -13,6 +13,20 @@
     ".opencode/ANTIGRAVITY_SUPERIOR_CORE.md",
     "GLOBAL_CORE.md"
   ],
+  "permission": {
+    "read": "allow",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "bash": "allow",
+    "task": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "external_directory": "allow",
+    "todowrite": "allow",
+    "question": "allow"
+  },
   "command": {
     "audit": {
       "description": "🌙 Auditoría de Roster Flexible: usa OpenRouter o Gemini (Uso: audit [gemini|nemotron|minimax|ling] [universo] [ficha_inicio])",
@@ -352,6 +366,14 @@
     "limit": {
       "context": 256000,
       "output": 64000
+    },
+    "temperature": true
+  },
+  "z-ai/glm-5.2:free": {
+    "name": "Z.ai: GLM 5.2 (free)",
+    "limit": {
+      "context": 32768,
+      "output": 29491
     },
     "temperature": true
   },

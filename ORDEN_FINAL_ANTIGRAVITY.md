@@ -46,15 +46,26 @@ git push origin main
 
 ---
 
-## 🚀 3. DESPLIEGUE A VERCEL (producción)
+## 🚀 3. DESPLIEGUE A VERCEL (producción) — TODO EN UNO
 
-### Opción A — Script oficial (recomendada)
+### Opción A — Script oficial (RECOMENDADA, hace todo)
 ```powershell
 .\DESPLEGAR_A_VERCEL.bat
 ```
-El script: hace `git add/commit/push`, lee `VERCEL_TOKEN` de `.env.local` (o variable de entorno) y ejecuta el CLI.
 
-### Opción B — CLI manual con token
+El script ejecuta el **ciclo completo automático** (5 pasos, sin intervención):
+
+| # | Paso | Qué hace | Si falla |
+| :-: | :--- | :--- | :--- |
+| 1 | **Validar roster** | Ejecuta validador canónico y exige `RESULTADO GLOBAL` + `PASS` sin `FAIL` | Aborta con detalle |
+| 2 | **Build de producción** | `npm run build` (Vite) | Aborta con detalle |
+| 3 | **Git commit + push** | `git add .` → commit → `git push origin main` | Aborta |
+| 4 | **Deploy Vercel** | Lee `VERCEL_TOKEN` de `.env.local` (o entorno) → `npx vercel --prod --yes --token` | Aborta |
+| 5 | **Health check** | `vercel_health_check.ps1` — HTTP HEAD con 5 reintentos, exige StatusCode 200 | Avisa y aborta |
+
+Al terminar imprime: `DESPLIEGUE COMPLETADO CON EXITO` + URL de producción.
+
+### Opción B — Manual (solo si quieres ejecutar paso a paso)
 ```powershell
 $token = node -e "const fs=require('fs'); const m=fs.readFileSync('.env.local','utf8').match(/^VERCEL_TOKEN=(.*)$/m); console.log(m ? m[1].trim() : '')"
 npx vercel --prod --yes --token $token
@@ -96,6 +107,8 @@ Verificación: navegador en `http://localhost:5173` + `http://localhost:3001/api
 | ❌ NO tocar `APEX_NEEDS_REVIEW_BACKLOG_V22.json` | Catálogo de advertencias, solo lectura |
 | ❌ NO sincronizar `ROSTER_NIVELES_PODER_CORREGIDO_V26.json` de la raíz | Es un stub de prueba `{"meta":{"test":true}}`; la fuente real está en `src/data/` |
 | ❌ NO regenerar `characters.js` desde otra fuente | El merge táctico ya está sincronizado manualmente (numericStats derivados de baseKiNumeric) |
+
+> 💡 **Nota para Antigravity:** El script (1) valida, (2) compila, (3) pushea, (4) despliega y (5) hace health check automáticamente. Solo ejecuta `.\DESPLEGAR_A_VERCEL.bat` desde `Z:\apex-powerscaling-engine` (no desde la ruta UNC `\\192.168.1.82\...`, que rompe CMD/esbuild).
 
 ---
 
