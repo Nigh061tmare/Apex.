@@ -33,6 +33,10 @@ function main() {
   const dictSrc = read('dragonball_technique_dictionary.json');
   const loreSrc = read('dragonball_world_lore.json');
   const gtEpsSrc = read('dragonball_gt_episodes.json');
+  const dbzEpsSrc = read('dragonball_dbz_episodes.json');
+  const scenSrc = read('dragonball_scenarios.json');
+  const relSrc = read('dragonball_relations.json');
+  const libSrc = read('dragonball_character_library.json');
   // Baseline activo = V26 (dict indexado por id). Se excluyen los registros deprecados.
   const rosterRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'data', 'ROSTER_NIVELES_PODER_CORREGIDO_V26.json'), 'utf8'));
   const deprecated = new Set(rosterRaw.deprecatedRecords || []);
@@ -92,6 +96,33 @@ function main() {
     p: e.page || null
   }));
   const gtEpisodesMeta = gtEpsSrc._meta || null;
+
+  // --- Sinopsis de episodios de Dragon Ball Z (Chozenshu 3, pp.328-349) ---
+  const dbzEpisodes = (dbzEpsSrc.episodes || []).map((e) => ({
+    n: e.order,
+    jp: (e.jp || '').slice(0, 120),
+    es: (e.es || '').slice(0, 120),
+    s: (e.synopsis || '').slice(0, 360),
+    p: e.page || null
+  }));
+  const dbzEpisodesMeta = dbzEpsSrc._meta || null;
+
+  // --- Escenarios y geografia (Chozenshu 1, pp.244-258) ---
+  const scenarios = (scenSrc.regions || []).map((r) => ({
+    id: r.id, name: r.name, t: r.tomo,
+    p: r.page || (r.pages && r.pages[0]) || null,
+    terrain: (r.terrain || '').slice(0, 400),
+    landmarks: r.landmarks || [],
+    hook: r.engineHook || null
+  }));
+
+  // --- Relaciones canonicas (Chozenshu 1, p.10) ---
+  const relations = (relSrc.relations || []).map((r) => ({
+    a: r.from, b: r.to, k: r.type, kind: r.kind, note: (r.note || '').slice(0, 220), p: r.page
+  }));
+  const comboHints = (relSrc.comboHints || []).map((c) => ({
+    name: c.name, members: c.members || [], note: (c.note || '').slice(0, 200)
+  }));
   const loreCount = worldLore.races.length + worldLore.technology.length +
     worldLore.gtArcs.length + worldLore.darkDragons.length + worldLore.multipliers.length +
     worldLore.gtTransformations.length + worldLore.moviesDbz.length + worldLore.moviesDb.length;
@@ -181,12 +212,16 @@ function main() {
       }
     },
     techniques, battlePowers, timeline: timelineRows, techniqueDictionary, worldLore,
-    gtEpisodes, gtEpisodesMeta, passives, passCoverage, byCharacter
+    gtEpisodes, gtEpisodesMeta, dbzEpisodes, dbzEpisodesMeta,
+    scenarios, relations, comboHints, passives, passCoverage, byCharacter
   };
 
   const deep = {
     meta: { version: '1.0.0', note: 'Bloques crudos del Diccionario de Personajes (busqueda profunda).' },
-    blocks: dossier.blocks.map((b) => ({ t: b.tomo, p: b.page, m: b.marker, x: b.text.slice(0, 600) }))
+    blocks: dossier.blocks.map((b) => ({ t: b.tomo, p: b.page, m: b.marker, x: b.text.slice(0, 600) })),
+    characterLibrary: (libSrc.pages || []).map((x) => ({
+      p: x.p, names: x.names || [], x: (x.text || '').slice(0, 1200)
+    }))
   };
 
   const p1 = path.join(OUT, 'apex-codex.json');
@@ -204,6 +239,10 @@ function main() {
   console.log(`  diccionario     ${techniqueDictionary.length}`);
   console.log(`  mundo/lore      ${loreCount}`);
   console.log(`  episodios GT    ${gtEpisodes.length}`);
+  console.log(`  episodios DBZ   ${dbzEpisodes.length}`);
+  console.log(`  escenarios      ${scenarios.length}`);
+  console.log(`  relaciones      ${relations.length}`);
+  console.log(`  biblioteca      ${(libSrc.pages || []).length} (bundle deep)`);
   console.log(`  pasivas         ${passives.length}  (cobertura ${Object.keys(passCoverage).length} personajes DB)`);
   console.log(`  personajes DB   ${dbChars.length}`);
   console.log(`  personajes con tecnicas mapeadas: ${Object.keys(byCharacter).length}`);

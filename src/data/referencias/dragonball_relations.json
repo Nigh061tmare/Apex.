@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "name": "APEX Dragon Ball - Grafo de relaciones canonicas (Chozenshu 1)",
+    "version": "1.0.0",
+    "authority": "Dragon Ball Compendio Tomo 01, pp. 10 y 16.",
+    "source": "Seccion RELACIONES ENTRE GOKU Y EL RESTO DE LOS PERSONAJES",
+    "method": "Lectura dirigida del grafo; se transcriben solo los vinculos que el tomo rotula explicitamente.",
+    "engineUse": "Alimenta synergies y teamCombos: vinculos de maestro-discipulo, familia, fusion y rivalidad."
+  },
+
+  "relations": [
+    { "from": "Bardock", "to": "Son Goku", "type": "padre", "note": "Padre de Goku y heroico guerrero saiyano.", "kind": "linaje", "tomo": "t01", "page": 10 },
+    { "from": "Raditz", "to": "Son Goku", "type": "hermano-mayor", "note": "Hermano mayor de Goku. Muere en un enfrentamiento con el.", "kind": "linaje", "tomo": "t01", "page": 10 },
+    { "from": "Kreezer", "to": "Son Goku", "type": "antepasado", "note": "Rotulado como antepasado en el grafo.", "kind": "linaje", "tomo": "t01", "page": 10 },
+    { "from": "Rey Cold", "to": "Freezer", "type": "hermano-mayor", "note": "Hermano mayor del clan de Freezer.", "kind": "linaje", "tomo": "t01", "page": 10 },
+    { "from": "Son Gohan (abuelo)", "to": "Son Goku", "type": "abuelo-adoptivo", "note": "Abuelo adoptivo de Goku; discipulo predilecto del Duende Tortuga.", "kind": "familia", "tomo": "t01", "page": 10 },
+    { "from": "Rey Gyuma", "to": "Chichi", "type": "padre", "note": "Padre de Chichi. Rival del Duende Tortuga.", "kind": "familia", "tomo": "t01", "page": 10 },
+    { "from": "Chichi", "to": "Son Goku", "type": "conyuge", "note": "Mujer de Goku; procura meteren cintura a su marido.", "kind": "familia", "tomo": "t01", "page": 10 },
+    { "from": "Baba la Adivina", "to": "Duende Tortuga", "type": "hermana-mayor", "note": "Actua de mediadora entre el mundo terrenal y el Mas Alla.", "kind": "familia", "tomo": "t01", "page": 10 },
+    { "from": "Duende Tortuga", "to": "Son Goku", "type": "maestro", "note": "Considerado el mejor luchador del mundo; maestro de Goku y sus amigos.", "kind": "maestria", "tomo": "t01", "page": 10 },
+    { "from": "Mutaito", "to": "Duende Tortuga", "type": "maestro", "note": "Legendario luchador que confino a Piccolo Daimao; maestro del Duende Tortuga.", "kind": "maestria", "tomo": "t01", "page": 10 },
+    { "from": "Duende Grulla", "to": "Duende Tortuga", "type": "rival", "note": "Rival del Duende Tortuga; maestro de Ten Shin Han y Chaoz.", "kind": "rivalidad", "tomo": "t01", "page": 10 },
+    { "from": "Duende Tortuga", "to": "Lunch", "type": "maestro", "note": "Discipula del Duende Tortuga.", "kind": "maestria", "tomo": "t01", "page": 10 },
+    { "from": "Krilin", "to": "Son Goku", "type": "mejor-amigo", "note": "El mejor amigo de Goku; empezaron a entrenar juntos.", "kind": "alianza", "tomo": "t01", "page": 10 },
+    { "from": "Ten Shin Han", "to": "Son Goku", "type": "camarada-de-combate", "note": "Participa con Goku en innumerables combates.", "kind": "alianza", "tomo": "t01", "page": 10 },
+    { "from": "Vegeta", "to": "Son Goku", "type": "rival", "note": "Principe del planeta Vegeta; es muy orgulloso y considera a Goku su maximo rival.", "kind": "rivalidad", "tomo": "t01", "page": 10 },
+    { "from": "Kibito", "to": "Kaio Shin", "type": "sirviente", "note": "Sirviente de Kaio Shin que vive en el Kaio Shinkai; luego se fusiona con el.", "kind": "fusion", "tomo": "t01", "page": 10, "comboEligible": true },
+    { "from": "Son Goku", "to": "Vegeta", "type": "fusion", "note": "Union Potala: da lugar a Vegetto.", "kind": "fusion", "result": "Vegetto", "comboEligible": true, "tomo": "t01", "page": 10 },
+    { "from": "Son Goku", "to": "Kaio Shin", "type": "discipulo", "note": "Rokaioshin de hace 15 generaciones estaba encerrado en una espada.", "kind": "maestria", "tomo": "t01", "page": 10 }
+  ],
+
+  "comboHints": [
+    { "name": "Vegetto (Potala)", "members": ["Son Goku", "Vegeta"], "note": "Union Potala rotulada como la mas importante del grafo.", "phase": "fusión permanente mientras no se rompa" },
+    { "name": "Kibito Kaioshin", "members": ["Kibito", "Kaio Shin"], "note": "Kibito se fusiona con Kaio Shin." },
+    { "name": "Escuela del Duende Tortuga", "members": ["Duende Tortuga", "Son Goku", "Krilin", "Son Gohan (abuelo)"], "note": "Linaje de maestria directa." }
+  ]
+}

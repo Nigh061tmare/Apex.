@@ -288,6 +288,32 @@ export function getGtEpisodesMeta() {
   return _codex?.gtEpisodesMeta || null;
 }
 
+/** Sinopsis de episodios de Dragon Ball Z (Chozenshu 3, pp.328-349). */
+export function listDbzEpisodes() {
+  return _codex?.dbzEpisodes || [];
+}
+
+/** Escenarios y geografia canonica de la Tierra de Dragon Ball. */
+export function listScenarios() {
+  return _codex?.scenarios || [];
+}
+
+/** Relaciones canonicas entre personajes (maestria, familia, fusion, rivalidad). */
+export function listRelations() {
+  return _codex?.relations || [];
+}
+
+/** Combos y fusiones sugeridos por el grafo de relaciones. */
+export function listComboHints() {
+  return _codex?.comboHints || [];
+}
+
+/** Biblioteca de personajes (T03 pp.212-296). Requiere el bundle deep. */
+export async function listCharacterLibrary() {
+  const d = await loadCodexDeep();
+  return d?.characterLibrary || [];
+}
+
 /** Limpia las caches en memoria (util en pruebas). */
 export function resetCodexCache() {
   _codex = null;

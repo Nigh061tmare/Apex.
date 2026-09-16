@@ -4,7 +4,8 @@ import {
   loadCodex, codexStats, searchCodex, searchDossier, getTimeline, listTechniqueDictionary,
   listRaces, listTechnology, listGtArcs, listDarkDragons, listMultipliers,
   listGtTransformations, listMoviesDbz, listMoviesDb, listTvSpecials,
-  listGtEpisodes, getGtEpisodesMeta
+  listGtEpisodes, getGtEpisodesMeta, listDbzEpisodes, listScenarios,
+  listRelations, listComboHints
 } from '../services/chozenshuCodex';
 
 const TYPE_LABEL = {
@@ -369,6 +370,10 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
           const specials = listTvSpecials();
           const gtEps = listGtEpisodes();
           const gtEpsMeta = getGtEpisodesMeta();
+          const dbzEps = listDbzEpisodes();
+          const scen = listScenarios();
+          const rels = listRelations();
+          const combos = listComboHints();
           const s = q.toLowerCase().trim();
           const hit = (o) => !s || JSON.stringify(o).toLowerCase().includes(s);
           const ELEM = { fuego: Flame, hielo: Snowflake, viento: Wind, electricidad: Zap };
@@ -546,6 +551,92 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
                       </div>
                     ))}
                   </div>
+                </section>
+              )}
+
+              {scen.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-lime-300 font-bold text-xs uppercase tracking-wider mb-2">Escenarios y geografía ({scen.length})</h4>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {scen.filter(hit).map((r) => (
+                      <div key={r.id} className="rounded-lg border border-lime-500/20 bg-lime-950/10 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-slate-100 text-sm">{r.name}</span>
+                          <span className="text-[10px] font-mono text-emerald-400">{r.t?.toUpperCase()} p.{r.p}</span>
+                        </div>
+                        {r.terrain && <p className="text-[11px] text-slate-400 mt-1 leading-snug">{r.terrain}</p>}
+                        {(r.landmarks || []).length > 0 && (
+                          <div className="mt-1.5 flex flex-wrap gap-1">
+                            {r.landmarks.map((l) => (
+                              <span key={l} className="text-[9px] px-1.5 py-0.5 rounded bg-lime-500/10 border border-lime-500/30 text-lime-300">{l}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {rels.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-pink-300 font-bold text-xs uppercase tracking-wider mb-2">Relaciones y sinergias ({rels.length})</h4>
+                  <div className="space-y-1">
+                    {rels.filter(hit).map((r, i) => (
+                      <div key={`r${i}`} className="rounded-lg border border-pink-500/20 bg-pink-950/10 p-2 flex items-start gap-2 flex-wrap">
+                        <span className="text-[11px] text-slate-100 font-bold">{r.a}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-pink-500/15 border border-pink-500/30 text-pink-300 font-mono">{r.k}</span>
+                        <span className="text-[11px] text-slate-100 font-bold">{r.b}</span>
+                        <span className="text-[11px] text-slate-400 w-full leading-snug">{r.note}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {combos.length > 0 && (
+                    <div className="mt-2 space-y-1.5">
+                      {combos.filter(hit).map((c, i) => (
+                        <div key={`c${i}`} className="rounded-lg border border-fuchsia-500/30 bg-fuchsia-900/15 p-2.5">
+                          <div className="text-slate-100 text-[12px] font-bold">⚡ {c.name}</div>
+                          <p className="text-[11px] text-slate-400 leading-snug">{c.note}</p>
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {(c.members || []).map((m) => (
+                              <span key={m} className="text-[9px] px-1.5 py-0.5 rounded bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-200">{m}</span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </section>
+              )}
+
+              {dbzEps.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-sky-300 font-bold text-xs uppercase tracking-wider mb-2">
+                    Sinopsis de episodios de Dragon Ball Z ({dbzEps.length})
+                  </h4>
+                  {dbzEpsMeta?.limitations?.length > 0 && (
+                    <p className="text-[10px] text-amber-300/80 italic mb-2 leading-snug">⚠ {dbzEpsMeta.limitations[0]}</p>
+                  )}
+                  <div className="space-y-1.5 max-h-[360px] overflow-y-auto pr-1">
+                    {dbzEps.filter(hit).slice(0, 80).map((e) => (
+                      <div key={`z${e.n}`} className="rounded-lg border border-sky-500/20 bg-sky-950/10 p-2.5">
+                        <div className="flex items-start gap-2">
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-300 whitespace-nowrap">#{e.n}</span>
+                          <div className="min-w-0">
+                            <div className="text-slate-100 text-[12px] font-bold">{e.es || e.jp}</div>
+                            <div className="text-[10px] text-slate-500 italic">{e.jp}</div>
+                          </div>
+                          <span className="text-[10px] font-mono text-emerald-400 ml-auto whitespace-nowrap">p.{e.p}</span>
+                        </div>
+                        {e.s && <p className="text-[11px] text-slate-400 mt-1 leading-snug">{e.s}</p>}
+                      </div>
+                    ))}
+                  </div>
+                  {dbzEps.filter(hit).length > 80 && (
+                    <p className="text-[10px] text-slate-500 mt-1 italic">
+                      Mostrando 80 de {dbzEps.filter(hit).length}. Usa el filtro para acotar.
+                    </p>
+                  )}
                 </section>
               )}
 

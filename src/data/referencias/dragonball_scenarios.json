@@ -1,0 +1,83 @@
+{
+  "_meta": {
+    "name": "APEX Dragon Ball - Escenarios y Geografia canonica (Chozenshu 1)",
+    "version": "1.0.0",
+    "authority": "Dragon Ball Compendio Tomo 01 - Guia de la Historia y su Mundo (Daizenshuu 4).",
+    "method": "OCR local + lectura dirigida. Cita pagina del tomo.",
+    "source": "t01, seccion ESCENARIOS / EL PLANETA TIERRA EN DRAGON BALL (pp. 244-258)",
+    "engineUse": "Alimenta environmentalAffinity y el selector de arenas: cada region define terreno, clima y cobertura tactica."
+  },
+
+  "cosmology": [
+    {
+      "id": "gran-kaio", "name": "Gran Kaiō / Gran Rey Enma", "tomo": "t01", "page": 244,
+      "note": "Dragon Ball tiene una concepcion particular del mundo: el universo esta dividido en areas. La unica forma de ir al planeta donde vive el Kaio guardian de la Galaxia del Norte es recorrer el Camino de la Serpiente.",
+      "landmarks": ["Camino de la Serpiente", "Planeta del Kaio del Norte", "Gran Kaiō"]
+    }
+  ],
+
+  "regions": [
+    {
+      "id": "noroccidental", "name": "Area Noroccidental", "tomo": "t01", "pages": [245, 246],
+      "terrain": "Region remota y desolada en el extremo mas septentrional del planeta; zonas boscosas que dificultan el asentamiento humano.",
+      "landmarks": ["Muscle Tower", "Meseta de Yunzabito", "Laboratorio del doctor Gero", "Capital del Norte", "Lugar de aterrizaje de una nave espacial"]
+    },
+    {
+      "id": "norcentral", "name": "Area Norcentral", "tomo": "t01", "pages": [247, 248],
+      "terrain": "Region remota cubierta de nieve, azotada por gelidos vientos del norte; paisaje de abruptas montanas.",
+      "landmarks": ["Capital del Norte", "Zona de escombros de escaramuzas", "Laboratorio secreto oculto en las montanas"]
+    },
+    {
+      "id": "nororiental", "name": "Area Nororiental", "tomo": "t01", "page": 249,
+      "terrain": "Region nororiental del continente; la zona septentrional es gelida y esta cubierta por una gruesa capa de nieve.",
+      "landmarks": ["Aldea Jingle", "Region del Norte"]
+    },
+    {
+      "id": "centrooccidental", "name": "Area Centrooccidental", "tomo": "t01", "page": 250,
+      "terrain": "Region templada rodeada de una exuberante naturaleza; alberga el Palacio Celestial.",
+      "landmarks": ["Palacio Celestial (flota sobre la torre de Karin)", "Torre de Karin"]
+    },
+    {
+      "id": "central", "name": "Area Central", "tomo": "t01", "pages": [251, 252],
+      "terrain": "Nucleo de poblacion mas avanzado del mundo en ciencia y tecnologia; tambien incluye una region rocosa de setas gigantes apenas poblada que cobija a bandidos y villanos.",
+      "landmarks": ["Capsule Corporation", "Capital del Oeste", "Centro City", "Region de Parsley", "Edificio Central", "Castillo de Pilaf", "Setas gigantes"]
+    },
+    {
+      "id": "trunks-futuro", "name": "Area de Trunks del Futuro", "tomo": "t01", "page": 251,
+      "terrain": "Region del oeste con parajes que van desde vastos humedales hasta grandes ciudades; en el mundo del futuro los androides han devastado la ciudad.",
+      "landmarks": ["Ciudad devastada por A-17 y A-18", "Escenario donde Trunks destruye a los androides"],
+      "engineHook": "Arena post-apocaliptica con cobertura urbana derruida."
+    },
+    {
+      "id": "centrooriental", "name": "Area Centrooriental", "tomo": "t01", "page": 253,
+      "terrain": "Region importante para la historia: aqui empieza la epica de las bolas de dragon.",
+      "landmarks": ["Satan City", "Orange Star High School", "Bank", "Ciudad donde vive Mr. Satan"]
+    },
+    {
+      "id": "suroccidental", "name": "Area Suroccidental", "tomo": "t01", "page": 254,
+      "terrain": "Península que se prolonga desde el continente central hacia el suroeste: region montanosa de clima seco con algunos grandes desiertos. Zonas donde actua Babidi.",
+      "landmarks": ["Grandes desiertos", "Zonas montanosas", "Area de Babidi"]
+    },
+    {
+      "id": "surcentral", "name": "Area Surcentral", "tomo": "t01", "page": 255,
+      "terrain": "Un continente se alza en el oceano del sur. La mitad septentrional es relativamente arida, mientras la porcion meridional [es mas humeda].",
+      "landmarks": ["Ciudad donde Goku se compro ropa", "Sastreria"]
+    },
+    {
+      "id": "islas-sur", "name": "Islas del Sur", "tomo": "t01", "page": 256,
+      "terrain": "Islas situadas entre el extremo meridional del continente central. Aqui se reunen los luchadores mas fuertes del mundo.",
+      "landmarks": ["Castillo del Rey Gyuma", "Region del Duende Tortuga", "Tenkaichi Budokai (sede)", "Residencia de Chichi"]
+    },
+    {
+      "id": "islas-sureste", "name": "Islas del Sureste", "tomo": "t01", "page": 257,
+      "terrain": "Archipielago de islas de diferentes tamanos; zona paradisiaca con casi nula intervencion humana donde la naturaleza permanece intacta.",
+      "landmarks": ["Kame House", "Isla del Duende Tortuga", "Zona de entrenamiento de Lunch"]
+    }
+  ],
+
+  "notes": [
+    "Las paginas 244-258 del Tomo 01 forman el capitulo de geografia oficial del planeta Tierra de Dragon Ball.",
+    "En la p.258 Toriyama comenta sus edificios favoritos: prefiere la torre de Karin, 'un edificio construido con interesantes formas'.",
+    "Los nombres de regiones se conservan tal como los rotula el tomo (Noroccidental, Norcentral, Nororiental, Centrooccidental, Central, Centrooriental, Suroccidental, Surcentral, Islas del Sur, Islas del Sureste)."
+  ]
+}

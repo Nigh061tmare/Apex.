@@ -82,39 +82,49 @@ def parse_blocks(text):
 
 
 def main():
-    txt = io.open(SRC, encoding='utf-8').read()
+    import argparse
+    ap = argparse.ArgumentParser(description='Extractor de sinopsis de episodios (Chozenshu 3).')
+    ap.add_argument('--src', default=SRC)
+    ap.add_argument('--out', default=OUT)
+    ap.add_argument('--series', default='Dragon Ball GT')
+    ap.add_argument('--pages', default='t03 pp.350-357')
+    ap.add_argument('--total', type=int, default=64)
+    ap.add_argument('--min-len', type=int, default=6)
+    ap.add_argument('--quiet', action='store_true')
+    a = ap.parse_args()
+
+    txt = io.open(a.src, encoding='utf-8').read()
     eps = parse_blocks(txt)
     seen, uniq = set(), []
     for e in eps:
         k = e['jp'].lower()[:40]
-        if not k or k in seen or len(k) < 6:
+        if not k or k in seen or len(k) < a.min_len:
             continue
         seen.add(k)
         e['order'] = len(uniq) + 1
         uniq.append(e)
     data = {
         '_meta': {
-            'name': 'Dragon Ball GT - Sinopsis de episodios (Chozenshu 3)',
-            'source': 'Dragon Ball Compendio Tomo 03, seccion Sinopsis de los episodios de Dragon Ball GT',
-            'pages': 't03 pp.350-357',
+            'name': 'Sinopsis de episodios - ' + a.series,
+            'source': 'Dragon Ball Compendio, seccion Sinopsis de los episodios',
+            'pages': a.pages,
             'coverage': len(uniq),
-            'totalSeries': 64,
+            'totalSeries': a.total,
             'limitations': [
                 'Los numeros de episodio del libro van en un rotulo grafico que el OCR no captura: el campo "order" es el orden de aparicion en el tomo, no el numero oficial.',
-                'Los episodios 1 y 2 de GT quedan en el encabezado grafico de la seccion y no se extraen con fiabilidad.',
                 'El campo "dateEnBloque" recoge la fecha literal del bloque; por la maquetacion del tomo esa fecha corresponde al episodio SIGUIENTE. No se ha reasignado para no inventar datos.',
                 'La sinopsis es texto OCR sin correccion ortografica.'
             ]
         },
         'episodes': uniq
     }
-    io.open(OUT, 'w', encoding='utf-8', newline='\n').write(json.dumps(data, ensure_ascii=False, indent=1))
-    print('[out]', OUT)
-    withsyn = sum(1 for x in uniq if len(x['synopsis']) > 40)
-    withdate = sum(1 for x in uniq if x.get('dateEnBloque'))
-    print('[stats] episodios =', len(uniq), '| con sinopsis =', withsyn, '| con fecha =', withdate)
-    for x in uniq[:3]:
-        print('  ', x['order'], '|', x['jp'][:48], '|', (x['es'] or '')[:34], '|', x.get('dateEnBloque'))
+    io.open(a.out, 'w', encoding='utf-8', newline='\n').write(json.dumps(data, ensure_ascii=False, indent=1))
+    if not a.quiet:
+        print('[out]', a.out)
+        withsyn = sum(1 for x in uniq if len(x['synopsis']) > 40)
+        print('[stats] %s -> episodios = %d | con sinopsis = %d' % (a.series, len(uniq), withsyn))
+        for x in uniq[:3]:
+            print('  ', x['order'], '|', x['jp'][:52], '|', (x['es'] or '')[:36])
     return 0
 
 
