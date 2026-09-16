@@ -103,3 +103,15 @@ DB Devolution/
 /sync_*.py
 /inject_*.py
 /sincronizar_*.py
+
+# ============================================================
+# EXCEPCION: corpus canonico Chozenshu (SI se versiona)
+# Los informes y datasets del Codice viajan con el repo: no hace
+# falta git add -f. El resto de referencias/ sigue ignorado.
+# ============================================================
+!/references/
+/references/*
+!/references/CHOZENSHU_*.md
+!/src/data/referencias/
+/src/data/referencias/*
+!/src/data/referencias/dragonball_*.json
