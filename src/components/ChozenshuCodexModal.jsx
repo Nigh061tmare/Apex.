@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { X, BookOpen, Swords, Dna, Clock, Search, Zap, ShieldAlert, FileText, Loader2 } from 'lucide-react';
+import { X, BookOpen, Swords, Dna, Clock, Search, Zap, ShieldAlert, FileText, Loader2, Globe, Flame, Snowflake, Wind, Activity } from 'lucide-react';
 import {
-  loadCodex, codexStats, searchCodex, searchDossier, getTimeline, listTechniqueDictionary
+  loadCodex, codexStats, searchCodex, searchDossier, getTimeline, listTechniqueDictionary,
+  listRaces, listTechnology, listGtArcs, listDarkDragons, listMultipliers
 } from '../services/chozenshuCodex';
 
 const TYPE_LABEL = {
@@ -24,6 +25,7 @@ const TABS = [
   { id: 'potencia', label: 'Fuerza de Combate', icon: <Zap className="w-4 h-4" /> },
   { id: 'cronologia', label: 'Cronología', icon: <Clock className="w-4 h-4" /> },
   { id: 'diccionario', label: 'Diccionario (N/T/P/C)', icon: <BookOpen className="w-4 h-4" /> },
+  { id: 'mundo', label: 'Mundo, Razas & GT', icon: <Globe className="w-4 h-4" /> },
   { id: 'pasivas', label: 'Pasivas Biológicas', icon: <Dna className="w-4 h-4" /> },
   { id: 'buscar', label: 'Buscador', icon: <Search className="w-4 h-4" /> }
 ];
@@ -120,8 +122,9 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
               ['Atestiguadas', stats.counts.attested],
               ['Fuerzas comb.', stats.counts.battlePowers],
               ['Cronología', stats.counts.timeline],
-              ['Pasivas', stats.counts.passives],
-              ['Chars DB', stats.counts.dbCharacters]
+          ['Pasivas', stats.counts.passives],
+          ['Chars DB', stats.counts.dbCharacters],
+          ['Mundo/Lore', stats.counts.lore]
             ].map(([label, val]) => (
               <div key={label} className="text-center">
                 <div className="text-sm sm:text-base font-mono font-bold text-emerald-400">{fmt(val)}</div>
@@ -348,6 +351,129 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
                   {x.description && <div className="text-[11px] text-slate-400 mt-0.5"><span className="text-emerald-400 font-bold">(C)</span> {x.description}</div>}
                 </div>
               ))}
+            </div>
+          );
+        })()}
+
+        {!loading && codex && tab === 'mundo' && (() => {
+          const races = listRaces();
+          const tech = listTechnology();
+          const arcs = listGtArcs();
+          const dragons = listDarkDragons();
+          const mults = listMultipliers();
+          const s = q.toLowerCase().trim();
+          const hit = (o) => !s || JSON.stringify(o).toLowerCase().includes(s);
+          const ELEM = { fuego: Flame, hielo: Snowflake, viento: Wind, electricidad: Zap };
+          return (
+            <div className="space-y-6">
+              <input
+                value={q} onChange={(e) => setQ(e.target.value)}
+                placeholder="Filtrar razas, tecnología, arcos de GT, dragones…"
+                className="w-full px-3 py-2 rounded-lg bg-slate-900/80 border border-slate-700 text-slate-200 text-xs outline-none focus:border-cyan-500/60"
+              />
+
+              {races.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-cyan-300 font-bold text-xs uppercase tracking-wider mb-2">Razas canónicas ({races.length})</h4>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {races.filter(hit).map((r) => (
+                      <div key={r.id} className="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-slate-100 text-sm">{r.name}</span>
+                          <span className="text-[10px] font-mono text-emerald-400">{r.t?.toUpperCase()} p.{r.p}</span>
+                        </div>
+                        <ul className="mt-1.5 space-y-0.5">
+                          {(r.traits || []).slice(0, 5).map((t, i) => (
+                            <li key={i} className="text-[11px] text-slate-400 leading-snug">• {t}</li>
+                          ))}
+                        </ul>
+                        {(r.hooks || []).length > 0 && (
+                          <div className="mt-1.5 flex flex-wrap gap-1">
+                            {r.hooks.map((h) => (
+                              <span key={h} className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono">{h}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {tech.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-amber-300 font-bold text-xs uppercase tracking-wider mb-2">Tecnología y artefactos ({tech.length})</h4>
+                  <div className="space-y-2">
+                    {tech.filter(hit).map((x) => (
+                      <div key={x.id} className="rounded-lg border border-amber-500/20 bg-amber-950/10 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-slate-100 text-sm">{x.name}</span>
+                          <span className="text-[10px] font-mono text-emerald-400">{x.t?.toUpperCase()} p.{x.p}</span>
+                        </div>
+                        {x.desc && <p className="text-[11px] text-slate-400 mt-1 leading-snug">{x.desc}</p>}
+                        {x.limit && <p className="text-[11px] text-rose-300 mt-1"><b>Límite:</b> {x.limit}</p>}
+                        {x.hook && <p className="text-[10px] text-cyan-300 font-mono mt-1">{x.hook}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {arcs.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-fuchsia-300 font-bold text-xs uppercase tracking-wider mb-2">Arcos de Dragon Ball GT ({arcs.length})</h4>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {arcs.filter(hit).map((a) => (
+                      <div key={a.id} className="rounded-lg border border-fuchsia-500/20 bg-fuchsia-950/10 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-slate-100 text-sm">{a.name}</span>
+                          <span className="text-[10px] font-mono text-emerald-400">ep. {a.episodes || '—'}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 mt-1 leading-snug">{a.note}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {dragons.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-rose-300 font-bold text-xs uppercase tracking-wider mb-2">Los 7 Dragones Oscuros ({dragons.length})</h4>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {dragons.filter(hit).map((d) => {
+                      const Icon = ELEM[(d.element || '').toLowerCase()] || Activity;
+                      return (
+                        <div key={d.id} className="rounded-lg border border-rose-500/20 bg-rose-950/10 p-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-rose-500/15 border border-rose-500/30 text-rose-300">{'★'.repeat(d.stars)}</span>
+                            <span className="font-bold text-slate-100 text-sm">{d.name}</span>
+                            <Icon className="w-3.5 h-3.5 text-rose-300 ml-auto" />
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1 leading-snug">{d.note}</p>
+                          {d.temperatureC && <p className="text-[10px] text-orange-300 font-mono mt-1">temperatura corporal: {d.temperatureC} °C</p>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
+
+              {mults.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-emerald-300 font-bold text-xs uppercase tracking-wider mb-2">Multiplicadores citados ({mults.length})</h4>
+                  <div className="space-y-2">
+                    {mults.filter(hit).map((m) => (
+                      <div key={m.id} className="rounded-lg border border-emerald-500/20 bg-emerald-950/10 p-3 flex items-start gap-3">
+                        <span className="text-emerald-300 font-mono font-bold text-lg">×{m.value}</span>
+                        <div>
+                          <div className="text-slate-100 text-sm font-bold">{m.name}</div>
+                          <p className="text-[11px] text-slate-400 leading-snug">{m.note}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
           );
         })()}

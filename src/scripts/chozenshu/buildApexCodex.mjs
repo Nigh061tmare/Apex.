@@ -31,6 +31,7 @@ function main() {
   const timeline = read('dragonball_timeline_events.json');
   const dossier = read('dragonball_character_dossier.json');
   const dictSrc = read('dragonball_technique_dictionary.json');
+  const loreSrc = read('dragonball_world_lore.json');
   // Baseline activo = V26 (dict indexado por id). Se excluyen los registros deprecados.
   const rosterRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'data', 'ROSTER_NIVELES_PODER_CORREGIDO_V26.json'), 'utf8'));
   const deprecated = new Set(rosterRaw.deprecatedRecords || []);
@@ -59,6 +60,26 @@ function main() {
       g: x.page || null
     }))
     .sort((a, b) => (a.n || 9999) - (b.n || 9999));
+
+  // --- Mundo, razas, tecnologia y GT (Chozenshu 1 y 3) ---
+  const worldLore = {
+    races: (loreSrc.races || []).map((r) => ({
+      id: r.id, name: r.name, t: r.tomo, p: r.page,
+      traits: (r.traits || []).slice(0, 8),
+      hooks: r.engineHooks || []
+    })),
+    technology: (loreSrc.technology || []).map((x) => ({
+      id: x.id, name: x.name, t: x.tomo, p: x.page,
+      desc: (x.desc || '').slice(0, 420),
+      limit: x.limit || null, hook: x.engineHook || null
+    })),
+    planets: loreSrc.planets || [],
+    gtArcs: loreSrc.gtArcs || [],
+    darkDragons: loreSrc.darkDragons || [],
+    multipliers: loreSrc.multipliers || []
+  };
+  const loreCount = worldLore.races.length + worldLore.technology.length +
+    worldLore.gtArcs.length + worldLore.darkDragons.length + worldLore.multipliers.length;
 
 
   // --- Tecnicas: compactar ocurrencias a {tomo: {n, pages: primeros 8}} ---
@@ -140,10 +161,11 @@ function main() {
         timeline: timelineRows.length,
         dictionary: techniqueDictionary.length,
         passives: passives.length,
-        dbCharacters: dbChars.length
+        dbCharacters: dbChars.length,
+        lore: loreCount
       }
     },
-    techniques, battlePowers, timeline: timelineRows, techniqueDictionary, passives, passCoverage, byCharacter
+    techniques, battlePowers, timeline: timelineRows, techniqueDictionary, worldLore, passives, passCoverage, byCharacter
   };
 
   const deep = {
@@ -164,6 +186,7 @@ function main() {
   console.log(`  fuerzas combate ${battlePowers.length}`);
   console.log(`  cronologia      ${timelineRows.length}`);
   console.log(`  diccionario     ${techniqueDictionary.length}`);
+  console.log(`  mundo/lore      ${loreCount}`);
   console.log(`  pasivas         ${passives.length}  (cobertura ${Object.keys(passCoverage).length} personajes DB)`);
   console.log(`  personajes DB   ${dbChars.length}`);
   console.log(`  personajes con tecnicas mapeadas: ${Object.keys(byCharacter).length}`);

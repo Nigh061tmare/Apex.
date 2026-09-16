@@ -1,0 +1,208 @@
+{
+  "_meta": {
+    "name": "APEX Dragon Ball - Mundo, Razas, Tecnologia y GT (Chozenshu 1-3)",
+    "version": "1.0.0",
+    "authority": "Dragon Ball Compendios (Chozenshu) 1-4, Planeta Comic / Shueisha.",
+    "method": "OCR local + verificacion dirigida; cita tomo y pagina PDF del tomo.",
+    "sources": {
+      "t01": "Guia de la Historia y su Mundo (razas pp.218-245; tecnologia pp.297-300; vehiculos pp.278-288; mundos p.214; escenarios p.251)",
+      "t02": "Guia de la Animacion I (series y peliculas de DB y DBZ)",
+      "t03": "Guia de la Animacion II (peliculas restantes, especiales, GT pp.10-35)"
+    },
+    "note": "Los textos de origen son OCR imperfecto: se han normalizado terminos pero no se inventan datos."
+  },
+
+  "races": [
+    {
+      "id": "saiyajin", "name": "Saiyajin", "tomo": "t01", "page": 222, "origin": "Planeta Vegeta",
+      "traits": [
+        "Raza nacida unica y exclusivamente para luchar.",
+        "Belicosos, agresivos y despiadados; quieren la inmortalidad con las bolas de dragon para luchar eternamente.",
+        "Se entusiasman ante un rival poderoso: cuanto mas intenso el combate, mas contentos.",
+        "Alienigenas glotones que comen de todo sin preferencias; su apetito supera el sentido comun.",
+        "Tienen una juventud prolongada para luchar: la juventud es su periodo de mayor poder y la alargaron al maximo.",
+        "Esperanza de vida aproximadamente igual a la de los terricolas."
+      ],
+      "engineHooks": ["zenkai", "blutz-transformation", "juventud-prolongada (prime sostenido)"],
+      "verified": true
+    },
+    {
+      "id": "mestizo-saiyajin", "name": "Mestizo (Saiyajin + Terricola)", "tomo": "t01", "page": 224,
+      "traits": [
+        "Los genes saiyanos combinan muy bien con los de los terricolas.",
+        "Los mestizos sin cola son ninos prodigio: potencial de crecimiento superior."
+      ],
+      "engineHooks": ["potencial elevado", "zenkai", "sin Oozaru si no hay cola"],
+      "verified": true
+    },
+    {
+      "id": "namekiano", "name": "Namekiano", "tomo": "t01", "page": 229, "origin": "Planeta Namek",
+      "traits": [
+        "Organizacion en siete ancianos jefe; cada anciano jefe posee una bola de dragon.",
+        "Raza de alienigenas con capacidad de regeneracion de extremidades.",
+        "Custodian la Gran Bola de Dragon (Porunga)."
+      ],
+      "engineHooks": ["namekian-regeneration", "fusor-dependiente"],
+      "verified": true
+    },
+    {
+      "id": "clan-freezer", "name": "Clan de Freezer (Frost Demon)", "tomo": "t01", "page": 234,
+      "traits": [
+        "Un poder bruto e inmenso en torno a Freezer, proveniente de todos los rincones del universo.",
+        "Imperio militar con tropas equipadas con Scouter y unidades terapeuticas."
+      ],
+      "engineHooks": ["frost-demon-core", "transformaciones controladas por el usuario"],
+      "verified": true
+    },
+    {
+      "id": "kaioshin", "name": "Kaioshin / Rokaio Shin", "tomo": "t01", "page": 231,
+      "traits": [
+        "Dioses con capacidad de verlo todo; cuatro Kaioshin y un Kaioshin supremo.",
+        "Pueden llevar mas de un pendiente potara."
+      ],
+      "engineHooks": ["god-ki", "potara"],
+      "verified": true
+    },
+    {
+      "id": "majin", "name": "Majin (linaje de Babidi)", "tomo": "t01", "page": 237,
+      "traits": [
+        "El brujo Babidi organizo un grupo reunido para liberar a Buu de su encierro.",
+        "Esbirros con capacidad de absorcion de biomasa."
+      ],
+      "engineHooks": ["majin-absorption", "control mental"],
+      "verified": true
+    },
+    {
+      "id": "terricola", "name": "Terricola", "tomo": "t01", "page": 225,
+      "traits": ["Habitan la Tierra", "Sin rasgos saiyanos; base de la poblacion del planeta."],
+      "verified": true
+    },
+    {
+      "id": "android", "name": "Androide", "tomo": "t01", "page": 201,
+      "traits": ["Construidos para el combate; el doctor Gero los creo con energia perpetua."],
+      "engineHooks": ["android-perpetual", "ki no detectable"],
+      "verified": true
+    }
+  ],
+
+  "technology": [
+    {
+      "id": "scouter", "name": "Scouter (analizador de fuerza de combate)", "tomo": "t01", "page": 300,
+      "type": "medicion",
+      "desc": "Analizador de la fuerza de combate que llevan permanentemente las tropas de Freezer. Los modelos nuevos pueden detectar fuerzas de combate superiores a 22.000. El valor se refleja en una pantalla colocada en el ojo izquierdo y tambien puede mostrar la de los adversarios mas proximos, indicando ademas la distancia.",
+      "limit": "Los modelos antiguos no leen por encima de 22.000.",
+      "counterplay": "No sirve frente a razas que pueden alterar su fuerza de combate (supresion de ki, androides de firma nula).",
+      "engineHook": "TOPEO_SCOUTER_22000: los modelos antiguos saturan por encima de 22.000 unidades.",
+      "verified": true
+    },
+    {
+      "id": "unidad-terapeutica", "name": "Unidad terapeutica", "tomo": "t01", "page": 300,
+      "type": "medico",
+      "desc": "Unidad para la curacion acelerada de los guerreros de Freezer. Gracias a las excelentes prestaciones de esta maquina medica, un herido en estado critico puede recuperarse completamente en poco mas de media hora. Una vez curado, el guerrero puede regresar inmediatamente al combate.",
+      "engineHook": "BASE_CANONICA_DEL_ZENKAI: recuperacion total desde estado critico en ~30 minutos y reincorporacion inmediata.",
+      "verified": true
+    },
+    {
+      "id": "cama-tratamiento", "name": "Cama de tratamiento", "tomo": "t01", "page": 300,
+      "type": "medico",
+      "desc": "Cama para heridos graves de los grandes hospitales de la Capital del Oeste. Una lampara giratoria avisa si el estado del paciente empeora para poder llevarlo directamente al quirofano.",
+      "verified": true
+    },
+    {
+      "id": "maquina-medicion-fuerza", "name": "Maquina de medicion de fuerza", "tomo": "t01", "page": 300,
+      "type": "medicion",
+      "desc": "Mide la fuerza de los punetazos; se emplea en la fase preliminar del Tenkaichi Budokai desde su 24a edicion para garantizar la imparcialidad. En la 24a edicion el valor mas alto lo registro Mister Satan con 139, record pulverizado sucesivamente en la 25a edicion por Goku y sus amigos.",
+      "engineHook": "ESCALA_TENKAICHI: Mr. Satan = 139 unidades de punetazo (referencia Tier 10-C / humano de elite).",
+      "verified": true
+    },
+    {
+      "id": "radar-del-dragon", "name": "Radar del Dragon", "tomo": "t01", "page": 297,
+      "type": "busqueda",
+      "desc": "Invento de Bulma: arma secreta para buscar las bolas de dragon. Es un radar que detecta las esferas.",
+      "verified": true
+    },
+    {
+      "id": "capsula-hoi-poi", "name": "Capsula Hoi-Poi", "tomo": "t01", "page": 299,
+      "type": "almacenamiento",
+      "desc": "Inventos del doctor Brief (Capsule Corporation) convertidos en realidad: objetos doblados en capsulas de bolsillo.",
+      "verified": true
+    }
+  ],
+
+  "artifacts": [
+    {
+      "id": "bolas-de-dragon", "name": "Bolas de Dragon", "tomo": "t01", "page": 214,
+      "type": "artefacto-divino",
+      "desc": "Las siete esferas se transforman en piedra despues de conceder la peticion: tras conceder el deseo, Shenron deja de [estar activo].",
+      "rules": ["Tras conceder el deseo las esferas se convierten en piedra."],
+      "verified": true
+    }
+  ],
+
+  "planets": [
+    { "id": "tierra", "name": "Planeta Tierra", "tomo": "t01", "page": 251, "note": "Escenarios: Area de Trunks del Futuro, Capsule Corporation, Edificio Central." },
+    { "id": "vegeta", "name": "Planeta Vegeta", "tomo": "t01", "page": 225, "note": "Planeta natal de los saiyanos." },
+    { "id": "namek", "name": "Planeta Namek", "tomo": "t01", "page": 229, "note": "Hogar de los namekianos; siete ancianos jefe." },
+    { "id": "tsufur", "name": "Nuevo Planeta Tsufur", "tomo": "t03", "page": 15, "note": "Baby lleva a los terricolas al nuevo planeta Tsufur. Raza tsufuriana exterminada por los saiyanos." },
+    { "id": "m2", "name": "Planeta M2", "tomo": "t03", "page": 13, "note": "Alli se encuentra el doctor Mu (GT)." }
+  ],
+
+  "gtArcs": [
+    { "id": "gran-viaje", "name": "Saga del Gran Viaje", "tomo": "t03", "page": 33, "episodes": "1 a 26",
+      "note": "Ejercito extraterrestre en torno a Dolltaki; Doctor Mu y sus superpoderes.",
+      "verified": true },
+    { "id": "baby", "name": "Saga de Baby", "tomo": "t03", "page": 27,
+      "note": "Baby: larva parasito creada por el doctor Mu; forma de vida guerrera y malvada creada por un tsufuriano, raza exterminada por los saiyanos. Se reencarna buscando venganza por su maestro.",
+      "verified": true },
+    { "id": "super-a17", "name": "Saga de Super A-17", "tomo": "t03", "page": 34, "episodes": "42 a 47",
+      "note": "A-17 creado nuevamente por el doctor Gero; A-17 del infierno. Fusion de los dos A-17 en Super A-17.",
+      "verified": true },
+    { "id": "dragones-oscuros", "name": "Saga de los Dragones Oscuros", "tomo": "t03", "page": 18, "episodes": "48 a 64",
+      "note": "Por conceder demasiados deseos, las bolas de dragon generan siete Dragones Oscuros envueltos en un aura maligna. Cada uno acumula energia negativa y sus caracteristicas son distintas. Goku, Pan y Giru viajan para acabar con ellos recogiendo las esferas.",
+      "verified": true }
+  ],
+
+  "darkDragons": [
+    { "id": "yixinglong", "name": "Yixinglong", "stars": 1, "element": "liderazgo / poder bruto",
+      "tomo": "t03", "page": 29,
+      "note": "El mas fuerte de los siete. Su fuerza de combate es superior a la de un supersaiyano de cuarto nivel. Absorbe al resto de los Dragones Oscuros y se transforma en Superyixinglong.",
+      "evolvesTo": "superyixinglong", "verified": true },
+    { "id": "erxinglong", "name": "Erxinglong", "stars": 2, "element": "veneno",
+      "tomo": "t03", "page": 29,
+      "note": "Lleva la bola de dos estrellas y es el mas debil de todos. Muy inteligente: ataca debilitando a sus adversarios con su gas venoso.",
+      "verified": true },
+    { "id": "sanxinglong", "name": "Sanxinglong", "stars": 3, "element": "hielo",
+      "tomo": "t03", "page": 29,
+      "note": "Controla el hielo y ataca con un rayo congelante. Caracter cobarde: llega a usar a su propio hermano como escudo.",
+      "verified": true },
+    { "id": "sixinglong", "name": "Sixinglong", "stars": 4, "element": "fuego",
+      "tomo": "t03", "page": 29,
+      "note": "Controla el fuego y puede elevar la temperatura de su cuerpo hasta los 6.000 grados. Personalidad antagonica a la de Sanxinglong: le gustan los enfrentamientos justos. Noble rival.",
+      "temperatureC": 6000, "verified": true },
+    { "id": "wuxinglong", "name": "Wuxinglong", "stars": 5, "element": "electricidad",
+      "tomo": "t03", "page": 29,
+      "note": "Cuerpo menudo pero puede aumentar de tamano. Controla la electricidad y ataca con descargas; crece absorbiendo electricidad.",
+      "verified": true },
+    { "id": "liuxinglong", "name": "Liuxinglong", "stars": 6, "element": "viento",
+      "tomo": "t03", "page": 29,
+      "note": "Adopta la forma de la hermosa Princesa Oto cuando se presenta ante Goku. Controla el viento y usa tecnicas basadas en tornados.",
+      "verified": true },
+    { "id": "qixinglong", "name": "Qixinglong", "stars": 7, "element": "terremotos",
+      "tomo": "t03", "page": 29,
+      "note": "Tiene el poder de crear terremotos. Se alza en la cima de todos.",
+      "verified": true }
+  ],
+
+  "gtEntities": [
+    { "id": "shenron-energia-negativa", "name": "Shenron de Energia Negativa", "tomo": "t03", "page": 29,
+      "note": "Encarnacion maligna surgida a partir de las bolas de dragon por la acumulacion de energia negativa. Su escision genera los siete Dragones Oscuros. A diferencia del Shenron normal, es ordinario y malhablado.",
+      "verified": true }
+  ],
+
+  "multipliers": [
+    { "id": "kaio-ken-x10", "name": "Kaio-ken x10", "value": 10, "tomo": "t01", "page": 170,
+      "note": "Como resultado de haber entrenado bajo una intensa gravedad, Goku pudo elevar momentaneamente la capacidad de ataque del Kaio-ken al decuplo.", "verified": true },
+    { "id": "kamehameha-x10-gt", "name": "Kame Hame Ha multiplicado por 10 (GT)", "value": 10, "tomo": "t03", "page": 16,
+      "note": "Goku lanza un Kame Hame Ha multiplicado por 10 contra Baby, pero no puede tumbarle.", "verified": true }
+  ]
+}

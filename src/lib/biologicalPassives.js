@@ -82,6 +82,35 @@ export const GOD_KI_TOKENS = Object.freeze([
   'jiren', 'toppo', 'hit-dbs', 'belmod', 'rumsshi', 'grand-priest'
 ]);
 
+/* ---------------------------------------------------------------------------
+ * LIMITES CANONICOS DE TECNOLOGIA (Chozenshu 1, Tomo 04 p.300)
+ * ------------------------------------------------------------------------- */
+
+export const CANON_LIMITS = Object.freeze({
+  /** Los modelos ANTIGUOS de Scouter no leen por encima de 22.000 unidades. */
+  SCOUTER_ANTIGUO_MAX: 22000,
+  /** La unidad terapeutica cura a un herido critico en poco mas de media hora. */
+  UNIDAD_TERAPEUTICA_MIN: 30,
+  /** Record de Mister Satan en la maquina de medicion de fuerza (24a edicion). */
+  PUNETAZO_MR_SATAN: 139,
+  /** Sixinglong eleva su cuerpo hasta esta temperatura. */
+  SIXINGLONG_TEMPERATURA_C: 6000
+});
+
+/**
+ * Lectura de un Scouter canonico. Los modelos antiguos SATURAN al alcanzar el
+ * tope: el canon indica que no pueden detectar fuerzas superiores a 22.000.
+ * @param {number} baseKi fuerza de combate real
+ * @param {'antiguo'|'nuevo'} model
+ */
+export function readScouter(baseKi, model = 'nuevo') {
+  const ki = Number(baseKi) || 0;
+  if (model === 'antiguo' && ki > CANON_LIMITS.SCOUTER_ANTIGUO_MAX) {
+    return { reading: CANON_LIMITS.SCOUTER_ANTIGUO_MAX, saturated: true, note: 'Modelo antiguo: tope 22.000 (Chozenshu 1, p.300).' };
+  }
+  return { reading: ki, saturated: false, note: 'Los modelos nuevos leen por encima de 22.000.' };
+}
+
 export const PASSIVE_REGISTRY = [
   {
     id: 'zenkai', name: 'Zenkai', category: 'saiyan',

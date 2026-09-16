@@ -224,6 +224,40 @@ export function getTechniqueDictionaryForCharacter(character, limit = 60) {
   return out;
 }
 
+/* ---------------------------------------------------------------------------
+ * MUNDO, RAZAS, TECNOLOGIA Y GT (Chozenshu 1 y 3)
+ * ------------------------------------------------------------------------- */
+
+/** Devuelve el bloque de lore estructurado (razas, tecnologia, planetas, GT). */
+export function getWorldLore() {
+  return _codex?.worldLore || null;
+}
+
+/** Razas canonicas con sus rasgos y ganchos de motor. */
+export function listRaces() {
+  return _codex?.worldLore?.races || [];
+}
+
+/** Tecnologia y artefactos canonicos (Scouter, unidad terapeutica, etc.). */
+export function listTechnology() {
+  return _codex?.worldLore?.technology || [];
+}
+
+/** Arcos de Dragon Ball GT con su rango de episodios. */
+export function listGtArcs() {
+  return _codex?.worldLore?.gtArcs || [];
+}
+
+/** Los siete Dragones Oscuros con su estrella y elemento. */
+export function listDarkDragons() {
+  return _codex?.worldLore?.darkDragons || [];
+}
+
+/** Multiplicadores canonicos citados en los tomos. */
+export function listMultipliers() {
+  return _codex?.worldLore?.multipliers || [];
+}
+
 /** Limpia las caches en memoria (util en pruebas). */
 export function resetCodexCache() {
   _codex = null;
