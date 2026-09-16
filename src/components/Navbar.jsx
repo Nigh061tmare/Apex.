@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Shield, Swords, Sparkles, GitBranch, FolderCheck, PlusCircle, Cpu, Trophy, Download, Upload, Scale, Globe, Crown, Coffee, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Shield, Swords, Sparkles, GitBranch, FolderCheck, PlusCircle, Cpu, Trophy, Download, Upload, Scale, Globe, Crown, Coffee, User, ChevronLeft, ChevronRight, BookMarked } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, getTranslation } from '../services/i18n';
 import { getUserAvatar } from '../lib/characterImages';
 
@@ -20,6 +20,7 @@ export default function Navbar({
   onOpenRandomMatchmaker,
   onOpenModesGuide,
   onOpenPowerscalingGuide,
+  onOpenCodex,
   allCharacters = [],
   onImportCharacters,
   oracleCoins = 1000,
@@ -327,6 +328,16 @@ export default function Navbar({
               >
                 <Trophy className="w-3 h-3 text-amber-400" />
                 <span className="whitespace-nowrap">Tiering</span>
+              </button>
+
+              {/* Códice Chōzenshū — corpus canónico Dragon Ball */}
+              <button
+                onClick={onOpenCodex}
+                className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-500/40 text-[10px] sm:text-xs text-cyan-300 font-bold transition cursor-pointer shadow-sm shrink-0"
+                title="Códice Chōzenshū — Canon oficial Dragon Ball (Compendios 1-4)"
+              >
+                <BookMarked className="w-3 h-3 text-cyan-400" />
+                <span className="whitespace-nowrap">Códice</span>
               </button>
 
               {/* Comparar */}

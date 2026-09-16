@@ -3,7 +3,7 @@ import {
   X, Shield, Zap, Activity, Brain, AlertTriangle, ListPlus, Battery, 
   Dumbbell, Move, Swords, Book, Target, Sparkles, Users, Wrench, Flame, ShieldAlert, Cpu,
   RefreshCw, Image as ImageIcon, Palette, Globe, Languages, Check, ArrowRightLeft,
-  ChevronLeft, ChevronRight, Plus, Trash2, Edit3, Eye, FolderPlus, Tag, Layers, Star
+  ChevronLeft, ChevronRight, Plus, Trash2, Edit3, Eye, FolderPlus, Tag, Layers, Star, BookMarked
 } from 'lucide-react';
 import { SimulationEngine } from '../services/simulationEngine';
 import { isCharacterInNeedsReview, getNeedsReviewWarningText } from '../services/needsReviewService';
@@ -13,6 +13,7 @@ import { SoundFX } from '../services/soundFx';
 import { getPowerLevelFormulaBreakdown } from '../services/scouterEngine';
 import { resolveCombatState } from '../lib/combatStateResolver';
 import { getBodilyForms, getExternalEntities, getExternalEntityUiModel } from '../lib/externalEntityFramework';
+import CharacterCanonPanel from './CharacterCanonPanel';
 import { TIER_ORDER, SCOUTER_ENERGY_ANCHORS } from '../lib/apexTierSystem';
 
 const COMMON_HAX_TAGS = [
@@ -53,6 +54,8 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
   const [isTranslatingSheet, setIsTranslatingSheet] = useState(false);
   const [translationStatus, setTranslationStatus] = useState('');
   const [isCustomUniverseInput, setIsCustomUniverseInput] = useState(false);
+  // Feedback de importación canónica desde el Códice Chōzenshū
+  const [canonImportInfo, setCanonImportInfo] = useState(null);
   const [isScanningKi, setIsScanningKi] = useState(false);
   const [showTechniqueForge, setShowTechniqueForge] = useState(false);
   const [forgedTech, setForgedTech] = useState({
@@ -212,6 +215,54 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
         arsenal: { ...currentArsenal, [category]: updatedList }
       };
     });
+  };
+
+  /**
+   * CÓDICE CHŌZENSHŪ → ARSENAL
+   * Importa técnicas canónicas atestiguadas en los tomos como BORRADOR editable.
+   * Mapeo por tipo canónico:
+   *   ki / martial                → superAttacks
+   *   hax / transformation / fusion → passives
+   *   utility / defense / support   → actives
+   * Deduplica por nombre normalizado para evitar clones (Regla de Oro 5).
+   */
+  const importCanonTechniques = (techniques = []) => {
+    const SLOT = {
+      ki: 'superAttacks', martial: 'superAttacks',
+      hax: 'passives', transformation: 'passives', fusion: 'passives',
+      utility: 'actives', defense: 'actives', support: 'actives'
+    };
+    const norm = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    let added = 0, skipped = 0;
+
+    setFormData(prev => {
+      const base = prev.arsenal || { basicAttacks: '', superAttacks: [], ultimateAttacks: [], passives: [], actives: [] };
+      const next = { ...base };
+      for (const t of techniques) {
+        const slot = SLOT[t.ty] || 'superAttacks';
+        const list = [...(next[slot] || [])];
+        const name = t.es || t.ro || t.id;
+        const exists = list.some((it) => norm(it?.name) === norm(name));
+        if (exists) { skipped++; continue; }
+        const prov = t.at && t.occ
+          ? ' [Canon Chōzenshū: ' + Object.entries(t.occ).map(([k, o]) => `${k} p.${o.p.slice(0, 3).join('/')}`).join(' · ') + ']'
+          : ' [Canon Chōzenshū]';
+        list.push({
+          name,
+          desc: `${t.de || 'Técnica canónica.'}${prov}`,
+          cost: t.ty === 'ki' ? '25' : (t.ty === 'hax' || t.ty === 'transformation' ? '20' : '10'),
+          ...(t.ro ? { romanji: t.ro } : {}),
+          ...(t.at ? { canonSource: 'Dragon Ball Compendios (Chōzenshū 1-4)', canonHits: t.n } : {})
+        });
+        next[slot] = list;
+        added++;
+      }
+      return { ...prev, arsenal: next };
+    });
+
+    try { SoundFX?.playAuraBurst?.(); } catch (e) { /* audio opcional */ }
+    setCanonImportInfo({ added, skipped, total: techniques.length });
+    setTimeout(() => setCanonImportInfo(null), 6000);
   };
 
   const detectedReferences = SimulationEngine.findReferenceCharacters(formData.name, formData.universe, allCharacters);
@@ -413,8 +464,9 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
       count: isEntityCommander ? (canonicalGhosts.length + legacyGhosts.length) : (formData.subEntity?.name ? 1 : null), 
       icon: <Users className="w-4 h-4 text-purple-400" /> 
     },
-    { id: 'psicologia', label: 'Psicología & IQ', shortLabel: 'IQ', count: null, icon: <Brain className="w-4 h-4 text-indigo-400" /> }
-  ];
+  { id: 'psicologia', label: 'Psicología & IQ', shortLabel: 'IQ', count: null, icon: <Brain className="w-4 h-4 text-indigo-400" /> },
+  { id: 'codice', label: 'Códice Chōzenshū', shortLabel: 'Códice', count: null, icon: <BookMarked className="w-4 h-4 text-cyan-400" /> }
+];
 
   const currentTabIdx = TABS.findIndex(t => t.id === activeTab);
   const prevTab = currentTabIdx > 0 ? TABS[currentTabIdx - 1] : null;
@@ -1944,6 +1996,16 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
           )}
 
           {/* TAB 8: PSICOLOGÍA & IQ */}
+          {/* TAB 9: CÓDICE CHŌZENSHŪ (canon oficial verificado) */}
+          {activeTab === 'codice' && (
+            <CharacterCanonPanel
+              character={formData}
+              lang={lang}
+              onApplyTechniques={importCanonTechniques}
+              feedback={canonImportInfo}
+            />
+          )}
+
           {activeTab === 'psicologia' && (
             <div className="space-y-4">
               <div className="p-4 bg-indigo-900/20 border border-indigo-500/30 rounded-2xl space-y-1">

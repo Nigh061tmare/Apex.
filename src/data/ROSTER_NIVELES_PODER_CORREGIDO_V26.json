@@ -5397,10 +5397,46 @@
         },
         {
           "id": "form_2",
-          "name": "Super Saiyan Rosé (Ki Divino Malicioso)",
+          "name": "Super Saiyan (Fase 1)",
           "kiNumeric": 680000000000,
           "kiFormatted": "680.000.000.000",
           "multiplier": "$\\times 50$",
+          "tier": "3-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_3",
+          "name": "Super Saiyan 2 (Fase 2)",
+          "kiNumeric": 1360000000000,
+          "kiFormatted": "1.360.000.000.000",
+          "multiplier": "$\\times 100$",
+          "tier": "3-A",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_4",
+          "name": "Super Saiyan 3 (Fase 3)",
+          "kiNumeric": 5440000000000,
+          "kiFormatted": "5.440.000.000.000",
+          "multiplier": "$\\times 400$",
+          "tier": "Low 2-C",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_5",
+          "name": "Super Saiyan God (Dios Rojo)",
+          "kiNumeric": 87040000000000,
+          "kiFormatted": "87.040.000.000.000",
+          "multiplier": "$\\times 6400$",
+          "tier": "Low 2-C",
+          "isApexCustom": false
+        },
+        {
+          "id": "form_6",
+          "name": "Super Saiyan Rosé (Ki Divino Malicioso)",
+          "kiNumeric": 104720000000000,
+          "kiFormatted": "104.720.000.000.000",
+          "multiplier": "$\\times 7700$",
           "tier": "Low 2-C",
           "isApexCustom": false
         }

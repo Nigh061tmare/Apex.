@@ -54,6 +54,19 @@ if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
 }
 
+// Corpus canónico Chōzenshū (apex-codex.json / apex-codex-deep.json).
+// Sirve /data/* tanto desde dist/ (build) como desde public/ (dev sin build).
+const codexDataPaths = [
+  path.join(__dirname, 'dist', 'data'),
+  path.join(__dirname, 'public', 'data')
+].filter((p) => fs.existsSync(p));
+for (const p of codexDataPaths) {
+  app.use('/data', express.static(p));
+}
+if (codexDataPaths.length) {
+  console.log('[codex] sirviendo /data desde:', codexDataPaths.join(' | '));
+}
+
 function getVaultPath() {
   const candidates = [
     'D:\\Vault Obsidian',

@@ -5,7 +5,9 @@ import { RAID_BOSS_TIERS, calculateSquadSynergy } from './synergyEngine';
 import { detectNarrativeBossMechanics } from '../data/tagMechanicsSystem';
 import { resolveCombatState } from '../lib/combatStateResolver';
 import { selectContextualExternalEntity, getBodilyForms, getExternalEntities } from '../lib/externalEntityFramework';
+import { summarizePassivesForPrompt, resolvePassiveIds } from '../lib/biologicalPassives';
 import { createCombatSnapshot, validateCombatSnapshot, executeCombatSimulation, synthesizeNarrativeFromValidatedLog, ORACLE_EVENT_CONFIG } from './combatSimulationCore';
+import { buildCombatCoreBlock, buildArenaMechanicsBlock, buildArtifactsBlock, buildTurnChecklistBlock, matchDynamicArena, getRaidBossProfile } from './simulationCoreBridge';
 /**
  * Resuelve dinámicamente el límite máximo de tokens de salida según el modelo activo.
  * Desbloquea 65.536 tokens para Nemotron Ultra / Super y 131.072 tokens para MiniMax M3.
@@ -443,6 +445,23 @@ ${passives}
 ${actives}`;
     };
 
+    /**
+     * PASIVAS BIOLOGICAS CANONICAS (Chozenshu 1-4)
+     * Inyecta las reglas fisiologicas deterministas del motor `biologicalPassives`.
+     * Es un bloque ADITIVO: si el personaje no tiene pasivas, devuelve cadena vacia
+     * y el prompt queda identico al anterior (cero regresion).
+     */
+    const formatCanonPassives = (char) => {
+      try {
+        const block = summarizePassivesForPrompt(char);
+        if (!block) return '';
+        const ids = resolvePassiveIds(char);
+        return `\n\n${block}\n- IDs de pasiva activos: ${ids.join(', ')}\n- LEY: estas pasivas son fisiológicas y deterministas; NO se negocian narrativamente. Cada una declara su contrajuego explícito y debe poder ser anulada solo por ese contrajuego.`;
+      } catch (e) {
+        return '';
+      }
+    };
+
     const formatScenarioPhysics = (scen) => {
       let details = `- Nombre: ${scen.name} (${scen.universe || 'Universo Neutro'})\n- Descripción Sensorial: ${scen.sensory || 'Entorno de combate estándar.'}`;
       if (scen.gravity) details += `\n- Gravedad de la Arena: ${scen.gravity}`;
@@ -513,7 +532,7 @@ ${activeFormLine}
   return '';
 })()}
 - Arsenal y Habilidades Completas:
-${formatArsenal(char)}`;
+${formatArsenal(char)}${formatCanonPassives(char)}`;
     };
 
     // Format Combatants depending on mode
@@ -1154,6 +1173,34 @@ Al final del combate, en la sección "ESTADO DEL MAPA", DEBES incluir el siguien
   3. Anatomía cruda de lesiones y cálculo de física destructiva a escala macroscópica.
   4. Veredicto exhaustivo con desglose técnico matemático y análisis de secuelas multiversales a largo plazo.`;
 
+    // ── PUENTE NÚCLEO DETERMINISTA (Combat Core v1.0 → Prompt) ─────────────
+    // Ensamblador maestro único: incluye resolución de 12 fases, recursos,
+    // capas de Hax, tier-gap, capa mecánica de arena, artefactos y checklist.
+    let coreCombatBlock = '';
+    try {
+      const _participants = [charA, charB, ...(teamA || []), ...(teamB || []), ...(battleRoyale || []), ...(bossMinions || [])].filter(Boolean);
+      const _tierNumOf = (t) => { const mm = String(t || '').match(/(\d+)/); return mm ? parseInt(mm[1], 10) : 5; };
+      const _tierGapLevel = (charA && charB && !modifiers.statsEqualized)
+        ? Math.min(4, Math.abs(_tierNumOf(charA?.tier) - _tierNumOf(charB?.tier)))
+        : 0;
+      coreCombatBlock = buildCombatCoreBlock({
+        scenario,
+        modifiers,
+        charA,
+        charB,
+        tierGapLevel: _tierGapLevel,
+        isBossMode: matchMode === 'raid',
+        isTeamsMode: matchMode === 'teams' || matchMode === 'team',
+        isBattleRoyale: matchMode === 'battle_royale',
+        bossMultiplier: modifiers.bossMultiplier || 1.35,
+        participants: _participants,
+        teamA,
+        teamB
+      });
+    } catch (e) {
+      console.warn('[CORE BRIDGE] No se pudo construir el bloque determinista:', e?.message);
+    }
+
     return `### ========================================
 ### APEX ENGINE: ACTIVE SIMULATION RULES & CONFIG
 ### ========================================
@@ -1168,6 +1215,8 @@ Al final del combate, en la sección "ESTADO DEL MAPA", DEBES incluir el siguien
 - EFECTO MARIPOSA (WHAT-IF): ${modifiers.butterflyEffect ? 'ACTIVADO (Incluir secuelas multiversales)' : 'DESACTIVADO'}
 - GIRO DEL DESTINO (ORÁCULO): ${oracleDirective}
 ### ========================================
+
+${coreCombatBlock}
 
 ${langDirective}
 ${senzuDirective}

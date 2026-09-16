@@ -29,6 +29,8 @@ const AiSmartMatchmakerModal = lazy(() => import('./components/AiSmartMatchmaker
 const AuthModal = lazy(() => import('./components/AuthModal'));
 const FusionModal = lazy(() => import('./components/FusionModal'));
 const RecordsModal = lazy(() => import('./components/RecordsModal'));
+// Códice Chōzenshū: corpus canónico Dragon Ball (Chozenshu 1-4) empaquetado para el navegador.
+const ChozenshuCodexModal = lazy(() => import('./components/ChozenshuCodexModal'));
 import { CloudSync } from './services/cloudSyncService';
 import { loadRoster } from './data/rosterLoader';
 import { getDailyMatchup, buildShareableUrl, parseShareableUrl } from './lib/dailyMatchup';
@@ -491,6 +493,7 @@ export default function App() {
   const [rosterManagerOpen, setRosterManagerOpen] = useState(false);
   const [modesGuideOpen, setModesGuideOpen] = useState(false);
   const [powerscalingGuideOpen, setPowerscalingGuideOpen] = useState(false);
+  const [codexOpen, setCodexOpen] = useState(false);
 
   useEffect(() => {
     const unsub = CloudSync.subscribe((u) => setCurrentUser(u));
@@ -1010,6 +1013,7 @@ export default function App() {
         onOpenRandomMatchmaker={() => setRandomizerOpen(true)}
         onOpenModesGuide={() => setModesGuideOpen(true)}
         onOpenPowerscalingGuide={() => setPowerscalingGuideOpen(true)}
+        onOpenCodex={() => setCodexOpen(true)}
         aiConfig={simEngine}
         allCharacters={characters}
         onImportCharacters={(newChars) => setCharacters(newChars)}
@@ -1506,6 +1510,13 @@ export default function App() {
       <PowerscalingGuideModal
         isOpen={powerscalingGuideOpen}
         onClose={() => setPowerscalingGuideOpen(false)}
+        lang={lang}
+      />
+
+      {/* Códice Chōzenshū — corpus canónico Dragon Ball (Chozenshu 1-4) */}
+      <ChozenshuCodexModal
+        isOpen={codexOpen}
+        onClose={() => setCodexOpen(false)}
         lang={lang}
       />
 
