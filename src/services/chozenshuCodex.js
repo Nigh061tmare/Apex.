@@ -278,6 +278,16 @@ export function listTvSpecials() {
   return _codex?.worldLore?.tvSpecials || [];
 }
 
+/** Sinopsis de episodios de Dragon Ball GT (Chozenshu 3, pp.350-357). */
+export function listGtEpisodes() {
+  return _codex?.gtEpisodes || [];
+}
+
+/** Metadatos (y limitaciones declaradas) de la guia de episodios de GT. */
+export function getGtEpisodesMeta() {
+  return _codex?.gtEpisodesMeta || null;
+}
+
 /** Limpia las caches en memoria (util en pruebas). */
 export function resetCodexCache() {
   _codex = null;

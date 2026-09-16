@@ -3,7 +3,8 @@ import { X, BookOpen, Swords, Dna, Clock, Search, Zap, ShieldAlert, FileText, Lo
 import {
   loadCodex, codexStats, searchCodex, searchDossier, getTimeline, listTechniqueDictionary,
   listRaces, listTechnology, listGtArcs, listDarkDragons, listMultipliers,
-  listGtTransformations, listMoviesDbz, listMoviesDb, listTvSpecials
+  listGtTransformations, listMoviesDbz, listMoviesDb, listTvSpecials,
+  listGtEpisodes, getGtEpisodesMeta
 } from '../services/chozenshuCodex';
 
 const TYPE_LABEL = {
@@ -366,6 +367,8 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
           const moviesZ = listMoviesDbz();
           const moviesD = listMoviesDb();
           const specials = listTvSpecials();
+          const gtEps = listGtEpisodes();
+          const gtEpsMeta = getGtEpisodesMeta();
           const s = q.toLowerCase().trim();
           const hit = (o) => !s || JSON.stringify(o).toLowerCase().includes(s);
           const ELEM = { fuego: Flame, hielo: Snowflake, viento: Wind, electricidad: Zap };
@@ -513,6 +516,36 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
                       ))}
                     </div>
                   )}
+                </section>
+              )}
+
+              {gtEps.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-sky-300 font-bold text-xs uppercase tracking-wider mb-2">
+                    Sinopsis de episodios de GT ({gtEps.length}{gtEpsMeta?.totalSeries ? ` / ${gtEpsMeta.totalSeries} de la serie` : ''})
+                  </h4>
+                  {gtEpsMeta?.limitations?.length > 0 && (
+                    <p className="text-[10px] text-amber-300/80 italic mb-2 leading-snug">
+                      ⚠ {gtEpsMeta.limitations[0]}
+                    </p>
+                  )}
+                  <div className="space-y-1.5 max-h-[420px] overflow-y-auto pr-1">
+                    {gtEps.filter(hit).map((e) => (
+                      <div key={e.n} className="rounded-lg border border-sky-500/20 bg-sky-950/10 p-2.5">
+                        <div className="flex items-start gap-2">
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-300 whitespace-nowrap">
+                            #{e.n}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="text-slate-100 text-[12px] font-bold">{e.es || e.jp}</div>
+                            <div className="text-[10px] text-slate-500 italic">{e.jp}</div>
+                          </div>
+                          <span className="text-[10px] font-mono text-emerald-400 ml-auto whitespace-nowrap">p.{e.p}</span>
+                        </div>
+                        {e.s && <p className="text-[11px] text-slate-400 mt-1 leading-snug">{e.s}</p>}
+                      </div>
+                    ))}
+                  </div>
                 </section>
               )}
 
