@@ -76,10 +76,15 @@ function main() {
     planets: loreSrc.planets || [],
     gtArcs: loreSrc.gtArcs || [],
     darkDragons: loreSrc.darkDragons || [],
+    gtTransformations: loreSrc.gtTransformations || [],
+    moviesDbz: loreSrc.moviesDbz || [],
+    moviesDb: loreSrc.moviesDb || [],
+    tvSpecials: loreSrc.tvSpecials || [],
     multipliers: loreSrc.multipliers || []
   };
   const loreCount = worldLore.races.length + worldLore.technology.length +
-    worldLore.gtArcs.length + worldLore.darkDragons.length + worldLore.multipliers.length;
+    worldLore.gtArcs.length + worldLore.darkDragons.length + worldLore.multipliers.length +
+    worldLore.gtTransformations.length + worldLore.moviesDbz.length + worldLore.moviesDb.length;
 
 
   // --- Tecnicas: compactar ocurrencias a {tomo: {n, pages: primeros 8}} ---

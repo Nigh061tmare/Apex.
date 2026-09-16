@@ -258,6 +258,26 @@ export function listMultipliers() {
   return _codex?.worldLore?.multipliers || [];
 }
 
+/** Transformaciones de Dragon Ball GT (Oozaru, SSJ4, Gogeta SSJ4). */
+export function listGtTransformations() {
+  return _codex?.worldLore?.gtTransformations || [];
+}
+
+/** Catalogo de las 13 peliculas de Dragon Ball Z con su villano. */
+export function listMoviesDbz() {
+  return _codex?.worldLore?.moviesDbz || [];
+}
+
+/** Catalogo de las peliculas de Dragon Ball clasico. */
+export function listMoviesDb() {
+  return _codex?.worldLore?.moviesDb || [];
+}
+
+/** Especiales de television (Bardock, etc.). */
+export function listTvSpecials() {
+  return _codex?.worldLore?.tvSpecials || [];
+}
+
 /** Limpia las caches en memoria (util en pruebas). */
 export function resetCodexCache() {
   _codex = null;

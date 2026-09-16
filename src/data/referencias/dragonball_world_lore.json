@@ -204,5 +204,63 @@
       "note": "Como resultado de haber entrenado bajo una intensa gravedad, Goku pudo elevar momentaneamente la capacidad de ataque del Kaio-ken al decuplo.", "verified": true },
     { "id": "kamehameha-x10-gt", "name": "Kame Hame Ha multiplicado por 10 (GT)", "value": 10, "tomo": "t03", "page": 16,
       "note": "Goku lanza un Kame Hame Ha multiplicado por 10 contra Baby, pero no puede tumbarle.", "verified": true }
+  ],
+
+  "gtTransformations": [
+    { "id": "oozaru", "name": "Oozaru", "tomo": "t03", "page": 24,
+      "note": "Forma de mono gigante; base previa al nivel 4 en GT (etiquetada OHZARU en la ficha de personaje).",
+      "verified": true },
+    { "id": "ssj4", "name": "Supersaiyano de Nivel 4", "tomo": "t03", "page": 24,
+      "note": "Estado de cuarto nivel alcanzado por Goku y por Vegeta en GT. La ficha de Vegeta lo lista junto a OHZARU.",
+      "verified": true },
+    { "id": "gogeta-ssj4", "name": "Gogeta Supersaiyano de Nivel 4", "tomo": "t03", "page": 20,
+      "note": "Superguerrero surgido de la fusion entre Goku y Vegeta en estado de cuarto nivel: el guerrero mas poderoso de la historia. Aplasto a Superyixinglong.",
+      "weakness": "Su principal punto debil es que solo puede mantener la fusion unos diez minutos.",
+      "fusionLimitMin": 10,
+      "engineHook": "FUSION_SSJ4_LIMITE_10MIN: el motor debe forzar la defusion superado el limite.",
+      "verified": true },
+    { "id": "superyixinglong", "name": "Superyixinglong", "tomo": "t03", "page": 20,
+      "note": "Yixinglong tras absorber al resto de los Dragones Oscuros. Cae ante la supergenkidama de Goku y queda volatilizado. Fue abrumado por Gogeta SSJ4.",
+      "verified": true }
+  ],
+
+  "moviesDbz": [
+    { "n": 1, "tomo": "t03", "page": 65, "villain": "Garlic Jr.",
+      "note": "Primera pelicula de Dragon Ball Z. Gohan, el hijo de Goku que esconde un poder desconocido, hace su primera aparicion. Garlic Jr., hijo del villano, ataca con sus esbirros Ginger, Nicky y Sansho." },
+    { "n": 2, "tomo": "t03", "page": 73, "villain": "Dr. Uiro",
+      "note": "Segunda pelicula. Un villano vuelve a la vida tras haber pasado cincuenta anos en una pared de hielo." },
+    { "n": 3, "tomo": "t03", "page": 81, "villain": "Turles",
+      "note": "Tercera pelicula. Un ejercito llega a la Tierra liderado por Turles, un saiyano identico a Goku. Titulo japones: Gran Dragon Chikyu Marugoto Cho-Kessen. Turles usa el Arbol del Poder." },
+    { "n": 4, "tomo": "t03", "page": 89, "villain": "Slug",
+      "note": "Cuarta pelicula. Un ejercito de la familia demoniaca liderado por el super-namekiano Slug llega a la Tierra. Slug planea conquistar el mundo. Titulo japones: Super Saiyajin da Son Goku." },
+    { "n": 5, "tomo": "t03", "page": 97, "villain": "Cooler",
+      "note": "Quinta pelicula. Se revela que Freezer tiene un hermano mayor: Cooler. La Tropa Acorazada Cooler ataca a Goku y sus amigos; Gohan y Krilin caen." },
+    { "n": 6, "tomo": "t03", "page": 105, "villain": "Metal Cooler",
+      "note": "Sexta pelicula. Nuevo Namek es poseido por un mundo desconocido (Big Gete Star). Metal Cooler revive con un poder metalico ilimitado; su nucleo se fusiona con el ordenador principal de Big Gete Star." },
+    { "n": 7, "tomo": "t03", "page": 113, "villain": "Androides 14, 15 y 13",
+      "note": "Septima pelicula. La familia de Goku disfruta de vacaciones en la capital del Oeste; dos androides atacan a Goku usando bolas de energia y una barrera. Trunks se une y comienza un enfrentamiento a dos bandas." },
+    { "n": 8, "tomo": "t03", "page": 121, "villain": "Broly",
+      "note": "Octava pelicula. Paragus y su hijo Broly llegan a la Tierra en busca del supersaiyano legendario. Broly ataca a Goku mientras duerme." },
+    { "n": 9, "tomo": "t03", "page": 129, "villain": "Bojack",
+      "note": "Novena pelicula. Tras la muerte de Goku se organiza el Gran Tenkaichi Budokai (torneo del Mas Alla)." },
+    { "n": 10, "tomo": "t03", "page": 137, "villain": "Broly",
+      "note": "Decima pelicula. Goten, Trunks y Videl se encuentran con el supersaiyano legendario Broly. Broly crea un campo de energia que atrapa a Gohan." },
+    { "n": 11, "tomo": "t03", "page": 145, "villain": "Bio-Broly (Jaguar)",
+      "note": "Decimoprimera pelicula. Broly, el supersaiyano legendario, reaparece y vuelve a la vida en forma de Bio-Broly, creado por el cientifico Jaguar Batta a partir de su sangre." },
+    { "n": 12, "tomo": "t03", "page": 153, "villain": "Janemba",
+      "note": "Decimosegunda pelicula. Un grave suceso en el Mas Alla: una acumulacion de energia negativa. La unica forma de derrotar a Janemba es la fusion. Gogeta se impone y acaba con el; Supergotenks se deshace de los resucitados." },
+    { "n": 13, "tomo": "t03", "page": 161, "villain": "Hildegarn",
+      "note": "Decimotercera pelicula. El mago Hoi se presenta ante Gohan y Videl y urde un plan. Tapion sello a Hildegarn con su ocarina, pero reaparece. Goku pelea en supersaiyano de tercer nivel. Titulo japones: Ryuken Bakudan!! Goku ga Yaraneba Dare ga Yaru." }
+  ],
+
+  "moviesDb": [
+    { "n": 1, "tomo": "t03", "page": 41, "note": "Primera pelicula de Dragon Ball. Las bolas de dragon son siete esferas magicas que conceden un deseo." },
+    { "n": 2, "tomo": "t03", "page": 49, "note": "Segunda pelicula. Goku visita al Duende Tortuga para entrenar con el." },
+    { "n": 3, "tomo": "t03", "page": 57, "note": "Tercera pelicula. Tras un riguroso entrenamiento, el Duende Tortuga propone a Goku y Krilin [participar en el torneo]." }
+  ],
+
+  "tvSpecials": [
+    { "id": "bardock-historia", "tomo": "t03", "page": 189, "name": "Especial de TV: El padre de Goku (Bardock)",
+      "note": "Titulo japones: Furiza niidon da Z senshi tatta hitori no saishu kessen - Son Goku no chichi. Personajes: Bardock, Ohma, Toteppo." }
   ]
 }

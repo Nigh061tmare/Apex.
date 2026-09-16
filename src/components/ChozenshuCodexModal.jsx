@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { X, BookOpen, Swords, Dna, Clock, Search, Zap, ShieldAlert, FileText, Loader2, Globe, Flame, Snowflake, Wind, Activity } from 'lucide-react';
 import {
   loadCodex, codexStats, searchCodex, searchDossier, getTimeline, listTechniqueDictionary,
-  listRaces, listTechnology, listGtArcs, listDarkDragons, listMultipliers
+  listRaces, listTechnology, listGtArcs, listDarkDragons, listMultipliers,
+  listGtTransformations, listMoviesDbz, listMoviesDb, listTvSpecials
 } from '../services/chozenshuCodex';
 
 const TYPE_LABEL = {
@@ -361,6 +362,10 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
           const arcs = listGtArcs();
           const dragons = listDarkDragons();
           const mults = listMultipliers();
+          const gtTrans = listGtTransformations();
+          const moviesZ = listMoviesDbz();
+          const moviesD = listMoviesDb();
+          const specials = listTvSpecials();
           const s = q.toLowerCase().trim();
           const hit = (o) => !s || JSON.stringify(o).toLowerCase().includes(s);
           const ELEM = { fuego: Flame, hielo: Snowflake, viento: Wind, electricidad: Zap };
@@ -455,6 +460,59 @@ export default function ChozenshuCodexModal({ isOpen, onClose }) {
                       );
                     })}
                   </div>
+                </section>
+              )}
+
+              {gtTrans.filter(hit).length > 0 && (
+                <section>
+                  <h4 className="text-orange-300 font-bold text-xs uppercase tracking-wider mb-2">Transformaciones de GT ({gtTrans.length})</h4>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {gtTrans.filter(hit).map((x) => (
+                      <div key={x.id} className="rounded-lg border border-orange-500/20 bg-orange-950/10 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-bold text-slate-100 text-sm">{x.name}</span>
+                          <span className="text-[10px] font-mono text-emerald-400">{(x.tomo || x.t || '').toUpperCase()} p.{x.page || x.p}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 mt-1 leading-snug">{x.note}</p>
+                        {x.weakness && <p className="text-[11px] text-rose-300 mt-1 leading-snug"><b>Debilidad:</b> {x.weakness}</p>}
+                        {x.engineHook && <p className="text-[10px] text-cyan-300 font-mono mt-1">{x.engineHook}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {(moviesZ.filter(hit).length + moviesD.filter(hit).length) > 0 && (
+                <section>
+                  <h4 className="text-violet-300 font-bold text-xs uppercase tracking-wider mb-2">
+                    Películas ({moviesZ.length + moviesD.length}) · {moviesZ.length} de DBZ + {moviesD.length} de DB
+                  </h4>
+                  <div className="space-y-1.5">
+                    {[...moviesZ.map((m) => ({ ...m, tag: 'DBZ' })), ...moviesD.map((m) => ({ ...m, tag: 'DB' }))]
+                      .filter(hit)
+                      .map((m) => (
+                        <div key={`${m.tag}${m.n}`} className="rounded-lg border border-violet-500/20 bg-violet-950/10 p-2.5 flex gap-3">
+                          <span className="text-[11px] font-mono px-1.5 py-0.5 h-fit rounded bg-violet-500/15 border border-violet-500/30 text-violet-300 whitespace-nowrap">
+                            {m.tag} #{m.n}
+                          </span>
+                          <div className="min-w-0">
+                            {m.villain && <div className="text-slate-100 text-[12px] font-bold">{m.villain}</div>}
+                            <p className="text-[11px] text-slate-400 leading-snug">{m.note}</p>
+                          </div>
+                          <span className="text-[10px] font-mono text-emerald-400 ml-auto whitespace-nowrap">p.{m.page}</span>
+                        </div>
+                      ))}
+                  </div>
+                  {specials.length > 0 && (
+                    <div className="mt-2 space-y-1.5">
+                      {specials.filter(hit).map((s) => (
+                        <div key={s.id} className="rounded-lg border border-violet-500/30 bg-violet-900/15 p-2.5">
+                          <div className="text-slate-100 text-[12px] font-bold">★ {s.name}</div>
+                          <p className="text-[11px] text-slate-400 leading-snug">{s.note}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </section>
               )}
 
