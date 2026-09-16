@@ -323,3 +323,63 @@ fan-mangas y What-Ifs: **274 personajes Dragon Ball** detectados.
 `apex-codex.json` ≈ **184 KB** · 211 técnicas (104 atestiguadas) ·
 **193 diccionario** · 38 fuerzas de combate · 75 eventos de cronología ·
 10 pasivas biológicas · 274 personajes DB.
+
+---
+
+## 🏁 ESTADO FINAL DEL CORPUS CHŌZENSHŪ (cierre)
+
+Corpus 1-4 completamente diseccionado, integrado, desplegado y versionado.
+
+### Datasets (12 JSON en `src/data/referencias/`)
+
+| Dataset | Contenido | Volumen | Origen |
+|---|---|---|---|
+| `dragonball_technique_lexicon.seed.json` | Técnicas curadas con ganchos de motor | 211 | Curado |
+| `dragonball_canonical_moves.json` | Técnicas + atestiguación automática | 211 (104 atest.) | T01-T04 |
+| `dragonball_battle_powers_canon.json` | Fuerzas de combate verificadas | 33 + 5 minadas | T04 |
+| `dragonball_battle_powers.json` | Minería automática de FC | 8 filas | T01-T04 |
+| `dragonball_timeline_events.json` | Eventos con Age | 75 | T01-T04 |
+| `dragonball_character_dossier.json` | Bloques de dossier (bundle deep) | 3.202 | T01-T04 |
+| `dragonball_technique_dictionary.json` | Diccionario oficial N/T/P/C | 193 | T04 pp.135-176 |
+| `dragonball_world_lore.json` | Razas, tecnología, planetas, GT, películas, dragones | 47 bloques | T01, T03 |
+| `dragonball_gt_episodes.json` | Sinopsis de episodios de GT | 41 | T03 pp.350-357 |
+| `dragonball_dbz_episodes.json` | Sinopsis de episodios de DBZ | 155 | T03 pp.328-349 |
+| `dragonball_scenarios.json` | Geografía/arenas de la Tierra | 11 regiones | T01 pp.244-258 |
+| `dragonball_relations.json` | Grafo de relaciones + combos | 18 vínculos + 3 combos | T01 p.10 |
+| `dragonball_character_library.json` | Biblioteca de personajes (deep) | 34 páginas | T03 pp.212-296 |
+
+### Motor
+- `src/lib/biologicalPassives.js` — 10 pasivas biológicas canónicas, autotest 9/9, cobertura 272 personajes DB de V26.
+- `CANON_LIMITS` — Scouter antiguo tope **22.000** (T01 p.300), unidad terapéutica ~30 min, puñetazo de Mr. Satan **139**, Sixinglong **6.000 °C**.
+- `readScouter()` — los modelos antiguos saturan a 22.000 según el canon.
+- Inyección de pasivas en el prompt de simulación (`simulationEngine.js`).
+
+### UI
+Modal **Códice Chōzenshū** con 7 pestañas; la de *Mundo, Razas & GT* tiene **11 secciones**:
+Razas · Tecnología · Arcos GT · Dragones Oscuros · Transformaciones GT · Películas ·
+Sinopsis GT · Sinopsis DBZ · Escenarios · Relaciones · Multiplicadores.
+
+Además: pestaña **Códice Chōzenshū** en cada ficha de personaje + botón **«Aplicar N técnicas al arsenal»**.
+
+### Herramientas (10 scripts Python + 1 CLI Node)
+`chozenshu_index` · `chozenshu_zoom` · `chozenshu_columns` · `chozenshu_ocr` ·
+`chozenshu_ocr_all` · `chozenshu_extract` · `chozenshu_techdict` · `chozenshu_techdict2` ·
+`chozenshu_gt_episodes` · `chozenshu_char_library` · `apex-lore.mjs`
+
+### Despliegue
+- Producción: https://apex-engine-six.vercel.app (HTTP 200)
+- Bundle principal ~284 KB · bundle deep ~852 KB
+- Repositorio: `vercel-origin` = https://github.com/Nigh061tmare/Apex. (al día)
+
+### Limitaciones declaradas (no se inventan datos)
+1. Los **números de episodio** del libro van en un rótulo gráfico no legible por OCR: `order` es el orden de aparición en el tomo.
+2. La **cobertura de episodios** es parcial (DBZ 155; GT 41 de 64).
+3. `dateEnBloque` corresponde por maquetación al episodio siguiente y se deja sin reasignar.
+4. Los **nombres** de la biblioteca de personajes son detección automática de mayúsculas (puede haber ruido).
+5. Todo el texto de origen es **OCR sin corrección ortográfica**.
+
+### No extraído (valor bajo, decisión consciente)
+- Vehículos, naves y robots (T01 pp.278-299): equipamiento sin impacto en combate.
+- Biblioteca de diseños (T03 pp.8-34): model sheets.
+- Staff, reparto y música: ya extraído lo útil.
+- Superentrevista a Toriyama (T01 pp.310-320): intención de diseño, no mecánica.
