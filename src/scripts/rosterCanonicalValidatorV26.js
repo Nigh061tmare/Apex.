@@ -242,13 +242,14 @@ export function validateV26CanonicalRoster() {
   // 2026-09-06 R2: Sagas Z corregidas + 2 fichas nuevas (Trunks Adol 13, SSG Ritual) => 1318
   // 2026-09-06 R3: Saga Buu corregida + 2 fichas nuevas (Buutenks, Gohan Universidad) => 1325
 // 2026-09-07 Completitud 100%: +15 formas (transformaciones añadidas a fichas con 1 forma) => 1362 + 15 = 1377
+  // 2026-09-16 Chozenshu/Goku Black: +4 formas canónicas (SSJ x50, SSJ2 x100, SSJ3 x400, SSJG x6400) => 1377 + 4 = 1381
   let totalForms = 0;
   Object.values(activeRecords).forEach(c => {
     if (c.forms) totalForms += c.forms.length;
   });
-  checks['totalForms_1377'] = totalForms === 1377;
-  if (totalForms !== 1377) {
-    issues.push(`Total forms mismatch: expected 1377, found ${totalForms}`);
+  checks['totalForms_1381'] = totalForms === 1381;
+  if (totalForms !== 1381) {
+    issues.push(`Total forms mismatch: expected 1381, found ${totalForms}`);
   }
 
   // DB-form contamination guard: NO Super Saiyan / Kaio-ken / Oozaru forms allowed
