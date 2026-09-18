@@ -1,0 +1,33 @@
+{
+  "_draft": {
+    "id": "draft-piccolo-finales-z-fix-v1",
+    "targetCharacterId": "piccolo-finales-z-principios-super",
+    "targetName": "Piccolo Finales Z Principios Super",
+    "created": "2026-09-18",
+    "type": "CORRECCION_APLICADA",
+    "authority": "Niveles de poder.txt (referencia maestra del proyecto)",
+    "evidence": "Niveles de poder.txt L1374, seccion 10 Anos Despues (Ano 784): Piccolo = 1,100,000,000.",
+    "bug": {
+      "severity": "critica",
+      "symptom": "El Ki del Piccolo de finales de Z era 33x menor que en la saga Cell/Buu y 91x menor que la referencia, rompiendo la monotonia creciente de potencia.",
+      "rootCause": "Error de escala al generar la ficha (valor 1000x demasiado bajo) mas un tier incoherente (4-C para un Ki de miles de millones)."
+    },
+    "before": { "tier": "4-C", "ki": 12000000, "kiFormatted": "12.000.000", "form2Ki": 18000000 },
+    "after": { "tier": "4-B", "ki": 1100000000, "kiFormatted": "1.100.000.000", "form2Ki": 1650000000 },
+    "tierJustification": "En V26 los 53 personajes con Ki entre 500M y 2.5B son 4-B en 49 casos; 4-B es el tier correcto para este rango.",
+    "regressionScanner": {
+      "tool": "esc2.py (compara familias de personajes ordenadas por saga canonica)",
+      "before": 3,
+      "after": 2,
+      "remaining": [
+        "pan-saga-buu-780 (138.6M) -> pan-gt-10-anios (10M): CORRECTO, la referencia fija Pan 10 anos = 10,000,000 (L1975).",
+        "piccolo-dbs-superhero (1.4B) -> piccolo-dragon-ball-daima (100M): CORRECTO, es el Piccolo Mini reprimido de Daima (L2221)."
+      ]
+    },
+    "verified": {
+      "rosterIntegrity": "775 personajes, JSON valido",
+      "appLoader": "INITIAL_CHARACTERS 775; Piccolo 4-B / 1.100.000.000; 0 perfiles tacticos huerfanos",
+      "regressionsRemaining": 0
+    }
+  }
+}

@@ -6085,26 +6085,26 @@
     "piccolo-finales-z-principios-super": {
       "id": "piccolo-finales-z-principios-super",
       "name": "Piccolo Finales Z Principios Super",
-      "baseTier": "4-C",
-      "baseKiNumeric": 12000000,
-      "baseKiFormatted": "12.000.000",
+      "baseTier": "4-B",
+      "baseKiNumeric": 1100000000,
+      "baseKiFormatted": "1.100.000.000",
       "universe": "DRAGON BALL SUPER",
       "forms": [
         {
           "id": "form_1",
           "name": "Piccolo (Base)",
-          "kiNumeric": 12000000,
-          "kiFormatted": "12.000.000",
+          "kiNumeric": 1100000000,
+          "kiFormatted": "1.100.000.000",
           "multiplier": "1x",
-          "tier": "4-C"
+          "tier": "4-B"
         },
         {
           "id": "form_2",
           "name": "Piccolo Potenciado",
-          "kiNumeric": 18000000,
-          "kiFormatted": "18.000.000",
+          "kiNumeric": 1650000000,
+          "kiFormatted": "1.650.000.000",
           "multiplier": "1.5x",
-          "tier": "4-C"
+          "tier": "4-B"
         }
       ],
       "powerSchema": {
