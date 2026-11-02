@@ -376,7 +376,7 @@ function getEndpointConfig(engine, model, apiKey, customBaseUrl) {
           'HTTP-Referer': 'https://apex-powerscaling.local',
           'X-Title': 'APEX Power Scaling Engine'
         },
-        model: model || 'anthropic/claude-3.5-sonnet',
+        model: model || 'openrouter/free',
         type: 'openai_chat'
       };
     case 'opencode':
@@ -406,16 +406,19 @@ function getEndpointConfig(engine, model, apiKey, customBaseUrl) {
         model: model || 'gemini-1.5-pro',
         type: 'gemini'
       };
-    case 'custom':
+    case 'custom': {
+      const base = (customBaseUrl?.trim() || 'http://localhost:1234/v1').replace(/\/+$/, '');
+      const fullUrl = base.endsWith('/chat/completions') ? base : `${base}/chat/completions`;
       return {
-        url: customBaseUrl?.replace(/\/$/, '') + '/chat/completions',
+        url: fullUrl,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': apiKey ? `Bearer ${apiKey}` : undefined
+          ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {})
         },
         model: model || 'default',
         type: 'openai_chat'
       };
+    }
     case 'ollama':
     default:
       return {

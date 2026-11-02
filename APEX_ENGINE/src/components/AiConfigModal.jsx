@@ -82,26 +82,20 @@ export const GUEST_PROFILES = [
 ];
 
 export const FREE_MODELS_LIST = [
-  { id: 'meta/muse-spark-1.3-contributor:free', name: '🔥 Meta Muse Spark 1.3 Free (1M Ctx · 131K Out · Auditoría Agéntica)' },
-  { id: 'opencode-go/deepseek-v4-flash', name: '⚡ OpenCode DeepSeek V4 Flash (1M Ctx · DSpark Ultra-Speed)' },
-  { id: 'opencode-go/deepseek-v4-pro', name: '🧠 OpenCode DeepSeek V4 Pro (Razonamiento Profundo & Hax Tiers)' },
-  { id: 'google/gemini-2.0-flash-lite:free', name: '⚡ Gemini 2.0 Flash Lite (Ultrarrápido y Preciso)' },
-  { id: 'poolside/laguna-s-2.1:free', name: '🏆 Poolside Laguna S 2.1 (118B MoE · Agente de Código & Lógica)' },
-  { id: 'cohere/north-mini-code:free', name: '⚡ Cohere North Mini Code (256K Ctx · Fichas Técnicas JSON)' },
-  { id: 'z-ai/glm-5.2:free', name: '🧠 Z.ai GLM 5.2 (1M Ctx · Razonamiento Extremo & Powerscaling)' },
-  { id: 'thinkingmachines/inkling:free', name: '🦁 Thinking Machines Inkling (975B MoE · 1.05M Ctx · Multimodal)' },
-  { id: 'nvidia/nemotron-3.5-lightning:free', name: '⚡ NVIDIA Nemotron 3.5 Lightning (1M Ctx · Ultra Rendimiento)' },
-  { id: 'dots-studio/dots-3-note-preview:free', name: '📝 Dots3-Note Preview (280B MoE · 512K Ctx)' },
-  { id: 'inclusionai/ling-3.0-flash-fin:free', name: '📊 InclusionAI Ling 3.0 Flash (124B MoE · Cálculo Matemático Tiers)' },
-  { id: 'minimax/minimax-m3:free', name: '👑 MiniMax M3 (Top Fichas Técnicas / 1.05M Context)' },
+  { id: 'openrouter/free', name: '🌟 OpenRouter Free Router (Auto-Balanceo Modelos Gratis)' },
   { id: 'nvidia/nemotron-3-ultra-550b-a55b:free', name: '👑 NVIDIA Nemotron 3 Ultra 550B (Top Narración Épica)' },
-  { id: 'deepseek/deepseek-r1:free', name: '🧠 DeepSeek R1 (Razonamiento Puro & Powerscaling)' },
-  { id: 'meta-llama/llama-3.3-70b-instruct:free', name: '🔥 Meta Llama 3.3 70B (Literatura Visceral & Grimdark)' },
-  { id: 'google/gemma-4-31b-it:free', name: '💎 Gemma 4 31B (Equilibrio de Combate)' },
-  { id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', name: '⚡ NVIDIA Nemotron 3 Nano 30B (Razonamiento Rápido)' },
-  { id: 'qwen/qwen-2.5-coder-32b-instruct:free', name: '💻 Qwen 2.5 Coder 32B (JSON Puro)' },
-  { id: 'microsoft/phi-4:free', name: '🧪 Microsoft Phi-4 (Lógica Compacta)' },
-  { id: 'mistralai/mistral-7b-instruct:free', name: '🌪️ Mistral 7B Instruct (Rápido y Estable)' }
+  { id: 'nvidia/nemotron-3.5-lightning:free', name: '⚡ NVIDIA Nemotron 3.5 Lightning (1M Ctx · Alta Velocidad)' },
+  { id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', name: '⚡ NVIDIA Nemotron 3 Nano Omni 30B (Razonamiento Rápido)' },
+  { id: 'thinkingmachines/inkling:free', name: '🦁 Thinking Machines Inkling (975B MoE · 1.05M Ctx)' },
+  { id: 'thinkingmachines/inkling-small:free', name: '🦁 Thinking Machines Inkling Small (Gratis)' },
+  { id: 'google/gemma-4-31b-it:free', name: '💎 Google Gemma 4 31B (Equilibrio de Combate)' },
+  { id: 'google/gemma-4-26b-a4b-it:free', name: '💎 Google Gemma 4 26B MoE (Gratis)' },
+  { id: 'cohere/north-mini-code:free', name: '💻 Cohere North Mini Code (256K Ctx · Fichas Técnicas JSON)' },
+  { id: 'dots-studio/dots-3-note-preview:free', name: '📝 Dots3-Note Preview (512K Ctx)' },
+  { id: 'recursive/flint-v1.0:free', name: '🌪️ Recursive Flint v1.0 (262K Ctx)' },
+  { id: 'xingchen-agi/xing4.0-29b-a4b:free', name: '🚀 XingChen Xing4.0 29B A4B (Gratis)' },
+  { id: 'liquid/lfm-2.5-2.6b:free', name: '💧 LiquidAI LFM 2.5 (Gratis)' },
+  { id: 'opencode-go/deepseek-v4-flash', name: '⚡ OpenCode DeepSeek V4 Flash (1M Ctx · DSpark)' }
 ];
 
 export const AI_PRESETS = {
@@ -122,24 +116,19 @@ export const AI_PRESETS = {
     { id: 'Mistral-Large-2407', name: 'Mistral Large 2407 (Powerscaling Complejo)' }
   ],
   openrouter: [
-    { id: 'meta/muse-spark-1.3-contributor:free', name: '🔥 Meta Muse Spark 1.3 [GRATIS - 1M Ctx / 131K Output]' },
-    { id: 'google/gemini-2.0-flash-lite:free', name: '⚡ Google Gemini 2.0 Flash Lite [GRATIS]' },
-    { id: 'poolside/laguna-s-2.1:free', name: '🏆 Poolside Laguna S 2.1 [GRATIS - 118B MoE]' },
-    { id: 'cohere/north-mini-code:free', name: '⚡ Cohere North Mini Code [GRATIS - 256K Ctx]' },
-    { id: 'z-ai/glm-5.2:free', name: '🧠 Z.ai GLM 5.2 [GRATIS - 1M Ctx Razonamiento]' },
-    { id: 'thinkingmachines/inkling:free', name: '🦁 Thinking Machines Inkling [GRATIS - 975B MoE]' },
-    { id: 'nvidia/nemotron-3.5-lightning:free', name: '⚡ NVIDIA Nemotron 3.5 Lightning [GRATIS - 1M Ctx]' },
-    { id: 'dots-studio/dots-3-note-preview:free', name: '📝 Dots3-Note Preview [GRATIS - 512K Ctx]' },
-    { id: 'inclusionai/ling-3.0-flash-fin:free', name: '📊 InclusionAI Ling 3.0 Flash [GRATIS - Cálculos Tiers]' },
-    { id: 'minimax/minimax-m3:free', name: '👑 MiniMax M3 [GRATIS - TOP FICHAS]' },
+    { id: 'openrouter/free', name: '🌟 OpenRouter Free Router [GRATIS - Auto-Balanceo]' },
     { id: 'nvidia/nemotron-3-ultra-550b-a55b:free', name: '👑 NVIDIA Nemotron 3 Ultra 550B [GRATIS - TOP NARRACIÓN]' },
-    { id: 'deepseek/deepseek-r1:free', name: '🧠 DeepSeek R1 [GRATIS - Razonamiento]' },
-    { id: 'meta-llama/llama-3.3-70b-instruct:free', name: '🔥 Meta Llama 3.3 70B [GRATIS - Épico]' },
-    { id: 'google/gemma-4-31b-it:free', name: '💎 Google Gemma 4 31B [GRATIS]' },
-    { id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', name: '⚡ NVIDIA Nemotron 3 Nano [GRATIS]' },
-    { id: 'deepseek/deepseek-chat', name: 'DeepSeek V3 (Directo)' },
-    { id: 'anthropic/claude-3.7-sonnet', name: 'Claude 3.7 Sonnet (Top Código)' },
-    { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet' }
+    { id: 'nvidia/nemotron-3.5-lightning:free', name: '⚡ NVIDIA Nemotron 3.5 Lightning [GRATIS - 1M Ctx]' },
+    { id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', name: '⚡ NVIDIA Nemotron 3 Nano [GRATIS - Razonamiento]' },
+    { id: 'thinkingmachines/inkling:free', name: '🦁 Thinking Machines Inkling [GRATIS - 975B MoE · 1.05M Ctx]' },
+    { id: 'thinkingmachines/inkling-small:free', name: '🦁 Thinking Machines Inkling Small [GRATIS]' },
+    { id: 'google/gemma-4-31b-it:free', name: '💎 Google Gemma 4 31B [GRATIS - Equilibrio de Combate]' },
+    { id: 'google/gemma-4-26b-a4b-it:free', name: '💎 Google Gemma 4 26B MoE [GRATIS]' },
+    { id: 'cohere/north-mini-code:free', name: '💻 Cohere North Mini Code [GRATIS - 256K Ctx · Fichas JSON]' },
+    { id: 'dots-studio/dots-3-note-preview:free', name: '📝 Dots3-Note Preview [GRATIS - 512K Ctx]' },
+    { id: 'recursive/flint-v1.0:free', name: '🌪️ Recursive Flint v1.0 [GRATIS - 262K Ctx]' },
+    { id: 'xingchen-agi/xing4.0-29b-a4b:free', name: '🚀 XingChen Xing4.0 29B [GRATIS]' },
+    { id: 'liquid/lfm-2.5-2.6b:free', name: '💧 LiquidAI LFM 2.5 [GRATIS]' }
   ],
   gemini: [
     { id: 'gemini-flash-lite-latest', name: 'Gemini Flash Lite Latest (Más Rápido)' },
@@ -170,7 +159,12 @@ export const AI_PRESETS = {
     { id: 'deepseek-r1:8b', name: 'DeepSeek R1 (Local)' }
   ],
   custom: [
-    { id: 'default', name: 'Modelo por defecto de la API Custom' }
+    { id: 'default', name: 'Modelo por defecto del servidor' },
+    { id: 'llama-3.3-70b-instruct', name: 'Llama 3.3 70B Instruct' },
+    { id: 'qwen2.5-72b-instruct', name: 'Qwen 2.5 72B Instruct' },
+    { id: 'deepseek-r1', name: 'DeepSeek R1 (OpenAI format)' },
+    { id: 'deepseek-chat', name: 'DeepSeek V3 (OpenAI format)' },
+    { id: 'mistral-large-latest', name: 'Mistral Large' }
   ]
 };
 
@@ -178,13 +172,13 @@ const PROVIDER_NAMES = {
   opencode: 'OpenCode Go / Zen',
   totalgpt: 'TotalGPT / Infermatic',
   gemini: 'Google Gemini API',
-  openrouter: 'OpenRouter API',
+  openrouter: 'OpenRouter API (0 €)',
   perplexity: 'Perplexity AI API',
   deepseek: 'DeepSeek Oficial',
   groq: 'Groq (Ultra-Speed)',
   openai: 'OpenAI Oficial',
   ollama: 'Ollama (Local)',
-  custom: 'Endpoint Custom'
+  custom: 'Custom (OpenAI Compatible)'
 };
 
 const STORAGE_KEY_PROVIDER_KEYS = 'apex_provider_api_keys';
@@ -593,7 +587,43 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
         }
       }
 
-      // E. Fallback Success
+      // E. Custom OpenAI-Compatible API Test
+      if (cfg.engine === 'custom') {
+        const effectiveKey = testedKey || '';
+        let customUrl = cfg.customBaseUrl?.trim() || 'http://localhost:1234/v1';
+        if (!customUrl.endsWith('/chat/completions')) {
+          customUrl = customUrl.replace(/\/+$/, '') + '/chat/completions';
+        }
+        const customModel = cfg.model || 'default';
+        const headers = { 'Content-Type': 'application/json' };
+        if (effectiveKey) {
+          headers['Authorization'] = `Bearer ${effectiveKey}`;
+        }
+        try {
+          const res = await fetch(customUrl, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              model: customModel,
+              messages: [{ role: 'user', content: 'Ping' }],
+              max_tokens: 5
+            })
+          });
+          if (res.ok) {
+            setTestResult({ success: true, message: `¡Conexión exitosa con Endpoint Custom (${customModel}) en ${customUrl}!` });
+            return;
+          } else {
+            const errData = await res.json().catch(() => ({}));
+            setTestResult({ success: false, message: `Error en Endpoint Custom (${res.status}): ${errData.error?.message || errData.message || res.statusText}` });
+            return;
+          }
+        } catch (fetchErr) {
+          setTestResult({ success: false, message: `No se pudo conectar a ${customUrl}: ${fetchErr.message}. Verifica que el endpoint permita CORS o esté en línea.` });
+          return;
+        }
+      }
+
+      // F. Fallback Success
       setTestResult({ success: true, message: `Configuración verificada para ${cfg.engine.toUpperCase()} (${cfg.model}) con Clave #${activeKeyIndex + 1}.` });
 
     } catch (err) {
@@ -911,13 +941,19 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
                         if (res.ok) {
                           const data = await res.json();
                           if (data?.data && Array.isArray(data.data)) {
-                            const fetched = data.data.map(m => ({
-                              id: m.id,
-                              name: `${m.pricing?.prompt === "0" ? '🎁 [GRATIS] ' : ''}${m.name || m.id}`
-                            }));
-                            AI_PRESETS.openrouter = fetched;
-                            setLocalConfig(prev => ({ ...prev }));
-                            alert(`¡${fetched.length} modelos cargados en vivo desde OpenRouter!`);
+                            const freeOnly = data.data
+                              .filter(m => m.id.endsWith(':free') || m.id === 'openrouter/free' || (m.pricing && m.pricing.prompt === '0' && m.pricing.completion === '0'))
+                              .map(m => ({
+                                id: m.id,
+                                name: `🎁 [GRATIS] ${m.name || m.id}`
+                              }));
+                            if (freeOnly.length > 0) {
+                              AI_PRESETS.openrouter = freeOnly;
+                              setLocalConfig(prev => ({ ...prev }));
+                              alert(`¡${freeOnly.length} modelos 100% gratuitos (Coste 0 €) cargados en vivo desde OpenRouter!`);
+                            } else {
+                              alert('No se encontraron modelos con etiqueta :free en este momento.');
+                            }
                           }
                         }
                       } catch (err) {
@@ -927,7 +963,7 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
                     className="text-[10px] text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer font-mono"
                   >
                     <RefreshCw className="w-3 h-3" />
-                    <span>Actualizar Modelos en Vivo</span>
+                    <span>Actualizar Modelos en Vivo (0 €)</span>
                   </button>
                 )}
               </div>
@@ -944,11 +980,13 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
               {/* Manual Custom Model Input */}
               <div className="pt-1">
                 <label className="text-[10px] text-slate-400 block mb-1">
-                  ✍️ O escribe / pega cualquier ID de modelo manual (ej. <code className="text-amber-300">inclusionai/ling-3.0-flash:free</code>):
+                  ✍️ {activeSlotConfig.engine === 'custom'
+                    ? 'Nombre o ID del modelo en tu servidor OpenAI (ej. llama-3.3-70b-instruct, qwen2.5-72b, default):'
+                    : 'O escribe / pega cualquier ID de modelo manual (ej. openrouter/free, google/gemma-4-31b-it:free):'}
                 </label>
                 <input
                   type="text"
-                  placeholder="ID del modelo personalizado..."
+                  placeholder={activeSlotConfig.engine === 'custom' ? "ej. llama-3.3-70b-instruct" : "ID del modelo personalizado..."}
                   value={activeSlotConfig.model || ''}
                   onChange={(e) => handleFieldChange('model', e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-amber-300 text-xs font-mono"
@@ -1046,11 +1084,11 @@ export default function AiConfigModal({ isOpen, onClose, config, onSaveConfig, i
             {(activeSlotConfig.engine === 'opencode' || activeSlotConfig.engine === 'totalgpt' || activeSlotConfig.engine === 'custom' || activeSlotConfig.engine === 'ollama') && (
               <div>
                 <label className="block text-slate-400 mb-1 font-bold text-[11px]">
-                  🌐 Base URL / Endpoint (Por defecto: {activeSlotConfig.engine === 'opencode' ? 'https://opencode.ai/zen/go/v1 (o local http://localhost:4096/v1)' : activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'https://...'}):
+                  🌐 Base URL / Endpoint (Por defecto: {activeSlotConfig.engine === 'opencode' ? 'https://opencode.ai/zen/go/v1 (o local http://localhost:4096/v1)' : activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'http://localhost:1234/v1 (LM Studio, Ollama, vLLM, etc.)'}):
                 </label>
                 <input
                   type="text"
-                  placeholder={activeSlotConfig.engine === 'opencode' ? 'https://opencode.ai/zen/go/v1' : activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'https://api.tu-servidor.com/v1'}
+                  placeholder={activeSlotConfig.engine === 'opencode' ? 'https://opencode.ai/zen/go/v1' : activeSlotConfig.engine === 'totalgpt' ? 'https://api.totalgpt.ai/v1' : activeSlotConfig.engine === 'ollama' ? 'http://localhost:11434' : 'http://localhost:1234/v1'}
                   value={activeSlotConfig.customBaseUrl || ''}
                   onChange={(e) => handleFieldChange('customBaseUrl', e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-amber-300 text-xs font-mono"

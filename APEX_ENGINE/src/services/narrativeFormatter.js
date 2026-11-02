@@ -1,4 +1,4 @@
-﻿/**
+/**
  * APEX ENGINE - Narrative Formatter & Cohesion Engine
  * Mejora la redacción, fluidez narrativa y cohesión de los registros de combate y resúmenes What-If.
  * Preserva 100% las reglas, multiplicadores y tiers mecánicos.
@@ -8,32 +8,44 @@ export const NARRATIVE_TEMPLATES = {
   STRIKE_HEAVY: [
     "{actor} desata una arremetida colosal contra {target}, descargando una fuerza de impacto de nivel {tier} que hace temblar el terreno.",
     "Aprovechando su velocidad de reacción superior, {actor} conecta una seguidilla de golpes directos sobre {target}, obligándolo a retroceder.",
-    "Con precisión milimétrica, {actor} canaliza su potencia física y propina un impacto demoledor al centro de masa de {target}."
+    "Con precisión milimétrica, {actor} canaliza su potencia física y propina un impacto demoledor al centro de masa de {target}.",
+    "El aire truena con un chasquido hipersónico cuando {actor} rompe la inercia e incrusta una patada cinética en la guardia de {target}.",
+    "{actor} ejecuta una finta biomecánica impecable y castiga el costado de {target} con una descarga que resuena en las losas de la arena."
   ],
   ENERGY_BLAST: [
     "{actor} concentra una masiva descarga de energía ({attackName}) y la dispara a quemarropa hacia {target}, envolviendo el entorno en un resplandor cegador.",
     "Canalizando su reserva de poder, {actor} proyecta su técnica insignia '{attackName}', obligando a {target} a desplegar sus defensas al límite.",
-    "El aire se distorsiona cuando {actor} libera '{attackName}', una ráfaga devastadora que impacta de lleno contra {target}."
+    "El aire se distorsiona cuando {actor} libera '{attackName}', una ráfaga devastadora que impacta de lleno contra {target}.",
+    "Un fulgor incandescente satura la atmósfera de ozono y plasma: {actor} desata '{attackName}' vaporizando los escombros a su paso hacia {target}.",
+    "{actor} comprime su energía residual en un haz concentrado de alta densidad con '{attackName}', perforando la trayectoria directa hacia {target}."
   ],
   HAX_ABILITY: [
     "Activando su arsenal más temible, {actor} despliega {abilityName}, alterando la dinámica del combate y poniendo en jaque la estrategia de {target}.",
     "{actor} ejecuta con maestría '{abilityName}', desafiando la lógica física convencional y forzando a {target} a una posición crítica.",
-    "Con un despliegue táctico trascendente, {actor} manifiesta '{abilityName}', neutralizando temporalmente las ventajas de {target}."
+    "Con un despliegue táctico trascendente, {actor} manifiesta '{abilityName}', neutralizando temporalmente las ventajas de {target}.",
+    "Las constantes espaciales se desestabilizan cuando {actor} activa '{abilityName}', reescribiendo el flujo causal del combate ante el asombro de {target}.",
+    "{actor} impone una ruptura conceptual en la arena mediante '{abilityName}', anulando los vectores de aproximación de {target}."
   ],
   TRANSFORMATION: [
     "¡El campo de batalla se estremece! {actor} rompe sus límites y despierta su forma '{formName}', elevando su energía hasta los {kiDisplay}.",
     "Un torrente imparable de poder envuelve a {actor}, manifestando la imponente presencia de '{formName}' y reescribiendo la escala del duelo.",
-    "Liberando el 100% de su potencial contenido, {actor} transiciona a '{formName}', consolidando su estatus en Tier {tier}."
+    "Liberando el 100% de su potencial contenido, {actor} transiciona a '{formName}', consolidando su estatus en Tier {tier}.",
+    "Una columna de presión y aura densa quiebra la gravedad local: {actor} emerge revestido por '{formName}', proyectando una lectura de {kiDisplay}.",
+    "Superando el límite térmico y muscular, {actor} accede a '{formName}', obligando a {target} a recalibrar su estrategia en Tier {tier}."
   ],
   DEFENSE_GUARD: [
     "{target} anticipa la trayectoria del ataque y levanta una barrera defensiva inexpugnable, amortiguando gran parte del impacto.",
     "Gracias a su durabilidad de nivel {tier}, {target} resiste la ofensiva de pie, manteniendo su postura de combate intacta.",
-    "{target} lee las intenciones de su rival y desvía el vector del golpe en el último instante mediante reflejos sobrehumanos."
+    "{target} lee las intenciones de su rival y desvía el vector del golpe en el último instante mediante reflejos sobrehumanos.",
+    "Con un parry quirúrgico de antebrazo, {target} disipa la energía cinética hacia el subsuelo, impidiendo que la ofensiva quiebre su centro de gravedad.",
+    "{target} absorbe la onda expansiva contrayendo su masa muscular con dureza de nivel {tier}, plantando los talones contra el suelo agrietado."
   ],
   VICTORY: [
     "Tras un choque titánico donde se pusieron a prueba todos sus límites, {winner} se alza con la victoria indiscutible frente a {loser}.",
     "El duelo culmina con la supremacía de {winner}, cuya superioridad en {factor} definió el desenlace definitivo ante la tenaz resistencia de {loser}.",
-    "La balanza de poder se inclina irrevocablemente: {winner} asegura el triunfo consagrándose en el pináculo de la simulación frente a {loser}."
+    "La balanza de poder se inclina irrevocablemente: {winner} asegura el triunfo consagrándose en el pináculo de la simulación frente a {loser}.",
+    "Con las reservas casi exhaustas pero la determinación intacta, {winner} sentencia el combate y consolida su supremacía marcial sobre {loser}.",
+    "En una colisión final que disipa la polvareda de la arena, {winner} permanece en pie como vencedor absoluto tras neutralizar la ofensiva de {loser}."
   ]
 };
 

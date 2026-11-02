@@ -177,20 +177,30 @@ export const SimulationEngine = {
       if (!modifiers.statsEqualized && tierGap > 20) {
         const stronger = scoreCharA > scoreCharB ? charA : charB;
         const weaker = scoreCharA < scoreCharB ? charA : charB;
-        tierGapDirective = `
-### ⚡ ANÁLISIS DE BRECHA DE TIERS (TIER GAP ${tierGap} pts):
-Existe una diferencia de tier significativa entre ${stronger?.name} (superior: ${stronger?.tier}) y ${weaker?.name} (inferior: ${weaker?.tier}).
-El combate NO debe resolverse trivialmente. El luchador inferior tiene oportunidades reales:
-1. Sus hax específicos (${(weaker?.haxTags || []).join(', ') || 'ninguno destacado'}) pueden afectar al rival independientemente del AP puro.
-2. La velocidad, el Battle IQ y el conocimiento del terreno compensan parcialmente la desventaja.
-3. El desgaste de stamina del rival más poderoso es un factor real si el combate se prolonga.
-Asegúrate de que ${weaker?.name} tenga momentos de gloria genuinos y opciones tácticas reales antes del desenlace.
+        if (tierGap > 35) {
+          tierGapDirective = `
+### ⚡ ANÁLISIS DE BRECHA DE TIERS DISPAR (TIER GAP EXTREMO: ${tierGap} pts):
+Existe un abismo dimensional y de escala física entre ${stronger?.name} (superior: ${stronger?.tier}) y ${weaker?.name} (inferior: ${weaker?.tier}).
+LEYES DE RESOLUCIÓN VS BATTLES PARA DISPARIDAD EXTREMA:
+1. **LÓGICA FÍSICA INVIOLABLE:** Los ataques físicos ordinarios de ${weaker?.name} NO dañan la estructura anatómica ni desgastan significativamente la stamina de ${stronger?.name} salvo que use Hax conceptual específico, anulación de durabilidad o manipulación espacial/temporal explícita en su ficha.
+2. **DIGNIDAD Y TENSIÓN:** ${weaker?.name} combate con su máximo ingenio táctico, lectura de terreno y arsenal completo, pero la superioridad de AP/DC y velocidad de ${stronger?.name} es abrumadora y debe definir el desenlace sin inconsistencias ni conveniencias argumentales (plot-armor).
 `;
+        } else {
+          tierGapDirective = `
+### ⚡ ANÁLISIS DE BRECHA DE TIERS (TIER GAP MODERADO: ${tierGap} pts):
+Existe una ventaja de tier notable entre ${stronger?.name} (superior: ${stronger?.tier}) y ${weaker?.name} (inferior: ${weaker?.tier}).
+1. Sus hax específicos (${(weaker?.haxTags || []).join(', ') || 'arsenal táctico'}) pueden presionar al rival independientemente del AP puro.
+2. La velocidad de combate, el Battle IQ y el aprovechamiento del terreno compensan parcialmente la desventaja.
+3. El desgaste de stamina y la gestión de recursos del rival más poderoso es un factor táctico explotable si el combate se prolonga.
+Asegúrate de que ${weaker?.name} demuestre sus recursos tácticos y momentos de peligro real antes de la resolución final.
+`;
+        }
       } else {
         tierGapDirective = `
-### ⚡ ANÁLISIS DE BRECHA DE TIERS & LEY DE JERARQUÍA CANÓNICA:
+### ⚡ ANÁLISIS DE BRECHA DE TIERS & EQUILIBRIO DE COMBATE:
 - Contendiente A: ${charA.name} [Tier: ${charA.tier || 'Desconocido'}]
 - Contendiente B: ${charB.name} [Tier: ${charB.tier || 'Desconocido'}]
+- Matchup cerrado y técnico decidido por compatibilidad de arsenal, velocidad de reacción, stamina y Hax.
 `;
       }
     }
@@ -1255,6 +1265,11 @@ LEYES NARRATIVAS DE OMNI-TITÁN (ESTÁNDAR DE ÉLITE):
 1. **FORMATO NUMÉRICO ESPAÑOL COHERENTE (OBLIGATORIO):** Usa SIEMPRE la escala española correcta: **1 billón = 10^12** y **1 trillón = 10^18**. Ejemplos: 5.000.000.000.000 = **5 billones** (JAMÁS "5 trillones"); 610.000.000.000 = **610 mil millones** o **0,61 billones**; 25.000.000.000.000 = **25 billones**. PROHIBIDO mezclar "Trillones" cuando el valor es billones (10^12), y PROHIBIDO usar notaciones sueltas tipo "7.880M" o "18.4T" dentro de la prosa — escribe el número con su unidad española completa o su equivalente limpio. Los números solo se escriben en la prosa cuando aportan drama; el resto va a los bloques BIOMETRICS y al veredicto.
 2. **VOZ CANÓNICA INVIOLABLE DE CADA LUCHADOR:** Respeta la personalidad, registro verbal y filosofía de combate de CADA personaje en TODO momento. Un personaje nunca "piensa" o "habla" como otro. Guía por franquicia:
    - **Dragon Ball:** Goku (alegre, respetuoso, hambriento, humilde — se emociona con rivales fuertes), Vegeta (orgulloso, hirviente, despectivo con débiles, obsesionado con superar a Goku), Beerus (perezoso, felino, solo se esfuerza cuando algo le divierte), Freezer (aristocrático, frío, sádico con modales), Majin Buu (infantil, caótico, impredecible), Piccolo (estratégico, frío, lacónico), Gogeta/Gotenks (confianza juvenil, fanfarrones), Jiren (estoico, de pocas palabras, justicia fría), Hit (calmado, profesional, eficiente), Zamasu (nihilismo divino, autoproclamado justiciero), Granolah (vengativo, desconfiado), Gas (arrogante heredero).
+   - **Bleach:** Ichigo (determinado, protector, directo — pelea por defender a sus amigos sin titubeos), Aizen (arrogancia refinada, cadencia teatral, calculador omnisciente — nada escapa a su previsión), Yamamoto (implacable, severo, dignidad marcial milenaria — el calor que lo calcina todo), Yhwach (mesiánico, todopoderoso, sereno ante el destino), Kenpachi (eufórico en el filo de la muerte, busca el éxtasis del choque salvaje).
+   - **Naruto / Boruto:** Naruto (inquebrantable, empático pero letal con fintas de clones y Rasengan táctico), Sasuke (frío, analítico, busca la máxima economía de movimientos y letalidad con Sharingan/Rinnegan), Madara (dios de la guerra, desprecio supremo por la debilidad, danza bélica monumental), Itachi (trágico, lacónico, lectura mental absoluta), Pain / Nagato (filosofía del dolor, sereno como una deidad lejana).
+   - **Fate / Type-Moon:** Gilgamesh (arrogancia regia suprema, desdén por los "mestizos/zasshu", despliegue imperial de Gate of Babylon), Saber Artoria (rectitud de caballero inquebrantable, honor marcial y deber), Archer Emiya (cínico pragmático, cálculo balístico y proyección).
+   - **God of War:** Kratos (furia contenida o espartana desatada, lacónico, letalidad biomecánica implacable sin concesiones).
+   - **Berserk:** Guts (furia de hierro y hueso, desafía la causalidad más allá de cualquier límite anatómico, nunca se quiebra).
    - **Jujutsu Kaisen:** Gojo (arrogante, burlón, pero protector de sus estudiantes), Sukuna (sádico, analítico, disfruta desmembrar rivales, habla con superioridad absoluta), Yuji (determinado, empático, reflexivo), Megumi (serio, táctico, sombrío), Mahito (juguetón, cruel, fascinado por el alma humana), Toji (frío, mercenario, despectivo), Yuta (amable pero letal si protege a alguien), Kenjaku (científico, manipulador, curioso milenario).
    - **Hunter x Hunter:** Gon (optimista, puro, aterrador cuando se enoja), Killua (ágil, bromista, leal), Hisoka (excitado por el combate, seductor peligroso, obsesionado con oponentes fuertes), Meruem (regio, curioso, evoluciona emocionalmente), Chrollo (líder sereno, calculador), Kurapika (vengativo, disciplinado), Feitan (torturador, letal cuando se enoja).
    - **JoJo's Bizarre Adventure:** Jotaro (estoico, gruñón, "Yare Yare Daze"), Joseph (astuto, fanfarrón, tramposo ingenioso), DIO (carismático, egocéntrico, sadista refinado), Kira (obsesivo-compulsivo, pacífico hasta que lo descubren, meticuloso), Giorno (determinado, de voluntad inquebrantable), Josuke (terco, protector, le tiene cariño a su peinado), Pucci (devoto, metódico).
@@ -1410,6 +1425,11 @@ ${structureInstruction}
     const nameA = typeof charA === 'string' ? charA : (charA?.name || 'Contendiente A');
     const nameB = typeof charB === 'string' ? charB : (charB?.name || 'Contendiente B');
     const nameScenario = typeof scenario === 'string' ? scenario : (scenario?.name || 'Arena de Combate');
+    const isDragonBallMatch = [charA, charB].some(c => {
+      const u = (typeof c === 'object' ? (c?.universe || '') : '').toLowerCase();
+      const n = (typeof c === 'object' ? (c?.name || '') : String(c || '')).toLowerCase();
+      return u.includes('dragon ball') || u.includes('dbz') || u.includes('dbs') || n.includes('goku') || n.includes('vegeta') || n.includes('saiyajin') || n.includes('piccolo') || n.includes('freezer') || n.includes('buu') || n.includes('cell');
+    });
     // 🚀 EXPANSIÓN MASIVA DE MEMORIA: de 4.500 a 35.000 caracteres con retención de contexto acumulativo
     const rawPrev = typeof previousOutput === 'string' ? previousOutput : JSON.stringify(previousOutput);
     let safeOutput = rawPrev;
@@ -1471,7 +1491,7 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
      * El absorbido existe ÚNICAMENTE como una "voz interior", eco táctico o resonancia residual en la mente del asimilador.
      * PROHIBIDO que el absorbido esquive, lance ataques individuales en el campo de batalla, sea atacado por rivales o actúe con autonomía corporal.
      * Majin Buu o Cell adquieren el intelecto y las técnicas del absorbido (ej: Buu ejecutando Makankosappo con su propio cuerpo), pero el absorbido NO lucha en el ring.
-5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CONSTITUCIONAL 2):**
+${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CONSTITUCIONAL 2):**
    - El Kaiō-ken NO es compatible con las transformaciones de Super Saiyan (SSJ1, SSJ2, SSJ3) en el canon de Dragon Ball Z debido a la inestabilidad emocional y la violencia del Ki dorado que destruiría el corazón y el cuerpo del usuario.
    - En la era Z (Saga Saiyajin, Namek, Androides, Buu), el Kaiō-ken SOLO puede ser utilizado en estado BASE.
    - La ÚNICA excepción canónica en toda la franquicia es el Super Saiyan Blue Kaiō-ken (SSB Kaiō-ken) en Dragon Ball Super, debido a la calma absoluta y control milimétrico del Ki Divino.
@@ -1479,7 +1499,10 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
 6. **CONTRIBUYENTES A LA GENKIDAMA (REGLA CONSTITUCIONAL 4):**
    - Solo seres libres, conscientes y con autonomía biomecánica pueden enviar Ki a una Genkidama externa.
    - Combatientes absorbidos en el interior de Buu o Cell NO pueden transferir energía de forma autónoma.
-   - Entidades fusionadas donan energía como un único bloque colectivo si defusionan o como el guerrero fusionado en sí, nunca como dos identidades simultáneas independientes.
+   - Entidades fusionadas donan energía como un único bloque colectivo si defusionan o como el guerrero fusionado en sí, nunca como dos identidades simultáneas independientes.` : `5. **COSTE METABÓLICO Y GESTIÓN DE RECURSOS:**
+   - Toda técnica suprema, dominio, modo despertado o artefacto de alta potencia consume reservas de energía de forma no regenerativa en combate inmediato; el sobreesfuerzo sostenido acarrea colapso o penalización severa de reacción.
+6. **TRANSFERENCIA Y SOBERANÍA DE PODER:**
+   - Prohibido que combatientes no presentes o entidades invocadas transfieran poder sin la debida manifestación sensorial en la arena.`}
 7. **INTERVENCIONES DE TERCEROS CONTENDIENTES Y EMBOSCADAS (LEY CANÓNICA OBLIGATORIA):**
    - Si la acción del usuario menciona la aparición o interrupción de un tercer contendiente, emboscada o escuadrón sorpresa:
      * PROHIBIDO inventar personajes genéricos ("un guerrero desconocido", "un villano metálico") o nombres inventados ("Azrath Malek").
@@ -1564,7 +1587,7 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
 
       // 1. Google Gemini Engine (Multi-Key Failover or Free Gateway)
       const isGemini = aiConfig?.engine === 'gemini';
-      const openRouterModel = aiConfig?.model || 'google/gemini-2.0-flash-lite:free';
+      const openRouterModel = aiConfig?.model || 'openrouter/free';
 
       if (isGemini) {
         const geminiKeys = getCandidateKeys(aiConfig, 'gemini');
@@ -1813,6 +1836,71 @@ REGLAS NARRATIVAS Y CONSTITUCIONALES DE CONTINUIDAD EXTREMA:
             }
           } catch (orErr) {
             console.warn(`[OpenRouter Failover] Error en clave #${kIdx + 1}:`, orErr);
+          }
+        }
+      }
+
+      // Custom OpenAI-Compatible Multi-Key Streaming
+      if (aiConfig?.engine === 'custom') {
+        const customKeys = getCandidateKeys(aiConfig, 'custom');
+        const customModel = aiConfig.model || 'default';
+        let customUrl = aiConfig.customBaseUrl?.trim() || 'http://localhost:1234/v1';
+        if (!customUrl.endsWith('/chat/completions')) {
+          customUrl = customUrl.replace(/\/+$/, '') + '/chat/completions';
+        }
+
+        const keysToTry = customKeys.length > 0 && customKeys.some(Boolean) ? customKeys.filter(Boolean) : [''];
+        for (let kIdx = 0; kIdx < keysToTry.length; kIdx++) {
+          const curKey = keysToTry[kIdx];
+          try {
+            const headers = { 'Content-Type': 'application/json' };
+            if (curKey) headers['Authorization'] = `Bearer ${curKey}`;
+
+            const response = await fetch(customUrl, {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({
+                model: customModel,
+                messages: [{ role: 'user', content: prompt }],
+                stream: true
+              })
+            });
+
+            if (response.ok) {
+              const reader = response.body.getReader();
+              const decoder = new TextDecoder('utf-8');
+              let buffer = '';
+
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+
+                for (const line of lines) {
+                  const trimmed = line.trim();
+                  if (!trimmed || !trimmed.startsWith('data:')) continue;
+                  const dataStr = trimmed.replace(/^data:\s*/, '');
+                  if (dataStr === '[DONE]') {
+                    onComplete();
+                    return;
+                  }
+                  try {
+                    const parsed = JSON.parse(dataStr);
+                    const delta = parsed.choices?.[0]?.delta?.content || '';
+                    if (delta) onToken(delta);
+                  } catch (e) {}
+                }
+              }
+              onComplete();
+              return;
+            } else {
+              console.warn(`[Custom Streaming] Petición a ${customUrl} falló con HTTP ${response.status}.`);
+            }
+          } catch (customErr) {
+            console.warn(`[Custom Streaming] Error en conexión a ${customUrl}:`, customErr);
           }
         }
       }
@@ -2300,9 +2388,9 @@ ESTADO FINAL:
     // 4. Direct OpenRouter Multi-Key Failover
     if (aiConfig?.engine === 'openrouter') {
       const orKeys = getCandidateKeys(aiConfig, 'openrouter');
-      let orModel = aiConfig.model || 'google/gemini-2.0-flash-lite:free';
+      let orModel = aiConfig.model || 'openrouter/free';
       if (orModel.includes('flash-lite') && !orModel.includes('/')) {
-        orModel = 'google/gemini-2.0-flash-lite:free';
+        orModel = 'openrouter/free';
       }
 
       for (let kIdx = 0; kIdx < orKeys.length; kIdx++) {
@@ -2373,6 +2461,48 @@ ESTADO FINAL:
           }
         } catch (ocErr) {
           console.warn(`[OpenCode Failover Query] Error en clave #${kIdx + 1}:`, ocErr);
+        }
+      }
+    }
+
+    // Custom OpenAI-Compatible Multi-Key Failover
+    if (aiConfig?.engine === 'custom' || engine === 'custom') {
+      const customKeys = getCandidateKeys(effectiveCfg, 'custom');
+      const customModel = effectiveCfg.model || 'default';
+      let customUrl = effectiveCfg.customBaseUrl?.trim() || 'http://localhost:1234/v1';
+      if (!customUrl.endsWith('/chat/completions')) {
+        customUrl = customUrl.replace(/\/+$/, '') + '/chat/completions';
+      }
+
+      const keysToTry = customKeys.length > 0 && customKeys.some(Boolean) ? customKeys.filter(Boolean) : [''];
+      for (let kIdx = 0; kIdx < keysToTry.length; kIdx++) {
+        const curKey = keysToTry[kIdx];
+        try {
+          const headers = { 'Content-Type': 'application/json' };
+          if (curKey) headers['Authorization'] = `Bearer ${curKey}`;
+
+          const payload = {
+            model: customModel,
+            messages: [{ role: 'user', content: prompt }]
+          };
+          if (isJson) {
+            payload.response_format = { type: 'json_object' };
+          }
+
+          const res = await fetch(customUrl, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const text = data?.choices?.[0]?.message?.content || '';
+            if (text && text.trim()) return text;
+          } else {
+            console.warn(`[Custom Query] Petición a ${customUrl} falló con HTTP ${res.status}.`);
+          }
+        } catch (customErr) {
+          console.warn(`[Custom Query] Error en conexión a ${customUrl}:`, customErr);
         }
       }
     }
