@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "server": "node server.cjs",
     "start": "node server.cjs",
+    "proxy": "node sd-tags-proxy.js",
+    "proxy:dev": "node --watch sd-tags-proxy.js",
+    "proxy:test": "node test-sd-proxy.js",
     "deploy": "node src/scripts/autoDeployVercel.js",
     "watch:deploy": "node src/scripts/watchAndSync.js",
     "opencode": "opencode .",
@@ -26,16 +29,22 @@
     "clsx": "^2.1.1",
     "cors": "^2.8.6",
     "express": "^4.22.2",
+    "js-yaml": "^4.1.0",
     "lucide-react": "^1.16.0",
+    "p-retry": "^6.2.0",
     "picomatch": "^4.0.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.0.2"
+    "tailwind-merge": "^3.0.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "tailwindcss": "^4.0.0",
     "vite": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

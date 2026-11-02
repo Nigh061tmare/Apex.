@@ -1,0 +1,427 @@
+{
+ "_meta": {
+  "name": "Dragon Ball GT - Sinopsis de episodios (Chozenshu 3)",
+  "source": "Dragon Ball Compendio Tomo 03, seccion Sinopsis de los episodios de Dragon Ball GT",
+  "pages": "t03 pp.350-357",
+  "coverage": 41,
+  "totalSeries": 64,
+  "limitations": [
+   "Los numeros de episodio del libro van en un rotulo grafico que el OCR no captura: el campo \"order\" es el orden de aparicion en el tomo, no el numero oficial.",
+   "Los episodios 1 y 2 de GT quedan en el encabezado grafico de la seccion y no se extraen con fiabilidad.",
+   "El campo \"dateEnBloque\" recoge la fecha literal del bloque; por la maquetacion del tomo esa fecha corresponde al episodio SIGUIENTE. No se ha reasignado para no inventar datos.",
+   "La sinopsis es texto OCR sin correccion ortografica."
+  ]
+ },
+ "episodes": [
+  {
+   "jp": "Cho-gametsui!! Shonin no",
+   "es": "Loscomerciantes delplaneta Imega",
+   "synopsis": "Imega) A la semana departir,la nave espacial se averia yaterrizan en el planeta Imega para repararla. Enesteplanetagobernadoporcomerciantesse encuentran con un extranorobot llamado Giru que se come el radar de las bolas de dragon.",
+   "dateEnBloque": "13demarz0 de1996",
+   "tomo": "t03",
+   "page": 350,
+   "col": "1",
+   "order": 1
+  },
+  {
+   "jp": "Chotto iteezo!? Goku no haisha",
+   "es": "El segundoplaneta",
+   "synopsis": "Al incorporar el radar delasbolas dedragon, Giru es capaz dedetectarlas esferas magicas yguiaa Gokuysus amigosa Mommaath,un planeta dondetodo tiene un tamano colosal.Alli encuentranunadelasbolaseneldientedeun giganteyGokuseconvierte enun improvisado dentista que usa metodos un poco radicales.",
+   "dateEnBloque": "24 de abril de 1996",
+   "tomo": "t03",
+   "page": 350,
+   "col": "1",
+   "order": 2
+  },
+  {
+   "jp": "Shimatta!!Goku tobikomi wana",
+   "es": "La cuevadelosmoomas",
+   "synopsis": "Unos alienigenas roban las bolas de dragonque el grupo de Goku ha estado reuniendo. Los ladrones son un misterioso trio llamado Hermanos Para Para.Siguiendolos aterrizan en el planeta Bihe, pero se trata de una trampa y unos monstruos gigantescos atacan la nave espacial en la quevan Goku y los demas. 343",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 350,
+   "col": "1",
+   "order": 3
+  },
+  {
+   "jp": "Kami no otsuge wa cho-",
+   "es": "El dios vaadespertar",
+   "synopsis": "GokuyTrunksse enfrentana Mutchi,el hombre fuerte de la secta Loud. Aunque tienen algunos problemas con los ataques de Mutchi, que puede controlar a todos los quegolpea con su latigo,consiguen darlavueltaala situacionylo derrotan.Mientras tanto,Dolltaki activa a Loud, un M2colosal.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 351,
+   "col": "1",
+   "order": 4
+  },
+  {
+   "jp": "Mogureteyaru!!Pan no iede!?",
+   "es": "La fuga de Pan",
+   "synopsis": "15 (La fuga de Pan) El grupo deGokuse veobligadoarealizarun aterrizaje de emergencia en un planeta desertico. Pan se enfada porque no le dejan ayudara reparar lanaveyseadentra enel desierto.Enese momento aparece un monstruogigante.Podran Gokuy Trunks rescatar a Pan sana y salva?",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 351,
+   "col": "1",
+   "order": 5
+  },
+  {
+   "jp": "Data nyanaize!!Goku no cho",
+   "es": "Comienzalalucha",
+   "synopsis": "Goku seenfrentaal rival maspoderosodeM2 el MegacanonSigma.Estellevaincorporadoslos datos de combate de Goku obtenidosporGiru, por lo que se tratadeun adversario complicado Alfinal Goku logra imponersetransformandoseen supersaiyano,algo que no aparecia en los datos de combate.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 351,
+   "col": "1",
+   "order": 6
+  },
+  {
+   "jp": "Nantekotta!!Kizokubanni natta",
+   "es": "Gokuesderrotado",
+   "synopsis": "La situacion se vuelve criticacuando Gokuy Pansonconvertidosenplanchas demetal.Justo cuando estan a punto de cortarlos en trocitos, Trunks y Giru,que habia fingido ser un traidor,los rescatan.Los dos sehabian compinchado para frenar la ambicion del doctor Mu.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 351,
+   "col": "1",
+   "order": 7
+  },
+  {
+   "jp": "Ruudo no noroi!?Ningyo ni",
+   "es": "La maldiciondeLoud",
+   "synopsis": "La navedelos Hermanos Para Paraenlaque iban PanyGiruviajaenpilotoautomaticohasta el planeta Loud,gobernado porDolltaki.Pan se pierdey llega al altar de la secta Loud,donde el maestro orador Motchi la convierteen una muneca.",
+   "dateEnBloque": "5de junio de 1996",
+   "tomo": "t03",
+   "page": 351,
+   "col": "3",
+   "order": 8
+  },
+  {
+   "jp": "Rythm de bacchiri!? Ruudo",
+   "es": "LaderrotadeLoud",
+   "synopsis": "Pan hasidoabsorbidapor LoudyDolltaki le cuentalaformadeacabar con él.Paraello tienen querealizar un ataque simultaneo por fuera y por dentro a su punto debil, situado en la posicion del corazon.Pan,desdedentro,y Goku, desdefuera,realizan unataque combinado que destruye a la maquina mutante.",
+   "dateEnBloque": "26de junio de 1996",
+   "tomo": "t03",
+   "page": 351,
+   "col": "3",
+   "order": 9
+  },
+  {
+   "jp": "Panni omakase!Gokukyushutsu",
+   "es": "LosplanesdeRild",
+   "synopsis": "Pansedisfrazaderobotysecuela en el cuartel general de M2.Alli se encuentra con el MegacanonSigmayno lequeda masremedio que luchar.Mientras tanto, GokuyTrunks elaboran un plan para escaparsede la guarida del enemigo.",
+   "dateEnBloque": "31 de julio de 1996",
+   "tomo": "t03",
+   "page": 351,
+   "col": "3",
+   "order": 10
+  },
+  {
+   "jp": "Tamagetazo!! Goku woosou",
+   "es": "Elataquede Rild",
+   "synopsis": "Pansedirigearescatara Trunks,peroelsistema deeliminacion de intrusosse lo impide.Por otraparte,elgeneralRildyGokuestanenpleno combate.Rild tiene un poder capaz de controlar a voluntad el planeta M2 entero e incluso a Goku en elestadodesupersaiyanolecuesta imponerse.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 351,
+   "col": "3",
+   "order": 11
+  },
+  {
+   "jp": "Babygyakushu!!Nerawareta",
+   "es": "El contraataque de Baby",
+   "synopsis": "ElgrupodeGoku llegaal planetaPitalyel muchacho parasitado porBaby losataca.Baby consigue introducirseenelcuerpode Trunksen undescuido,peroesteliberasupoderoculto de supersaiyano y logra zafarse de los siniestros planes de la creacion del doctor Mu. Yabo kanzei!?Nottorareta",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 352,
+   "col": "1",
+   "order": 12
+  },
+  {
+   "jp": "Vegeta",
+   "es": "Vegetaesposeido",
+   "synopsis": "27 (Vegetaesposeido) El ultimo objetivode Babyes Vegeta,a quien se enfrenta controlando a Gohan y Goten. Finalmente,el principe de los saiyanos cae ante loshijos de Goku.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 352,
+   "col": "1",
+   "order": 13
+  },
+  {
+   "jp": "Goki shometsu!?Ora wa",
+   "es": "iDondeestaGoku?",
+   "synopsis": "Justo antes deencajarel ataquemas poderoso de Baby Vegeta,Goku logra escaparde la Tierra con la ayudade KibitoKaioshin,peroqueda atrapado en otra dimension.Alli se ve obligado a jugarcon Sugoro para poder salir.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 352,
+   "col": "1",
+   "order": 14
+  },
+  {
+   "jp": "Kakusareta kiki!?Nanpasen to",
+   "es": "Un invitado misterioso",
+   "synopsis": "Gokuyel restohuyendelplanetaM2y descubren una nave espacial a la deriva, en cuyo interiorseencuentran aun muchacho herido. Mientrasbuscan un planeta con hospital para llevarlo,resultaqueestaparasitadoporBaby,a quien creian quehabian destruido.",
+   "dateEnBloque": "30de octubre de 1996",
+   "tomo": "t03",
+   "page": 352,
+   "col": "3",
+   "order": 15
+  },
+  {
+   "jp": "kyodaigenka!?",
+   "es": "Son GohanyGoten:Lahermandad diabolica",
+   "synopsis": "26 (Son GohanyGoten:Lahermandad diabolica) Trasocuparel cuerpode Goten,Babydecide quesuproximohuesped esGohan,muchomas poderoso que su hermano menor. Gohan se da cuenta deque Goten esta bajo el control de alguien,pero no se atrevea combatir con él para no herirle.Ese es el momento que aprovecha Baby para poseer a Gohan.",
+   "dateEnBloque": "27 de noviembrede 1996",
+   "tomo": "t03",
+   "page": 352,
+   "col": "3",
+   "order": 16
+  },
+  {
+   "jp": "Cho-yabai!?Supersaiyajin 3",
+   "es": "La gran derrota",
+   "synopsis": "Comienza el enfrentamiento entre Gokuy Baby, que se ha fundido con Vegeta. Baby Vegeta tiene unpoderclaramentesuperioryGokulehace frente transformado en supersaiyano detercer nivel.Aun asi, Baby Vegeta es demasiado fuertey laderrotadeGokuesincontestable.",
+   "dateEnBloque": "8de enero de 1997",
+   "tomo": "t03",
+   "page": 352,
+   "col": "3",
+   "order": 17
+  },
+  {
+   "jp": "32 (El regreso de Goku.La ira del",
+   "es": "El regreso de Goku.La ira del guerrero 0b",
+   "synopsis": "guerrero 0b) Pan esta bajo la amenaza de Babyyquien la rescata es Ub,el discipulo de Goku.Aunquea primera vista pareceque ha derrotado a la creacion del doctor Mu, Babyseuneconél ysehacemuchomaspoderoso. Mientrastanto,enelmundoKaioshinGokutratade superarel tercerniveldesupersaiyano.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 352,
+   "col": "3",
+   "order": 18
+  },
+  {
+   "jp": "Abakaretayabo!!Jaaku",
+   "es": "El despertardeBaby",
+   "synopsis": "Laambiciondel doctor Mu escrear al neo M2 Baby.Baby trama su huida ocupando el cuerpo de su creador,pero Gokuy susamigos frustran su plany le provocan danos considerables.",
+   "dateEnBloque": "16de octubre de 1996",
+   "tomo": "t03",
+   "page": 353,
+   "col": "4",
+   "order": 19
+  },
+  {
+   "jp": "arawareta",
+   "es": "Baby llegaa la Tierra",
+   "synopsis": "25 (Baby llegaa la Tierra) Despues de desarrollarseabsorbiendoa incontablesformasdevida,BabyponealaTierra ensupuntodemiraparahacerseconel poderde lossaiyanos.Al llegarseencuentraconGoten,a quienaprovecha para parasitar.",
+   "dateEnBloque": "13de noviembre de 1996",
+   "tomo": "t03",
+   "page": 353,
+   "col": "4",
+   "order": 20
+  },
+  {
+   "jp": "ora no teki!?",
+   "es": "La vueltade Goku",
+   "synopsis": "28 (La vueltade Goku) Goku,Pan y Trunks regresan a la Tierra tras reunir las bolasdedragon definitivasy se extranan de que nadie vaya a recibirlos. Logico,porquetodos los terricolasahora estan controlados por Baby.",
+   "dateEnBloque": "11 de diciembre de 1996",
+   "tomo": "t03",
+   "page": 353,
+   "col": "4",
+   "order": 21
+  },
+  {
+   "jp": "dai-hokai",
+   "es": "jQuesorpresa!Sugoroku,elgran hundimientodelespacio",
+   "synopsis": "31 (jQuesorpresa!Sugoroku,elgran hundimientodelespacio) Goku se da cuenta de que Sugoro hace trampas en el juego.Cuando cree que ha ganado, Sugoro destruye la sala de juegos yKibito Kaioshin salva a Goku enel ultimomomento.Selo lleva al mundo Kaioshin y alli planean una estrategia para acabar con Baby. ===== [PAGE 353] =====",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 353,
+   "col": "4",
+   "order": 22
+  },
+  {
+   "jp": "ooabare!!",
+   "es": "Fracasalatransformacion?Goku, elsupersaiyano,estadescontrolado",
+   "synopsis": "34 (Fracasalatransformacion?Goku, elsupersaiyano,estadescontrolado) Al volver acrecerlela cola,Gokusetransforma en un Ohzaru dorado al ver la Tierra.Sin embargo,estadesbocadoy ataca incluso a Pan, pero sus lagrimas le hacen recuperar la razon y alcanza su formadefinitiva como supersaiyanode cuarto nivel.",
+   "dateEnBloque": "12de febrero de 1997",
+   "tomo": "t03",
+   "page": 353,
+   "col": "3",
+   "order": 23
+  },
+  {
+   "jp": "Sozetsu!! Babyto Goku no",
+   "es": "ilncreible!El K.0.doblede Goku y Vegeta",
+   "synopsis": "y Vegeta) Gokuy Baby quedan fueradecombate,pero Baby se recupera al serbanado por las ondas Blutz.En esemomento,KibitoKaioshin llegaa la Tierra y consigue el agua superdivina choshinsui con la que salva a Trunksy todos lo quehabian sido parasitados por Baby.",
+   "dateEnBloque": "5demarzo de 1997",
+   "tomo": "t03",
+   "page": 353,
+   "col": "3",
+   "order": 24
+  },
+  {
+   "jp": "iudai-na ketsui",
+   "es": "LaTierra explota.La decision final de Piccolo",
+   "synopsis": "40 (LaTierra explota.La decision final de Piccolo) Baby ha caido derrotado, pero quedan dos semanas para que explote la Tierra.Goku y los demas evacuan a la poblacion terrestre al planeta Tsufur.Piccolo,por otra parte,decide compartir el destino de la Tierrapara eliminar las bolas de dragon definitivas.",
+   "dateEnBloque": "23deabril de 1997",
+   "tomo": "t03",
+   "page": 353,
+   "col": "3",
+   "order": 25
+  },
+  {
+   "jp": "Furiza fukkatsu",
+   "es": "Luchadoresdel Infierno.La resurrecciondeCellyFreezer",
+   "synopsis": "43 (Luchadoresdel Infierno.La resurrecciondeCellyFreezer) Losdos archienemigosdeGoku,FreezeryCell,le aguardan en el Infierno.Al principio Goku hace gala de su superioridad,pero se confia y cae en lo mas profundodel Infierno.Mientras tanto, Vegeta y Trunks se enfrentan en la Tierra a una horda de enemigos que han vuelto a la vida.",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 353,
+   "col": "3",
+   "order": 26
+  },
+  {
+   "jp": "kosen!!",
+   "es": "Atento,Baby.El nuevo Ub ataca con su rayo de luz",
+   "synopsis": "33 (Atento,Baby.El nuevo Ub ataca con su rayo de luz) Ub se fusiona con Buy planta cara de nuevoa Baby.Lanza un rayo que transforma al adversario en chocolatina,pero Baby se lo devuelvey es el propio Ub el que cae. En ese momento aparece Goku,que ha terminado su entrenamiento en el mundo Kaioshin. Le ha crecido la colay ha recuperado sufacetasalvaje.",
+   "dateEnBloque": "5defebrero de 1997",
+   "tomo": "t03",
+   "page": 354,
+   "col": "4",
+   "order": 27
+  },
+  {
+   "jp": "oozaru Baby",
+   "es": "Un nuevo monstruo:el malvado supersaiyano Baby",
+   "synopsis": "36 (Un nuevo monstruo:el malvado supersaiyano Baby) TrasformadoenunOhzarudorado,Babyselopone complicado a Goku.Sin embargo, su ira explota ante losdesmanes quehace Babyconla gentey usa contra él un Kame Hame Ha diez vecesmas poderoso que el normal.Lamentablemente, no es suficiente para acabar con Babyy el contraataque es devastador.",
+   "dateEnBloque": "26 de febrero de 1997",
+   "tomo": "t03",
+   "page": 354,
+   "col": "4",
+   "order": 28
+  },
+  {
+   "jp": "shometsu",
+   "es": "Esto es el fin.Alfinal Baby ha sido derrotado",
+   "synopsis": "39 (Esto es el fin.Alfinal Baby ha sido derrotado) Goku consigue por fin imponersea Baby Ohzaru. Ademas,consigue separar a Baby de Vegeta cortandole la cola.Baby trata de escapar,pero encaja un poderoso Hame Hame Ha que le desintegra.",
+   "dateEnBloque": "16 de abril de 1997",
+   "tomo": "t03",
+   "page": 354,
+   "col": "4",
+   "order": 29
+  },
+  {
+   "jp": "yomigaeru kyoteki-tachi",
+   "es": "iMuere,Goku!Laresurreccion de los enemigos en el Infierno",
+   "synopsis": "de los enemigos en el Infierno) EldoctorGeroyel doctorMu,quecompartensu odiovisceralhaciaGoku,unensusfuerzas enel Infierno.Crean unnuevo A-17 en el MasAlla,que une el Infierno con el mundo humano.Para colmo de males, Goku queda atrapado en el Infiernoy la Tierra queda a merced de los poderosos enemigos que vienen del Infierno. 346 ===== [PAGE 354] =====",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 354,
+   "col": "4",
+   "order": 30
+  },
+  {
+   "jp": "nidankogeki sakuretsu EPISODIO Super17-go",
+   "es": "ilmpacto!Supersaiyano4contra combinado de Goku y A-18",
+   "synopsis": "47 (La gran alianza: El ataque 46 (ilmpacto!Supersaiyano4contra combinado de Goku y A-18) Super A-17) A-18,la hermana mellizadeA-17,salva a Goku Goku se transforma en supersaiyano de cuarto del peligro.Lanza un violento ataque contra Super nivel y se enfrentaa SuperA-17.La batalla esta A-17 comovenganza por lamuertede Krilin. muy igualada,aunque el androide apenas recibe SuperA-17 sequeda indefenso mientras absorbe danosy,porsifuera poco,tambien absorbelos laenergia,momento que aprovecha Goku para ataques de energia que lanza Goku.El cansancio lanzar un ataque con el puno del dragon,ryuken, empiezaahacermella enGoku. que le lleva a la victoria.",
+   "dateEnBloque": "25de junio de 1997",
+   "tomo": "t03",
+   "page": 354,
+   "col": "1",
+   "order": 31
+  },
+  {
+   "jp": "wotsukau ryo",
+   "es": "jEl enemigo definitivo!Terror ante enemigo electrico Wuxinglong",
+   "synopsis": "enemigo electrico Wuxinglong) latrampadeldragon) ElgrupodeGokuse enfrentaal DragonOscurodecinco Elprimerdragoncon elqueseencuentranes estrellas,Wuxinglong,capaz decontrolarla electricidad. Erxinglong,el dragon dedos estrellas.Aprimera Eldragon tiene un cuerpoque hace rebotar el Kame vistanoparecemuypoderoso,perousa su niebla HameHadiez veces superioral normaly susataques venenosa para dificultarlosmovimientosde sus leshacenpasarunmal rato a Gokuy losdemas.Sin adversarios.Goku y los demas encuentran un lago embargo,acaban imponiendosegracias a que la lluviaes por casualidad y se libran del veneno.Derrotan a el punto debil de los ataques electricos de Wuxinglong. Erxinglong yrecuperan la bola ",
+   "dateEnBloque": "9de julio de 1997",
+   "tomo": "t03",
+   "page": 354,
+   "col": "1",
+   "order": 32
+  },
+  {
+   "jp": "Pan ga shometsu!?Namida no EPISODIO Pan abunee!Qixinglongno totteoki",
+   "es": "Panseraasesinada?",
+   "synopsis": "Con Pan como rehen,Gokunopuedehacernada AQixinglong,elDragonOscurodesieteestrellas, frentea Qixinglong.No lequeda mas remedio que legusta provocarterremotosynole apetece aceptarla derrotay rendirseanteelDragon Oscuro luchar contra Goku.Su humor cambia cuando Sin embargo, eso forma parte de un plan de Goku. Goku impidelos danosdelos terremotos.Goku EsteaprovechaundescuidodeQixinglongpara leplanta caracomo supersaiyanodecuarto nivel, rescatar aPanysehacecon la victoria mediante el pero Qixinglong asimilaa Pan en suinterior. puno del dragon, ryuken, lanzado con toda su ira.",
+   "dateEnBloque": "13de agostode 1997",
+   "tomo": "t03",
+   "page": 354,
+   "col": "1",
+   "order": 33
+  },
+  {
+   "jp": "Bulma ugoku! Vegeta kaizo",
+   "es": "jBulmaactua!Elplan de Vegeta",
+   "synopsis": "AVegeta le consume la amargura de que Goku, su otrora rival, sea muy superior a el.Sin embargo,Bulma desarrolla un dispositivo con el quepuedetransformarse en supersaiyano de cuarto nivel y ello ledevuelve el ardor combativo del principe de los saiyanos. 34",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 354,
+   "col": "1",
+   "order": 34
+  },
+  {
+   "jp": "dashutsu daisakusen",
+   "es": "iAnimo,Goku!El planpara escapardel Infierno",
+   "synopsis": "45 (iAnimo,Goku!El planpara escapardel Infierno) Los superguerreros de la Tierra van cayendo uno trasotro anteSuperA-17.La esperanza de todos es Goku,pero sigue atrapado en el Infierno,asi queDende,el dios de la Tierra yPiccolo, que estaen el Infierno,unen susfuerzas.Gracias a su colaboracion, Goku consigue regresar a la Tierra.",
+   "dateEnBloque": "11 de junio de 1997",
+   "tomo": "t03",
+   "page": 355,
+   "col": "2",
+   "order": 35
+  },
+  {
+   "jp": "Kore wa bikkuri!Shenronga teki ni!?",
+   "es": "iVayasorpresa!Elenemigoes Shenron",
+   "synopsis": "48 (iVayasorpresa!Elenemigoes Shenron) La Tierra ha quedado devastada y Goku y los demas invocan a Shenron para remediar la situacion.Sin embargo,de las bolas de dragon aparecen siete Dragones Oscuros envueltos en un aura maligna.Goku, Pan y Giru salen en un viaje para derrotara los Dragones Oscuros yreunirlas bolas dedragon.",
+   "dateEnBloque": "2 de julio de 1997",
+   "tomo": "t03",
+   "page": 355,
+   "col": "2",
+   "order": 36
+  },
+  {
+   "jp": "kogeki no jakuten wo sagase",
+   "es": "jLiuxinglong!El punto debil es el ataque del tornado gigante",
+   "synopsis": "51 (jLiuxinglong!El punto debil es el ataque del tornado gigante) La leyendadiceque laprincesaOto da pescadoalos pescadores.Sin embargo, la verdadera identidad de la princesa esLiuxinglong,elDragon Oscuro de seisestrellas. Goku tienedificultades ante este dragon que puede controlarelviento,peroPandescubrequesupuntodebil es elojodeltornadoyGokulanzaunKameHameHaqueda lavuelta a la situacion.El tercer Dragon Oscuro hacaido.",
+   "dateEnBloque": "6deagosto de 1997",
+   "tomo": "t03",
+   "page": 355,
+   "col": "2",
+   "order": 37
+  },
+  {
+   "jp": "senshi",
+   "es": "6000C de poder.El guerrero del Sol",
+   "synopsis": "54 (6000C de poder.El guerrero del Sol) El quintoDragonOscuro esel decuatroestrellas, Sixinglong,quetiene la mismatemperatura que la superficiedel sol.Gokubuscaun metodopara plantarle cara y prueba ahacerlotransformandose en supersaiyanode cuarto nivel.Por otra parte,Sixinglong revela suverdadero aspectoy comienza un combate igualado.Mientras tanto,algo extrano acecha a Pan. ===== [PAGE 355] =====",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 355,
+   "col": "2",
+   "order": 38
+  },
+  {
+   "jp": "Hangeki kaishi!Supersaiyajin4 EPISODIO Tsuyosa attotekil Jaakuryu wo Taiyo no tsugi wa kokkan! Honoo to",
+   "es": "Alfinalaparece Yixinglong",
+   "synopsis": "devuelto.El supersaiyano4 superado) Goku pierde la vista porun ataquede Sanxinglong, ApareceSanxinglong,eldragondetresestrellas pero finalmente consigue imponerse con la ayuda de hermano gemelo de Sixinglong.Sin embargo,tiene Goku esta tan agotado que no puede mantener Sixinglong. Goku esta malherido y en ese momento la personalidadcontrapuestaa ladesu hermanoyse su estado de supersaiyano de cuarto nivel.Gohan aparece Yixinglong,el dragon de una estrella revela como un adversario que usatacticas cobardes y losdemasleceden su podersaiyanoyvuelve yel mas poderoso entrelos Dragones Oscuros. Derrota a Panysorprendea Goku,al quele congela a transformarse,pero Yixinglong se hacemucho Sixinglong ca",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 356,
+   "col": "1",
+   "order": 39
+  },
+  {
+   "jp": "EPISODIO Vegeta ooabare",
+   "es": "iVoy a ganar!Goku engulle la definitivo",
+   "synopsis": "sixingqiu) supersaiyanoVegetaenfurecido) Goku y Vegeta buscan una oportunidad para El as en la mangade Vegeta es fusionarse con Vegeta se presentaen pleno combate entre Gokuy fusionarsede nuevo,perolos violentos ataques Goku en el estado de supersaiyano de cuarto Yixinglong.Gracias al amplificador deondas Blutz de Superyixinglong lo impiden.Para colmo,Goku nivel.Gogeta,el supersaiyano de cuarto nivel de Bulma,elprincipede lossaiyanossetransforma vuelve a ser un nino y su poder disminuye.En resultante,pone a Yixinglong contra las cuerdasy en Ohzaru.Al principio ha perdido la razon yesta medio de esta delicada situacion,Goku engulle hace queexpulsela sixingqiu,con lo queel poder desbocado,pero",
+   "dateEnBloque": "5 de noviembrede 1997",
+   "tomo": "t03",
+   "page": 356,
+   "col": "1",
+   "order": 40
+  },
+  {
+   "jp": "Saraba Goku... Mata auhi made EPISODIO wo sukutta Goku EPISODIO",
+   "es": "iVictoriagraciasalmilagroso ultimoaliado",
+   "synopsis": "volvamosaencontrar contraataque! Goku pide ayuda El ultimodeseoque lepide Goku a Shenron es al universo) Ahora es Vegeta quien deja de tener la forma de que devuelva la vida a los terricolas muertos. La cuenta atras de la destruccion se cierne sobre supersaiyano de cuarto nivel.En esemomento Luego monta alomosdel diosdragony desaparece la Tierra.Todoapuntaba aque Goku habia caido, aparece Sixinglong, el ultimo aliado,surgido de la trasvisitar a sus amigos.Un siglo despues de la pero en realidad estaba formando en secreto una sixingqiu.Sus ataques simultaneos con Goku no batalla contra losDragonesOscuros,Gokuse deja genkidama con la energia de todos los habitantes sirven contra Superyixinglon",
+   "dateEnBloque": null,
+   "tomo": "t03",
+   "page": 356,
+   "col": "1",
+   "order": 41
+  }
+ ]
+}

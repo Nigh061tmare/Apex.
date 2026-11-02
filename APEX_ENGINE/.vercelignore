@@ -1,0 +1,6 @@
+node_modules
+dist
+.env
+.env.local
+.cloud_sync_store.json
+*.bat

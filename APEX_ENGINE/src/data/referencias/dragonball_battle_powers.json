@@ -1,0 +1,74 @@
+{
+ "_meta": {
+  "generatedBy": "chozenshu_extract.py",
+  "kind": "regex-mined",
+  "count": 8,
+  "warning": "Valores minados por regex sobre OCR; requieren verificacion visual en pagina antes de uso canonico."
+ },
+ "battlePowers": [
+  {
+   "value": 1200,
+   "raw": "fuerzadecombatede1200",
+   "kind": "battlePower",
+   "tomo": "t01",
+   "page": 299,
+   "context": "siestaadaprondelsueloricoennutrientesdelatierraneveracapsulatadoparaellotenianunaasombrosafuerzadecombatede1200casacapsulamedicinaespecialparatratarunaenmedicinapocfermedaddelcorazonprovocadaporunparae"
+  },
+  {
+   "value": 10000,
+   "raw": "fuerzadecombatede10000",
+   "kind": "battlePower",
+   "tomo": "t03",
+   "page": 287,
+   "context": "oalconoceragokuynisiquieraparaguspuedetroscontrolarlofase2debebeninezsupersaiyanovtieneunafuerzadecombatede10000desdeelnacimientodeninoyapodiaalcanzarelestadodeaestasupersaiyanoedadyatienecolocadoeldisp"
+  },
+  {
+   "value": 22,
+   "raw": "fuerzadecombatede22",
+   "kind": "battlePower",
+   "tomo": "t04",
+   "page": 24,
+   "context": "uestiondesuerteatrasrecuperarsedelasheridasenunaunidadohzaru100terapeuticaagokuleaumentasufuerzadecombatede22tenkaichibudokai150millonessupersaiyano180unamaneraexponencialysepreparaparaunabatalladond"
+  },
+  {
+   "value": 120000,
+   "raw": "fuerzadecombateesde120000",
+   "kind": "battlePower",
+   "tomo": "t04",
+   "page": 62,
+   "context": "riasporloqueacortaravoluntadparaatacarademasdesermuyfuertetambientieneunafacetasimpaticasufuerzadecombateesde120000einmovilizaraladversariotintercambiodecuerpoentreotraslunataquecoordinadoconlseintercambia"
+  },
+  {
+   "value": 18000,
+   "raw": "fuerzadecombatede18000",
+   "kind": "battlePower",
+   "tomo": "t04",
+   "page": 63,
+   "context": "adodefreezerhmurioenelano762vreygyuman246csumalarelacionconvegetaveniadesdeantiguoteniaunafuerzadecombatede18000similaraladevegetaantesdedirigirsealatierraeraunguerrerodeeliteperoconuncaracterbastanteco"
+  },
+  {
+   "value": 22000,
+   "raw": "fuerzadecombateesde22000",
+   "kind": "battlePower",
+   "tomo": "t04",
+   "page": 91,
+   "context": "odigiosayacaboen10segundoscontresjovenesnamekianosdefuerzaexcepcionalinclusoeneluniversosufuerzadecombateesde22000lvegetaloatacaporsorpresamientrasactuaensolitarioennamekylovolatilizaacuandoasaltaunaaldea"
+  },
+  {
+   "value": 4000,
+   "raw": "fuerzadecombateesde4000",
+   "kind": "battlePower",
+   "tomo": "t04",
+   "page": 94,
+   "context": "ociedadsaiyanacomoentrelossubordinadosdefreezernoteniaunaposicionsigmalaunidaddestacablesufuerzadecombateesde4000maspoderosadem2tondasdeenergiadetodotipolliquidoapiccoloylosdemasconunpoderarrolladorgokul"
+  },
+  {
+   "value": 8000,
+   "raw": "fuerzadecombatede8000",
+   "kind": "battlePower",
+   "tomo": "t04",
+   "page": 133,
+   "context": "abenadaqueaelcuerponopodriaaguantarmuchotiemponolemirdisttecnicavariantesuperkaiokenconunafuerzadecombatede8000solosekikopuedeusarelkaiokenmultiplicadopordospsoninclusoteniendounafuerzadecombatede3goku"
+  }
+ ]
+}

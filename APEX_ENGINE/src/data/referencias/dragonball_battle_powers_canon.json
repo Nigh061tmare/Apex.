@@ -1,0 +1,67 @@
+{
+  "_meta": {
+    "name": "APEX Dragon Ball - Fuerzas de Combate Canonicas (Chozenshu)",
+    "version": "1.0.0",
+    "authority": "Dragon Ball Compendio 4 - Superenciclopedia (Chozenshu 4 / Daizenshu 7, 1996; ed. Planeta Comic)",
+    "method": "Verificacion VISUAL directa de la infografia mediante chozenshu_zoom.py + extraccion de prosa por regex (chozenshu_extract.py).",
+    "provenance": {
+      "tomo": "Tomo 04 - Superenciclopedia",
+      "column": "Columna 2 - Desarrollo de la fuerza de combate de Son Goku hasta la batalla contra Freezer",
+      "pdfIndex": 24,
+      "imageFile": "0036_stitch.jpg",
+      "printedPages": [30, 31],
+      "note": "Doble pagina escaneada como 0036_stitch.jpg. Mitad derecha = pag.30, mitad izquierda = pag.31 (verificado por el numero impreso en cada mitad)."
+    },
+    "units": "Unidades de Scouter del Daizenshuu (sourceKi). Solo aplicable a personajes de Dragon Ball.",
+    "usage": "APEX: usar como ancla de calibracion (patron de oro) para sourceKi de personajes DB y para validar la monotonicidad de las curvas de tier.",
+    "integrity": "NINGUN valor de este dataset debe fusionarse al baseline V22 sin aprobacion humana explicita (ver APEX_RULES.md, Protocolo de Congelacion)."
+  },
+  "chart_verified": [
+    {"value": 10, "characterId": "son-goku-ni-o-dragon-ball-cl-sico-987", "name": "Son Goku (primera aparicion)", "arc": "Saga de Pilaf", "notes": "El doble de la fuerza de una persona normal; cuerpo resistente a balas.", "printedPage": 30},
+    {"value": 100, "characterId": "son-goku-ni-o-dragon-ball-cl-sico-987", "name": "Son Goku (Ohzaru)", "arc": "Saga de Pilaf / 21er TB", "notes": "La transformacion multiplica x10 su fuerza de combate base.", "printedPage": 30},
+    {"value": 120, "characterId": "duende-grulla", "name": "Duende Grulla", "arc": "22º Tenkaichi Budokai", "notes": "Capacidad de rivalizar con el Duende Tortuga.", "printedPage": 30},
+    {"value": 139, "characterId": "jackie-chun", "name": "Jackie Chun (Duende Tortuga)", "arc": "21er/22º Tenkaichi Budokai", "notes": "Entrenaba a escondidas de sus discipulos.", "printedPage": 30},
+    {"value": 180, "characterId": "son-goku-23-tenkaichi", "name": "Son Goku", "arc": "22º Tenkaichi Budokai", "printedPage": 30},
+    {"value": 180, "characterId": "tenshinhan-saga-cell", "name": "Ten Shin Han", "arc": "22º Tenkaichi Budokai", "printedPage": 30},
+    {"value": 206, "characterId": "krilin-dragon-ball-cl-sico-802", "name": "Krilin", "arc": "22º Tenkaichi Budokai", "notes": "OH, INCREIBLE! 206, DICE!", "printedPage": 30},
+    {"value": 260, "characterId": "son-goku-23-tenkaichi", "name": "Son Goku", "arc": "Contra el Gran Rey Demonio Piccolo", "printedPage": 30},
+    {"value": 260, "characterId": "rey-piccolo-dragon-ball-cl-sico-497", "name": "Gran Rey Demonio Piccolo", "arc": "Saga del Rey Demonio", "notes": "Se vuelve aun mas fuerte gracias al rejuvenecimiento; comparable a una bomba nuclear pequena.", "printedPage": 30},
+    {"value": 408, "characterId": "piccolo-saga-saiyan", "name": "Piccolo", "arc": "Contra Raditz", "notes": "Con equipo de entrenamiento quitado. Canones de luz penetradora diabolica.", "printedPage": 30},
+    {"value": 416, "characterId": "son-goku-llegada-dbz-saga-saiyan-169", "name": "Son Goku", "arc": "Contra Raditz", "printedPage": 30},
+    {"value": 1307, "characterId": "son-gohan-ni-o-saga-saiyan-namek-830", "name": "Son Gohan (estallido de ira)", "arc": "Contra Raditz", "notes": "Variaba muchisimo segun sus emociones; con cuatro anos superaba a su padre.", "printedPage": 30},
+    {"value": 1330, "characterId": "piccolo-saga-saiyan", "name": "Makankosappo (Piccolo)", "arc": "Contra Raditz", "notes": "Equivale a una fuerza de combate de 1330 (tecnica, no forma).", "printedPage": 30, "kind": "technique"},
+    {"value": 1500, "characterId": "raditz", "name": "Raditz", "arc": "Saga Saiyan", "notes": "Guerrero de baja categoria entre los saiyanos.", "printedPage": 30},
+    {"value": 610, "characterId": "chaoz-db-clasico", "name": "Chaoz", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 1200, "characterId": "saibaiman", "name": "Saibaiman", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 1480, "characterId": "yamcha", "name": "Yamcha", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 1770, "characterId": "krilin-saga-saiyan-namek", "name": "Krilin", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 1830, "characterId": "tenshinhan-saga-cell", "name": "Ten Shin Han", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 2800, "characterId": "son-gohan-ni-o-saga-saiyan-namek-830", "name": "Son Gohan", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 3500, "characterId": "piccolo-saga-saiyan-namek-saga-saiyan-967", "name": "Piccolo", "arc": "Saga Saiyan", "printedPage": 31},
+    {"value": 4000, "characterId": "nappa", "name": "Nappa", "arc": "Saga Saiyan", "notes": "Su fuerza de combate se multiplica por 10 y puede destrozar paredes de acero de 30 cm.", "printedPage": 31},
+    {"value": 8000, "characterId": "son-goku-llegada-dbz-saga-saiyan-169", "name": "Son Goku", "arc": "Contra Vegeta", "printedPage": 31},
+    {"value": 18000, "characterId": "vegeta-llegada-a-la-tierra-saga-saiyan-504", "name": "Vegeta", "arc": "Saga Saiyan (llegada a la Tierra)", "printedPage": 31},
+    {"value": 32000, "characterId": "son-goku-llegada-dbz-saga-saiyan-169", "name": "Son Goku (Kaio-ken al cuadruple)", "arc": "Contra Vegeta", "notes": "8000 x4 = 32000; el cuerpo no podria aguantarlo mucho tiempo.", "printedPage": 31},
+    {"value": 13000, "characterId": "krilin-saga-saiyan-namek", "name": "Krilin", "arc": "Llegada a Namek", "printedPage": 31},
+    {"value": 14000, "characterId": "son-gohan-ni-o-saga-saiyan-namek-830", "name": "Son Gohan", "arc": "Llegada a Namek", "printedPage": 31},
+    {"value": 30000, "characterId": "vegeta-saga-namek-saga-namek-783", "name": "Vegeta", "arc": "Llegada a Namek", "printedPage": 31},
+    {"value": 90000, "characterId": "son-goku-saga-namek-saga-namek-176", "name": "Son Goku (llegada a Namek)", "arc": "Llegada a Namek", "notes": "Tras entrenar a gravedad 100x; con el Puno Kaio puede multiplicar su fuerza por 10.", "printedPage": 31},
+    {"value": 3000000, "characterId": "son-goku-saga-namek-saga-namek-176", "name": "Son Goku", "arc": "Contra Freezer", "notes": "Tras recuperarse en la unidad terapeutica: aumento exponencial (Zenkai).", "printedPage": 31},
+    {"value": 60000000, "characterId": "freezer-saga-namek-saga-namek-167", "name": "Freezer al 50%", "arc": "Contra Freezer", "notes": "Abruma a Goku solo con la mitad de su fuerza.", "printedPage": 31},
+    {"value": 120000000, "characterId": "freezer-saga-namek-saga-namek-167", "name": "Freezer al 100%", "arc": "Contra Freezer", "printedPage": 31},
+    {"value": 150000000, "characterId": "son-goku-saga-namek-saga-namek-176", "name": "Son Goku (Supersaiyano)", "arc": "Contra Freezer", "notes": "El Supersaiyano multiplica x50: 3.000.000 x50 = 150.000.000. Verificado con el texto impreso.", "printedPage": 31, "kind": "transformation"}
+  ],
+  "prose_mined": [
+    {"value": 120000, "raw": "Su fuerza de combate es de 120.000", "characterId": "capitan-ginew", "name": "Capitan Ginew", "arc": "Saga de Freezer (Namek)", "source": {"tomo": "t04", "pdfIndex": 62}, "confidence": "alta", "notes": "El as en la manga de Freezer; el guerrero mas poderoso de su ejercito incondicional."},
+    {"value": 18000, "raw": "Tenia una fuerza de combate de 18.000", "characterId": "rey-vegeta-clasico", "name": "Rey Vegeta", "arc": "Episodio de Bardock", "source": {"tomo": "t04", "pdfIndex": 63}, "confidence": "alta", "notes": "Similar a la de Vegeta antes de dirigirse a la Tierra. Guerrero de elite de caracter cobarde."},
+    {"value": 22000, "raw": "Su fuerza de combate es de 22.000", "source": {"tomo": "t04", "pdfIndex": 91}, "confidence": "media", "notes": "Hablaba de tres jovenes namekianos de fuerza excepcional; requiere verificacion visual de la pagina."},
+    {"value": 4000, "raw": "Su fuerza de combate es de 4.000", "source": {"tomo": "t04", "pdfIndex": 94}, "confidence": "media", "notes": "No tenia una posicion significativa en la sociedad saiyana ni entre los subordinados de Freezer."},
+    {"value": 1200, "raw": "asombrosa fuerza de combate de 1.200", "source": {"tomo": "t01", "pdfIndex": 299}, "confidence": "media", "notes": "Corrobora el valor de Saibaiman del grafico."}
+  ],
+  "crossReferences": {
+    "kamehameha_multiplier": {"note": "El Kame Hame Ha no tiene multiplicador fijo; escala con el ki del usuario.", "evidence": "El Tomo 04 describe variantes x10 y el Big Bang Kame Hame Ha x100 de Gogeta SSJ4."},
+    "kaio_ken_multiplier": {"values": [2, 3, 4, 10, 20], "evidence": "Tomo 04: 'con el puno Kaio puede multiplicar su fuerza por 10' y 'Kaio-ken al cuadruple = 32000'."},
+    "supersaiyano_multiplier": {"value": 50, "evidence": "Tomo 04: 'Su fuerza de combate se multiplica por 50' (3 millones -> 150 millones)."},
+    "oozaru_multiplier": {"value": 10, "evidence": "Tomo 04: 'Su fuerza de combate se multiplica por 10'."}
+  }
+}
