@@ -42,6 +42,51 @@ import { getTranslation } from './services/i18n';
 import { Sparkles, Key, Settings, BookOpen, Swords, X, GitBranch, Scale, Globe, Shuffle, Wand2, Trophy } from 'lucide-react';
 
 const STORAGE_KEY_CHARACTERS = 'apex_custom_characters';
+const STORAGE_KEY_POWER_OVERRIDES = 'apex_character_power_overrides';
+
+function getStoredPowerOverrides() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_POWER_OVERRIDES);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function applyPowerOverrides(charList, overrides) {
+  if (!overrides || typeof overrides !== 'object' || Object.keys(overrides).length === 0) {
+    return charList;
+  }
+  return charList.map(c => {
+    const ovr = overrides[c.id];
+    if (!ovr) return c;
+    const baseKiNum = typeof ovr.baseKiNumeric === 'number'
+      ? ovr.baseKiNumeric
+      : (parseFloat(ovr.baseKiNumeric) || c.baseKiNumeric);
+    const updated = {
+      ...c,
+      ...ovr,
+      baseKiNumeric: baseKiNum,
+      baseTier: ovr.tier || ovr.baseTier || c.baseTier,
+      tier: ovr.tier || ovr.baseTier || c.tier,
+      tierExact: ovr.tier || ovr.baseTier || c.tier,
+      baseKiFormatted: baseKiNum ? baseKiNum.toLocaleString('es-ES') : c.baseKiFormatted,
+      isCustomOverridden: true
+    };
+    if (updated.numericStats) {
+      updated.numericStats = {
+        ...updated.numericStats,
+        apexKi: baseKiNum,
+        burstKi: Math.round(baseKiNum * 1.35),
+        durabilityKi: baseKiNum
+      };
+    }
+    if (Array.isArray(ovr.forms) && ovr.forms.length > 0) {
+      updated.forms = ovr.forms;
+    }
+    return updated;
+  });
+}
 
 // Roster canónico (cargado de forma diferida vía loadRoster para no bloquear
 // el chunk inicial con ~10 MB de perfiles tácticos). Todas las lecturas usan
@@ -97,9 +142,11 @@ export default function App() {
     loadRoster().then(({ list }) => {
       if (!active) return;
       INITIAL_CHARACTERS = list;
+      const currentOverrides = getStoredPowerOverrides();
+      const withOverrides = applyPowerOverrides(list, currentOverrides);
       setCharacters(prev => {
         const customOnly = prev.filter(c => c.id?.startsWith('custom-') || c.isCustom);
-        return [...list, ...customOnly];
+        return [...withOverrides, ...customOnly];
       });
       setRosterReady(true);
     }).catch(err => {
@@ -950,31 +997,83 @@ export default function App() {
   };
 
   const handleSaveCustomCharacter = (characterData) => {
+    const builtinIds = new Set(INITIAL_CHARACTERS.map(c => c.id));
+    const isBuiltin = builtinIds.has(characterData.id);
+
+    if (isBuiltin) {
+      try {
+        const baseKiNum = typeof characterData.baseKiNumeric === 'number'
+          ? characterData.baseKiNumeric
+          : (parseFloat(characterData.baseKiNumeric) || parseFloat(characterData.ki) || 1);
+
+        const currentOverrides = getStoredPowerOverrides();
+        const updatedOverrides = {
+          ...currentOverrides,
+          [characterData.id]: {
+            tier: characterData.tier,
+            baseTier: characterData.tier,
+            tierExact: characterData.tier,
+            baseKiNumeric: baseKiNum,
+            baseKiFormatted: baseKiNum.toLocaleString('es-ES'),
+            ki: baseKiNum,
+            sourceKi: baseKiNum,
+            forms: characterData.forms,
+            isCustomOverridden: true
+          }
+        };
+        localStorage.setItem(STORAGE_KEY_POWER_OVERRIDES, JSON.stringify(updatedOverrides));
+
+        CloudSync.triggerAutoSync(() => ({
+          powerOverrides: updatedOverrides,
+          characters: characters.filter(c => c.id?.startsWith('custom-') || c.isCustom),
+          oracleCoins,
+          aiConfig: charEngine
+        }));
+      } catch (e) {
+        console.error('Error guardando power override:', e);
+      }
+    }
+
+    const enrichedChar = {
+      ...characterData,
+      isCustomOverridden: isBuiltin ? true : characterData.isCustomOverridden
+    };
+
     setCharacters(prev => {
       const existsIndex = prev.findIndex(c => c.id === characterData.id);
       let updated;
       if (existsIndex >= 0) {
         updated = [...prev];
-        updated[existsIndex] = characterData;
+        updated[existsIndex] = enrichedChar;
       } else {
-        updated = [characterData, ...prev];
-      }
-      try {
-        localStorage.setItem(STORAGE_KEY_CHARACTERS, JSON.stringify(updated));
-        // Auto-sync in background to Cloud if logged in
-        CloudSync.triggerAutoSync(() => ({
-          characters: updated,
-          oracleCoins,
-          aiConfig: charEngine
-        }));
-      } catch (e) {
-        console.error('Error guardando en localStorage:', e);
+        updated = [enrichedChar, ...prev];
       }
       return updated;
     });
 
-    if (charA?.id === characterData.id) setCharA(characterData);
-    if (charB?.id === characterData.id) setCharB(characterData);
+    if (charA?.id === characterData.id) setCharA(enrichedChar);
+    if (charB?.id === characterData.id) setCharB(enrichedChar);
+  };
+
+  const handleResetCharacterPower = (charId) => {
+    try {
+      const currentOverrides = getStoredPowerOverrides();
+      delete currentOverrides[charId];
+      localStorage.setItem(STORAGE_KEY_POWER_OVERRIDES, JSON.stringify(currentOverrides));
+
+      const canonical = INITIAL_CHARACTERS.find(c => c.id === charId);
+      if (canonical) {
+        const restored = { ...canonical, isCustomOverridden: false };
+        setCharacters(prev => prev.map(c => c.id === charId ? restored : c));
+        if (charA?.id === charId) setCharA(restored);
+        if (charB?.id === charId) setCharB(restored);
+        if (inspectModal.isOpen && inspectModal.character?.id === charId) {
+          setInspectModal(prev => ({ ...prev, character: restored }));
+        }
+      }
+    } catch (e) {
+      console.error('Error restableciendo poder canónico:', e);
+    }
   };
 
   const handleDeleteCharacter = (charId) => {
@@ -1376,6 +1475,7 @@ export default function App() {
           isEditing={inspectModal.isEditing}
           onClose={() => setInspectModal({ isOpen: false, character: null, isEditing: false })}
           onSave={handleSaveCustomCharacter}
+          onResetPower={handleResetCharacterPower}
           allCharacters={characters}
           aiConfig={charEngine}
           lang={lang}

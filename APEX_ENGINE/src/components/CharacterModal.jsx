@@ -39,7 +39,7 @@ const COMMON_HAX_TAGS = [
   'Ataques Dimensionales'
 ];
 
-export default function CharacterModal({ character, onClose, onSave, isEditing = false, aiConfig, allCharacters = [], lang = 'es' }) {
+export default function CharacterModal({ character, onClose, onSave, isEditing = false, aiConfig, allCharacters = [], lang = 'es', onResetPower }) {
   const [isEditingMode, setIsEditingMode] = useState(isEditing);
   const [activeTab, setActiveTab] = useState('basico');
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
@@ -324,11 +324,16 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
     setFormData(prev => ({
       ...prev,
       tier: `Tier ${cleanTier}`,
+      baseTier: cleanTier,
+      tierExact: cleanTier,
       ap: apText,
       durability: duraText,
       speed: speedProfile,
+      baseKiNumeric: scouterKi,
+      baseKiFormatted: scouterKi.toLocaleString('es-ES'),
       ki: scouterKi,
-      sourceKiCurrent: scouterKi
+      sourceKiCurrent: scouterKi,
+      isCustomOverridden: true
     }));
 
     SoundFX?.playPowerUp?.();
@@ -995,13 +1000,30 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                   </div>
                   {isEditingMode ? (
                     <div className="space-y-1.5">
-                      <input 
-                        type="text" 
-                        value={formData.tier || ''} 
-                        onChange={e => handleChange('tier', e.target.value)} 
-                        placeholder="Ej: Tier 2-C (Multiversal Bajo)"
-                        className="w-full bg-slate-900 border border-amber-900/50 rounded-lg p-2 text-white text-xs font-mono" 
-                      />
+                      <div className="flex gap-1.5">
+                        <select
+                          value={String(formData.tier || '').replace(/^Tier\s+/i, '').trim()}
+                          onChange={(e) => {
+                            const selectedT = e.target.value;
+                            if (selectedT) {
+                              handleAutoCalibrateByTier(selectedT);
+                            }
+                          }}
+                          className="flex-1 bg-slate-900 border border-amber-900/50 rounded-lg p-2 text-amber-300 text-xs font-mono font-bold"
+                        >
+                          <option value="" disabled>Seleccionar Tier...</option>
+                          {TIER_ORDER.map((t) => (
+                            <option key={t} value={t}>Tier {t}</option>
+                          ))}
+                        </select>
+                        <input 
+                          type="text" 
+                          value={formData.tier || ''} 
+                          onChange={e => handleChange('tier', e.target.value)} 
+                          placeholder="Etiqueta personalizada"
+                          className="w-1/2 bg-slate-900 border border-slate-700 rounded-lg p-2 text-white text-xs font-mono" 
+                        />
+                      </div>
                       <select
                         onChange={(e) => {
                           if (e.target.value) handleAutoCalibrateByTier(e.target.value);
@@ -1012,7 +1034,7 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                         <option value="" disabled>⚡ Calibrar AP/Speed/Ki por Tier...</option>
                         {TIER_ORDER.map((t) => (
                           <option key={t} value={t}>
-                            Tier {t} (Ki ~{SCOUTER_ENERGY_ANCHORS[t] ? Number(SCOUTER_ENERGY_ANCHORS[t]).toLocaleString('es-ES') : 'N/A'})
+                            Tier {t} (Ki ancla ~{SCOUTER_ENERGY_ANCHORS[t] ? Number(SCOUTER_ENERGY_ANCHORS[t]).toLocaleString('es-ES') : 'N/A'})
                           </option>
                         ))}
                       </select>
@@ -1021,6 +1043,59 @@ export default function CharacterModal({ character, onClose, onSave, isEditing =
                     <p className="text-amber-300 font-bold p-2 bg-amber-950/30 rounded-lg font-mono">{formData.tier || 'No asignado'}</p>
                   )}
                 </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-indigo-400 font-bold text-xs">Poder / Ki Numérico Base</label>
+                    <span className="text-[10px] text-slate-400 font-mono">Scouter APEX</span>
+                  </div>
+                  {isEditingMode ? (
+                    <input 
+                      type="number"
+                      value={formData.baseKiNumeric ?? formData.ki ?? ''}
+                      onChange={e => {
+                        const val = parseFloat(e.target.value) || 0;
+                        setFormData(prev => ({
+                          ...prev,
+                          baseKiNumeric: val,
+                          ki: val,
+                          sourceKi: val,
+                          sourceKiCurrent: val,
+                          baseKiFormatted: val.toLocaleString('es-ES'),
+                          isCustomOverridden: true
+                        }));
+                      }}
+                      placeholder="Ej: 2000000"
+                      className="w-full bg-slate-900 border border-indigo-900/50 rounded-lg p-2 text-indigo-200 font-bold text-xs font-mono"
+                    />
+                  ) : (
+                    <p className="text-indigo-300 font-bold p-2 bg-indigo-950/30 rounded-lg font-mono">
+                      {((formData.baseKiNumeric ?? formData.ki) || 0).toLocaleString('es-ES')} Unidades
+                    </p>
+                  )}
+                </div>
+
+                {formData.isCustomOverridden && (
+                  <div className="col-span-1 sm:col-span-2 p-2 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-center justify-between gap-2 font-mono text-xs">
+                    <span className="text-amber-300 font-bold text-[11px] flex items-center gap-1.5">
+                      <span>⚡</span> Nivel de poder personalizado para esta cuenta
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onResetPower && formData.id) {
+                          onResetPower(formData.id);
+                        }
+                        if (originalFormData) {
+                          setFormData({ ...originalFormData, isCustomOverridden: false });
+                        }
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer text-[10px] font-bold"
+                    >
+                      🔄 Restablecer a Canónico Oficial
+                    </button>
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-cyan-400 mb-1 font-bold flex items-center gap-1">

@@ -3374,10 +3374,10 @@
         },
         {
           "id": "form_5",
-          "name": "Post-Ataque Krilin (Curación Dende)",
-          "kiNumeric": 490000,
-          "kiFormatted": "490.000",
-          "multiplier": "$\\times 20.42$",
+          "name": "Último Zenkai (vs Freezer Forma Final / Curación Dende)",
+          "kiNumeric": 2000000,
+          "kiFormatted": "2.000.000",
+          "multiplier": "$\\times 83.33$",
           "tier": "5-A",
           "isApexCustom": false
         }
