@@ -515,18 +515,108 @@ ${actives}`;
       const scouterDisplay = combatState.sourceKiDisplay ? ` | Scouter Oficial DB (registro histórico manga/anime, el combate escala por APEX-Ki): **${combatState.sourceKiDisplay}**` : '';
       const formMultDisplay = combatState.formMultiplier > 1 ? ` | Multiplicador de Forma: **${combatState.formMultiplier}x**` : '';
 
+      // 1. Equipamiento Distintivo (Signature Equipment / Artifacts)
+      let equipmentBlock = '';
+      if (Array.isArray(char.signatureEquipment) && char.signatureEquipment.length > 0) {
+        const eqLines = char.signatureEquipment.map(eq => {
+          const eff = eq.effect || eq.desc || eq.durability || '';
+          return `  * **${eq.name}**: ${eff}`;
+        }).join('\n');
+        equipmentBlock = `\n- ⚔️ Equipamiento Distintivo & Artefactos:\n${eqLines}`;
+      }
+
+      // 2. Patrón Táctico & Personalidad de Combate
+      let aiPersonalityBlock = '';
+      if (char.combatAIPersonality && typeof char.combatAIPersonality === 'object') {
+        const p = char.combatAIPersonality;
+        const details = [];
+        if (p.behavior) details.push(`Comportamiento: ${p.behavior}`);
+        if (p.preferredEngagementRange) details.push(`Rango preferido: ${p.preferredEngagementRange}`);
+        if (p.aggression !== undefined) details.push(`Agresividad: ${p.aggression}/100`);
+        if (p.tacticalIQ !== undefined) details.push(`Battle IQ: ${p.tacticalIQ}/100`);
+        if (p.clutchFactor !== undefined) details.push(`Factor Clutch / Remontada: ${p.clutchFactor}/100`);
+        if (p.mercyThreshold !== undefined) details.push(`Misericordia: ${p.mercyThreshold}/100`);
+        if (details.length > 0) {
+          aiPersonalityBlock = `\n- 🧠 Patrón Táctico & Personalidad de Combate: ${details.join(' | ')}`;
+        }
+      }
+
+      // 3. Citas & Diálogos Canónicos (Voz Auténtica del Personaje)
+      let dialogueBlock = '';
+      if (char.combatDialogue && typeof char.combatDialogue === 'object') {
+        const d = char.combatDialogue;
+        const dLines = [];
+        if (d.onBattleStart) dLines.push(`Al inicio: "${d.onBattleStart}"`);
+        if (d.onTransformation) dLines.push(`Al transformarse: "${d.onTransformation}"`);
+        if (d.onUltimateReady) dLines.push(`Al lanzar técnica definitiva: "${d.onUltimateReady}"`);
+        if (d.onLowHealth) dLines.push(`En estado crítico/bajo HP: "${d.onLowHealth}"`);
+        if (d.onVictory) dLines.push(`Al vencer: "${d.onVictory}"`);
+        if (dLines.length > 0) {
+          dialogueBlock = `\n- 💬 Citas Canónicas para Diálogo (Voz y Personalidad Real):\n  * ${dLines.join('\n  * ')}`;
+        }
+      }
+
+      // 4. Resistencias Hax (0-100%)
+      let haxResBlock = '';
+      if (char.haxResistances && typeof char.haxResistances === 'object') {
+        const r = char.haxResistances;
+        const rItems = [];
+        if (r.mindControl !== undefined) rItems.push(`Control Mental: ${r.mindControl}%`);
+        if (r.existenceErasure !== undefined) rItems.push(`Borrado de Existencia: ${r.existenceErasure}%`);
+        if (r.timeManipulation !== undefined) rItems.push(`Manipulación Temporal: ${r.timeManipulation}%`);
+        if (r.soulDamage !== undefined) rItems.push(`Daño al Alma: ${r.soulDamage}%`);
+        if (r.matterManipulation !== undefined) rItems.push(`Manipulación de Materia: ${r.matterManipulation}%`);
+        if (r.notes) rItems.push(`(${r.notes})`);
+        if (rItems.length > 0) {
+          haxResBlock = `\n- 🛡️ Resistencias Específicas a Hax: ${rItems.join(' | ')}`;
+        }
+      }
+
+      // 5. Afinidad y Adaptabilidad Ambiental
+      let envBlock = '';
+      if (char.environmentalAffinity && typeof char.environmentalAffinity === 'object') {
+        const env = char.environmentalAffinity;
+        const envItems = [];
+        if (env.spaceSurvival !== undefined) envItems.push(`Supervivencia en el Vacío Espacial: ${env.spaceSurvival ? 'SÍ' : 'NO (asfixia en el vacío)'}`);
+        if (env.gravityResistance) envItems.push(`Resistencia a Gravedad: ${env.gravityResistance}`);
+        if (Array.isArray(env.favoredBiomes) && env.favoredBiomes.length > 0) envItems.push(`Biomas Favorables: ${env.favoredBiomes.join(', ')}`);
+        if (Array.isArray(env.disfavoredBiomes) && env.disfavoredBiomes.length > 0) envItems.push(`Biomas Adversos: ${env.disfavoredBiomes.join(', ')}`);
+        if (envItems.length > 0) {
+          envBlock = `\n- 🌍 Adaptabilidad Ambiental & Terreno: ${envItems.join(' | ')}`;
+        }
+      }
+
+      // 6. Mecánicas Especiales & Biología Única
+      let specialMechBlock = '';
+      if (Array.isArray(char.specialMechanics) && char.specialMechanics.length > 0) {
+        const smLines = char.specialMechanics.map(sm => {
+          const d = sm.desc || sm.description || sm.effect || '';
+          return `  * **${sm.name}**: ${d}`;
+        }).join('\n');
+        specialMechBlock = `\n- ⚙️ Mecánicas Fisiológicas Especiales:\n${smLines}`;
+      }
+
+      // 7. Horizonte Temporal y Restricciones Canónicas
+      let horizonBlock = '';
+      if (char.knowledgeHorizon && typeof char.knowledgeHorizon === 'object') {
+        const kh = char.knowledgeHorizon;
+        const forbidden = Array.isArray(kh.forbiddenConcepts) && kh.forbiddenConcepts.length > 0 ? kh.forbiddenConcepts.join(', ') : 'Ninguno';
+        horizonBlock = `\n- ⏳ Horizonte Temporal Canónico: Era "${kh.canonicalEra || 'Canónica'}" | Conceptos estrictamente prohibidos/anacrónicos para este personaje: [${forbidden}]`;
+      }
+
       return `
 **[${label}] ${char.name}** (${char.universe || 'Universo Desconocido'})
 - Nivel (Tier): ${combatState.tierExact || char.tier || 'Desconocido'}
 - Nivel de Combate (APEX-Ki): **${apexKiDisplay}**${scouterDisplay}${formMultDisplay}
 ${activeFormLine}
 - Attack Potency (AP): ${char.ap || 'No especificado'}
+- Rango de Combate: ${char.range || 'Cuerpo a cuerpo estándar'}
 - Velocidad: ${formatSpeed(char.speed || char.speedCombate)}
 - Fuerza Física (Striking & Lifting): ${formatStrength(char.strength)}
 - Durabilidad y Blindaje: ${char.durability || 'Estándar'}
 - Stamina / Reservas: ${char.stamina || 'Estándar'}
 - Battle IQ / Táctica Marcial: ${char.battleIQ || 'Estándar'}
-- Psicología del Personaje: ${char.psychology || 'Sin datos adicionales.'}
+- Psicología del Personaje: ${char.psychology || 'Sin datos adicionales.'}${aiPersonalityBlock}${dialogueBlock}${haxResBlock}${equipmentBlock}${envBlock}${specialMechBlock}${horizonBlock}
 - HaxTags (Habilidades Especiales Conceptuales): ${(char.haxTags || []).join(' | ') || 'Ninguno registrado'}
 - Hazañas Canónicas Comprobadas (Feats): ${featsList}
 - Debilidades Explotables Conocidas: ${char.weaknesses || 'Sin debilidades conocidas.'}
@@ -915,11 +1005,17 @@ El frontend renderizará esta batalla por partes. DEBES estructurar la respuesta
 
 DIRECTIVAS LITERARIAS Y MECÁNICAS OBLIGATORIAS (VITAL):
 1. **Declaración de Reglas Inicial:** La simulación DEBE comenzar obligatoriamente con la cabecera de parámetros y reglas declaradas.
-2. **Amplitud Narrativa y Extensión por Fase (Narración Inmersiva y Detallada):**
-   - Desarrolla cada fase con alta inmersión, riqueza descriptiva, coreografía cinemática y peso dramático: entre 250 y 450 palabras por fase (o 3 a 5 párrafos ricos por fase).
-   - Mantén un ritmo vibrante y progresivo: narra cada intercambio con fintas tácticas, desgaste anatómico y diálogos viscerales.
-   - Sigue la progresión natural de todas las fases del combate hasta culminar de forma orgánica en '### 5. EL CLÍMAX' y '### 6. VEREDICTO' con el desenlace oficial y biometría final.
-3. **Párrafos Dinámicos y Cinematográficos:** Evita bloques apelmazados. Estructura en párrafos de 3 a 6 líneas con diálogos viscerales en guion largo (—) e impactos sensoriales contundentes.
+2. **Libertad Narrativa Plena y Expansión Orgánica (Sin límite artificial de palabras):**
+   - Tienes total libertad y holgura de extensión en cada fase: explaya toda la coreografía marcial, los intercambios a velocidad supersónica/relativista/MFTL, el choque de arsenales y la tensión dramática tanto como la escena lo merezca. PROHIBIDO autolimitarse a textos breves o resumir la acción de forma apresurada.
+   - Si una fase requiere 400, 600, 800 o más palabras para relatar el choque con su máxima riqueza sensorial y marcial, desarróllala con total plenitud.
+   - Cada fase debe cumplir rigurosamente sus hitos temáticos y tácticos antes de transicionar a la siguiente, avanzando con ritmo cinematográfico imparable hasta el clímax y el veredicto definitivo.
+3. **Integración Activa de TODOS los Datos de Ficha (Máxima Coherencia y Lore):**
+   - **Voz Canónica y Diálogo Auténtico:** Es mandatorio que los luchadores hablen con su registro y personalidad real; utiliza activamente las líneas de 'Citas Canónicas' y el 'Patrón Táctico' en guiones largos (—).
+   - **Equipamiento y Armamento en Acción:** Si portan armas, armaduras o artefactos (bloque 'Equipamiento Distintivo'), haz que intervengan en la batalla (choques de acero, bloqueo de proyectiles, desgaste de filo, reactores).
+   - **Resistencias Hax Reales:** Si un contendiente emplea técnicas conceptuales, mentales o de borrado, coteja obligatoriamente las 'Resistencias Específicas a Hax' del oponente (si tiene 100% o alta resistencia, el efecto rebota o fracasa de forma orgánica).
+   - **Física de Terreno, Gravedad y Vacío:** Aplica el bloque 'Adaptabilidad Ambiental' frente a la gravedad y atmósfera de la arena (los guerreros sin supervivencia espacial sufren asfixia en el vacío o fatiga por gravedad extrema).
+   - **Mecánicas Especiales y Fisiología:** Respeta al 100% reactores infinitos, núcleos de regeneración, maldiciones o limitaciones anatómicas documentadas.
+4. **Párrafos Dinámicos y Cinematográficos:** Evita bloques apelmazados. Estructura en párrafos ricos de 3 a 7 líneas con diálogos viscerales en guion largo (—) e impactos sensoriales contundentes.
 4. **Blacklist de Clichés y Moderación de Prosa:**
    - Prohibido abusar de fórmulas repetitivas ("No fue X, fue Y", "la realidad se rompió", "la luz se curvó", "átomo a átomo", "densidad de neutrones", "un microsegundo").
    - Alterna planos de cámara: lectura de guardia / fintas CQC ➔ daño anatómico localizado ➔ impacto regional de terreno ➔ clímax destructivo.
