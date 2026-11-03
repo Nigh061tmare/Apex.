@@ -842,9 +842,20 @@ export default function App() {
         { ...modifiers, language: lang }
       );
 
-      let currentText = baseOutput + '\n\n';
-      if (userPromptNext && typeof userPromptNext === 'string' && userPromptNext.trim()) {
-        currentText += `> 🎲 **DECISIÓN TÁCTICA DEL USUARIO:** ${userPromptNext.trim()}\n\n`;
+      const isAutoResume = typeof userPromptNext === 'string' && (
+        userPromptNext.startsWith('Continúa la narración') ||
+        userPromptNext.startsWith('Continúa exactamente') ||
+        userPromptNext.startsWith('Continúa desde') ||
+        userPromptNext.startsWith('[CONTINUACIÓN]')
+      );
+
+      let currentText = baseOutput;
+      if (!isAutoResume && userPromptNext && typeof userPromptNext === 'string' && userPromptNext.trim()) {
+        currentText += `\n\n> 🎲 **DECISIÓN TÁCTICA DEL USUARIO:** ${userPromptNext.trim()}\n\n`;
+      } else {
+        const trimmed = baseOutput.trimEnd();
+        const endsWithPeriod = /[.!?:]$/.test(trimmed);
+        currentText = baseOutput + (endsWithPeriod ? '\n\n' : ' ');
       }
 
       await SimulationEngine.streamSimulation(

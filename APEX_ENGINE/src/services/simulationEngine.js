@@ -9,18 +9,29 @@ import { summarizePassivesForPrompt, resolvePassiveIds } from '../lib/biological
 import { createCombatSnapshot, validateCombatSnapshot, executeCombatSimulation, synthesizeNarrativeFromValidatedLog, ORACLE_EVENT_CONFIG } from './combatSimulationCore';
 import { buildCombatCoreBlock, buildArenaMechanicsBlock, buildArtifactsBlock, buildTurnChecklistBlock, matchDynamicArena, getRaidBossProfile } from './simulationCoreBridge';
 /**
- * Resuelve dinámicamente el límite máximo de tokens de salida según el modelo activo.
- * Desbloquea 65.536 tokens para Nemotron Ultra / Super y 131.072 tokens para MiniMax M3.
+ * Resuelve dinámicamente el límite máximo de tokens de salida según el modelo y proveedor activos.
+ * Desbloquea hasta 131.072 tokens para MiniMax, 65.536 para Nemotron/OpenCode y el máximo oficial
+ * de 8.192 para Google Gemini y modelos estándar para evitar recortes prematuros.
  */
-export function resolveMaxOutputTokens(modelName = '') {
+export function resolveMaxOutputTokens(modelName = '', provider = '') {
   const m = (modelName || '').toLowerCase();
+  const p = (provider || '').toLowerCase();
+
+  // Modelos masivos probados con ventanas de salida gigantes
   if (m.includes('minimax') || m.includes('mini-max')) return 131072;
-  if (m.includes('nemotron') && (m.includes('ultra') || m.includes('super') || m.includes('550b'))) return 65536;
   if (m.includes('muse-spark')) return 131072;
+  if (m.includes('nemotron') && (m.includes('ultra') || m.includes('super') || m.includes('550b'))) return 65536;
   if (m.includes('glm-5') || m.includes('glm-4')) return 65536;
   if (m.includes('deepseek-v4') || m.includes('qwen3.8') || m.includes('opencode')) return 65536;
-  if (m.includes('gemini-2.0') || m.includes('gemini-1.5')) return 32768;
-  return 16384;
+
+  // Límite oficial estricto de Google Gemini API (v1beta en generativelanguage.googleapis.com es 8192)
+  if (p === 'gemini' || m.includes('gemini-2.0') || m.includes('gemini-1.5') || m.includes('gemini')) return 8192;
+
+  // Modelos con salida amplia de 16k tokens
+  if (m.includes('gpt-4o') || m.includes('llama-3.3') || m.includes('qwen-2.5-72b') || m.includes('mistral-large')) return 16384;
+
+  // Por defecto universal para OpenRouter, Custom, TotalGPT, Perplexity y DeepSeek (8192 tokens completos)
+  return 8192;
 }
 
 
@@ -904,10 +915,11 @@ El frontend renderizará esta batalla por partes. DEBES estructurar la respuesta
 
 DIRECTIVAS LITERARIAS Y MECÁNICAS OBLIGATORIAS (VITAL):
 1. **Declaración de Reglas Inicial:** La simulación DEBE comenzar obligatoriamente con la cabecera de parámetros y reglas declaradas.
-2. **Control de Longitud y Ritmo Cinematográfico (Anti-Cortes de Tokens — Obligatorio):**
-   - Escribe con máxima intensidad, agilidad y ritmo de cómic: 2 a 3 párrafos contundentes y viscerales por fase (máximo 120-150 palabras por fase).
-   - Administra estrictamente tu presupuesto de salida para NUNCA cortar la narración a medias: es mandatorio alcanzar el '### 5. EL CLÍMAX' y '### 6. VEREDICTO' con el vencedor oficial dentro de esta misma respuesta.
-3. **Párrafos Cortos y Ágiles:** Nunca escribas muros de texto. Párrafos de 2-4 líneas máximo con ritmo cinematográfico.
+2. **Amplitud Narrativa y Extensión por Fase (Narración Inmersiva y Detallada):**
+   - Desarrolla cada fase con alta inmersión, riqueza descriptiva, coreografía cinemática y peso dramático: entre 250 y 450 palabras por fase (o 3 a 5 párrafos ricos por fase).
+   - Mantén un ritmo vibrante y progresivo: narra cada intercambio con fintas tácticas, desgaste anatómico y diálogos viscerales.
+   - Sigue la progresión natural de todas las fases del combate hasta culminar de forma orgánica en '### 5. EL CLÍMAX' y '### 6. VEREDICTO' con el desenlace oficial y biometría final.
+3. **Párrafos Dinámicos y Cinematográficos:** Evita bloques apelmazados. Estructura en párrafos de 3 a 6 líneas con diálogos viscerales en guion largo (—) e impactos sensoriales contundentes.
 4. **Blacklist de Clichés y Moderación de Prosa:**
    - Prohibido abusar de fórmulas repetitivas ("No fue X, fue Y", "la realidad se rompió", "la luz se curvó", "átomo a átomo", "densidad de neutrones", "un microsegundo").
    - Alterna planos de cámara: lectura de guardia / fintas CQC ➔ daño anatómico localizado ➔ impacto regional de terreno ➔ clímax destructivo.
@@ -1520,9 +1532,12 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
    ||BIOMETRICS|HP_A:<XX>|STM_A:<XX>|HP_B:<XX>|STM_B:<XX>||
    (Calcula de 0 a 100 reflejando con lógica la fatiga y el daño del texto que acabas de narrar. Ej: HP_A: 42).`}
 11. **DIRECTIVA ANTI-CIERRE PRECIPITADO (EXPANSIÓN ORGÁNICA):**
-   - Salvo que la instrucción explícita del usuario pida 'desenlace', 'terminar combate' o 'veredicto', TIENES ESTRICTAMENTE PROHIBIDO finalizar abruptamente el combate o decretar K.O. definitivo.
-   - Desarrolla la continuación como un acto narrativo pleno: nuevas fintas, intercambios de poder, monólogos de convicción, desgaste paulatino y un gancho final de tensión suspendida que invite al siguiente acto.
-12. **GENERADOR DE PROMPT VISUAL DE ESCENA (OPCIONAL AL PIE):**
+   - Salvo que la instrucción explícita del usuario pida 'desenlace', 'terminar combate' o 'veredicto', TIENES ESTRICTAMENTE PROHIBIDO finalizar abruptamente el combate o decretar K.O. definitivo antes de tiempo.
+   - Desarrolla la continuación como un acto narrativo pleno: si faltan fases por cubrir, continúa con ellas con su título correspondiente (ej. '### FASE 2: ...', '### FASE 3: ...') y el nivel de detalle requerido. Solo cuando el combate alcance su culminación natural se pasa a '### VEREDICTO'.
+12. **EMPALME PERFECTO Y PROSA ININTERRUMPIDA:**
+   - Si la narración previa quedó cortada a mitad de una frase o acción, EMPALMA directamente a partir de la última palabra escrita sin repetir lo ya narrado.
+   - PROHIBIDO incluir preámbulos, saludos, comentarios metanarrativos ("Aquí continúo...", "Continuando con el combate...") ni disculpas: escribe directamente la prosa de la batalla.
+13. **GENERADOR DE PROMPT VISUAL DE ESCENA (OPCIONAL AL PIE):**
    - Justo después del bloque biométrico, añade un bloque con un prompt cinematográfico en inglés optimizado para generadores de imagen (Midjourney v6 / Flux / DALL-E) que capture el momento más icónico de este acto:
    ||SCENE_PROMPT|<descripción ultra-detallada en inglés con iluminación, encuadre de cámara, detalles anatómicos y auras cinemáticas>||
 `;
@@ -1613,7 +1628,13 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               const response = await fetch(geminiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                body: JSON.stringify({
+                  contents: [{ parts: [{ text: prompt }] }],
+                  generationConfig: {
+                    maxOutputTokens: resolveMaxOutputTokens(geminiModel, 'gemini'),
+                    temperature: 0.75
+                  }
+                })
               });
 
               if (response.ok && response.body) {
@@ -1665,7 +1686,8 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               body: JSON.stringify({
                 messages: [{ role: 'user', content: prompt }],
                 model: 'openai-fast',
-                stream: true
+                stream: true,
+                max_tokens: 8192
               })
             });
             if (res.ok && res.body) {
@@ -1739,7 +1761,8 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               body: JSON.stringify({
                 model: aiConfig.model || 'Doctor-Shotgun-L3.3-70B-Magnum-v4-SE',
                 messages: [{ role: 'user', content: prompt }],
-                stream: true
+                stream: true,
+                max_tokens: resolveMaxOutputTokens(aiConfig.model, 'totalgpt')
               })
             });
 
@@ -1866,7 +1889,8 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               body: JSON.stringify({
                 model: customModel,
                 messages: [{ role: 'user', content: prompt }],
-                stream: true
+                stream: true,
+                max_tokens: resolveMaxOutputTokens(customModel, 'custom')
               })
             });
 
@@ -1995,7 +2019,8 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               body: JSON.stringify({
                 model: aiConfig.model || 'sonar-reasoning-pro',
                 messages: [{ role: 'user', content: prompt }],
-                stream: true
+                stream: true,
+                max_tokens: resolveMaxOutputTokens(aiConfig.model, 'perplexity')
               })
             });
 
@@ -2051,7 +2076,8 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               body: JSON.stringify({
                 model: aiConfig.model || 'deepseek-reasoner',
                 messages: [{ role: 'user', content: prompt }],
-                stream: true
+                stream: true,
+                max_tokens: resolveMaxOutputTokens(aiConfig.model, 'deepseek')
               })
             });
 
@@ -2315,11 +2341,13 @@ ESTADO FINAL:
             }
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${curKey}`;
             const payload = {
-              contents: [{ parts: [{ text: prompt }] }]
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: {
+                maxOutputTokens: resolveMaxOutputTokens(geminiModel, 'gemini'),
+                temperature: 0.75,
+                ...(isJson ? { responseMimeType: "application/json" } : {})
+              }
             };
-            if (isJson) {
-              payload.generationConfig = { responseMimeType: "application/json" };
-            }
             const res = await fetch(geminiUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -2346,7 +2374,8 @@ ESTADO FINAL:
           body: JSON.stringify({
             messages: [{ role: 'user', content: prompt }],
             model: 'openai-fast',
-            jsonMode: isJson
+            jsonMode: isJson,
+            max_tokens: 8192
           })
         });
         if (res.ok) {
@@ -2378,7 +2407,8 @@ ESTADO FINAL:
             },
             body: JSON.stringify({
               model: aiConfig.model || 'Qwen-Qwen3.6-35B-A3B',
-              messages: [{ role: 'user', content: prompt }]
+              messages: [{ role: 'user', content: prompt }],
+              max_tokens: resolveMaxOutputTokens(aiConfig.model, 'totalgpt')
             })
           });
           if (res.ok) {
@@ -2491,7 +2521,8 @@ ESTADO FINAL:
 
           const payload = {
             model: customModel,
-            messages: [{ role: 'user', content: prompt }]
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: resolveMaxOutputTokens(customModel, 'custom')
           };
           if (isJson) {
             payload.response_format = { type: 'json_object' };
@@ -2530,7 +2561,8 @@ ESTADO FINAL:
             },
             body: JSON.stringify({
               model: aiConfig.model || 'sonar-reasoning-pro',
-              messages: [{ role: 'user', content: prompt }]
+              messages: [{ role: 'user', content: prompt }],
+              max_tokens: resolveMaxOutputTokens(aiConfig.model, 'perplexity')
             })
           });
           if (res.ok) {
@@ -2558,7 +2590,8 @@ ESTADO FINAL:
             },
             body: JSON.stringify({
               model: aiConfig.model || 'deepseek-reasoner',
-              messages: [{ role: 'user', content: prompt }]
+              messages: [{ role: 'user', content: prompt }],
+              max_tokens: resolveMaxOutputTokens(aiConfig.model, 'deepseek')
             })
           });
           if (res.ok) {

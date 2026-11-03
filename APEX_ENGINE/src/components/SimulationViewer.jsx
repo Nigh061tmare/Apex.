@@ -2592,29 +2592,37 @@ export default function SimulationViewer({
               </div>
               <div>
                 <span className="text-[10px] text-amber-400/90 font-bold uppercase tracking-widest block">
-                  NARRACIÓN INTERRUMPIDA / LÍMITE DE TOKENS ALCANZADO
+                  NARRACIÓN PAUSADA / LÍMITE DE TOKENS ALCANZADO
                 </span>
                 <h3 className="text-base font-bold text-white font-cinzel">
-                  El combate se detuvo antes de dictar el Veredicto Final
+                  El combate se detuvo a mitad de narración
                 </h3>
               </div>
             </div>
             <span className="px-3 py-1 rounded-full bg-amber-950/90 border border-amber-500/60 text-amber-300 text-xs font-bold self-start sm:self-auto">
-              Corte de Salida
+              Continuar Disponible
             </span>
           </div>
 
           <p className="text-xs text-slate-300 font-sans leading-relaxed">
-            El proveedor de IA agotó su ventana de tokens antes de redactar el clímax y el veredicto oficial. Pulsa a continuación para que la IA continúe exactamente desde la última línea y concluya la batalla.
+            El relato se pausó antes de finalizar. Pulsa a continuación para que la IA continúe exactamente desde la última frase escrita, manteniendo el ritmo natural y las fases sin saltarse nada.
           </p>
 
           <div className="flex flex-wrap items-center gap-2 pt-1">
             {onContinueSimulation && (
               <button
-                onClick={() => onContinueSimulation("Continúa exactamente desde la última frase escrita. Desarrolla el clímax final, el choque definitivo y concluye obligatoriamente con el bloque '### VEREDICTO' declarando VENCEDOR, DIFICULTAD y biometría final.")}
+                onClick={() => onContinueSimulation("Continúa la narración exactamente desde donde quedó en la última frase, con el mismo ritmo, tono, detalle y progresión de fases sin saltarte nada ni apresurarte al final. Prosigue el combate de forma natural.")}
                 className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition cursor-pointer shadow-lg hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>⚔️ Completar Combate & Dictar Veredicto</span>
+                <span>⚔️ Continuar Narración desde aquí</span>
+              </button>
+            )}
+            {onContinueSimulation && (
+              <button
+                onClick={() => onContinueSimulation("Continúa desde la última frase escrita, desarrollando el clímax final del enfrentamiento con las técnicas definitivas y concluye con el bloque '### VEREDICTO' oficial.")}
+                className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-200 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>🏆 Ir Directo al Clímax y Veredicto</span>
               </button>
             )}
           </div>
