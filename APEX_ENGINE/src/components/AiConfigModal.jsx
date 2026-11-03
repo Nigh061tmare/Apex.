@@ -83,7 +83,8 @@ export const GUEST_PROFILES = [
 
 export const FREE_MODELS_LIST = [
   { id: 'openrouter/free', name: '🌟 OpenRouter Free Router (Auto-Balanceo Modelos Gratis)' },
-  { id: 'nvidia/nemotron-3-ultra-550b-a55b:free', name: '👑 NVIDIA Nemotron 3 Ultra 550B (Top Narración Épica)' },
+  { id: 'nvidia/nemotron-3-ultra-550b-a55b:free', name: '👑 NVIDIA Nemotron 3 Ultra 550B (Top Narración Épica · 65K Out)' },
+  { id: 'nvidia/nemotron-3.5-super-vl:free', name: '🌌 NVIDIA Nemotron 3.5 Super VL (1M Ctx · 131K Output Máximo)' },
   { id: 'nvidia/nemotron-3.5-lightning:free', name: '⚡ NVIDIA Nemotron 3.5 Lightning (1M Ctx · Alta Velocidad)' },
   { id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', name: '⚡ NVIDIA Nemotron 3 Nano Omni 30B (Razonamiento Rápido)' },
   { id: 'thinkingmachines/inkling:free', name: '🦁 Thinking Machines Inkling (975B MoE · 1.05M Ctx)' },
@@ -117,7 +118,8 @@ export const AI_PRESETS = {
   ],
   openrouter: [
     { id: 'openrouter/free', name: '🌟 OpenRouter Free Router [GRATIS - Auto-Balanceo]' },
-    { id: 'nvidia/nemotron-3-ultra-550b-a55b:free', name: '👑 NVIDIA Nemotron 3 Ultra 550B [GRATIS - TOP NARRACIÓN]' },
+    { id: 'nvidia/nemotron-3-ultra-550b-a55b:free', name: '👑 NVIDIA Nemotron 3 Ultra 550B [GRATIS - TOP NARRACIÓN · 65K OUT]' },
+    { id: 'nvidia/nemotron-3.5-super-vl:free', name: '🌌 NVIDIA Nemotron 3.5 Super VL [GRATIS - 1M Ctx · 131K OUTPUT]' },
     { id: 'nvidia/nemotron-3.5-lightning:free', name: '⚡ NVIDIA Nemotron 3.5 Lightning [GRATIS - 1M Ctx]' },
     { id: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', name: '⚡ NVIDIA Nemotron 3 Nano [GRATIS - Razonamiento]' },
     { id: 'thinkingmachines/inkling:free', name: '🦁 Thinking Machines Inkling [GRATIS - 975B MoE · 1.05M Ctx]' },

@@ -17,21 +17,40 @@ export function resolveMaxOutputTokens(modelName = '', provider = '') {
   const m = (modelName || '').toLowerCase();
   const p = (provider || '').toLowerCase();
 
-  // Modelos masivos probados con ventanas de salida gigantes
-  if (m.includes('minimax') || m.includes('mini-max')) return 131072;
-  if (m.includes('muse-spark')) return 131072;
-  if (m.includes('nemotron') && (m.includes('ultra') || m.includes('super') || m.includes('550b'))) return 65536;
-  if (m.includes('glm-5') || m.includes('glm-4')) return 65536;
-  if (m.includes('deepseek-v4') || m.includes('qwen3.8') || m.includes('opencode')) return 65536;
+  // Modelos con 262K tokens de salida masiva (ThinkingMachines Inkling, Dots3, Flint)
+  if (m.includes('inkling') || m.includes('dots-3') || m.includes('flint')) return 262144;
+
+  // Modelos con 131K tokens de salida (MiniMax M3, Muse Spark, Nemotron Super VL)
+  if (m.includes('minimax') || m.includes('mini-max') || m.includes('muse-spark') || m.includes('super-vl')) return 131072;
+
+  // Modelos con 65K tokens de salida: TODOS los Nemotron (Ultra, Lightning, Nano, 550B), DeepSeek R1/V3/V4, OpenCode, GLM, Cohere, Qwen
+  if (
+    m.includes('nemotron') || 
+    m.includes('nvidia') || 
+    m.includes('deepseek') || 
+    m.includes('opencode') || 
+    m.includes('glm-5') || 
+    m.includes('glm-4') || 
+    m.includes('north-mini-code') || 
+    m.includes('qwen')
+  ) {
+    return 65536;
+  }
+
+  // Modelos con 32K tokens de salida (Gemma 4, etc.)
+  if (m.includes('gemma-4') || m.includes('gemma')) return 32768;
 
   // Límite oficial estricto de Google Gemini API (v1beta en generativelanguage.googleapis.com es 8192)
   if (p === 'gemini' || m.includes('gemini-2.0') || m.includes('gemini-1.5') || m.includes('gemini')) return 8192;
 
-  // Modelos con salida amplia de 16k tokens
-  if (m.includes('gpt-4o') || m.includes('llama-3.3') || m.includes('qwen-2.5-72b') || m.includes('mistral-large')) return 16384;
+  // Modelos estándar con 16K tokens
+  if (m.includes('gpt-4o') || m.includes('llama-3.3') || m.includes('mistral-large')) return 16384;
 
-  // Por defecto universal para OpenRouter, Custom, TotalGPT, Perplexity y DeepSeek (8192 tokens completos)
-  return 8192;
+  // Para OpenRouter o Custom en general: 65536 por defecto para garantizar que NUNCA se corten
+  if (p === 'openrouter' || p === 'custom') return 65536;
+
+  // Por defecto universal
+  return 32768;
 }
 
 
@@ -1283,16 +1302,16 @@ Al final del combate, en la sección "ESTADO DEL MAPA", DEBES incluir el siguien
 - **COLAPSO DE INTANGIBILIDAD:** ${bc.dimensionalAoeVulnerability ? 'PERFORACIÓN MASIVA ACTIVADA: Si un ataque tiene escala cósmica o desintegra el espacio a nivel atómico, la intangibilidad convencional o plano de fase es vulnerada.' : 'INTANGIBILIDAD ABSOLUTA RESPETADA.'}`;
     }
 
-    // ── PROTOCOLO DE TOKENS DESBLOQUEADOS (NEMOTRON 65K / MINIMAX 131K) ────
+    // ── PROTOCOLO DE TOKENS DESBLOQUEADOS (NEMOTRON 65K / MINIMAX 131K / INKLING 262K) ────
     const isUltraTokens = true; // Siempre activo para asegurar la máxima extensión y riqueza literaria
-    const ultraDepthDirective = `\n\n🚀 PROTOCOLO DE SALIDA MASIVA Y PROFUNDIDAD TOTAL (DESBLOQUEO DE 65K / 131K TOKENS):
-- Estás operando con el límite máximo de tokens desbloqueado (65.536 tokens en Nemotron 3 Ultra / 131.072 tokens en MiniMax M3).
-- **QUEDA ESTRICTAMENTE PROHIBIDO resumir, omitir detalles o apresurar las transiciones de fase**.
-- Desarrolla una **NOVELA MAGNA COMPLETA** con:
-  1. Micro-coreografías milisegundo a milisegundo: posición biomecánica, vectores cinéticos de empuje, temperatura del aire y tensión muscular.
-  2. Diálogos canónicos viscerales y monólogos tácticos que evidencien el Battle IQ profundo.
-  3. Anatomía cruda de lesiones y cálculo de física destructiva a escala macroscópica.
-  4. Veredicto exhaustivo con desglose técnico matemático y análisis de secuelas multiversales a largo plazo.`;
+    const ultraDepthDirective = `\n\n🚀 PROTOCOLO DE SALIDA MASIVA Y RESOLUCIÓN COMPLETA (65K / 131K / 262K TOKENS SIN LIMITACIONES):
+- Estás operando con la ventana máxima de salida sin restricciones artificiales (hasta 65.536 tokens en Nemotron 3 Ultra / DeepSeek R1 y hasta 131.072/262.144 en MiniMax e Inkling).
+- **MANDATO DE CONCLUSIÓN EN UNA SOLA GENERACIÓN (CERO CORTES):** Tienes espacio colosal de tokens para desplegar cada fase con la mayor riqueza literaria y marcial, pero DEBES alcanzar y redactar OBLIGATORIAMENTE el '### 5. FASE 4: EL CLÍMAX' y '### 6. VEREDICTO & ESTADO FINAL' con el ganador oficial, dificultad y biometría final antes de dar por terminada tu respuesta. PROHIBIDO detenerte a medias o dejar la batalla inconclusa.
+- Desarrolla una **NOVELA MAGNA COMPLETA Y CONCLUIDA** con:
+  1. Micro-coreografías biomecánicas con fintas CQC, vectores cinéticos de empuje y desgaste gradual.
+  2. Diálogos canónicos viscerales en guion largo (—) usando la voz y personalidad real de cada luchador.
+  3. Desgaste anatómico y cotejo riguroso de Resistencias a Hax, equipamiento y condiciones de la Arena.
+  4. Veredicto oficial determinista sin ambigüedades, anclado al APEX-Ki y a la causalidad del combate.`;
 
     // ── PUENTE NÚCLEO DETERMINISTA (Combat Core v1.0 → Prompt) ─────────────
     // Ensamblador maestro único: incluye resolución de 12 fases, recursos,
@@ -1701,7 +1720,7 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
 
       // 1. Google Gemini Engine (Multi-Key Failover or Free Gateway)
       const isGemini = aiConfig?.engine === 'gemini';
-      const openRouterModel = aiConfig?.model || 'openrouter/free';
+      const openRouterModel = (aiConfig?.model && aiConfig.model !== 'default') ? aiConfig.model : 'nvidia/nemotron-3-ultra-550b-a55b:free';
 
       if (isGemini) {
         const geminiKeys = getCandidateKeys(aiConfig, 'gemini');
@@ -2522,9 +2541,9 @@ ESTADO FINAL:
     // 4. Direct OpenRouter Multi-Key Failover
     if (aiConfig?.engine === 'openrouter') {
       const orKeys = getCandidateKeys(aiConfig, 'openrouter');
-      let orModel = aiConfig.model || 'openrouter/free';
+      let orModel = (aiConfig?.model && aiConfig.model !== 'default') ? aiConfig.model : 'nvidia/nemotron-3-ultra-550b-a55b:free';
       if (orModel.includes('flash-lite') && !orModel.includes('/')) {
-        orModel = 'openrouter/free';
+        orModel = 'google/gemini-2.0-flash-lite:free';
       }
 
       for (let kIdx = 0; kIdx < orKeys.length; kIdx++) {

@@ -50,14 +50,14 @@ let INITIAL_CHARACTERS = [];
 
 const DEFAULT_AI_CONFIG = {
   characterEngine: {
-    engine: 'gemini',
-    model: 'gemini-flash-lite-latest',
+    engine: 'openrouter',
+    model: 'nvidia/nemotron-3-ultra-550b-a55b:free',
     apiKey: '',
     customBaseUrl: ''
   },
   simulationEngine: {
-    engine: 'gemini',
-    model: 'gemini-flash-lite-latest',
+    engine: 'openrouter',
+    model: 'nvidia/nemotron-3-ultra-550b-a55b:free',
     apiKey: '',
     customBaseUrl: ''
   }
@@ -655,8 +655,18 @@ export default function App() {
         return parsed;
       }
       return {
-        characterEngine: { ...parsed, engine: 'gemini', model: 'gemini-flash-lite-latest' },
-        simulationEngine: { ...parsed, engine: 'gemini', model: 'gemini-flash-lite-latest' }
+        characterEngine: parsed.characterEngine || {
+          engine: parsed.engine || DEFAULT_AI_CONFIG.characterEngine.engine,
+          model: parsed.model || DEFAULT_AI_CONFIG.characterEngine.model,
+          apiKey: parsed.apiKey || '',
+          customBaseUrl: parsed.customBaseUrl || ''
+        },
+        simulationEngine: parsed.simulationEngine || {
+          engine: parsed.engine || DEFAULT_AI_CONFIG.simulationEngine.engine,
+          model: parsed.model || DEFAULT_AI_CONFIG.simulationEngine.model,
+          apiKey: parsed.apiKey || '',
+          customBaseUrl: parsed.customBaseUrl || ''
+        }
       };
     } catch (e) {
       return DEFAULT_AI_CONFIG;
