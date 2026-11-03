@@ -2582,6 +2582,45 @@ export default function SimulationViewer({
         </div>
       )}
 
+      {/* Tarjeta de Rescate si la Simulación se cortó antes de dictar Veredicto */}
+      {!verdictInfo && !isSimulating && hasOutput && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-950/70 via-orange-950/50 to-slate-900 border-2 border-amber-500/70 shadow-[0_0_35px_rgba(245,158,11,0.25)] relative z-10 space-y-3 font-mono">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-500/30 pb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-xl shadow-inner">
+                ⚡
+              </div>
+              <div>
+                <span className="text-[10px] text-amber-400/90 font-bold uppercase tracking-widest block">
+                  NARRACIÓN INTERRUMPIDA / LÍMITE DE TOKENS ALCANZADO
+                </span>
+                <h3 className="text-base font-bold text-white font-cinzel">
+                  El combate se detuvo antes de dictar el Veredicto Final
+                </h3>
+              </div>
+            </div>
+            <span className="px-3 py-1 rounded-full bg-amber-950/90 border border-amber-500/60 text-amber-300 text-xs font-bold self-start sm:self-auto">
+              Corte de Salida
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-300 font-sans leading-relaxed">
+            El proveedor de IA agotó su ventana de tokens antes de redactar el clímax y el veredicto oficial. Pulsa a continuación para que la IA continúe exactamente desde la última línea y concluya la batalla.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {onContinueSimulation && (
+              <button
+                onClick={() => onContinueSimulation("Continúa exactamente desde la última frase escrita. Desarrolla el clímax final, el choque definitivo y concluye obligatoriamente con el bloque '### VEREDICTO' declarando VENCEDOR, DIFICULTAD y biometría final.")}
+                className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition cursor-pointer shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>⚔️ Completar Combate & Dictar Veredicto</span>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Victory Card & MVP Banner when battle is concluded */}
       {verdictInfo && !isSimulating && (
         <div className="space-y-4">

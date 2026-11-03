@@ -904,8 +904,11 @@ El frontend renderizará esta batalla por partes. DEBES estructurar la respuesta
 
 DIRECTIVAS LITERARIAS Y MECÁNICAS OBLIGATORIAS (VITAL):
 1. **Declaración de Reglas Inicial:** La simulación DEBE comenzar obligatoriamente con la cabecera de parámetros y reglas declaradas.
-2. **Párrafos Cortos y Ágiles:** Nunca escribas muros de texto. Párrafos de 2-4 líneas máximo con ritmo cinematográfico.
-3. **Blacklist de Clichés y Moderación de Prosa:**
+2. **Control de Longitud y Ritmo Cinematográfico (Anti-Cortes de Tokens — Obligatorio):**
+   - Escribe con máxima intensidad, agilidad y ritmo de cómic: 2 a 3 párrafos contundentes y viscerales por fase (máximo 120-150 palabras por fase).
+   - Administra estrictamente tu presupuesto de salida para NUNCA cortar la narración a medias: es mandatorio alcanzar el '### 5. EL CLÍMAX' y '### 6. VEREDICTO' con el vencedor oficial dentro de esta misma respuesta.
+3. **Párrafos Cortos y Ágiles:** Nunca escribas muros de texto. Párrafos de 2-4 líneas máximo con ritmo cinematográfico.
+4. **Blacklist de Clichés y Moderación de Prosa:**
    - Prohibido abusar de fórmulas repetitivas ("No fue X, fue Y", "la realidad se rompió", "la luz se curvó", "átomo a átomo", "densidad de neutrones", "un microsegundo").
    - Alterna planos de cámara: lectura de guardia / fintas CQC ➔ daño anatómico localizado ➔ impacto regional de terreno ➔ clímax destructivo.
 4. **Física Biológica y Rigor de Regeneración / Formas:**
@@ -1598,12 +1601,13 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
             const curKey = geminiKeys[kIdx];
             if (!curKey) continue;
             try {
-              let geminiModel = aiConfig.model || 'gemini-3.5-flash-lite';
+              let geminiModel = aiConfig.model || 'gemini-2.0-flash';
               if (geminiModel.includes('flash-lite') || geminiModel.includes('flash_lite') || geminiModel.includes('preview-02-05') || geminiModel.includes('latest')) {
-                geminiModel = 'gemini-3.5-flash-lite';
-              }
-              if (geminiModel.includes('3.6')) {
-                geminiModel = 'gemini-3.6-flash';
+                geminiModel = 'gemini-2.0-flash-lite-preview-02-05';
+              } else if (geminiModel.includes('pro')) {
+                geminiModel = 'gemini-1.5-pro';
+              } else {
+                geminiModel = 'gemini-2.0-flash';
               }
               const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:streamGenerateContent?key=${curKey}&alt=sse`;
               const response = await fetch(geminiUrl, {
@@ -1660,7 +1664,7 @@ ${isDragonBallMatch ? `5. **INCOMPATIBILIDADES CANÓNICAS DE KAIŌ-KEN (REGLA CO
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 messages: [{ role: 'user', content: prompt }],
-                model: 'gemini-flash-lite',
+                model: 'openai-fast',
                 stream: true
               })
             });
@@ -2301,9 +2305,13 @@ ESTADO FINAL:
           const curKey = geminiKeys[kIdx];
           if (!curKey) continue;
           try {
-            let geminiModel = effectiveCfg.model || 'gemini-flash-lite-latest';
-            if (geminiModel.includes('flash-lite') || geminiModel.includes('flash_lite') || geminiModel.includes('preview-02-05')) {
-              geminiModel = 'gemini-flash-lite-latest';
+            let geminiModel = effectiveCfg.model || 'gemini-2.0-flash';
+            if (geminiModel.includes('flash-lite') || geminiModel.includes('flash_lite') || geminiModel.includes('preview-02-05') || geminiModel.includes('latest')) {
+              geminiModel = 'gemini-2.0-flash-lite-preview-02-05';
+            } else if (geminiModel.includes('pro')) {
+              geminiModel = 'gemini-1.5-pro';
+            } else {
+              geminiModel = 'gemini-2.0-flash';
             }
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${curKey}`;
             const payload = {
@@ -2337,7 +2345,7 @@ ESTADO FINAL:
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             messages: [{ role: 'user', content: prompt }],
-            model: 'gemini-flash-lite',
+            model: 'openai-fast',
             jsonMode: isJson
           })
         });
