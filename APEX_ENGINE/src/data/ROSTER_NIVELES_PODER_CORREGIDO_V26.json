@@ -326,7 +326,7 @@
     "emperador-pilaf": {
       "id": "emperador-pilaf",
       "name": "Emperador Pilaf",
-      "baseTier": "9-C",
+      "baseTier": "8-C",
       "baseKiNumeric": 59,
       "baseKiFormatted": "59",
       "universe": "DRAGON BALL (CLÁSICO)",
@@ -337,7 +337,7 @@
           "kiNumeric": 59,
           "kiFormatted": "59",
           "multiplier": "$\\times 1$",
-          "tier": "9-C",
+          "tier": "8-C",
           "isApexCustom": false
         }
       ],
@@ -760,26 +760,26 @@
     "grandpa-gohan-db-21tb": {
       "id": "grandpa-gohan-db-21tb",
       "name": "Grandpa Gohan Db 21Tb",
-      "baseTier": "5-A",
-      "baseKiNumeric": 1500000,
+      "baseTier": "8-B",
+      "baseKiNumeric": 130,
       "baseKiFormatted": "1.500.000",
       "universe": "DRAGON BALL (CLÁSICO)",
       "forms": [
         {
           "id": "form_1",
           "name": "Gohan Abuelo (Base)",
-          "kiNumeric": 1500000,
+          "kiNumeric": 130,
           "kiFormatted": "1.500.000",
           "multiplier": "1x",
-          "tier": "5-A"
+          "tier": "8-B"
         },
         {
           "id": "form_2",
           "name": "Gohan Abuelo Potenciado",
-          "kiNumeric": 3000000,
+          "kiNumeric": 260,
           "kiFormatted": "3.000.000",
           "multiplier": "2x",
-          "tier": "5-A"
+          "tier": "8-B"
         }
       ],
       "powerSchema": {
@@ -974,7 +974,7 @@
       "baseTier": "8-B",
       "baseKiNumeric": 249,
       "baseKiFormatted": "249",
-      "universe": "DRAGON BALL Z",
+      "universe": "DRAGON BALL (CLÁSICO)",
       "forms": [
         {
           "id": "form_1",
@@ -1205,18 +1205,18 @@
     "babidi-saga-buu-330": {
       "id": "babidi-saga-buu-330",
       "name": "Babidi",
-      "baseTier": "7-B",
-      "baseKiNumeric": 3423,
+      "baseTier": "9-A",
+      "baseKiNumeric": 200,
       "baseKiFormatted": "3.423",
       "universe": "DRAGON BALL Z",
       "forms": [
         {
           "id": "form_1",
           "name": "Hechicero Majin",
-          "kiNumeric": 3423,
+          "kiNumeric": 200,
           "kiFormatted": "3.423",
           "multiplier": "$\\times 1$",
-          "tier": "7-B",
+          "tier": "9-A",
           "isApexCustom": false
         }
       ],
@@ -1227,7 +1227,7 @@
     "burter-saga-namek-641": {
       "id": "burter-saga-namek-641",
       "name": "Burter",
-      "baseTier": "5-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 43000,
       "baseKiFormatted": "43.000",
       "universe": "DRAGON BALL Z",
@@ -1238,7 +1238,7 @@
           "kiNumeric": 43000,
           "kiFormatted": "43.000",
           "multiplier": "$\\times 1$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
@@ -1367,10 +1367,10 @@
     "chaos-dragon-ball-cl-sico-318": {
       "id": "chaos-dragon-ball-cl-sico-318",
       "name": "Chaos",
-      "baseTier": "5-C",
+      "baseTier": "7-C",
       "baseKiNumeric": 130,
       "baseKiFormatted": "130",
-      "universe": "DRAGON BALL Z",
+      "universe": "DRAGON BALL (CLÁSICO)",
       "forms": [
         {
           "id": "form_1",
@@ -1378,7 +1378,7 @@
           "kiNumeric": 130,
           "kiFormatted": "130",
           "multiplier": "$\\times 1$",
-          "tier": "5-C",
+          "tier": "7-C",
           "isApexCustom": false
         },
         {
@@ -1387,7 +1387,7 @@
           "kiNumeric": 176,
           "kiFormatted": "176",
           "multiplier": "$\\times 1.35$",
-          "tier": "5-C",
+          "tier": "7-C",
           "isApexCustom": false
         }
       ],
@@ -1551,16 +1551,16 @@
           "kiNumeric": 64000000,
           "kiFormatted": "64.000.000",
           "multiplier": "$\\times 120.75$",
-          "tier": "Low 4-C",
+          "tier": "4-C",
           "isApexCustom": false
         },
         {
           "id": "form_5",
           "name": "Freezer Forma Final (100% / Hipertrofia)",
-          "kiNumeric": 128000000,
+          "kiNumeric": 120000000,
           "kiFormatted": "128.000.000",
           "multiplier": "$\\times 241.51$",
-          "tier": "Low 4-C",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -1620,7 +1620,7 @@
     "gohan-del-futuro-l-nea-temporal-futura-43": {
       "id": "gohan-del-futuro-l-nea-temporal-futura-43",
       "name": "Gohan Del Futuro",
-      "baseTier": "4-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 4000000,
       "baseKiFormatted": "4.000.000",
       "universe": "DRAGON BALL Z",
@@ -1631,7 +1631,7 @@
           "kiNumeric": 4000000,
           "kiFormatted": "4.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
@@ -1640,7 +1640,7 @@
           "kiNumeric": 200000000,
           "kiFormatted": "200.000.000",
           "multiplier": "$\\times 50$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -1716,7 +1716,7 @@
       "baseTier": "10-C",
       "baseKiNumeric": 5,
       "baseKiFormatted": "5",
-      "universe": "DRAGON BALL Z",
+      "universe": "DRAGON BALL (CLÁSICO)",
       "forms": [
         {
           "id": "form_1",
@@ -1788,7 +1788,7 @@
     "jeice-saga-namek-726": {
       "id": "jeice-saga-namek-726",
       "name": "Jeice",
-      "baseTier": "5-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 44000,
       "baseKiFormatted": "44.000",
       "universe": "DRAGON BALL Z",
@@ -1799,7 +1799,7 @@
           "kiNumeric": 44000,
           "kiFormatted": "44.000",
           "multiplier": "$\\times 1$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
@@ -1808,7 +1808,7 @@
           "kiNumeric": 72000,
           "kiFormatted": "72.000",
           "multiplier": "$\\times 1.64$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
@@ -1914,7 +1914,7 @@
     "krilin-saga-saiyan-namek": {
       "id": "krilin-saga-saiyan-namek",
       "name": "Krilin (Saga Saiyan)",
-      "baseTier": "Low 5-B",
+      "baseTier": "5-B",
       "baseKiNumeric": 1770,
       "baseKiFormatted": "1.770",
       "universe": "DRAGON BALL Z",
@@ -1925,7 +1925,7 @@
           "kiNumeric": 1770,
           "kiFormatted": "1.770",
           "multiplier": "$\\times 1$",
-          "tier": "Low 5-B",
+          "tier": "5-B",
           "isApexCustom": false
         }
       ],
@@ -1936,7 +1936,7 @@
     "buuhan-majin-901": {
       "id": "buuhan-majin-901",
       "name": "Buuhan Majin",
-      "baseTier": "3-A",
+      "baseTier": "3-C",
       "baseKiNumeric": 96000000000,
       "baseKiFormatted": "96.000.000.000",
       "universe": "DRAGON BALL Z",
@@ -1947,34 +1947,34 @@
           "kiNumeric": 96000000000,
           "kiFormatted": "96.000.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "3-A",
+          "tier": "3-C",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Buuhan (Poder Verdadero)",
-          "kiNumeric": 120000000000,
+          "kiNumeric": 96000000000,
           "kiFormatted": "120.000.000.000",
           "multiplier": "$\\times 1.25$",
-          "tier": "3-A",
+          "tier": "3-C",
           "isApexCustom": false
         },
         {
           "id": "form_3",
           "name": "Forma Buuhan",
-          "kiNumeric": 129600000000,
+          "kiNumeric": 96000000000,
           "kiFormatted": "129.600.000.000",
           "multiplier": "$\\times 1.35$",
-          "tier": "3-A",
+          "tier": "3-C",
           "isApexCustom": false
         },
         {
           "id": "form_4",
           "name": "Absorción Táctica Activa",
-          "kiNumeric": 134400000000,
+          "kiNumeric": 96000000000,
           "kiFormatted": "134.400.000.000",
           "multiplier": "$\\times 1.4$",
-          "tier": "3-A",
+          "tier": "3-C",
           "isApexCustom": false
         }
       ],
@@ -2074,7 +2074,7 @@
     "mecha-freezer-saga-androides-514": {
       "id": "mecha-freezer-saga-androides-514",
       "name": "Mecha Freezer",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 135000000,
       "baseKiFormatted": "135.000.000",
       "universe": "DRAGON BALL Z",
@@ -2085,7 +2085,7 @@
           "kiNumeric": 135000000,
           "kiFormatted": "135.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         },
         {
@@ -2094,7 +2094,7 @@
           "kiNumeric": 156000000,
           "kiFormatted": "156.000.000",
           "multiplier": "$\\times 1.16$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -2105,7 +2105,7 @@
     "nail-saga-namek-672": {
       "id": "nail-saga-namek-672",
       "name": "Nail (Saga Namek)",
-      "baseTier": "5-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 42000,
       "baseKiFormatted": "42.000",
       "universe": "DRAGON BALL Z",
@@ -2116,7 +2116,7 @@
           "kiNumeric": 42000,
           "kiFormatted": "42.000",
           "multiplier": "$\\times 1$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
@@ -2127,36 +2127,36 @@
     "nappa-saga-saiyan-462": {
       "id": "nappa-saga-saiyan-462",
       "name": "Nappa (Saga Saiyan)",
-      "baseTier": "5-C",
-      "baseKiNumeric": 4600,
+      "baseTier": "5-B",
+      "baseKiNumeric": 4000,
       "baseKiFormatted": "4.600",
       "universe": "DRAGON BALL Z",
       "forms": [
         {
           "id": "form_1",
           "name": "Nappa (Reprimido / Jugando)",
-          "kiNumeric": 4600,
+          "kiNumeric": 4000,
           "kiFormatted": "4.600",
           "multiplier": "$\\times 1$",
-          "tier": "5-C",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Poder Completo",
-          "kiNumeric": 5500,
+          "kiNumeric": 4500,
           "kiFormatted": "5.500",
           "multiplier": "$\\times 1.2$",
-          "tier": "5-C",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
           "id": "form_3",
           "name": "Blast Máximo (Bombardeo)",
-          "kiNumeric": 7200,
+          "kiNumeric": 8000,
           "kiFormatted": "7.200",
           "multiplier": "$\\times 1.57$",
-          "tier": "5-C",
+          "tier": "5-B",
           "isApexCustom": false
         }
       ],
@@ -2198,36 +2198,36 @@
     "piccolo-inicio-saga-saiyan": {
       "id": "piccolo-inicio-saga-saiyan",
       "name": "Piccolo Inicio",
-      "baseTier": "6-A",
-      "baseKiNumeric": 1575,
+      "baseTier": "5-C",
+      "baseKiNumeric": 322,
       "baseKiFormatted": "1.575",
       "universe": "DRAGON BALL Z",
       "forms": [
         {
           "id": "form_1",
           "name": "Ropa Pesada (322 Unidades)",
-          "kiNumeric": 1575,
+          "kiNumeric": 322,
           "kiFormatted": "1.575",
           "multiplier": "$\\times 1$",
-          "tier": "6-A",
+          "tier": "5-C",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Sin Ropa Pesada (408 Unidades / Plena Movilidad)",
-          "kiNumeric": 2126,
+          "kiNumeric": 408,
           "kiFormatted": "2.126",
           "multiplier": "$\\times 1.35$",
-          "tier": "6-A",
+          "tier": "5-C",
           "isApexCustom": false
         },
         {
           "id": "form_3",
           "name": "Makankosappo a Plena Carga (1,480 Unidades)",
-          "kiNumeric": 7875,
+          "kiNumeric": 1330,
           "kiFormatted": "7.875",
           "multiplier": "$\\times 5$",
-          "tier": "Low 5-B",
+          "tier": "5-C",
           "isApexCustom": false
         }
       ],
@@ -2369,7 +2369,7 @@
     "recoome-saga-namek-951": {
       "id": "recoome-saga-namek-951",
       "name": "Recoome",
-      "baseTier": "5-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 45000,
       "baseKiFormatted": "45.000",
       "universe": "DRAGON BALL Z",
@@ -2380,7 +2380,7 @@
           "kiNumeric": 45000,
           "kiFormatted": "45.000",
           "multiplier": "$\\times 1$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
@@ -2389,7 +2389,7 @@
           "kiNumeric": 71000,
           "kiFormatted": "71.000",
           "multiplier": "$\\times 1.58$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
@@ -2431,26 +2431,26 @@
     "rey-vegeta-clasico": {
       "id": "rey-vegeta-clasico",
       "name": "Rey Vegeta",
-      "baseTier": "5-A",
-      "baseKiNumeric": 2500000,
+      "baseTier": "5-B",
+      "baseKiNumeric": 15000,
       "baseKiFormatted": "2.500.000",
       "universe": "DRAGON BALL Z",
       "forms": [
         {
           "id": "form_1",
           "name": "Rey Vegeta (Base)",
-          "kiNumeric": 2500000,
+          "kiNumeric": 15000,
           "kiFormatted": "2.500.000",
           "multiplier": "1x",
-          "tier": "5-A"
+          "tier": "5-B"
         },
         {
           "id": "form_2",
           "name": "Rey Vegeta Potenciado",
-          "kiNumeric": 5000000,
+          "kiNumeric": 25000,
           "kiFormatted": "5.000.000",
           "multiplier": "2x",
-          "tier": "4-C"
+          "tier": "5-B"
         }
       ],
       "powerSchema": {
@@ -2602,7 +2602,7 @@
     "son-goku-llegada-dbz-saga-saiyan-169": {
       "id": "son-goku-llegada-dbz-saga-saiyan-169",
       "name": "Son Goku (Llegada DBZ / Saga Saiyan)",
-      "baseTier": "5-A",
+      "baseTier": "5-B",
       "baseKiNumeric": 8618,
       "baseKiFormatted": "8.618",
       "universe": "DRAGON BALL Z",
@@ -2613,7 +2613,7 @@
           "kiNumeric": 8618,
           "kiFormatted": "8.618",
           "multiplier": "$\\times 1$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -2622,7 +2622,7 @@
           "kiNumeric": 17236,
           "kiFormatted": "17.236",
           "multiplier": "$\\times 2$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -2631,7 +2631,7 @@
           "kiNumeric": 25854,
           "kiFormatted": "25.854",
           "multiplier": "$\\times 3$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -2820,7 +2820,7 @@
     "son-goku-saga-namek-saga-namek-176": {
       "id": "son-goku-saga-namek-saga-namek-176",
       "name": "Son Goku (Saga Namek)",
-      "baseTier": "4-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 3000000,
       "baseKiFormatted": "3.000.000",
       "universe": "DRAGON BALL Z",
@@ -2831,7 +2831,7 @@
           "kiNumeric": 3000000,
           "kiFormatted": "3.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
@@ -2840,7 +2840,7 @@
           "kiNumeric": 30000000,
           "kiFormatted": "30.000.000",
           "multiplier": "$\\times 10$",
-          "tier": "4-B",
+          "tier": "Low 4-C",
           "isApexCustom": false
         },
         {
@@ -2849,7 +2849,7 @@
           "kiNumeric": 60000000,
           "kiFormatted": "60.000.000",
           "multiplier": "$\\times 20$",
-          "tier": "4-B",
+          "tier": "Low 4-C",
           "isApexCustom": false
         },
         {
@@ -2858,7 +2858,7 @@
           "kiNumeric": 150000000,
           "kiFormatted": "150.000.000",
           "multiplier": "$\\times 50$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -2900,7 +2900,7 @@
     "spopovich-saga-buu-676": {
       "id": "spopovich-saga-buu-676",
       "name": "Spopovich",
-      "baseTier": "8-A",
+      "baseTier": "10-A",
       "baseKiNumeric": 11,
       "baseKiFormatted": "11",
       "universe": "DRAGON BALL Z",
@@ -2911,7 +2911,7 @@
           "kiNumeric": 11,
           "kiFormatted": "11",
           "multiplier": "$\\times 1$",
-          "tier": "8-A",
+          "tier": "10-A",
           "isApexCustom": false
         },
         {
@@ -2920,7 +2920,7 @@
           "kiNumeric": 33000,
           "kiFormatted": "33.000",
           "multiplier": "$\\times 3000$",
-          "tier": "8-A",
+          "tier": "5-B",
           "isApexCustom": false
         }
       ],
@@ -3113,7 +3113,7 @@
     "trunks-futuro-v1-espada-ssj-basico": {
       "id": "trunks-futuro-v1-espada-ssj-basico",
       "name": "Trunks Futuro V1 Espada SSJ Basico",
-      "baseTier": "4-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 4000000,
       "baseKiFormatted": "4.000.000",
       "universe": "DRAGON BALL Z",
@@ -3124,7 +3124,7 @@
           "kiNumeric": 4000000,
           "kiFormatted": "4.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
@@ -3133,7 +3133,7 @@
           "kiNumeric": 200000000,
           "kiFormatted": "200.000.000",
           "multiplier": "$\\times 50$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -3194,14 +3194,14 @@
       "id": "vegeta-llegada-a-la-tierra-saga-saiyan-504",
       "name": "Vegeta Llegada A La Tierra",
       "baseTier": "5-B",
-      "baseKiNumeric": 12000,
+      "baseKiNumeric": 18000,
       "baseKiFormatted": "12.000",
       "universe": "DRAGON BALL Z",
       "forms": [
         {
           "id": "form_1",
           "name": "Vegeta (Reprimido / vs Guerreros Z)",
-          "kiNumeric": 12000,
+          "kiNumeric": 18000,
           "kiFormatted": "12.000",
           "multiplier": "$\\times 1$",
           "tier": "5-B",
@@ -3228,9 +3228,9 @@
         {
           "id": "form_4",
           "name": "Oozaru (Debilitado / vs Gohan)",
-          "kiNumeric": 60000,
+          "kiNumeric": 180000,
           "kiFormatted": "60.000",
-          "multiplier": "$\\times 5$",
+          "multiplier": "$\\times 10$",
           "tier": "5-B",
           "isApexCustom": false
         }
@@ -3406,10 +3406,10 @@
         {
           "id": "form_2",
           "name": "Super Vegetto",
-          "kiNumeric": 5000000000000,
+          "kiNumeric": 400000000000,
           "kiFormatted": "5.000.000.000.000",
-          "multiplier": "$\\times 50$",
-          "tier": "3-B",
+          "multiplier": "$\\times 4$ (Fusión)",
+          "tier": "3-A",
           "isApexCustom": false
         }
       ],
@@ -3420,26 +3420,26 @@
     "videl-saga-buu-6": {
       "id": "videl-saga-buu-6",
       "name": "Videl (Saga Buu)",
-      "baseTier": "5-A",
-      "baseKiNumeric": 300000,
+      "baseTier": "5-B",
+      "baseKiNumeric": 15000,
       "baseKiFormatted": "300.000",
       "universe": "DRAGON BALL Z",
       "forms": [
         {
           "id": "form_1",
           "name": "Videl (Base)",
-          "kiNumeric": 300000,
+          "kiNumeric": 15000,
           "kiFormatted": "300.000",
           "multiplier": "1x",
-          "tier": "5-A"
+          "tier": "5-B"
         },
         {
           "id": "form_2",
           "name": "Videl Potenciada",
-          "kiNumeric": 450000,
+          "kiNumeric": 20000,
           "kiFormatted": "450.000",
           "multiplier": "1.5x",
-          "tier": "5-A"
+          "tier": "5-B"
         }
       ],
       "powerSchema": {
@@ -3522,7 +3522,7 @@
     "yamu-saga-buu-59": {
       "id": "yamu-saga-buu-59",
       "name": "Yamu",
-      "baseTier": "8-A",
+      "baseTier": "10-A",
       "baseKiNumeric": 10,
       "baseKiFormatted": "10",
       "universe": "DRAGON BALL Z",
@@ -3533,7 +3533,7 @@
           "kiNumeric": 10,
           "kiFormatted": "10",
           "multiplier": "$\\times 1$",
-          "tier": "8-A",
+          "tier": "10-A",
           "isApexCustom": false
         },
         {
@@ -3542,7 +3542,7 @@
           "kiNumeric": 30000,
           "kiFormatted": "30.000",
           "multiplier": "$\\times 3000$",
-          "tier": "8-A",
+          "tier": "5-B",
           "isApexCustom": false
         }
       ],
@@ -3616,14 +3616,14 @@
       "id": "akaza-kimetsu",
       "name": "Akaza",
       "baseTier": "7-B",
-      "baseKiNumeric": 4358,
+      "baseKiNumeric": 6000,
       "baseKiFormatted": "4.358",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Akaza (Estado Base / Tercera Luna Superior)",
-          "kiNumeric": 4358,
+          "kiNumeric": 6000,
           "kiFormatted": "4.358",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -3632,7 +3632,7 @@
         {
           "id": "form_2",
           "name": "Despliegue de Técnica: Aguja de Brújula (Detección de Espíritu de Lucha)",
-          "kiNumeric": 6101,
+          "kiNumeric": 6000,
           "kiFormatted": "6.101",
           "multiplier": "$\\times 1.4$",
           "tier": "7-B",
@@ -3641,7 +3641,7 @@
         {
           "id": "form_3",
           "name": "Regeneración Craneal por Voluntad Pura (Evolución Demoníaca)",
-          "kiNumeric": 7844,
+          "kiNumeric": 6000,
           "kiFormatted": "7.844",
           "multiplier": "$\\times 1.8$",
           "tier": "7-B",
@@ -3678,14 +3678,14 @@
       "id": "doma-kimetsu",
       "name": "Doma",
       "baseTier": "7-B",
-      "baseKiNumeric": 5397,
+      "baseKiNumeric": 7200,
       "baseKiFormatted": "5.397",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Doma (Estado Base)",
-          "kiNumeric": 5397,
+          "kiNumeric": 7200,
           "kiFormatted": "5.397",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -3694,7 +3694,7 @@
         {
           "id": "form_2",
           "name": "Bodhisattva de Hielo Rime Water Lily",
-          "kiNumeric": 8096,
+          "kiNumeric": 7200,
           "kiFormatted": "8.096",
           "multiplier": "$\\times 1.5$",
           "tier": "7-B",
@@ -3784,14 +3784,14 @@
       "id": "gyokko-kny-sv",
       "name": "Gyokko",
       "baseTier": "7-C",
-      "baseKiNumeric": 2951,
+      "baseKiNumeric": 3800,
       "baseKiFormatted": "2.951",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Gyokko (Estado Base)",
-          "kiNumeric": 2951,
+          "kiNumeric": 3800,
           "kiFormatted": "2.951",
           "multiplier": "$\\times 1$",
           "tier": "7-C",
@@ -3800,7 +3800,7 @@
         {
           "id": "form_2",
           "name": "Muda Final (Sireno/Escamas)",
-          "kiNumeric": 3984,
+          "kiNumeric": 3800,
           "kiFormatted": "3.984",
           "multiplier": "$\\times 1.35$",
           "tier": "7-C",
@@ -3846,14 +3846,14 @@
       "id": "gyutaro-daki-kny-ed",
       "name": "Gyutaro Daki",
       "baseTier": "7-B",
-      "baseKiNumeric": 5775,
+      "baseKiNumeric": 3200,
       "baseKiFormatted": "5.775",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Dúo Luna Superior 6",
-          "kiNumeric": 5775,
+          "kiNumeric": 3200,
           "kiFormatted": "5.775",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -3868,14 +3868,14 @@
       "id": "hantengu-kny-sv",
       "name": "Hantengu",
       "baseTier": "7-C",
-      "baseKiNumeric": 2762,
+      "baseKiNumeric": 4800,
       "baseKiFormatted": "2.762",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Hantengu (Estado Base)",
-          "kiNumeric": 2762,
+          "kiNumeric": 4800,
           "kiFormatted": "2.762",
           "multiplier": "$\\times 1$",
           "tier": "7-C",
@@ -3884,7 +3884,7 @@
         {
           "id": "form_2",
           "name": "Zohakuten",
-          "kiNumeric": 3729,
+          "kiNumeric": 4800,
           "kiFormatted": "3.729",
           "multiplier": "$\\times 1.35$",
           "tier": "7-C",
@@ -4040,14 +4040,14 @@
       "id": "kokushibo-kimetsu",
       "name": "Kokushibo",
       "baseTier": "7-B",
-      "baseKiNumeric": 6195,
+      "baseKiNumeric": 8500,
       "baseKiFormatted": "6.195",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Estado Base (Espada Nichirin Demoníaca Estándar)",
-          "kiNumeric": 6195,
+          "kiNumeric": 8500,
           "kiFormatted": "6.195",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -4056,7 +4056,7 @@
         {
           "id": "form_2",
           "name": "Espada Larga Despertada + Regeneración de Cabeza",
-          "kiNumeric": 8363,
+          "kiNumeric": 8500,
           "kiFormatted": "8.363",
           "multiplier": "$\\times 1.35$",
           "tier": "7-B",
@@ -4434,14 +4434,14 @@
       "id": "yoriichi-tsugikuni-kny-902",
       "name": "Yoriichi Tsugikuni",
       "baseTier": "7-B",
-      "baseKiNumeric": 3707,
+      "baseKiNumeric": 7000,
       "baseKiFormatted": "3.707",
       "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Yoriichi Tsugikuni (Estado Base)",
-          "kiNumeric": 3707,
+          "kiNumeric": 7000,
           "kiFormatted": "3.707",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -4450,7 +4450,7 @@
         {
           "id": "form_2",
           "name": "Yoriichi Anciano (85 Años)",
-          "kiNumeric": 4634,
+          "kiNumeric": 9000,
           "kiFormatted": "4.634",
           "multiplier": "$\\times 1.25$",
           "tier": "7-B",
@@ -4459,7 +4459,7 @@
         {
           "id": "form_3",
           "name": "Yoriichi (Pico Sengoku)",
-          "kiNumeric": 5004,
+          "kiNumeric": 11000,
           "kiFormatted": "5.004",
           "multiplier": "$\\times 1.35$",
           "tier": "7-B",
@@ -4468,7 +4468,7 @@
         {
           "id": "form_4",
           "name": "Decimotercera Forma Solar en Cadena",
-          "kiNumeric": 7414,
+          "kiNumeric": 12000,
           "kiFormatted": "7.414",
           "multiplier": "$\\times 2$",
           "tier": "7-B",
@@ -4485,7 +4485,7 @@
       "baseTier": "7-B",
       "baseKiNumeric": 3854,
       "baseKiFormatted": "3.854",
-      "universe": "DRAGON BALL SUPER",
+      "universe": "DEMON SLAYER (KIMETSU NO YAIBA)",
       "forms": [
         {
           "id": "form_1",
@@ -4610,7 +4610,7 @@
     "basil-dragon-ball-super-757": {
       "id": "basil-dragon-ball-super-757",
       "name": "Basil",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 300000000,
       "baseKiFormatted": "300.000.000",
       "universe": "DRAGON BALL SUPER",
@@ -4621,7 +4621,7 @@
           "kiNumeric": 300000000,
           "kiFormatted": "300.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         },
         {
@@ -4630,7 +4630,7 @@
           "kiNumeric": 750000000,
           "kiFormatted": "750.000.000",
           "multiplier": "$\\times 2.5$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -5221,7 +5221,7 @@
         {
           "id": "form_4",
           "name": "Frost (Forma Final 100%)",
-          "kiNumeric": 140000000,
+          "kiNumeric": 70000000,
           "kiFormatted": "140.000.000",
           "multiplier": "$\\times 528$",
           "tier": "4-C",
@@ -5341,7 +5341,7 @@
     "gogeta-blue-dragon-ball-super-456": {
       "id": "gogeta-blue-dragon-ball-super-456",
       "name": "Gogeta Blue",
-      "baseTier": "Low 2-C",
+      "baseTier": "2-C",
       "baseKiNumeric": 162000000000,
       "baseKiFormatted": "162.000.000.000",
       "universe": "DRAGON BALL SUPER",
@@ -5352,7 +5352,7 @@
           "kiNumeric": 162000000000,
           "kiFormatted": "162.000.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "Low 2-C",
+          "tier": "2-C",
           "isApexCustom": false
         },
         {
@@ -5367,10 +5367,10 @@
         {
           "id": "form_3",
           "name": "Super Saiyan Blue (SSB)",
-          "kiNumeric": 1247000000000000,
+          "kiNumeric": 45000000000000,
           "kiFormatted": "1.247.000.000.000.000",
           "multiplier": "$\\times 7698$",
-          "tier": "2-A",
+          "tier": "2-C",
           "isApexCustom": false
         }
       ],
@@ -5382,14 +5382,14 @@
       "id": "goku-black-l-nea-temporal-futura-209",
       "name": "Goku Black",
       "baseTier": "3-A",
-      "baseKiNumeric": 13600000000,
+      "baseKiNumeric": 100000000000,
       "baseKiFormatted": "13.600.000.000",
       "universe": "DRAGON BALL SUPER",
       "forms": [
         {
           "id": "form_1",
           "name": "Goku Black (Estado Base / Zamasu en Cuerpo de Goku)",
-          "kiNumeric": 13600000000,
+          "kiNumeric": 100000000000,
           "kiFormatted": "13.600.000.000",
           "multiplier": "$\\times 1$",
           "tier": "3-A",
@@ -5398,7 +5398,7 @@
         {
           "id": "form_2",
           "name": "Super Saiyan (Fase 1)",
-          "kiNumeric": 680000000000,
+          "kiNumeric": 150000000000,
           "kiFormatted": "680.000.000.000",
           "multiplier": "$\\times 50$",
           "tier": "3-A",
@@ -5407,7 +5407,7 @@
         {
           "id": "form_3",
           "name": "Super Saiyan 2 (Fase 2)",
-          "kiNumeric": 1360000000000,
+          "kiNumeric": 250000000000,
           "kiFormatted": "1.360.000.000.000",
           "multiplier": "$\\times 100$",
           "tier": "3-A",
@@ -5416,7 +5416,7 @@
         {
           "id": "form_4",
           "name": "Super Saiyan 3 (Fase 3)",
-          "kiNumeric": 5440000000000,
+          "kiNumeric": 400000000000,
           "kiFormatted": "5.440.000.000.000",
           "multiplier": "$\\times 400$",
           "tier": "Low 2-C",
@@ -5425,7 +5425,7 @@
         {
           "id": "form_5",
           "name": "Super Saiyan God (Dios Rojo)",
-          "kiNumeric": 87040000000000,
+          "kiNumeric": 550000000000,
           "kiFormatted": "87.040.000.000.000",
           "multiplier": "$\\times 6400$",
           "tier": "Low 2-C",
@@ -5434,7 +5434,7 @@
         {
           "id": "form_6",
           "name": "Super Saiyan Rosé (Ki Divino Malicioso)",
-          "kiNumeric": 104720000000000,
+          "kiNumeric": 700000000000,
           "kiFormatted": "104.720.000.000.000",
           "multiplier": "$\\times 7700$",
           "tier": "Low 2-C",
@@ -5790,14 +5790,14 @@
       "id": "krilin-dragon-ball-cl-sico-802",
       "name": "Krilin (Saga Super)",
       "baseTier": "4-C",
-      "baseKiNumeric": 300000,
+      "baseKiNumeric": 100000000,
       "baseKiFormatted": "300.000",
       "universe": "DRAGON BALL SUPER",
       "forms": [
         {
           "id": "form_1",
           "name": "Krilin (Saga Super) (Estado Base)",
-          "kiNumeric": 300000,
+          "kiNumeric": 100000000,
           "kiFormatted": "300.000",
           "multiplier": "$\\times 1$",
           "tier": "4-C",
@@ -5806,7 +5806,7 @@
         {
           "id": "form_2",
           "name": "Krilin (No Ego Zone / ×5 Temporal)",
-          "kiNumeric": 1500000,
+          "kiNumeric": 100000000,
           "kiFormatted": "1.500.000",
           "multiplier": "$\\times 5$",
           "tier": "4-C",
@@ -5820,7 +5820,7 @@
     "lavender-dragon-ball-super-460": {
       "id": "lavender-dragon-ball-super-460",
       "name": "Lavender",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 180000000,
       "baseKiFormatted": "180.000.000",
       "universe": "DRAGON BALL SUPER",
@@ -5831,7 +5831,7 @@
           "kiNumeric": 180000000,
           "kiFormatted": "180.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -6304,7 +6304,7 @@
     "shisami-fnf-dbs": {
       "id": "shisami-fnf-dbs",
       "name": "Shisami",
-      "baseTier": "7-A",
+      "baseTier": "8-B",
       "baseKiNumeric": 550,
       "baseKiFormatted": "550",
       "universe": "DRAGON BALL SUPER",
@@ -6315,7 +6315,7 @@
           "kiNumeric": 550,
           "kiFormatted": "550",
           "multiplier": "$\\times 1$",
-          "tier": "7-A",
+          "tier": "8-B",
           "isApexCustom": false
         }
       ],
@@ -6405,7 +6405,7 @@
           "kiNumeric": 5700000000,
           "kiFormatted": "5.700.000.000",
           "multiplier": "$\\times 100$",
-          "tier": "4-B",
+          "tier": "4-A",
           "isApexCustom": false
         },
         {
@@ -6423,7 +6423,7 @@
           "kiNumeric": 77000000000000,
           "kiFormatted": "77.000.000.000.000",
           "multiplier": "$\\times 1351000$",
-          "tier": "2-B",
+          "tier": "2-C",
           "isApexCustom": false
         }
       ],
@@ -6635,24 +6635,24 @@
     "tagoma-fnf-dbs": {
       "id": "tagoma-fnf-dbs",
       "name": "Tagoma",
-      "baseTier": "7-B",
-      "baseKiNumeric": 420,
+      "baseTier": "5-B",
+      "baseKiNumeric": 8500,
       "baseKiFormatted": "420",
       "universe": "DRAGON BALL SUPER",
       "forms": [
         {
           "id": "form_1",
           "name": "Tagoma (Pre-Entrenamiento / Élite de Sorbet)",
-          "kiNumeric": 420,
+          "kiNumeric": 8500,
           "kiFormatted": "420",
           "multiplier": "$\\times 1$",
-          "tier": "7-B",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Tagoma (Post-4 Meses de Entrenamiento con Freezer)",
-          "kiNumeric": 8500,
+          "kiNumeric": 18000,
           "kiFormatted": "8.500",
           "multiplier": "$\\times 20.2$",
           "tier": "5-B",
@@ -6661,10 +6661,10 @@
         {
           "id": "form_3",
           "name": "Capitán Ginyu (Posesión del Cuerpo de Tagoma)",
-          "kiNumeric": 8500,
+          "kiNumeric": 24000,
           "kiFormatted": "8.500",
           "multiplier": "$\\times 20.2$",
-          "tier": "5-B",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
@@ -6675,18 +6675,18 @@
     "ten-shin-han-dragon-ball-cl-sico-812": {
       "id": "ten-shin-han-dragon-ball-cl-sico-812",
       "name": "Ten Shin Han",
-      "baseTier": "5-A",
-      "baseKiNumeric": 290000,
+      "baseTier": "4-C",
+      "baseKiNumeric": 120000000,
       "baseKiFormatted": "290.000",
       "universe": "DRAGON BALL SUPER",
       "forms": [
         {
           "id": "form_1",
           "name": "Ten Shin Han (Estado Base DBS / Maestro del Dojo)",
-          "kiNumeric": 290000,
+          "kiNumeric": 120000000,
           "kiFormatted": "290.000",
           "multiplier": "$\\times 1$",
-          "tier": "5-A",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -6772,7 +6772,7 @@
         {
           "id": "form_5",
           "name": "Genki Sword (Energía del Universo)",
-          "kiNumeric": 5000000000000,
+          "kiNumeric": 700000000000,
           "kiFormatted": "5.000.000.000.000",
           "multiplier": "$\\times 83333$",
           "tier": "2-C",
@@ -6895,7 +6895,7 @@
           "kiNumeric": 8000000000,
           "kiFormatted": "8.000.000.000",
           "multiplier": "$\\times 100$",
-          "tier": "4-B",
+          "tier": "4-A",
           "isApexCustom": false
         },
         {
@@ -6904,7 +6904,7 @@
           "kiNumeric": 32000000000,
           "kiFormatted": "32.000.000.000",
           "multiplier": "$\\times 400$",
-          "tier": "4-B",
+          "tier": "3-C",
           "isApexCustom": false
         },
         {
@@ -6913,7 +6913,7 @@
           "kiNumeric": 512000000000,
           "kiFormatted": "512.000.000.000",
           "multiplier": "$\\times 6400$",
-          "tier": "4-B",
+          "tier": "Low 2-C",
           "isApexCustom": false
         },
         {
@@ -6922,7 +6922,7 @@
           "kiNumeric": 616000000000,
           "kiFormatted": "616.000.000.000",
           "multiplier": "$\\times 7700$",
-          "tier": "4-B",
+          "tier": "Low 2-C",
           "isApexCustom": false
         },
         {
@@ -6931,7 +6931,7 @@
           "kiNumeric": 6160000000000,
           "kiFormatted": "6.160.000.000.000",
           "multiplier": "$\\times 77000$",
-          "tier": "4-B",
+          "tier": "Low 2-C",
           "isApexCustom": false
         },
         {
@@ -6940,7 +6940,7 @@
           "kiNumeric": 8000000000000,
           "kiFormatted": "8.000.000.000.000",
           "multiplier": "$\\times 100000$",
-          "tier": "2-B",
+          "tier": "2-C",
           "isApexCustom": false
         }
       ],
@@ -6991,7 +6991,7 @@
     "vegetto-blue-dragon-ball-super-79": {
       "id": "vegetto-blue-dragon-ball-super-79",
       "name": "Vegetto Blue",
-      "baseTier": "Low 2-C",
+      "baseTier": "2-C",
       "baseKiNumeric": 181000000000,
       "baseKiFormatted": "181.000.000.000",
       "universe": "DRAGON BALL SUPER",
@@ -7002,16 +7002,16 @@
           "kiNumeric": 181000000000,
           "kiFormatted": "181.000.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "Low 2-C",
+          "tier": "2-C",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Super Saiyan Blue (SSGSS)",
-          "kiNumeric": 1393338000000000,
+          "kiNumeric": 45000000000000,
           "kiFormatted": "1.393.338.000.000.000",
           "multiplier": "$\\\\times 7698$",
-          "tier": "2-A",
+          "tier": "2-C",
           "isApexCustom": false
         }
       ],
@@ -7069,7 +7069,7 @@
       "baseTier": "1-C",
       "baseKiNumeric": 8.736e+23,
       "baseKiFormatted": "873.600.000.000.000.000.000.000",
-      "universe": "DRAGON BALL DAIMA",
+      "universe": "DRAGON BALL SUPER",
       "forms": [
         {
           "id": "form_1",
@@ -7367,10 +7367,10 @@
         {
           "id": "form_5",
           "name": "Super Saiyan 4 (Primal Daima) [What-If]",
-          "kiNumeric": 12000000000,
+          "kiNumeric": 150000000000,
           "kiFormatted": "12.000.000.000",
           "multiplier": "$\\times 1200$",
-          "tier": "3-C",
+          "tier": "3-A",
           "isApexCustom": false
         }
       ],
@@ -7758,14 +7758,14 @@
       "id": "omega-shenron-dragon-ball-gt-904",
       "name": "Omega Shenron",
       "baseTier": "Low 2-C",
-      "baseKiNumeric": 610000000000,
+      "baseKiNumeric": 800000000000,
       "baseKiFormatted": "610.000.000.000",
       "universe": "DRAGON BALL GT",
       "forms": [
         {
           "id": "form_1",
           "name": "Omega Shenron (Syn Absorbe 6 Dragon Balls)",
-          "kiNumeric": 610000000000,
+          "kiNumeric": 800000000000,
           "kiFormatted": "610.000.000.000",
           "multiplier": "$\\times 1$",
           "tier": "Low 2-C",
@@ -7774,7 +7774,7 @@
         {
           "id": "form_2",
           "name": "Omega Shenron (Negative Energy Ball)",
-          "kiNumeric": 620000000000,
+          "kiNumeric": 1000000000000,
           "kiFormatted": "620.000.000.000",
           "multiplier": "$\\times 1.02$",
           "tier": "Low 2-C",
@@ -7819,7 +7819,7 @@
     "son-goku-saga-gt-dragon-ball-gt-281": {
       "id": "son-goku-saga-gt-dragon-ball-gt-281",
       "name": "Son Goku (Saga GT)",
-      "baseTier": "3-A",
+      "baseTier": "4-B",
       "baseKiNumeric": 560000000,
       "baseKiFormatted": "560.000.000",
       "universe": "DRAGON BALL GT",
@@ -7830,7 +7830,7 @@
           "kiNumeric": 560000000,
           "kiFormatted": "560.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "3-A",
+          "tier": "4-B",
           "isApexCustom": false
         },
         {
@@ -7988,10 +7988,10 @@
     "vegeta-saga-gt-dragon-ball-gt-851": {
       "id": "vegeta-saga-gt-dragon-ball-gt-851",
       "name": "Vegeta (Saga GT)",
-      "baseTier": "3-A",
+      "baseTier": "4-B",
       "baseKiNumeric": 550000000,
       "baseKiFormatted": "550.000.000",
-      "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
+      "universe": "DRAGON BALL GT",
       "forms": [
         {
           "id": "form_1",
@@ -7999,7 +7999,7 @@
           "kiNumeric": 550000000,
           "kiFormatted": "550.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "3-A",
+          "tier": "4-B",
           "isApexCustom": false
         },
         {
@@ -8046,7 +8046,7 @@
     "androide-13-base-pel-culas-dbz-toei-646": {
       "id": "androide-13-base-pel-culas-dbz-toei-646",
       "name": "Androide 13 Base",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 255000000,
       "baseKiFormatted": "255.000.000",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
@@ -8057,7 +8057,7 @@
           "kiNumeric": 255000000,
           "kiFormatted": "255.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         },
         {
@@ -8077,7 +8077,7 @@
     "androide-14-pel-culas-dbz-toei-392": {
       "id": "androide-14-pel-culas-dbz-toei-392",
       "name": "Androide 14",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 180000000,
       "baseKiFormatted": "180.000.000",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
@@ -8088,7 +8088,7 @@
           "kiNumeric": 180000000,
           "kiFormatted": "180.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -8099,7 +8099,7 @@
     "androide-15-pel-culas-dbz-toei-547": {
       "id": "androide-15-pel-culas-dbz-toei-547",
       "name": "Androide 15",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 175000000,
       "baseKiFormatted": "175.000.000",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
@@ -8110,7 +8110,7 @@
           "kiNumeric": 175000000,
           "kiFormatted": "175.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -8409,7 +8409,7 @@
     "dr-wheelo-pel-culas-dbz-toei-823": {
       "id": "dr-wheelo-pel-culas-dbz-toei-823",
       "name": "Dr Wheelo",
-      "baseTier": "6-C",
+      "baseTier": "5-B",
       "baseKiNumeric": 55000,
       "baseKiFormatted": "55.000",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
@@ -8420,7 +8420,7 @@
           "kiNumeric": 55000,
           "kiFormatted": "55.000",
           "multiplier": "$\\times 1$",
-          "tier": "6-C",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -8429,7 +8429,7 @@
           "kiNumeric": 74250,
           "kiFormatted": "74.250",
           "multiplier": "$\\times 1.35$",
-          "tier": "6-C",
+          "tier": "5-B",
           "isApexCustom": false
         }
       ],
@@ -8480,7 +8480,7 @@
     "gogeta-pel-culas-dbz-toei-800": {
       "id": "gogeta-pel-culas-dbz-toei-800",
       "name": "Gogeta (Película DBZ)",
-      "baseTier": "Low 2-C",
+      "baseTier": "3-C",
       "baseKiNumeric": 152000000000,
       "baseKiFormatted": "152.000.000.000",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
@@ -8491,16 +8491,16 @@
           "kiNumeric": 152000000000,
           "kiFormatted": "152.000.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "Low 2-C",
+          "tier": "3-C",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Super Gogeta (SSJ / Soul Punisher)",
-          "kiNumeric": 7600000000000,
+          "kiNumeric": 450000000000,
           "kiFormatted": "7.600.000.000.000",
-          "multiplier": "$\\times 50$",
-          "tier": "2-C",
+          "multiplier": "$\\times 3$ (Fusión)",
+          "tier": "3-A",
           "isApexCustom": false
         }
       ],
@@ -8790,7 +8790,7 @@
     "paragus-pel-culas-dbz-toei-728": {
       "id": "paragus-pel-culas-dbz-toei-728",
       "name": "Paragus",
-      "baseTier": "7-A",
+      "baseTier": "5-C",
       "baseKiNumeric": 4200,
       "baseKiFormatted": "4.200",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
@@ -8801,7 +8801,7 @@
           "kiNumeric": 4200,
           "kiFormatted": "4.200",
           "multiplier": "$\\times 1$",
-          "tier": "7-A",
+          "tier": "5-C",
           "isApexCustom": false
         }
       ],
@@ -8976,18 +8976,18 @@
     "tapion-pel-culas-dbz-toei-767": {
       "id": "tapion-pel-culas-dbz-toei-767",
       "name": "Tapion",
-      "baseTier": "6-B",
-      "baseKiNumeric": 22000,
+      "baseTier": "4-C",
+      "baseKiNumeric": 10000000,
       "baseKiFormatted": "22.000",
       "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
       "forms": [
         {
           "id": "form_1",
           "name": "Tapion (Héroe de la Ocarina / Sellador)",
-          "kiNumeric": 22000,
+          "kiNumeric": 10000000,
           "kiFormatted": "22.000",
           "multiplier": "$\\times 1$",
-          "tier": "6-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -9042,10 +9042,10 @@
     "zangya-pel-culas-dbz-toei-447": {
       "id": "zangya-pel-culas-dbz-toei-447",
       "name": "Zangya",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 200000000,
       "baseKiFormatted": "200.000.000",
-      "universe": "DRAGON BALL (MULTI-ERA)",
+      "universe": "DRAGON BALL Z — PELÍCULAS Y OVAS",
       "forms": [
         {
           "id": "form_1",
@@ -9053,7 +9053,7 @@
           "kiNumeric": 200000000,
           "kiFormatted": "200.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -9065,14 +9065,14 @@
       "id": "bardock-dragon-ball-super-194",
       "name": "Bardock (DBS)",
       "baseTier": "5-B",
-      "baseKiNumeric": 320355,
+      "baseKiNumeric": 10000,
       "baseKiFormatted": "320.355",
       "universe": "DRAGON BALL (MULTI-ERA)",
       "forms": [
         {
           "id": "form_1",
           "name": "Bardock (Estado Base / Guerrero Élite)",
-          "kiNumeric": 320355,
+          "kiNumeric": 10000,
           "kiFormatted": "320.355",
           "multiplier": "$\\times 1$",
           "tier": "5-B",
@@ -9081,7 +9081,7 @@
         {
           "id": "form_2",
           "name": "Estado Zenkai (Supervivencia Heeter)",
-          "kiNumeric": 1281420,
+          "kiNumeric": 12000,
           "kiFormatted": "1.281.420",
           "multiplier": "$\\times 4$",
           "tier": "5-B",
@@ -9090,16 +9090,16 @@
         {
           "id": "form_3",
           "name": "Oozaru (Mono Gigante)",
-          "kiNumeric": 3203550,
+          "kiNumeric": 15000,
           "kiFormatted": "3.203.550",
           "multiplier": "$\\times 10$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
           "id": "form_4",
           "name": "Super Saiyan (Especial del Pasado)",
-          "kiNumeric": 16017750,
+          "kiNumeric": 25000,
           "kiFormatted": "16.017.750",
           "multiplier": "$\\times 50$",
           "tier": "5-A",
@@ -9241,27 +9241,27 @@
     "soldados-de-freezer-saga-namek-793": {
       "id": "soldados-de-freezer-saga-namek-793",
       "name": "Soldados De Freezer",
-      "baseTier": "7-B",
-      "baseKiNumeric": 4557,
+      "baseTier": "5-C",
+      "baseKiNumeric": 1000,
       "baseKiFormatted": "4.557",
       "universe": "DRAGON BALL (MULTI-ERA)",
       "forms": [
         {
           "id": "form_1",
-          "name": "Estado Base (Recluta)",
-          "kiNumeric": 4557,
+          "name": "Soldado Recluta",
+          "kiNumeric": 1000,
           "kiFormatted": "4.557",
           "multiplier": "$\\times 1$",
-          "tier": "7-B",
+          "tier": "5-C",
           "isApexCustom": false
         },
         {
           "id": "form_2",
-          "name": "Recluta",
-          "kiNumeric": 6152,
+          "name": "Soldado Experimentado",
+          "kiNumeric": 1200,
           "kiFormatted": "6.152",
           "multiplier": "$\\times 1.35$",
-          "tier": "7-B",
+          "tier": "5-C",
           "isApexCustom": false
         }
       ],
@@ -12303,7 +12303,7 @@
         },
         {
           "name": "Maximum: Meteor",
-          "kiNumeric": 18000,
+          "kiNumeric": 8000,
           "kiFormatted": "18.000",
           "multiplier": "x 4",
           "tier": "7-A",
@@ -12312,7 +12312,7 @@
         },
         {
           "name": "Maximum: Ultra",
-          "kiNumeric": 36000,
+          "kiNumeric": 8000,
           "kiFormatted": "36.000",
           "multiplier": "x 8",
           "tier": "High 7-A",
@@ -12375,7 +12375,7 @@
         {
           "id": "form_2",
           "name": "Modo Jackpot (4:11)",
-          "kiNumeric": 95000,
+          "kiNumeric": 12000,
           "kiFormatted": "95.000",
           "multiplier": "x 10",
           "tier": "7-A",
@@ -12807,13 +12807,13 @@
       "id": "sukuna-ryomen-jjk-20sellos-s001",
       "name": "Sukuna Ryomen",
       "baseTier": "7-A",
-      "baseKiNumeric": 15000,
+      "baseKiNumeric": 16000,
       "baseKiFormatted": "15.000",
       "universe": "JUJUTSU KAISEN",
       "forms": [
         {
           "name": "Ryomen Sukuna (Forma Heian / 20 Dedos)",
-          "kiNumeric": 15000,
+          "kiNumeric": 16000,
           "kiFormatted": "15.000",
           "multiplier": "x 1",
           "tier": "7-A",
@@ -13836,14 +13836,14 @@
       "id": "feitan-portor-hxh-ca",
       "name": "Feitan Portor",
       "baseTier": "7-B",
-      "baseKiNumeric": 6363,
+      "baseKiNumeric": 3500,
       "baseKiFormatted": "6.363",
       "universe": "HUNTER X HUNTER",
       "forms": [
         {
           "id": "form_1",
           "name": "Feitan Portor (Estado Base)",
-          "kiNumeric": 6363,
+          "kiNumeric": 3500,
           "kiFormatted": "6.363",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -14312,27 +14312,27 @@
     "meruem-hxh-911": {
       "id": "meruem-hxh-911",
       "name": "Meruem",
-      "baseTier": "7-B",
-      "baseKiNumeric": 8148,
+      "baseTier": "7-A",
+      "baseKiNumeric": 35000,
       "baseKiFormatted": "8.148",
       "universe": "HUNTER X HUNTER",
       "forms": [
         {
           "id": "form_1",
           "name": "Meruem (Rey Hormiga / Estado Base)",
-          "kiNumeric": 8148,
+          "kiNumeric": 35000,
           "kiFormatted": "8.148",
           "multiplier": "$\\times 1$",
-          "tier": "7-B",
+          "tier": "7-A",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Meruem Post-Rosa (Alas de Fotones / Metamorfosis)",
-          "kiNumeric": 36666,
+          "kiNumeric": 180000,
           "kiFormatted": "36.666",
           "multiplier": "$\\times 4.5$",
-          "tier": "High 7-A",
+          "tier": "7-A",
           "isApexCustom": false
         }
       ],
@@ -15119,7 +15119,7 @@
     "joseph-joestar": {
       "id": "joseph-joestar",
       "name": "Joseph Joestar",
-      "baseTier": "7-B",
+      "baseTier": "8-A",
       "baseKiNumeric": 2678,
       "baseKiFormatted": "2.678",
       "universe": "JOJO'S BIZARRE ADVENTURE",
@@ -15130,7 +15130,7 @@
           "kiNumeric": 2678,
           "kiFormatted": "2.678",
           "multiplier": "$\\times 1$",
-          "tier": "7-B",
+          "tier": "8-A",
           "isApexCustom": false
         }
       ],
@@ -16429,27 +16429,27 @@
     "tatsumaki-opm": {
       "id": "tatsumaki-opm",
       "name": "Tatsumaki",
-      "baseTier": "High 6-A",
-      "baseKiNumeric": 56900,
+      "baseTier": "5-A",
+      "baseKiNumeric": 3000000,
       "baseKiFormatted": "56.900",
       "universe": "ONE PUNCH MAN",
       "forms": [
         {
           "id": "form_1",
           "name": "Estado Base (Tatsumaki Casual)",
-          "kiNumeric": 56900,
+          "kiNumeric": 3000000,
           "kiFormatted": "56.900",
           "multiplier": "$\\times 1$",
-          "tier": "High 6-A",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Tatsumaki (Psicoquinesis Seria)",
-          "kiNumeric": 284500,
+          "kiNumeric": 4500000,
           "kiFormatted": "284.500",
           "multiplier": "$\\times 5$",
-          "tier": "High 6-A",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
@@ -16544,18 +16544,18 @@
     "all-might-prime-mha": {
       "id": "all-might-prime-mha",
       "name": "All Might Prime",
-      "baseTier": "6-A",
-      "baseKiNumeric": 11500,
+      "baseTier": "High 6-A",
+      "baseKiNumeric": 60000,
       "baseKiFormatted": "11.500",
       "universe": "MY HERO ACADEMIA",
       "forms": [
         {
           "id": "form_1",
           "name": "All Might Prime (Símbolo de la Paz)",
-          "kiNumeric": 11500,
+          "kiNumeric": 60000,
           "kiFormatted": "11.500",
           "multiplier": "$\\times 1$",
-          "tier": "6-A",
+          "tier": "High 6-A",
           "isApexCustom": false
         }
       ],
@@ -16610,7 +16610,7 @@
     "dabi-mha": {
       "id": "dabi-mha",
       "name": "Dabi (Pre-Guerra)",
-      "baseTier": "High 6-A",
+      "baseTier": "6-A",
       "baseKiNumeric": 30923,
       "baseKiFormatted": "30.923",
       "universe": "MY HERO ACADEMIA",
@@ -16621,7 +16621,7 @@
           "kiNumeric": 30923,
           "kiFormatted": "30.923",
           "multiplier": "$\\times 1$",
-          "tier": "High 6-A",
+          "tier": "6-A",
           "isApexCustom": false
         },
         {
@@ -16831,18 +16831,18 @@
     "hawks-mha": {
       "id": "hawks-mha",
       "name": "Hawks (Pre-Guerra)",
-      "baseTier": "High 6-A",
-      "baseKiNumeric": 34062,
+      "baseTier": "7-A",
+      "baseKiNumeric": 9000,
       "baseKiFormatted": "34.062",
       "universe": "MY HERO ACADEMIA",
       "forms": [
         {
           "id": "form_1",
           "name": "Hawks (Estado Base)",
-          "kiNumeric": 34062,
+          "kiNumeric": 9000,
           "kiFormatted": "34.062",
           "multiplier": "$\\times 1$",
-          "tier": "High 6-A",
+          "tier": "7-A",
           "isApexCustom": false
         }
       ],
@@ -17521,14 +17521,14 @@
       "id": "baki-hanma-baki",
       "name": "Baki Hanma",
       "baseTier": "8-A",
-      "baseKiNumeric": 850,
+      "baseKiNumeric": 3000,
       "baseKiFormatted": "850",
       "universe": "BAKI THE GRAPPLER",
       "forms": [
         {
           "id": "form_1",
           "name": "Baki Hanma (Estado Base / El Campeón Técnico)",
-          "kiNumeric": 850,
+          "kiNumeric": 3000,
           "kiFormatted": "850",
           "multiplier": "$\\times 1$",
           "tier": "8-A",
@@ -17537,7 +17537,7 @@
         {
           "id": "form_2",
           "name": "Espalda del Demonio Despertada",
-          "kiNumeric": 1190,
+          "kiNumeric": 4500,
           "kiFormatted": "1.190",
           "multiplier": "$\\times 1.4$",
           "tier": "8-A",
@@ -18085,14 +18085,14 @@
       "id": "yujiro-hanma-baki",
       "name": "Yujiro Hanma",
       "baseTier": "8-A",
-      "baseKiNumeric": 1100,
+      "baseKiNumeric": 3800,
       "baseKiFormatted": "1.100",
       "universe": "BAKI THE GRAPPLER",
       "forms": [
         {
           "id": "form_1",
           "name": "Yujiro Hanma (La Criatura Más Fuerte del Planeta)",
-          "kiNumeric": 1100,
+          "kiNumeric": 3800,
           "kiFormatted": "1.100",
           "multiplier": "$\\times 1$",
           "tier": "8-A",
@@ -18101,7 +18101,7 @@
         {
           "id": "form_2",
           "name": "Espalda del Demonio y Sed de Sangre Total",
-          "kiNumeric": 1485,
+          "kiNumeric": 5500,
           "kiFormatted": "1.485",
           "multiplier": "$\\times 1.35$",
           "tier": "8-A",
@@ -18363,24 +18363,24 @@
     "kojiro-sasaki-shuumatsu": {
       "id": "kojiro-sasaki-shuumatsu",
       "name": "Kojiro Sasaki",
-      "baseTier": "8-A",
-      "baseKiNumeric": 4500,
+      "baseTier": "4-B",
+      "baseKiNumeric": 900000000,
       "baseKiFormatted": "4.500",
       "universe": "SHUUMATSU NO VALKYRIE (RECORD OF RAGNAROK)",
       "forms": [
         {
           "id": "form_1",
           "name": "Estado Base (Espada Monohoshizao / Senju Musō)",
-          "kiNumeric": 4500,
+          "kiNumeric": 900000000,
           "kiFormatted": "4.500",
           "multiplier": "$\\times 1$",
-          "tier": "8-A",
+          "tier": "4-B",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Despertar Manju Musō (Espadas Gemelas Hrist)",
-          "kiNumeric": 18000,
+          "kiNumeric": 1300000000,
           "kiFormatted": "18.000",
           "multiplier": "$\\times 4$",
           "tier": "4-B",
@@ -19043,10 +19043,10 @@
         {
           "id": "form_2",
           "name": "God Emperor Doom",
-          "kiNumeric": 4905,
+          "kiNumeric": 10000000000000000,
           "kiFormatted": "4.905",
           "multiplier": "$\\times 1.35$",
-          "tier": "8-A",
+          "tier": "2-A",
           "isApexCustom": false
         }
       ],
@@ -19615,14 +19615,14 @@
       "id": "spider-man",
       "name": "Spider Man",
       "baseTier": "8-A",
-      "baseKiNumeric": 900,
+      "baseKiNumeric": 3500,
       "baseKiFormatted": "900",
       "universe": "MARVEL COMICS",
       "forms": [
         {
           "id": "form_1",
           "name": "Spider-Man (Traje Clásico 616)",
-          "kiNumeric": 900,
+          "kiNumeric": 3500,
           "kiFormatted": "900",
           "multiplier": "$\\times 1$",
           "tier": "8-A",
@@ -20712,10 +20712,10 @@
         {
           "id": "form_2",
           "name": "The Darkest Knight",
-          "kiNumeric": 3559,
+          "kiNumeric": 1000000000000000,
           "kiFormatted": "3.559",
           "multiplier": "$\\times 1.35$",
-          "tier": "8-A",
+          "tier": "2-B",
           "isApexCustom": false
         }
       ],
@@ -20908,14 +20908,14 @@
       "id": "anissa-viltrumita",
       "name": "Anissa Viltrumita",
       "baseTier": "5-A",
-      "baseKiNumeric": 4851000,
+      "baseKiNumeric": 700000,
       "baseKiFormatted": "4.851.000",
       "universe": "INVINCIBLE",
       "forms": [
         {
           "id": "form_1",
           "name": "Anissa (Estado Base)",
-          "kiNumeric": 4851000,
+          "kiNumeric": 700000,
           "kiFormatted": "4.851.000",
           "multiplier": "$\\times 1$",
           "tier": "5-A",
@@ -21049,14 +21049,14 @@
       "id": "mark-grayson-emperador-eos",
       "name": "Mark Grayson Emperador Eos",
       "baseTier": "5-A",
-      "baseKiNumeric": 600000,
+      "baseKiNumeric": 2200000,
       "baseKiFormatted": "600.000",
       "universe": "INVINCIBLE",
       "forms": [
         {
           "id": "form_1",
           "name": "Túnica Imperial de 500 Años",
-          "kiNumeric": 600000,
+          "kiNumeric": 2200000,
           "kiFormatted": "600.000",
           "multiplier": "$\\times 1$",
           "tier": "5-A",
@@ -21400,7 +21400,7 @@
     "the-immortal": {
       "id": "the-immortal",
       "name": "The Immortal",
-      "baseTier": "6-A",
+      "baseTier": "6-C",
       "baseKiNumeric": 31469,
       "baseKiFormatted": "31.469",
       "universe": "INVINCIBLE",
@@ -21411,7 +21411,7 @@
           "kiNumeric": 31469,
           "kiFormatted": "31.469",
           "multiplier": "$\\times 1$",
-          "tier": "6-A",
+          "tier": "6-C",
           "isApexCustom": false
         }
       ],
@@ -21475,24 +21475,24 @@
     "billy-butcher-the-boys-914": {
       "id": "billy-butcher-the-boys-914",
       "name": "Billy Butcher",
-      "baseTier": "7-B",
-      "baseKiNumeric": 5901,
+      "baseTier": "9-B",
+      "baseKiNumeric": 150,
       "baseKiFormatted": "5.901",
       "universe": "THE BOYS",
       "forms": [
         {
           "id": "form_1",
           "name": "Estado Base (Humano / Combate CQC)",
-          "kiNumeric": 5901,
+          "kiNumeric": 150,
           "kiFormatted": "5.901",
           "multiplier": "$\\times 1$",
-          "tier": "7-B",
+          "tier": "9-B",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Modo Temp-V / Visión Láser",
-          "kiNumeric": 14752,
+          "kiNumeric": 5000,
           "kiFormatted": "14.752",
           "multiplier": "$\\times 2.5$",
           "tier": "7-B",
@@ -21501,7 +21501,7 @@
         {
           "id": "form_3",
           "name": "Estado Tumor Viviente (Kessler Tentáculos)",
-          "kiNumeric": 20654,
+          "kiNumeric": 6000,
           "kiFormatted": "20.654",
           "multiplier": "$\\times 3.5$",
           "tier": "7-B",
@@ -21538,14 +21538,14 @@
       "id": "homelander-the-boys-913",
       "name": "Homelander",
       "baseTier": "7-B",
-      "baseKiNumeric": 2800,
+      "baseKiNumeric": 9000,
       "baseKiFormatted": "2.800",
       "universe": "THE BOYS",
       "forms": [
         {
           "id": "form_1",
           "name": "Homelander (El Patriota)",
-          "kiNumeric": 2800,
+          "kiNumeric": 9000,
           "kiFormatted": "2.800",
           "multiplier": "$\\times 1$",
           "tier": "7-B",
@@ -21838,7 +21838,7 @@
       "id": "trunks-futuro-adolescente-13",
       "name": "Trunks del Futuro (Adolescente / 13 Años)",
       "universe": "DRAGON BALL Z",
-      "baseTier": "4-B",
+      "baseTier": "5-A",
       "baseKiNumeric": 4300000,
       "baseKiFormatted": "4.300.000",
       "forms": [
@@ -21848,7 +21848,7 @@
           "kiNumeric": 4300000,
           "kiFormatted": "4.300.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "5-A",
           "isApexCustom": false
         },
         {
@@ -21857,7 +21857,7 @@
           "kiNumeric": 215000000,
           "kiFormatted": "215.000.000",
           "multiplier": "$\\times 50$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ]
@@ -21866,32 +21866,32 @@
       "id": "son-goku-ssg-ritual",
       "name": "Son Goku Super Saiyan God (SSG / Ritual)",
       "universe": "DRAGON BALL SUPER",
-      "baseTier": "3-A",
-      "baseKiNumeric": 262400000000,
+      "baseTier": "4-C",
+      "baseKiNumeric": 82000000,
       "baseKiFormatted": "262.400.000.000",
       "forms": [
         {
           "id": "form_1",
           "name": "Saiyan Más Allá de Dios (Base con Ki Divino / ×3.200)",
-          "kiNumeric": 262400000000,
+          "kiNumeric": 82000000,
           "kiFormatted": "262.400.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "3-A",
+          "tier": "4-C",
           "isApexCustom": false
         },
         {
           "id": "form_2",
           "name": "Super Saiyan God (SSG / Ritual de 5 Saiyans)",
-          "kiNumeric": 524800000000,
+          "kiNumeric": 2000000000,
           "kiFormatted": "524.800.000.000",
           "multiplier": "$\\times 2$",
-          "tier": "3-A",
+          "tier": "4-A",
           "isApexCustom": false
         },
         {
           "id": "form_3",
           "name": "Super Saiyan Blue (SSB / Post-Absorción)",
-          "kiNumeric": 631400000000,
+          "kiNumeric": 525000000000,
           "kiFormatted": "631.400.000.000",
           "multiplier": "$\\times 2.4$",
           "tier": "Low 2-C",
@@ -22110,10 +22110,10 @@
         {
           "id": "form_2",
           "name": "Super Saiyan 4 (Gogeta)",
-          "kiNumeric": 110000000000000,
+          "kiNumeric": 15000000000000,
           "kiFormatted": "110.000.000.000.000",
           "multiplier": "$\\times 99$",
-          "tier": "2-A",
+          "tier": "2-C",
           "isApexCustom": false
         }
       ],
@@ -22328,7 +22328,7 @@
     "cell-imperfecto-futuro": {
       "id": "cell-imperfecto-futuro",
       "name": "Cell Imperfecto (Línea Temporal Futura)",
-      "baseTier": "4-B",
+      "baseTier": "4-C",
       "baseKiNumeric": 310000000,
       "baseKiFormatted": "310.000.000",
       "universe": "DRAGON BALL Z",
@@ -22339,7 +22339,7 @@
           "kiNumeric": 310000000,
           "kiFormatted": "310.000.000",
           "multiplier": "$\\times 1$",
-          "tier": "4-B",
+          "tier": "4-C",
           "isApexCustom": false
         }
       ],
@@ -22350,7 +22350,7 @@
     "krilin-saga-namek": {
       "id": "krilin-saga-namek",
       "name": "Krilin (Saga Namek)",
-      "baseTier": "Low 5-B",
+      "baseTier": "5-B",
       "baseKiNumeric": 1900,
       "baseKiFormatted": "1.900",
       "universe": "DRAGON BALL Z",
@@ -22361,7 +22361,7 @@
           "kiNumeric": 1900,
           "kiFormatted": "1.900",
           "multiplier": "$\\times 1$",
-          "tier": "Low 5-B",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22370,7 +22370,7 @@
           "kiNumeric": 20000,
           "kiFormatted": "20.000",
           "multiplier": "$\\times 10.5$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22379,7 +22379,7 @@
           "kiNumeric": 28000,
           "kiFormatted": "28.000",
           "multiplier": "$\\times 14.7$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         }
       ],
@@ -22390,7 +22390,7 @@
     "son-gohan-ni-o-saga-namek": {
       "id": "son-gohan-ni-o-saga-namek",
       "name": "Son Gohan Niño (Saga Namek)",
-      "baseTier": "Low 5-B",
+      "baseTier": "5-B",
       "baseKiNumeric": 2000,
       "baseKiFormatted": "2.000",
       "universe": "DRAGON BALL Z",
@@ -22401,7 +22401,7 @@
           "kiNumeric": 2000,
           "kiFormatted": "2.000",
           "multiplier": "$\\times 1$",
-          "tier": "Low 5-B",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22410,7 +22410,7 @@
           "kiNumeric": 21000,
           "kiFormatted": "21.000",
           "multiplier": "$\\times 10.5$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22419,7 +22419,7 @@
           "kiNumeric": 25000,
           "kiFormatted": "25.000",
           "multiplier": "$\\times 12.5$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22428,7 +22428,7 @@
           "kiNumeric": 36000,
           "kiFormatted": "36.000",
           "multiplier": "$\\times 18$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22437,7 +22437,7 @@
           "kiNumeric": 45000,
           "kiFormatted": "45.000",
           "multiplier": "$\\times 22.5$",
-          "tier": "5-A",
+          "tier": "5-B",
           "isApexCustom": false
         },
         {
@@ -22446,7 +22446,7 @@
           "kiNumeric": 1250000,
           "kiFormatted": "1.250.000",
           "multiplier": "$\\times 625$",
-          "tier": "4-C",
+          "tier": "5-A",
           "isApexCustom": false
         }
       ],
