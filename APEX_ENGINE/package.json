@@ -12,6 +12,7 @@
     "start": "node --env-file-if-exists=.env server.cjs",
     "codex": "node src/scripts/chozenshu/buildApexCodex.mjs",
     "validate": "node src/scripts/rosterCanonicalValidatorV26.js",
+    "audit:images": "node src/scripts/auditCharacterImages.cjs --online",
     "test": "node src/scripts/runComprehensiveTests.js",
     "check": "npm run validate && npm test && npm run build"
   },
