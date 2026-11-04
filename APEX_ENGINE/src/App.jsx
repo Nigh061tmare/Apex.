@@ -844,7 +844,7 @@ export default function App() {
       }
     } else if (targetMode === 'raid' || targetMode === '1vN') {
       // En modo RAID el jefe ocupa el slot A (charA) y la escuadra asaltante el slot B (teamB)
-      setMatchMode('raid');
+      setMatchMode('1vN');
       if (targetSquad === 'boss') {
         setCharA(resolvedFighters[0] || null);
         setTeamB([]);
@@ -857,7 +857,7 @@ export default function App() {
       setBattleRoyale(resolvedFighters);
     } else {
       // Por defecto modo equipos
-      setMatchMode('team');
+      setMatchMode('teams');
       if (targetSquad === 'A') {
         setTeamA(resolvedFighters);
         setTeamB([]);
@@ -886,7 +886,8 @@ export default function App() {
 
     try {
       const effectiveCharA = charA || 'Contendiente A';
-      const effectiveCharB = (matchMode === 'raid' || matchMode === 'team') && teamB?.length > 0
+      const isRaidOrTeam = matchMode === 'raid' || matchMode === '1vN' || matchMode === 'team' || matchMode === 'teams';
+      const effectiveCharB = isRaidOrTeam && teamB?.length > 0
         ? `Escuadra Asaltante (${teamB.length}): ${teamB.map(m => m.name || m.id).join(', ')}`
         : (charB || 'Contendiente B');
 
@@ -1373,7 +1374,7 @@ export default function App() {
             {/* Banner de Merchandising / Figuras Oficiales de los Luchadores */}
             <MerchBanner
               charA={charA}
-              charB={(matchMode === 'raid' || matchMode === 'team') && teamB?.length > 0 ? teamB[0] : charB}
+              charB={(matchMode === 'raid' || matchMode === '1vN' || matchMode === 'team' || matchMode === 'teams') && teamB?.length > 0 ? teamB[0] : charB}
               isVip={isVip}
               lang={lang}
             />

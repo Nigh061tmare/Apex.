@@ -117,8 +117,22 @@ export function resolveCandidateApiKeys(cfg, engine) {
 
 export const SimulationEngine = {
   generateMasterPrompt(charA, charB, scenario, modifiers = {}, teamA = [], teamB = [], battleRoyale = [], multiTeams = [], bossMinions = []) {
+    const rawMode = modifiers.matchMode || '1v1';
+    const isRaid = rawMode === '1vN' || rawMode === 'raid' || rawMode === 'boss';
+    const isTeams = rawMode === 'teams' || rawMode === 'team';
+    const isRoyale = rawMode === 'battle_royale' || rawMode === 'battleRoyale' || rawMode === 'ffa';
+    const is1v1 = !isRaid && !isTeams && !isRoyale;
+    const matchMode = isRaid ? '1vN' : isTeams ? 'teams' : isRoyale ? 'battle_royale' : '1v1';
+
     // DETECCIÓN AUTOMÁTICA DE INTENCIÓN DEL USUARIO (modos de estructura/duración)
-    const userText = `${charA?.name || ''} ${charB?.name || ''} ${scenario || ''}`.toLowerCase();
+    const fightersContextText = isRaid
+      ? `${charA?.name || ''} ${(teamB || []).map(c => c?.name || '').join(' ')}`
+      : isTeams
+      ? `${(teamA || []).map(c => c?.name || '').join(' ')} ${(teamB || []).map(c => c?.name || '').join(' ')}`
+      : isRoyale
+      ? `${(battleRoyale || []).map(c => c?.name || '').join(' ')}`
+      : `${charA?.name || ''} ${charB?.name || ''}`;
+    const userText = `${fightersContextText} ${scenario?.name || ''} ${modifiers.customContext || ''}`.toLowerCase();
     if (!modifiers.simulationMode) {
       if (userText.includes('maratón') || userText.includes('maraton') || userText.includes('combate de resistencia') || userText.includes('pelea muy larga') || userText.includes('alargar mucho')) {
         modifiers.simulationMode = 'maraton';
@@ -149,7 +163,6 @@ export const SimulationEngine = {
       }
     }
     const preset = modifiers.narrativePreset || 'Equilibrado';
-    const matchMode = modifiers.matchMode || '1v1';
     const simRulesStr = modifiers.canonStrict ? 'STRICT CANON (No non-canon scaling)' : 'APEX CUSTOM (Multiversal Equalization)';
     const energyRulesStr = modifiers.energyEqualized ? 'EQUALIZED ENERGY SEEDS' : 'ISOLATED ENERGY SYSTEMS';
 
@@ -161,7 +174,7 @@ export const SimulationEngine = {
 - CAPA 2 [ESCENARIO Y ORÁCULO DE ETERNIDAD]: Reglas y giros de Fase 3 temporales (persistence: simulation_only). Toda forma o técnica generada lleva badge explícito.
 - CAPA 3 [RESULTADO DE SIMULACIÓN]: Desenlace, secuelas anatómicas y líneas Alfa/Beta/Omega aisladas (persistence: simulation_only). Prohibido mutar el Roster canónico.
 - NARRATIVE MODE: ${preset}
-- COMBAT FORMAT: ${matchMode}
+- COMBAT FORMAT: ${isRaid ? `BOSS RAID ASIMÉTRICO (1 VS ${(teamB || []).length} ASALTANTES)` : isTeams ? 'GUERRA DE FACCIONES / EQUIPOS' : isRoyale ? 'BATTLE ROYALE (TODOS CONTRA TODOS)' : 'DUELO 1V1'}
 - SCALING RULES: ${simRulesStr}
 - ENERGY MECHANICS: ${energyRulesStr}
 
@@ -203,7 +216,7 @@ export const SimulationEngine = {
     const tierGap = Math.abs(scoreCharA - scoreCharB);
 
     let tierGapDirective = '';
-    if (matchMode === '1v1' && charA && charB) {
+    if (is1v1 && charA && charB) {
       if (!modifiers.statsEqualized && tierGap > 20) {
         const stronger = scoreCharA > scoreCharB ? charA : charB;
         const weaker = scoreCharA < scoreCharB ? charA : charB;
@@ -641,7 +654,7 @@ ${activeFormLine}
 - Debilidades Explotables Conocidas: ${char.weaknesses || 'Sin debilidades conocidas.'}
 - Transformaciones Corporales Disponibles: ${formatForms(getBodilyForms(char))}${(() => {
   if (char.id === 'dr-raichi-dbm-u3' || char.narrativeCombatProfile?.externalEntityController) {
-    const opp = label.includes('A') ? charB : charA;
+    const opp = label.includes('A') ? (is1v1 ? charB : (teamB?.[0] || charB)) : charA;
     const extContext = selectContextualExternalEntity(char, opp, {
       battleMode: matchMode,
       teamSize: (teamA?.length || 1) + (teamB?.length || 1),
@@ -667,7 +680,7 @@ ${formatArsenal(char)}${formatCanonPassives(char)}`;
 
     // Format Combatants depending on mode
     let combatantsSection = "";
-    if (matchMode === 'teams') {
+    if (isTeams) {
       const teamsToUse = (multiTeams && multiTeams.length >= 2) ? multiTeams : [
         { id: 'alfa', name: 'Equipo Alfa', color: 'red', members: teamA || [] },
         { id: 'beta', name: 'Equipo Beta', color: 'blue', members: teamB || [] }
@@ -687,14 +700,14 @@ ${membersText}`;
 ### III. FICHAS DE COMBATE POR EQUIPOS (${teamsToUse.length} FACCIONES EN GUERRA TOTAL)
 ${teamsBlocks}
 `;
-    } else if (matchMode === '1vN') {
+    } else if (isRaid) {
       const bossMult = modifiers.bossMultiplier || 1.35;
       const bossTierInfo = RAID_BOSS_TIERS.find(t => t.multiplier === bossMult) || RAID_BOSS_TIERS[1];
       const squadSynergy = calculateSquadSynergy(teamB);
       const hasBossMinions = bossMinions && bossMinions.length > 0;
       const bossFactionSynergy = hasBossMinions ? calculateSquadSynergy([charA, ...bossMinions]) : null;
 
-      const squadText = teamB.map((c, i) => formatFullChar(c, `ASALTANTE-${i + 1}`)).join('\n');
+      const squadText = (teamB || []).map((c, i) => formatFullChar(c, `ASALTANTE-${i + 1}`)).join('\n');
       const bossMinionsText = hasBossMinions ? bossMinions.map((m, i) => formatFullChar(m, `SUB-JEFE / ESBIRRO DEL BOSS ${i + 1}`)).join('\n') : '';
       const bossFullText = formatFullChar(charA, 'JEFE TITÁN SUPREMO');
 
@@ -711,14 +724,14 @@ ${hasBossMinions ? `
 - SUB-JEFES / ESBIRROS DE APOYO (${bossMinions.length}):
 ${bossMinionsText}` : ''}
 
---- ESCUADRA ASALTANTE DE ${teamB.length} LUCHADORES ---
+--- ESCUADRA ASALTANTE DE ${(teamB || []).length} LUCHADORES ---
 - COHESIÓN TÁCTICA DE LA ESCUADRA: ${squadSynergy.cohesion}% (${squadSynergy.synergyTier})
 - BUFFS DE EQUIPO ACTIVOS: ${squadSynergy.buffs.map(b => `${b.icon} ${b.name}: ${b.desc}`).join(' | ') || 'Sin buffs pasivos adicionales'}
 - ATAQUES COMBINADOS DISPONIBLES: ${squadSynergy.combos.map(c => `${c.name} (${c.pair}): ${c.desc}`).join(' | ') || 'Asalto coordinado'}
 ${squadText}
 `;
-    } else if (matchMode === 'battle_royale') {
-      const royaleText = battleRoyale.map((c, i) => formatFullChar(c, `GLADIADOR ${i + 1}`)).join('\n');
+    } else if (isRoyale) {
+      const royaleText = (battleRoyale || []).map((c, i) => formatFullChar(c, `GLADIADOR ${i + 1}`)).join('\n');
 
       combatantsSection = `
 ### III. GLADIADORES DEL BATTLE ROYALE (TODOS CONTRA TODOS)
@@ -734,37 +747,57 @@ ${formatFullChar(charB, 'CONTENDIENTE B')}
     }
 
     let modeDirective = "";
-    if (matchMode === 'teams') {
+    if (isTeams) {
       modeDirective = `\nMODO GUERRA DE EQUIPOS: Desarrolla ataques combinados obligatorios usando la sinergia táctica descrita, fuegos cruzados y la caída progresiva de integrantes hasta que un equipo prevalezca.`;
-    } else if (matchMode === '1vN') {
+    } else if (isRaid) {
       const bossMult = modifiers.bossMultiplier || 1.35;
-      const bossMechanics = detectNarrativeBossMechanics(charA, teamB);
+      const squadNames = (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(', ');
       
       modeDirective = `
 MODO 1 VS VARIOS (BOSS RAID ASIMÉTRICO CON ESCALADO ${bossMult}x & SISTEMA DE BOSS NARRATIVO):
-Narra la incursión épica de una escuadra cooperativa de ${teamB.length} luchadores coordinados contra el Jefe Supremo ("${charA.name}") potenciado por el buff de Raid ${bossMult}x.
+Narra la incursión épica de una escuadra cooperativa de ${(teamB || []).length} luchadores coordinados (${squadNames}) contra el Jefe Supremo ("${charA?.name || 'Jefe'}")${bossMinions?.length > 0 ? ` y sus esbirros (${bossMinions.map(m => m.name).join(', ')})` : ''} potenciado por el buff de Raid ${bossMult}x.
+
+⚠️ DIRECTIVA ABSOLUTA DE COMBATIENTES (INVIOLABLE):
+Los ÚNICOS combatientes en esta simulación son:
+- JEFE SUPREMO: ${charA?.name || 'Jefe'}${bossMinions?.length > 0 ? ` con apoyo de: ${bossMinions.map(m => m.name).join(', ')}` : ''}.
+- ESCUADRA ASALTANTE: ${squadNames}.
+PROHIBIDO TERMINANTEMENTE introducir, sustituir, mencionar como oponente o hacer aparecer a combatientes ajenos a este grupo (como rivales de duelos 1v1 anteriores). La batalla es EXCLUSIVAMENTE ${charA?.name} vs el escuadrón de ${squadNames}.
 
 ESTRUCTURA DE 3 FASES OBLIGATORIA DEL BOSS NARRATIVO:
-- FASE 1: "MÁSCARA DE CONTROL" (100% a 70% HP): El Boss combate con desdén y moderación calculada (-30% de daño saliente oculto). Desprecia ataques menores.
-- FASE 2: "QUIEBRE DE PACIENCIA" (70% a 25% HP): Activada por golpe irrespetuoso o 5 golpes acumulados de desgaste. Desata ataques de área devastadores y fija su atención en el estratega principal del grupo.
-- FASE 3: "FORMA VERDADERA / DESESPERACIÓN CÓSMICA" (<25% HP): Desata su técnica prohibida o transformación final (+1 Tier temporal en AP), pero pierde su inmunidad a debuffs menores y sufre fatiga acelerada de energía.
+- FASE 1: "MÁSCARA DE CONTROL" (100% a 70% HP): El Boss combate con desdén y moderación calculada (-30% de daño saliente oculto). Desprecia ataques menores de los miembros de la escuadra y prueba sus defensas.
+- FASE 2: "QUIEBRE DE PACIENCIA" (70% a 25% HP): Activada por golpe irrespetuoso o 5 golpes acumulados de desgaste coordinado del escuadrón. Desata ataques de área devastadores y fija su atención en los apoyos estratégicos y tanques de la escuadra.
+- FASE 3: "FORMA VERDADERA / DESESPERACIÓN CÓSMICA" (<25% HP): Desata su técnica prohibida o transformación final (+1 Tier temporal en AP), pero pierde su inmunidad a debuffs menores y sufre fatiga acelerada de energía frente a la insistencia del escuadrón asaltante.
 
 MECÁNICAS DE AMENAZA COLECTIVA:
 - Presión Colectiva de Amenaza Existencial: Tras 5 ataques combinados/desgaste continuo ignorados, el Boss se ve forzado a la transición de fase antes de tiempo.
 - Desprecio Calculado: El Boss ignora debuffs de control menor de luchadores con 2+ tiers inferiores en las Fases 1 y 2.`;
-    } else if (matchMode === 'battle_royale') {
+    } else if (isRoyale) {
       modeDirective = `\nMODO BATTLE ROYALE (TODOS CONTRA TODOS): Narra el caos absoluto de todos contra todos. Incluye alianzas temporales por conveniencia, traiciones a traición, fuegos cruzados de 3 o más vías y lleva el registro estricto del ORDEN DE ELIMINADOS hasta coronar al ÚNICO CAMPEÓN SUPERVIVIENTE.`;
     }
 
     let structureInstruction = "";
 
     // ============ CABECERA DE PARÁMETROS REUTILIZABLE (SALE EN TODOS LOS MODOS) ============
+    const squadNamesStr = (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(', ');
     const paramHeader = `
 ### ⚙️ PARÁMETROS & REGLAS ACTIVAS DE SIMULACIÓN
-- **Modo de Simulación:** APEX Canon-Plus / Simulación Multiversal — ${matchMode === 'raid' ? 'Boss Raid Asimétrico' : matchMode === 'team' ? 'Combate por Equipos' : matchMode === 'battleRoyale' ? 'Battle Royale' : 'Duelo 1v1'}
+- **Modo de Simulación:** APEX Canon-Plus / Simulación Multiversal — ${
+  isRaid ? `Boss Raid Asimétrico (Jefe Supremo vs Escuadrón de ${(teamB || []).length} Asaltantes)`
+  : isTeams ? `Guerra de Facciones (${(multiTeams?.length || 2)} Equipos)`
+  : isRoyale ? `Battle Royale (Todos contra Todos — ${(battleRoyale?.length || 0)} Gladiadores)`
+  : 'Duelo 1v1'
+}
 - **Continuidad & Versiones Declaradas:**
-  * Bando A: ${charA?.name || 'Contendiente Alfa'} [${charA?.universe || 'Canon'}, ${charA?.forms?.[0]?.name || 'Base'}]
-  * Bando B: ${charB?.name || 'Contendiente Beta'} [${charB?.universe || 'Canon'}, ${charB?.forms?.[0]?.name || 'Base'}]
+  * Bando A: ${charA?.name || 'Contendiente Alfa'} [${charA?.universe || 'Canon'}, ${charA?.forms?.[0]?.name || 'Base'}]${(isRaid && bossMinions?.length > 0) ? ` + Sub-jefes / Esbirros: ${bossMinions.map(m => m.name).join(', ')}` : ''}
+  * Bando B: ${
+    isRaid
+      ? `Escuadrón Asaltante (${(teamB || []).length} Combatientes): ${squadNamesStr}`
+      : isTeams
+      ? `Facciones Rivales`
+      : isRoyale
+      ? `Todos contra Todos (${(battleRoyale || []).map(c => c?.name).join(', ')})`
+      : `${charB?.name || 'Contendiente Beta'} [${charB?.universe || 'Canon'}, ${charB?.forms?.[0]?.name || 'Base'}]`
+  }
 - **Reglas del Motor:**
   * Verse Equalization: ON (Energías interactúan según jerarquía de Tier y hax)
   * Modelo de Stamina: Dinámico (Base Upkeep + Gasto por Técnica)
@@ -773,6 +806,34 @@ MECÁNICAS DE AMENAZA COLECTIVA:
   * Exclusividad Técnica: Técnicas insignia solo para su usuario canónico (Ryūken = Son Goku, Mafūba = Roshi/Tenshinhan, Final Flash = Vegeta, Hakai = Dioses de Destrucción, etc.)
   * Anclaje Temporal Estricto: Cada personaje conoce SOLO su era/saga. PROHIBIDO usar técnicas, formas, información o relaciones de sagas posteriores a su ficha. Los nombres se usan solo si el personaje los conoce en su era.
 `;
+
+    let biometricFinalBlock = '';
+    if (isRaid) {
+      const minionLines = (bossMinions || []).map(m => `- **${m?.name || 'Esbirro'}:** <HP>% HP | <STM>% STM | <Estado Vital>.`).join('\n');
+      const squadLines = (teamB || []).map(c => `- **${c?.name || 'Asaltante'}:** <HP>% HP | <STM>% STM | <Estado Vital (Vivo-Óptimo / Vivo-Crítico / Retirado / K.O. / Fallecido)>. <Aportación táctica, daño recibido/heridas>`).join('\n');
+      biometricFinalBlock = `**ESTADO BIOMÉTRICO FINAL DETALLADO POR BANDOS:**
+**BANDO A — JEFE SUPREMO (${charA?.name || 'Boss'}):**
+- **${charA?.name || 'Boss'}:** <HP>% HP | <STM>% STM | <Estado Vital (Vivo-Óptimo / Vivo-Crítico / Retirado / K.O. / Fallecido)>. <Capacidad funcional, daño anatómico acumulado>.
+${minionLines}
+
+**BANDO B — ESCUADRÓN ASALTANTE (${(teamB || []).length} COMBATIENTES):**
+${squadLines}`;
+    } else if (isTeams) {
+      const activeFactions = (multiTeams && multiTeams.length >= 2) ? multiTeams : [
+        { name: 'Equipo Alfa', members: teamA || [] },
+        { name: 'Equipo Beta', members: teamB || [] }
+      ];
+      biometricFinalBlock = `**ESTADO BIOMÉTRICO FINAL DETALLADO POR FACCIONES:**\n` + activeFactions.map(tm => `**${tm.name?.toUpperCase() || 'EQUIPO'}:**\n${(tm.members || []).map(c => `- **${c?.name || 'Luchador'}:** <HP>% HP | <STM>% STM | <Estado Vital>.`).join('\n')}`).join('\n\n');
+    } else if (isRoyale) {
+      biometricFinalBlock = `**ESTADO BIOMÉTRICO FINAL DETALLADO (BATTLE ROYALE):**\n` + (battleRoyale || []).map((c, i) => `- **${c?.name || `Gladiador ${i+1}`}:** <HP>% HP | <STM>% STM | <Estado (Superviviente / Puesto de Eliminación / Causa)>.`).join('\n');
+    } else {
+      biometricFinalBlock = `**ESTADO BIOMÉTRICO FINAL DETALLADO POR BANDOS:**
+**BANDO A — ${charA?.name || 'Bando Alfa'}:**
+- **${charA?.name || 'Alfa'}:** <HP>% HP | <STM>% STM | <Estado Vital (Vivo-Óptimo / Vivo-Crítico / Retirado / K.O. / Fallecido)>. <Capacidad funcional: Movilidad, respiración, brazos, trauma localizado>.
+
+**BANDO B — ${charB?.name || 'Bando Beta'}:**
+- **${charB?.name || 'Beta'}:** <HP>% HP | <STM>% STM | <Estado Vital (Vivo-Óptimo / Vivo-Crítico / Retirado / K.O. / Fallecido)>. <Capacidad funcional: Movilidad, respiración, brazos, trauma localizado>.`;
+    }
 
 if (modifiers.simulationMode === 'cronica') {
       structureInstruction = paramHeader + `
@@ -1097,12 +1158,7 @@ ${diffLabel} <Extreme-Diff | High-Diff | Mid-Diff | Low-Diff>
   * <Trauma Anatómico Acumulado>: -<Z>% HP
   = <HP Final>% HP (<Fallecido / Incapacitado / Retirado Vivo a 5-10% HP>)
 
-**ESTADO BIOMÉTRICO FINAL DETALLADO POR BANDOS:**
-**BANDO A — ${charA?.name || 'Bando Alfa'}:**
-- **${charA?.name || 'Alfa'}:** <HP>% HP | <STM>% STM | <Estado Vital (Vivo-Óptimo / Vivo-Crítico / Retirado / K.O. / Fallecido)>. <Capacidad funcional: Movilidad, respiración, brazos, trauma localizado>.
-
-**BANDO B — ${charB?.name || 'Bando Beta'}:**
-- **${charB?.name || 'Beta'}:** <HP>% HP | <STM>% STM | <Estado Vital (Vivo-Óptimo / Vivo-Crítico / Retirado / K.O. / Fallecido)>. <Capacidad funcional: Movilidad, respiración, brazos, trauma localizado>.
+${biometricFinalBlock}
 
 **ESTADO DEL MAPA & IMPACTO AMBIENTAL:**
 - **Magnitud Richter Estimada:** <Valor>
@@ -1318,21 +1374,30 @@ Al final del combate, en la sección "ESTADO DEL MAPA", DEBES incluir el siguien
     // capas de Hax, tier-gap, capa mecánica de arena, artefactos y checklist.
     let coreCombatBlock = '';
     try {
-      const _participants = [charA, charB, ...(teamA || []), ...(teamB || []), ...(battleRoyale || []), ...(bossMinions || [])].filter(Boolean);
+      const _participants = isRaid
+        ? [charA, ...(bossMinions || []), ...(teamB || [])].filter(Boolean)
+        : isTeams
+        ? [...(teamA || []), ...(teamB || [])].filter(Boolean)
+        : isRoyale
+        ? (battleRoyale || []).filter(Boolean)
+        : [charA, charB].filter(Boolean);
+
       const _tierNumOf = (t) => { const mm = String(t || '').match(/(\d+)/); return mm ? parseInt(mm[1], 10) : 5; };
-      const _tierGapLevel = (charA && charB && !modifiers.statsEqualized)
+      const _tierGapLevel = (is1v1 && charA && charB && !modifiers.statsEqualized)
         ? Math.min(4, Math.abs(_tierNumOf(charA?.tier) - _tierNumOf(charB?.tier)))
         : 0;
+
       coreCombatBlock = buildCombatCoreBlock({
         scenario,
         modifiers,
         charA,
-        charB,
+        charB: is1v1 ? charB : null,
         tierGapLevel: _tierGapLevel,
-        isBossMode: matchMode === 'raid',
-        isTeamsMode: matchMode === 'teams' || matchMode === 'team',
-        isBattleRoyale: matchMode === 'battle_royale',
+        isBossMode: isRaid,
+        bossName: charA?.name,
         bossMultiplier: modifiers.bossMultiplier || 1.35,
+        isTeamsMode: isTeams,
+        isBattleRoyale: isRoyale,
         participants: _participants,
         teamA,
         teamB
@@ -1345,7 +1410,7 @@ Al final del combate, en la sección "ESTADO DEL MAPA", DEBES incluir el siguien
 ### APEX ENGINE: ACTIVE SIMULATION RULES & CONFIG
 ### ========================================
 - FILTRO / ESTILO LITERARIO: ${nPreset}
-- MODALIDAD DE COMBATE: ${matchMode.toUpperCase()}
+- MODALIDAD DE COMBATE: ${isRaid ? 'BOSS RAID ASIMÉTRICO (1 VS VARIOS)' : isTeams ? 'GUERRA DE FACCIONES / EQUIPOS' : isRoyale ? 'BATTLE ROYALE (TODOS CONTRA TODOS)' : 'DUELO 1V1'}
 - PSICOLOGÍA & MORAL (BLOODLUST): ${bloodlustStr}
 - ESCALA DE VELOCIDAD: ${speedStr}
 - ESCALA DE STATS FÍSICOS: ${statsStr}
@@ -2741,7 +2806,7 @@ ESTADO FINAL:
 Modo: ${matchMode}.
 Condición: Debe ser dinámica, con tono serio de VS Battles y física sensorial (olores a ozono, azufre, gravedad). Responde ÚNICAMENTE con el texto de la premisa, sin introducciones ni comillas.`;
 
-    if (matchMode === '1vN') {
+    if (matchMode === '1vN' || matchMode === 'raid') {
       const squadNames = (teamB || []).filter(Boolean).length > 0 ? (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(' y ') : 'el escuadrón';
       prompt = `Genera una premisa de combate Raid Boss de 2-3 oraciones: El Titán ${cAName} enfrenta a la alianza de ${squadNames} en "${scenName}". Responde solo con la premisa directa sin comillas.`;
     } else if (matchMode === 'teams') {
@@ -2763,7 +2828,7 @@ Condición: Debe ser dinámica, con tono serio de VS Battles y física sensorial
     }
 
     // Procedural Fallback
-    if (matchMode === '1vN') {
+    if (matchMode === '1vN' || matchMode === 'raid') {
       const squadNames = (teamB || []).filter(Boolean).length > 0 ? (teamB || []).filter(Boolean).map(c => c?.name || c?.id || 'Asaltante').join(' y ') : 'el escuadrón';
       return `En ${scenName}, el aire huele a azufre y ozono quemado mientras el Titán ${cAName} desata su furia cósmica; ${squadNames} deberán coordinar sus arsenales y hax al unísono para quebrar su impenetrable defensa antes de que la arena colapse.`;
     } else if (matchMode === 'teams') {

@@ -382,7 +382,7 @@ export function buildCombatCoreBlock(opts = {}) {
     const multLabel = `${Number(bossMultiplier).toFixed(2)}x`;
     sections.push(buildBossSystemBlock());
     sections.push(`### 🐉 ESCALADO DE JEFE ACTIVO: ${multLabel}\nEl Boss opera con rendimiento multiplicado por ${multLabel} respecto a su línea base. Las fases de escalado SOLO se activan por triggers canónicos (umbral de daño, tiempo, pérdida de aliados o uso de ultimate), nunca por conveniencia narrativa.`);
-    const profile = getRaidBossProfile(bossName || charB?.name || scenario);
+    const profile = getRaidBossProfile(bossName || charA?.name || scenario);
     if (profile) {
       sections.push(`### 👹 PERFIL DE RAID BOSS: ${profile.name}\n- ${profile.desc || profile.type || ''}\n- Fases declaradas: ${profile.phases ? Object.keys(profile.phases).join(' → ') : '3 fases estándar'}`);
     }
@@ -405,7 +405,10 @@ export function buildCombatCoreBlock(opts = {}) {
 - El entorno y el desgaste delatan al más fuerte: el exceso de poder atrae agresión múltiple.`);
   }
 
-  sections.push(buildVerseEqualizationBlock(charA, charB));
+  const effectiveCharB = (isBossMode || isTeamsMode) && teamB && teamB.length > 0
+    ? teamB[0]
+    : charB;
+  sections.push(buildVerseEqualizationBlock(charA, effectiveCharB));
   sections.push(buildArtifactsBlock());
   sections.push(buildTurnChecklistBlock(participants));
 
