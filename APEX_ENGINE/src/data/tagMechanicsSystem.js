@@ -1433,70 +1433,83 @@ export function getCharacterEffectiveTags(char) {
   }
   
   const nameLow = (char.name || "").toLowerCase();
-  const aliasLow = (char.alias || "").toLowerCase();
+  const idLow = (char.id || "").toLowerCase();
   const uniLow = (char.universe || "").toLowerCase();
   const tierLow = (char.tier || "").toLowerCase();
   const sagaLow = (char.saga || "").toLowerCase();
-  const abilitiesLow = [
-    ...(char.abilities || []),
-    ...(char.arsenal?.superAttacks?.map(a => a.name + " " + a.desc) || []),
-    ...(char.arsenal?.ultimateAttacks?.map(a => a.name + " " + a.desc) || [])
-  ].join(" ").toLowerCase();
-
+  const formsLow = (char.forms || []).map(f => (f.name || "").toLowerCase()).join(" ");
+  
   const hasWord = (str, word) => {
     const regex = new RegExp(`\\b${word}\\b`, 'i');
     return regex.test(str);
   };
 
+  const isDbUniverse = uniLow.includes("dragon ball") || uniLow.includes("db");
+
   // === 1. ARQUETIPOS DE DRAGON BALL & SAIYANS ===
-  const saiyanKeywords = ['goku', 'vegeta', 'gohan', 'broly', 'trunks', 'goten', 'bardock', 'vegetto', 'gogeta', 'gotenks', 'kakarotto', 'raditz', 'nappa', 'son bra', 'turles'];
-  if (saiyanKeywords.some(k => nameLow.includes(k))) {
+  const saiyanKeywords = ['goku', 'vegeta', 'gohan', 'broly', 'trunks', 'goten', 'bardock', 'vegetto', 'gogeta', 'gotenks', 'kakarotto', 'raditz', 'nappa', 'son bra', 'turles', 'cabba', 'caulifla', 'kale', 'kefla'];
+  const isSaiyanExclusion = nameLow.includes("abuelo") || nameLow.includes("freezer") || nameLow.includes("frieza") || (nameLow.includes("piccolo") && !nameLow.includes("goku"));
+  if (isDbUniverse && !isSaiyanExclusion && saiyanKeywords.some(k => hasWord(nameLow, k))) {
     tags.add("Saiyan");
     tags.add("Usuario de Ki");
     tags.add("Voluntad Inquebrantable");
     tags.add("Linaje Saiyan Puro");
     tags.add("Orgullo Saiyan");
   }
-  if (tierLow.includes("2-") || tierLow.includes("1-") || nameLow.includes("god") || nameLow.includes("blue") || nameLow.includes("ultra") || nameLow.includes("hakaishin") || nameLow.includes("beast") || nameLow.includes("ego") || nameLow.includes("instinto") || nameLow.includes("bills") || nameLow.includes("beerus") || nameLow.includes("whis") || nameLow.includes("champa") || nameLow.includes("vados") || nameLow.includes("daishinkan") || nameLow.includes("zeno")) {
+
+  // Ki Divino legítimo (Dioses de DB o transformaciones divinas SSG/SSB/UI/UE/Bestia/Rosé)
+  const isDbGod = isDbUniverse && (
+    nameLow.includes("beerus") || nameLow.includes("whis") || nameLow.includes("vados") || nameLow.includes("champa") ||
+    hasWord(nameLow, "zeno") || nameLow.includes("daishinkan") || nameLow.includes("gran sacerdote") ||
+    formsLow.includes("super saiyan god") || formsLow.includes("dios") || formsLow.includes("blue") ||
+    formsLow.includes("rosé") || formsLow.includes("rose") || formsLow.includes("ultra instinto") ||
+    formsLow.includes("ultra ego") || formsLow.includes("beast") || formsLow.includes("bestia") ||
+    nameLow.includes("ultra ego") || nameLow.includes("ultra instinto") || nameLow.includes("zamasu") ||
+    nameLow.includes("goku black") || nameLow.includes("merus") || nameLow.includes("toppo")
+  );
+  if (isDbGod && !nameLow.includes("general blue") && !idLow.includes("krillin-new-hope") && !nameLow.includes("hirudegarn")) {
     tags.add("Ki Divino");
   }
 
-  // === 2. DIOSES DE LA DESTRUCCIÓN & ÁNGELES ===
-  if (nameLow.includes("whis") || nameLow.includes("vados") || nameLow.includes("daishinkan") || nameLow.includes("gran sacerdote") || nameLow.includes("marcarita") || nameLow.includes("kusu") || nameLow.includes("angel") || nameLow.includes("ángel")) {
+  // === 2. DIOSES DE LA DESTRUCCIÓN & ÁNGELES (solo DB) ===
+  if (isDbUniverse && (nameLow.includes("whis") || nameLow.includes("vados") || nameLow.includes("daishinkan") || nameLow.includes("gran sacerdote") || nameLow.includes("marcarita") || nameLow.includes("kusu"))) {
     tags.add("Ángel Asistente");
     tags.add("Ki Divino");
     tags.add("Autoridad Multiversal");
   }
-  if (nameLow.includes("beerus") || nameLow.includes("bills") || nameLow.includes("champa") || nameLow.includes("belmod") || nameLow.includes("quitela") || nameLow.includes("hakaishin") || nameLow.includes("destrucción") || nameLow.includes("destruccion")) {
+  if (isDbUniverse && (nameLow.includes("beerus") || nameLow.includes("bills") || nameLow.includes("champa") || nameLow.includes("belmod") || nameLow.includes("quitela") || hasWord(nameLow, "hakaishin"))) {
     tags.add("Dios de la Destrucción");
     tags.add("Ki Divino");
     tags.add("Hakai / Erasión Existencial");
   }
-  if (nameLow.includes("zen-oh") || nameLow.includes("zeno") || nameLow.includes("rey del todo") || nameLow.includes("zeno-sama")) {
+  if (isDbUniverse && (nameLow.includes("zeno") || nameLow.includes("rey del todo"))) {
     tags.add("Autoridad Multiversal");
     tags.add("Omni-Presencia / Borrado Absoluto");
   }
 
   // === 3. REGENERADORES & NO-MUERTOS ===
-  if (nameLow.includes("buu") || nameLow.includes("cell") || nameLow.includes("piccolo") || nameLow.includes("gast carcolh") || nameLow.includes("deadpool") || nameLow.includes("wolverine") || nameLow.includes("alucard") || nameLow.includes("muzan") || nameLow.includes("zombiman") || nameLow.includes("hulk") || nameLow.includes("doomsday") || abilitiesLow.includes("regenera")) {
+  const isTrueCellOrBuu = (hasWord(nameLow, "buu") || hasWord(nameLow, "cell")) && !nameLow.includes("saga") && !nameLow.includes("post-") && !nameLow.includes("games") && !nameLow.includes("androides");
+  const hasRegenHax = Array.isArray(char.haxTags) && char.haxTags.some(t => typeof t === "string" && (t.startsWith("Regeneración") || t.startsWith("Inmortal")));
+  if (isTrueCellOrBuu || hasRegenHax || hasWord(nameLow, "piccolo") || nameLow.includes("deadpool") || nameLow.includes("wolverine") || nameLow.includes("alucard") || nameLow.includes("muzan") || nameLow.includes("zombiman") || hasWord(nameLow, "hulk") || nameLow.includes("doomsday")) {
     tags.add("Regenerador Celular");
   }
 
   // === 4. ARTES MARCIALES & COMBATIENTES PUROS ===
-  if (uniLow.includes("baki") || nameLow.includes("baki") || nameLow.includes("yujiro") || nameLow.includes("jack hanma") || nameLow.includes("doppo") || nameLow.includes("shibukawa") || nameLow.includes("krilin") || nameLow.includes("yamcha") || nameLow.includes("tenshinhan") || nameLow.includes("roshi") || nameLow.includes("garou") || nameLow.includes("bang") || nameLow.includes("silver fang") || nameLow.includes("batman") || nameLow.includes("daredevil") || nameLow.includes("shang-chi") || nameLow.includes("iron fist") || nameLow.includes("rocky")) {
+  if (uniLow.includes("baki") || nameLow.includes("baki") || nameLow.includes("yujiro") || nameLow.includes("krilin") || nameLow.includes("yamcha") || nameLow.includes("tenshinhan") || nameLow.includes("roshi") || nameLow.includes("garou") || nameLow.includes("bang") || nameLow.includes("batman") || nameLow.includes("daredevil") || nameLow.includes("shang-chi") || nameLow.includes("iron fist")) {
     tags.add("Maestro de Artes Marciales");
     tags.add("Combatiente Físico Puro");
   }
 
-  // === 5. STAND USERS (JOJO'S BIZARRE ADVENTURE) ===
-  if (uniLow.includes("jojo") || nameLow.includes("jotaro") || nameLow.includes("dio") || nameLow.includes("giorno") || nameLow.includes("josuke") || nameLow.includes("joseph") || nameLow.includes("diavolo") || nameLow.includes("pucci") || nameLow.includes("kira") || nameLow.includes("valentine") || nameLow.includes("johnny")) {
+  // === 5. STAND USERS (JOJO) - Excluir Hamon y Hombres del Pilar ===
+  const isHamonOrPillar = (nameLow.includes("jonathan") || nameLow.includes("caesar") || nameLow.includes("zeppeli")) && !nameLow.includes("gyro") || nameLow.includes("lisa lisa") || nameLow.includes("kars") || nameLow.includes("wamuu") || nameLow.includes("esidisi") || nameLow.includes("santana") || nameLow.includes("speedwagon");
+  if (uniLow.includes("jojo") && !isHamonOrPillar) {
     tags.add("Usuario de Stand");
-    if (nameLow.includes("jotaro") || nameLow.includes("dio") || nameLow.includes("diavolo") || nameLow.includes("pucci") || nameLow.includes("kira")) {
+    if (hasWord(nameLow, "jotaro") || hasWord(nameLow, "dio") || hasWord(nameLow, "diavolo") || hasWord(nameLow, "pucci") || hasWord(nameLow, "kira")) {
       tags.add("Manipulador Temporal");
     }
   }
 
-  // === 6. JUJUTSU KAISEN (ENERGÍA MALDITA & DOMINIO) ===
+  // === 6. JUJUTSU KAISEN ===
   if (uniLow.includes("jujutsu") || nameLow.includes("gojo") || nameLow.includes("sukuna") || nameLow.includes("itadori") || nameLow.includes("megumi") || nameLow.includes("yuta") || nameLow.includes("toji") || nameLow.includes("maki") || nameLow.includes("geto") || nameLow.includes("kenjaku") || nameLow.includes("kashimo") || nameLow.includes("hakari") || nameLow.includes("higuruma") || nameLow.includes("choso") || nameLow.includes("todo") || nameLow.includes("mahito")) {
     tags.add("Usuario de Energía Maldita");
     if (nameLow.includes("gojo") || nameLow.includes("sukuna") || nameLow.includes("megumi") || nameLow.includes("yuta") || nameLow.includes("kenjaku") || nameLow.includes("hakari") || nameLow.includes("higuruma") || nameLow.includes("mahito") || nameLow.includes("yorozu")) {
@@ -1512,163 +1525,20 @@ export function getCharacterEffectiveTags(char) {
     tags.add("Velocista");
   }
 
-  // === 8. ESPADACHINES / CORTADORES ===
-  if (nameLow.includes("zoro") || nameLow.includes("mihawk") || nameLow.includes("trunks") || nameLow.includes("atomic samurai") || nameLow.includes("yoriichi") || nameLow.includes("kokushibo") || nameLow.includes("ichigo") || nameLow.includes("zaraki") || nameLow.includes("sasuke") || nameLow.includes("kenshin") || nameLow.includes("shanks") || nameLow.includes("law")) {
+  // === 8. ESPADACHINES ===
+  if (nameLow.includes("zoro") || nameLow.includes("mihawk") || (isDbUniverse && nameLow.includes("trunks")) || nameLow.includes("atomic samurai") || nameLow.includes("yoriichi") || nameLow.includes("kokushibo") || nameLow.includes("ichigo") || nameLow.includes("zaraki") || nameLow.includes("sasuke") || nameLow.includes("kenshin") || nameLow.includes("shanks") || nameLow.includes("law")) {
     tags.add("Espadachín / Maestro de Armas");
   }
 
-  // === 9. ENTIDADES CÓSMICAS & OMNI ===
+  // === 9. ENTIDADES CÓSMICAS ===
   if (nameLow.includes("anti-monitor") || nameLow.includes("the one above all") || nameLow.includes("the presence") || nameLow.includes("living tribunal") || nameLow.includes("spectre") || nameLow.includes("dr. manhattan") || nameLow.includes("lucifer") || nameLow.includes("michael") || nameLow.includes("tori-bot") || nameLow.includes("arale") || nameLow.includes("featherine") || nameLow.includes("beyonder")) {
     tags.add("Entidad Cósmica / Omniversal");
     tags.add("Autoridad Multiversal");
   }
 
-  // === 10. ELEMENTALES ===
-  if (nameLow.includes("ace") || nameLow.includes("sabo") || nameLow.includes("akainu") || nameLow.includes("natsu") || nameLow.includes("flame") || nameLow.includes("todoroki") || nameLow.includes("endeavor") || nameLow.includes("human torch") || nameLow.includes("pyro")) {
-    tags.add("Fuego/Magma");
-  }
-  if (nameLow.includes("aokiji") || nameLow.includes("kuzan") || nameLow.includes("sub-zero") || nameLow.includes("iceman") || nameLow.includes("gray") || nameLow.includes("hitsugaya") || nameLow.includes("hielo")) {
-    tags.add("Hielo/Frío");
-  }
-  if (nameLow.includes("enel") || nameLow.includes("raiden") || nameLow.includes("thor") || nameLow.includes("kashimo") || nameLow.includes("killua") || nameLow.includes("laxus") || nameLow.includes("electro") || nameLow.includes("rayo") || nameLow.includes("trueno")) {
-    tags.add("Rayo/Electricidad");
-  }
-
-  // === 11. GUERREROS DBM (UNIVERSO 9, 13, 16, 18, 19, 20) ===
-  if (uniLow.includes("multiverse") || nameLow.includes("u9") || nameLow.includes("u13") || nameLow.includes("u16") || nameLow.includes("u18") || nameLow.includes("u19") || nameLow.includes("u20") || nameLow.includes("gast") || nameLow.includes("zen buu") || nameLow.includes("son bra") || nameLow.includes("eleim") || nameLow.includes("xxi") || nameLow.includes("kakarotto (universo 13)")) {
-    tags.add("Participante Torneo DBM");
-    if (nameLow.includes("u9") || nameLow.includes("universo 9") || nameLow.includes("kulilin") || nameLow.includes("yamcha (continuidad universo 9)") || nameLow.includes("tenshinhan (continuidad universo 9)") || nameLow.includes("videl (continuidad universo 9)")) {
-      tags.add("Guerrero Z Sin Saiyans (U9)");
-    }
-    if (nameLow.includes("u13") || nameLow.includes("universo 13")) {
-      tags.add("Saiyan Conquistador (U13)");
-    }
-    if (nameLow.includes("eleim") || nameLow.includes("tidar") || nameLow.includes("xeniloum") || nameLow.includes("u19") || nameLow.includes("heliota")) {
-      tags.add("Tecnología Heliota (Armadura Ultra)");
-    }
-  }
-
-  // === 12. USUARIOS DE MAGIA OSCURA / SELLOS ===
-  if (nameLow.includes("babidi") || nameLow.includes("bibidi") || nameLow.includes("moro") || nameLow.includes("dabra") || nameLow.includes("xxi") || nameLow.includes("majin") || nameLow.includes("hechicero") || nameLow.includes("dr. raichi") || nameLow.includes("hatchiyack") || nameLow.includes("lychee")) {
-    tags.add("Usuario de Magia Oscura/Sellado");
-  }
-
-  // === 13. INMORTALIDAD & VAMPIROS ===
-  if (nameLow.includes("zamasu") || nameLow.includes("immortal") || nameLow.includes("alucard") || nameLow.includes("dio") || nameLow.includes("garlic") || nameLow.includes("hidan") || nameLow.includes("ban") || nameLow.includes("deadpool")) {
-    tags.add("Inmortalidad Biológica/Regenerativa");
-  }
-
-  // === 14. ONE PUNCH MAN & ROTURA DE LIMITADOR ===
-  if (nameLow.includes("saitama") || nameLow.includes("garou")) {
-    tags.add("Rotura de Limitador");
-    tags.add("Golpe de Un Solo Impacto");
-    tags.add("Crecimiento Ilimitado");
-    tags.add("Clase S");
-  }
-
-  // === 15. DEMON SLAYER (KIMETSU NO YAIBA) ===
-  if (uniLow.includes("demon slayer") || uniLow.includes("kimetsu") || nameLow.includes("tanjiro") || nameLow.includes("rengoku") || nameLow.includes("giyu") || nameLow.includes("zenitsu") || nameLow.includes("kokushibo") || nameLow.includes("yoriichi") || nameLow.includes("sanemi") || nameLow.includes("muzan") || nameLow.includes("akaza") || nameLow.includes("doma") || nameLow.includes("inosuke") || nameLow.includes("nezuko")) {
-    tags.add("Portador de Espada Demoníaca/Nichirin");
-    tags.add("Usuario de Respiración");
-    if (nameLow.includes("rengoku") || nameLow.includes("giyu") || nameLow.includes("sanemi") || nameLow.includes("yoriichi") || nameLow.includes("gyomei") || nameLow.includes("shinobu")) {
-      tags.add("Pilar/Hashira o Equivalente de Élite");
-    }
-  }
-
-  // === 16. HUNTER X HUNTER & NEN ===
-  if (uniLow.includes("hunter") || nameLow.includes("kurapika") || hasWord(nameLow, "gon") || nameLow.includes("killua") || nameLow.includes("chrollo") || nameLow.includes("meruem") || nameLow.includes("netero") || nameLow.includes("hisoka") || nameLow.includes("ging") || nameLow.includes("silva") || nameLow.includes("illumi")) {
-    tags.add("Usuario de Nen/Voto Autoimpuesto");
-    tags.add("Usuario de Nen");
-    if (hasWord(nameLow, "gon") || nameLow.includes("kurapika") || nameLow.includes("ging")) tags.add("Voluntad Inquebrantable");
-  }
-
-  // === 17. DEIDADES & MITOLOGÍA (RECORD OF RAGNAROK) ===
-  if (uniLow.includes("ragnarok") || nameLow.includes("zeus") || hasWord(nameLow, "adam") || nameLow.includes("poseidon") || nameLow.includes("buda") || nameLow.includes("shiva") || nameLow.includes("odin") || hasWord(nameLow, "thor") || nameLow.includes("beelzebub") || nameLow.includes("hades") || nameLow.includes("tesla") || nameLow.includes("qin") || nameLow.includes("lu bu") || nameLow.includes("jack the ripper")) {
-    tags.add("Deidad/Figura Mitológica");
-    tags.add("Voluntad Inquebrantable");
-  }
-
-  // === 18. TITANES & FUERZA BRUTA ===
-  if (nameLow.includes("superman") || hasWord(nameLow, "thor") || nameLow.includes("omni") || nameLow.includes("invincible") || nameLow.includes("homelander") || nameLow.includes("hulk") || nameLow.includes("the immortal") || nameLow.includes("wonder woman") || nameLow.includes("general zod") || nameLow.includes("shazam") || nameLow.includes("martian manhunter") || tierLow.includes("planet") || tierLow.includes("4-") || tierLow.includes("3-") || tierLow.includes("2-") || tierLow.includes("1-")) {
-    tags.add("Nivel Planetario+");
-    tags.add("Fuerza Bruta Sobrehumana");
-  }
-
-  // === 19. SUPLENTES & RESERVAS ===
-  if (nameLow.includes("krilin") || nameLow.includes("yamcha") || nameLow.includes("tenshinhan") || nameLow.includes("goten") || nameLow.includes("pan") || nameLow.includes("chaos") || nameLow.includes("yajirobe") || nameLow.includes("starlight")) {
-    tags.add("Combatiente de Reserva/Suplente");
-  }
-  
-  // === 21. QUINTA OLEADA: CATEGORÍAS NEN DE HUNTER X HUNTER ===
-  if (uniLow.includes("hunter") || nameLow.includes("gon") || nameLow.includes("killua") || nameLow.includes("kurapika") || nameLow.includes("leorio") || nameLow.includes("hisoka") || nameLow.includes("chrollo") || nameLow.includes("meruem") || nameLow.includes("netero") || nameLow.includes("pitou") || nameLow.includes("pouf") || nameLow.includes("youpi") || nameLow.includes("illumi") || nameLow.includes("feitan") || nameLow.includes("silva") || nameLow.includes("ging")) {
-    tags.add("Usuario de Nen/Voto Autoimpuesto");
-    tags.add("Usuario de Nen");
-
-    if (hasWord(nameLow, "gon") || nameLow.includes("uvogin") || nameLow.includes("phinks") || nameLow.includes("netero")) {
-      tags.add("Nen: Reforzador");
-    }
-    if (nameLow.includes("killua") || nameLow.includes("hisoka") || nameLow.includes("feitan") || nameLow.includes("machi") || nameLow.includes("biscuit")) {
-      tags.add("Nen: Transmutador");
-    }
-    if (nameLow.includes("leorio") || nameLow.includes("franklin") || nameLow.includes("knuckle") || nameLow.includes("razor") || nameLow.includes("silva")) {
-      tags.add("Nen: Emisor");
-    }
-    if (nameLow.includes("kurapika") || nameLow.includes("kite") || nameLow.includes("kortopi") || nameLow.includes("shizuku") || nameLow.includes("genthru")) {
-      tags.add("Nen: Conjurador");
-    }
-    if (nameLow.includes("illumi") || nameLow.includes("shalnark") || nameLow.includes("morel") || nameLow.includes("baise") || nameLow.includes("squala")) {
-      tags.add("Nen: Manipulador");
-      tags.add("Manipulador Mental/de Contratos");
-    }
-    if (nameLow.includes("chrollo") || nameLow.includes("meruem") || nameLow.includes("pitou") || nameLow.includes("pouf") || nameLow.includes("youpi") || nameLow.includes("alluka") || nameLow.includes("neon") || nameLow.includes("pakunoda") || nameLow.includes("tserridnich")) {
-      tags.add("Nen: Especialista");
-    }
-  }
-
-  // === 22. QUINTA OLEADA: CHAINSAW MAN & JERARQUÍA DE DIABLOS ===
-  if (uniLow.includes("chainsaw") || nameLow.includes("denji") || nameLow.includes("pochita") || nameLow.includes("makima") || nameLow.includes("power") || nameLow.includes("aki") || nameLow.includes("kishibe") || nameLow.includes("himeno") || nameLow.includes("kobeni") || nameLow.includes("reze") || nameLow.includes("quanxi") || nameLow.includes("yoshida") || nameLow.includes("diablo") || nameLow.includes("demon")) {
-    if (nameLow.includes("makima") || nameLow.includes("pochita") || nameLow.includes("oscuridad") || nameLow.includes("darkness") || nameLow.includes("caída") || nameLow.includes("gun devil") || nameLow.includes("pistola") || nameLow.includes("fuego") || nameLow.includes("muerte") || nameLow.includes("guerra") || nameLow.includes("hambre") || nameLow.includes("control")) {
-      tags.add("Diablo Primigenio/Jerárquico");
-      tags.add("Manipulador Mental/de Contratos");
-    }
-    if (nameLow.includes("aki") || nameLow.includes("himeno") || nameLow.includes("denji") || nameLow.includes("kobeni") || nameLow.includes("reze") || nameLow.includes("quanxi") || nameLow.includes("santa claus")) {
-      tags.add("Usuario de Contrato Diabólico");
-    }
-    if (nameLow.includes("kishibe") || nameLow.includes("aki") || nameLow.includes("himeno") || nameLow.includes("kobeni") || nameLow.includes("yoshida") || nameLow.includes("quanxi")) {
-      tags.add("Cazador de Diablos Profesional");
-    }
-  }
-
-  // === 23. QUINTA OLEADA: ARMAS SINTIENTES / VOLUNTAD PROPIA ===
-  if (nameLow.includes("soul") || nameLow.includes("zangetsu") || nameLow.includes("enma") || nameLow.includes("samehada") || nameLow.includes("raichi") || nameLow.includes("hatchiyack") || nameLow.includes("guts") || nameLow.includes("muramasa") || nameLow.includes("espada de la esperanza") || nameLow.includes("stormbreaker") || nameLow.includes("mjolnir") || abilitiesLow.includes("sintiente") || abilitiesLow.includes("voluntad propia")) {
-    tags.add("Portador de Arma con Voluntad Propia");
-  }
-
-  // === 24. QUINTA OLEADA: BAKI & GRAPPLING / LINAJE HANMA ===
-  if (uniLow.includes("baki") || nameLow.includes("baki") || nameLow.includes("yujiro") || nameLow.includes("jack hanma") || nameLow.includes("yuichiro") || nameLow.includes("doppo") || nameLow.includes("shibukawa") || nameLow.includes("oliva") || nameLow.includes("pickle") || nameLow.includes("hanayama") || nameLow.includes("kaku")) {
-    tags.add("Especialista en Sumisión/Grappling");
-    tags.add("Combatiente Terrestre/Grappling");
-    if (nameLow.includes("hanma") || nameLow.includes("baki") || nameLow.includes("yujiro") || nameLow.includes("jack") || nameLow.includes("yuichiro")) {
-      tags.add("Linaje de Combate Familiar (Hanma-Style)");
-      tags.add("Biomecánica Extrema");
-    }
-  }
-
-  // === 25. QUINTA OLEADA: COMBATIENTES AÉREOS VS TERRESTRES ===
-  if (nameLow.includes("superman") || hasWord(nameLow, "thor") || nameLow.includes("iron man") || nameLow.includes("hawks") || nameLow.includes("invincible") || nameLow.includes("omni-man") || nameLow.includes("homelander") || nameLow.includes("goku") || nameLow.includes("vegeta") || nameLow.includes("freezer") || nameLow.includes("green lantern") || nameLow.includes("captain marvel") || nameLow.includes("star and stripe")) {
-    tags.add("Combatiente Aéreo");
-  }
-
-  // === 26. QUINTA OLEADA: BOSS DE ANIQUILACIÓN UNIVERSAL ===
-  if (nameLow.includes("zeno") || nameLow.includes("anti-monitor") || nameLow.includes("darkseid") || nameLow.includes("kid buu") || nameLow.includes("moro") || nameLow.includes("zamasu") || nameLow.includes("sukuna") || nameLow.includes("muzan") || nameLow.includes("boros") || nameLow.includes("garou") || nameLow.includes("all for one") || nameLow.includes("thanos") || nameLow.includes("galactus") || nameLow.includes("doomsday") || nameLow.includes("beerus") || nameLow.includes("bills") || nameLow.includes("champa") || nameLow.includes("cell max") || nameLow.includes("hirudegarn") || nameLow.includes("janemba")) {
-    tags.add("Boss de Aniquilación Universal");
-  }
-
-
   return Array.from(tags);
 }
 
-// Evalúa las sinergias activas en un escuadrón
 export function detectSquadTagSynergies(team = []) {
   const safeTeam = (team || []).filter(Boolean);
   if (safeTeam.length < 2) {
